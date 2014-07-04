@@ -29,7 +29,7 @@
  * Author: Dag-Erling Smørgrav <des@des.no>
  * Sponsor: the University of Oslo
  *
- * $Id$
+ * $Cryb$
  */
 
 #ifndef CRYB_RFC4648_H_INCLUDED

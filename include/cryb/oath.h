@@ -30,7 +30,7 @@
  * Author: Dag-Erling Smørgrav <des@des.no>
  * Sponsor: the University of Oslo
  *
- * $Id$
+ * $Cryb$
  */
 
 #ifndef OATH_H_INCLUDED

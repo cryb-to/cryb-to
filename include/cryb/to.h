@@ -28,7 +28,7 @@
  *
  * Author: Dag-Erling Smørgrav <des@des.no>
  *
- * $Id$
+ * $Cryb$
  */
 
 #ifndef CRYB_TO_H_INCLUDED

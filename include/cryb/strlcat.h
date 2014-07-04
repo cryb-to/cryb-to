@@ -28,7 +28,7 @@
  *
  * Author: Dag-Erling Smørgrav <des@des.no>
  *
- * $Id$
+ * $Cryb$
  */
 
 #ifndef OPENPAM_STRLCAT_H_INCLUDED

@@ -1,4 +1,4 @@
-# $Id$
+# $Cryb$
 
 crybdir = $(includedir)/cryb
 

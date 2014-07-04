@@ -28,7 +28,7 @@
  *
  * Author: Dag-Erling Smørgrav <des@des.no>
  *
- * $Id$
+ * $Cryb$
  */
 
 #include "cryb/impl.h"

@@ -28,7 +28,7 @@
  *
  * Author: Dag-Erling Smørgrav <des@des.no>
  *
- * $Id$
+ * $Cryb$
  */
 
 #ifndef CRYB_COVERAGE_H_INCLUDED

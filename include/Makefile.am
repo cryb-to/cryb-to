@@ -1,3 +1,3 @@
-# $Id$
+# $Cryb$
 
 SUBDIRS = cryb

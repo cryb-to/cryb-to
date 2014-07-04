@@ -1,4 +1,4 @@
-# $Id$
+# $Cryb$
 
 ACLOCAL_AMFLAGS = -I m4
 

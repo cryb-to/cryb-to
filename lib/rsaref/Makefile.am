@@ -1,4 +1,4 @@
-# $Id$
+# $Cryb$
 
 AM_CPPFLAGS = -include $(top_srcdir)/include/cryb/nocoverage.h
 
