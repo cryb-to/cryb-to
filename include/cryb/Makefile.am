@@ -1,0 +1,28 @@
+# $Id$
+
+crybdir = $(includedir)/cryb
+
+cryb_HEADERS = \
+	algorithm.h \
+	attributes.h \
+	bitwise.h \
+	digest.h \
+	hmac.h \
+	hotp.h \
+	mac.h \
+	md5.h \
+	oath.h \
+	oath_constants.h \
+	oath_types.h \
+	rand.h \
+	rfc3986.h \
+	rfc4648.h \
+	sha1.h \
+	to.h \
+	totp.h \
+	version.h
+
+noinst_HEADERS = \
+	coverage.h \
+	impl.h \
+	nocoverage.h
