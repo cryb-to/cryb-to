@@ -32,7 +32,10 @@
 #ifndef CRYB_MD2_H_INCLUDED
 #define CRYB_MD2_H_INCLUDED
 
-#define MD2_DIGEST_LEN 16
+#include <cryb/digest.h>
+
+#define MD2_BLOCK_LEN			16
+#define MD2_DIGEST_LEN			16
 
 #define md2_digest			cryb_md2_digest
 #define md2_ctx				cryb_md2_ctx
@@ -41,7 +44,7 @@
 #define md2_final			cryb_md2_final
 #define md2_complete			cryb_md2_complete
 
-extern struct digest_algorithm md2_digest;
+extern digest_algorithm md2_algorithm;
 
 /**
  * \brief          MD2 context structure
@@ -55,8 +58,7 @@ typedef struct
     unsigned char ipad[64];     /*!< HMAC: inner padding        */
     unsigned char opad[64];     /*!< HMAC: outer padding        */
     int left;                   /*!< amount of data in buffer   */
-}
-md2_ctx;
+} md2_ctx;
 
 #ifdef __cplusplus
 extern "C" {

@@ -29,7 +29,10 @@
 #ifndef CRYB_SHA256_H_INCLUDED
 #define CRYB_SHA256_H_INCLUDED
 
-#define SHA256_DIGEST_LEN 32
+#include <cryb/digest.h>
+
+#define SHA256_BLOCK_LEN		64
+#define SHA256_DIGEST_LEN		32
 
 /*
  * Use #defines in order to avoid namespace collisions with anyone else's
@@ -42,7 +45,7 @@
 #define sha256_final			cryb_sha256_final
 #define sha256_complete			cryb_sha256_complete
 
-extern struct digest_algorithm sha256_digest;
+extern digest_algorithm sha256_digest;
 
 #define hmac_sha256_init cryb_hmac_sha256_init
 #define hmac_sha256_update cryb_hmac_sha256_update

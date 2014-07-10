@@ -47,7 +47,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/bitwise.h>
 #include <cryb/md5.h>
 
@@ -76,7 +75,7 @@ static const uint32_t md5_k[64] = {
 };
 
 void
-md5_init(struct md5_ctx *ctx)
+md5_init(md5_ctx *ctx)
 {
 
 	memset(ctx, 0, sizeof *ctx);
@@ -112,7 +111,7 @@ md5_init(struct md5_ctx *ctx)
 	} while (0)
 
 static void
-md5_compute(struct md5_ctx *ctx, const uint8_t *block)
+md5_compute(md5_ctx *ctx, const uint8_t *block)
 {
 	uint32_t w[16], a, b, c, d;
 	int i;
@@ -203,7 +202,7 @@ md5_compute(struct md5_ctx *ctx, const uint8_t *block)
 }
 
 void
-md5_update(struct md5_ctx *ctx, const void *buf, size_t len)
+md5_update(md5_ctx *ctx, const void *buf, size_t len)
 {
 	size_t copylen;
 
@@ -230,7 +229,7 @@ md5_update(struct md5_ctx *ctx, const void *buf, size_t len)
 }
 
 void
-md5_final(struct md5_ctx *ctx, void *digest)
+md5_final(md5_ctx *ctx, void *digest)
 {
 
 	ctx->block[ctx->blocklen++] = 0x80;
@@ -252,16 +251,17 @@ md5_final(struct md5_ctx *ctx, void *digest)
 void
 md5_complete(const void *buf, size_t len, void *digest)
 {
-	struct md5_ctx ctx;
+	md5_ctx ctx;
 
 	md5_init(&ctx);
 	md5_update(&ctx, buf, len);
 	md5_final(&ctx, digest);
 }
 
-struct digest_algorithm md5_digest = {
+digest_algorithm md5_digest = {
 	.name			 = "md5",
-	.contextlen		 = sizeof md5_digest,
+	.contextlen		 = sizeof(md5_ctx),
+	.blocklen		 = MD5_BLOCK_LEN,
 	.digestlen		 = MD5_DIGEST_LEN,
 	.init			 = (digest_init_func)md5_init,
 	.update			 = (digest_update_func)md5_update,

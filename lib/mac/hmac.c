@@ -52,7 +52,7 @@
 #include <cryb/hmac.h>
 
 void
-hmac_init(struct hmac_ctx *ctx, const uint8_t *key, size_t keylen)
+hmac_init(hmac_ctx *ctx, const uint8_t *key, size_t keylen)
 {
 	uint8_t ipad[64];
 
@@ -77,14 +77,14 @@ hmac_init(struct hmac_ctx *ctx, const uint8_t *key, size_t keylen)
 }
 
 void
-hmac_update(struct hmac_ctx *ctx, const uint8_t *buf, size_t len)
+hmac_update(hmac_ctx *ctx, const uint8_t *buf, size_t len)
 {
 
 	sha1_update(&ctx->sha1_ctx, buf, len);
 }
 
 void
-hmac_final(struct hmac_ctx *ctx, uint8_t *mac)
+hmac_final(hmac_ctx *ctx, uint8_t *mac)
 {
 	uint8_t digest[20], opad[64];
 
@@ -102,7 +102,7 @@ void
 hmac_complete(const uint8_t *key, size_t keylen,
     const uint8_t *buf, size_t len, uint8_t *mac)
 {
-	struct hmac_ctx ctx;
+	hmac_ctx ctx;
 
 	hmac_init(&ctx, key, keylen);
 	hmac_update(&ctx, buf, len);

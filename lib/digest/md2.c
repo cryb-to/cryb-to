@@ -39,7 +39,6 @@
 
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/md2.h>
 
 static const unsigned char PI_SUBST[256] =
@@ -246,9 +245,10 @@ void md2_hmac_complete( unsigned char *key, int keylen, unsigned char *input, in
     memset( &ctx, 0, sizeof( md2_ctx ) );
 }
 
-struct digest_algorithm md2_digest = {
+digest_algorithm md2_algorithm = {
 	.name			 = "md2",
-	.contextlen		 = sizeof md2_digest,
+	.contextlen		 = sizeof(md2_ctx),
+	.blocklen		 = MD2_BLOCK_LEN,
 	.digestlen		 = MD2_DIGEST_LEN,
 	.init			 = (digest_init_func)md2_init,
 	.update			 = (digest_update_func)md2_update,

@@ -36,10 +36,12 @@
 #ifndef CRYB_HMAC_H_INCLUDED
 #define CRYB_HMAC_H_INCLUDED
 
+#include <cryb/sha1.h>
+
 #define HMAC_LEN 20
 
-typedef struct hmac_ctx {
-	struct sha1_ctx sha1_ctx;
+typedef struct {
+	sha1_ctx sha1_ctx;
 	uint8_t key[64];
 	size_t keylen;
 } hmac_ctx;

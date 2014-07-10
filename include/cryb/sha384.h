@@ -32,7 +32,10 @@
 #ifndef CRYB_SHA384_H_INCLUDED
 #define CRYB_SHA384_H_INCLUDED
 
-#define SHA384_DIGEST_LEN 48
+#include <cryb/digest.h>
+
+#define SHA384_BLOCK_LEN		128
+#define SHA384_DIGEST_LEN		48
 
 #define sha384_digest			cryb_sha384_digest
 #define sha384_ctx			cryb_sha384_ctx
@@ -41,7 +44,7 @@
 #define sha384_final			cryb_sha384_final
 #define sha384_complete			cryb_sha384_complete
 
-extern struct digest_algorithm sha384_digest;
+extern digest_algorithm sha384_digest;
 
 /**
  * \brief          SHA-384 context structure

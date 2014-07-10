@@ -27,33 +27,29 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * Author: Dag-Erling Smørgrav <des@des.no>
- * Sponsor: the University of Oslo
- *
  * $Cryb$
  */
 
 #ifndef CRYB_DIGEST_H_INCLUDED
 #define CRYB_DIGEST_H_INCLUDED
 
+#define digest_ctx			cryb_digest_ctx
 #define digest_init_func		cryb_digest_init_func
 #define digest_update_func		cryb_digest_update_func
 #define digest_final_func		cryb_digest_final_func
 #define digest_complete_func		cryb_digest_complete_func
 #define digest_algorithm		cryb_digest_algorithm
-#define digest_init			cryb_digest_init
-#define digest_update			cryb_digest_update
-#define digest_final			cryb_digest_final
-#define digest_complete			cryb_digest_complete
 
-typedef void (*digest_init_func)(void *);
-typedef void (*digest_update_func)(void *, const void *, size_t);
-typedef void (*digest_final_func)(void *, void *);
+typedef void digest_ctx;
+typedef void (*digest_init_func)(digest_ctx *);
+typedef void (*digest_update_func)(digest_ctx *, const void *, size_t);
+typedef void (*digest_final_func)(digest_ctx *, void *);
 typedef int (*digest_complete_func)(const void *, size_t, void *);
 
-typedef struct digest_algorithm {
+typedef struct {
 	const char		*name;		/* algorithm name */
 	size_t			 contextlen;	/* size of context structure */
+	size_t			 blocklen;	/* block length */
 	size_t			 digestlen;	/* length of the digest */
 	digest_init_func	 init;		/* initialization method */
 	digest_update_func	 update;	/* update method */
@@ -61,9 +57,17 @@ typedef struct digest_algorithm {
 	digest_complete_func	 complete;	/* one-shot method */
 } digest_algorithm;
 
-void *digest_init(const char *);
-void digest_update(void *, const void *, size_t);
-void digest_final(void *, void *);
-int digest_complete(const char *, const void *, size_t, void *);
+#define get_digest_algorithm		cryb_get_digest_algorithm
+
+const digest_algorithm *get_digest_algorithm(const char *);
+
+#define digest_init(alg, ctx)						\
+	(alg)->init((ctx))
+#define digest_update(alg, ctx, buf, len)				\
+	(alg)->update((ctx), (buf), (len))
+#define digest_final(alg, ctx, md)					\
+	(alg)->final((ctx), (md))
+#define digest_complete(alg, buf, len, md)				\
+	(alg)->update((buf), (len), (md))
 
 #endif

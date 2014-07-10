@@ -39,7 +39,6 @@
 
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/md4.h>
 
 /*
@@ -345,9 +344,10 @@ void md4_hmac_complete( unsigned char *key, int keylen, unsigned char *input, in
     memset( &ctx, 0, sizeof( md4_ctx ) );
 }
 
-struct digest_algorithm md4_digest = {
+digest_algorithm md4_algorithm = {
 	.name			 = "md4",
-	.contextlen		 = sizeof md4_digest,
+	.contextlen		 = sizeof(md4_ctx),
+	.blocklen		 = MD4_BLOCK_LEN,
 	.digestlen		 = MD4_DIGEST_LEN,
 	.init			 = (digest_init_func)md4_init,
 	.update			 = (digest_update_func)md4_update,

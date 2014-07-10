@@ -40,7 +40,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/sha256.h>
 
 /*
@@ -466,9 +465,10 @@ pbkdf2_sha256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
 	memset(&PShctx, 0, sizeof(hmac_sha256_ctx));
 }
 
-struct digest_algorithm sha256_digest = {
+digest_algorithm sha256_digest = {
 	.name			 = "sha256",
 	.contextlen		 = sizeof sha256_digest,
+	.blocklen		 = SHA256_BLOCK_LEN,
 	.digestlen		 = SHA256_DIGEST_LEN,
 	.init			 = (digest_init_func)sha256_init,
 	.update			 = (digest_update_func)sha256_update,

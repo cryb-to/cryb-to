@@ -36,7 +36,10 @@
 #ifndef CRYB_MD5_H_INCLUDED
 #define CRYB_MD5_H_INCLUDED
 
-#define MD5_DIGEST_LEN 16
+#include <cryb/digest.h>
+
+#define MD5_BLOCK_LEN			64
+#define MD5_DIGEST_LEN			16
 
 #define md5_digest			cryb_md5_digest
 #define md5_ctx				cryb_md5_ctx
@@ -45,9 +48,9 @@
 #define md5_final			cryb_md5_final
 #define md5_complete			cryb_md5_complete
 
-extern struct digest_algorithm md5_digest;
+extern digest_algorithm md5_digest;
 
-typedef struct md5_ctx {
+typedef struct {
 	uint8_t		 block[64];
 	size_t		 blocklen;
 	uint64_t	 bitlen;

@@ -37,27 +37,36 @@
 
 #include <string.h>
 
-#include <cryb/digest.h>
+#include <cryb/md2.h>
+#include <cryb/md4.h>
 #include <cryb/md5.h>
 #include <cryb/sha1.h>
+#include <cryb/sha256.h>
+#include <cryb/sha384.h>
+#include <cryb/sha512.h>
 
-static const struct digest_algorithm **cryb_digest_algorithms;
+static const digest_algorithm **cryb_digest_algorithms;
 
 static void
-cryb_init_digest_algorithms(void)
+init_digest_algorithms(void)
 {
-	static const struct digest_algorithm *algorithms[] = {
-		&cryb_md5_algorithm,
-		&cryb_sha1_algorithm,
+	static const digest_algorithm *algorithms[] = {
+		&md2_algorithm,
+		&md4_algorithm,
+		&md5_algorithm,
+		&sha1_algorithm,
+		&sha256_algorithm,
+		&sha384_algorithm,
+		&sha512_algorithm,
 		NULL
 	};
 	cryb_digest_algorithms = algorithms;
 }
 
-const struct digest_algorithm *
-cryb_digest_algorithm(const char *name)
+const digest_algorithm *
+get_digest_algorithm(const char *name)
 {
-	const struct digest_algorithm **algp;
+	const digest_algorithm **algp;
 
 	if (cryb_digest_algorithms == NULL)
 		cryb_init_digest_algorithms();
@@ -66,4 +75,3 @@ cryb_digest_algorithm(const char *name)
 			return (*algp);
 	return (NULL);
 }
-

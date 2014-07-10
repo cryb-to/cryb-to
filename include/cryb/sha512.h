@@ -32,7 +32,10 @@
 #ifndef CRYB_SHA512_H_INCLUDED
 #define CRYB_SHA512_H_INCLUDED
 
-#define SHA512_DIGEST_LEN 64
+#include <cryb/digest.h>
+
+#define SHA512_BLOCK_LEN		128
+#define SHA512_DIGEST_LEN		64
 
 #define sha512_digest			cryb_sha512_digest
 #define sha512_ctx			cryb_sha512_ctx
@@ -41,7 +44,7 @@
 #define sha512_final			cryb_sha512_final
 #define sha512_complete			cryb_sha512_complete
 
-extern struct digest_algorithm sha512_digest;
+extern digest_algorithm sha512_digest;
 
 /**
  * \brief          SHA-512 context structure

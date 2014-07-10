@@ -32,7 +32,10 @@
 #ifndef CRYB_MD4_H_INCLUDED
 #define CRYB_MD4_H_INCLUDED
 
-#define MD4_DIGEST_LEN 16
+#include <cryb/digest.h>
+
+#define MD4_BLOCK_LEN			64
+#define MD4_DIGEST_LEN			16
 
 #define md4_digest			cryb_md4_digest
 #define md4_ctx				cryb_md4_ctx
@@ -41,7 +44,7 @@
 #define md4_final			cryb_md4_final
 #define md4_complete			cryb_md4_complete
 
-extern struct digest_algorithm md4_digest;
+extern digest_algorithm md4_digest;
 
 /**
  * \brief          MD4 context structure

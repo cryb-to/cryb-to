@@ -39,7 +39,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/sha384.h>
 
 static int is384 = 1;
@@ -408,9 +407,10 @@ void sha384_hmac_complete( unsigned char *key, int keylen,
     memset( &ctx, 0, sizeof( sha384_ctx ) );
 }
 
-struct digest_algorithm sha384_digest = {
+digest_algorithm sha384_digest = {
 	.name			 = "sha384",
 	.contextlen		 = sizeof sha384_digest,
+	.blocklen		 = SHA384_BLOCK_LEN,
 	.digestlen		 = SHA384_DIGEST_LEN,
 	.init			 = (digest_init_func)sha384_init,
 	.update			 = (digest_update_func)sha384_update,

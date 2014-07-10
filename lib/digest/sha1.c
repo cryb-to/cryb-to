@@ -47,10 +47,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <cryb/digest.h>
 #include <cryb/bitwise.h>
-
-#include <cryb/digest.h>
 #include <cryb/sha1.h>
 
 static uint32_t sha1_h[5] = {
@@ -62,7 +59,7 @@ static uint32_t sha1_k[4] = {
 };
 
 void
-sha1_init(struct sha1_ctx *ctx)
+sha1_init(sha1_ctx *ctx)
 {
 
 	memset(ctx, 0, sizeof *ctx);
@@ -71,7 +68,7 @@ sha1_init(struct sha1_ctx *ctx)
 }
 
 static void
-sha1_compute(struct sha1_ctx *ctx, const uint8_t *block)
+sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 {
 	uint32_t w[80], a, b, c, d, e, f, temp;
 
@@ -113,7 +110,7 @@ sha1_compute(struct sha1_ctx *ctx, const uint8_t *block)
 }
 
 void
-sha1_update(struct sha1_ctx *ctx, const void *buf, size_t len)
+sha1_update(sha1_ctx *ctx, const void *buf, size_t len)
 {
 	size_t copylen;
 
@@ -140,7 +137,7 @@ sha1_update(struct sha1_ctx *ctx, const void *buf, size_t len)
 }
 
 void
-sha1_final(struct sha1_ctx *ctx, void *digest)
+sha1_final(sha1_ctx *ctx, void *digest)
 {
 	uint32_t hi, lo;
 
@@ -165,16 +162,17 @@ sha1_final(struct sha1_ctx *ctx, void *digest)
 void
 sha1_complete(const void *buf, size_t len, void *digest)
 {
-	struct sha1_ctx ctx;
+	sha1_ctx ctx;
 
 	sha1_init(&ctx);
 	sha1_update(&ctx, buf, len);
 	sha1_final(&ctx, digest);
 }
 
-struct digest_algorithm sha1_digest = {
+digest_algorithm sha1_digest = {
 	.name			 = "sha1",
 	.contextlen		 = sizeof sha1_digest,
+	.blocklen		 = SHA1_BLOCK_LEN,
 	.digestlen		 = SHA1_DIGEST_LEN,
 	.init			 = (digest_init_func)sha1_init,
 	.update			 = (digest_update_func)sha1_update,

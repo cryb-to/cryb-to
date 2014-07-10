@@ -9,6 +9,7 @@ cryb_HEADERS = \
 	digest.h \
 	hmac.h \
 	hotp.h \
+	md.h \
 	md2.h \
 	md4.h \
 	md5.h \
@@ -18,6 +19,7 @@ cryb_HEADERS = \
 	rand.h \
 	rfc3986.h \
 	rfc4648.h \
+	sha.h \
 	sha1.h \
 	sha256.h \
 	sha384.h \
