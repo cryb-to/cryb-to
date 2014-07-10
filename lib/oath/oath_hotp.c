@@ -37,8 +37,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <cryb/sha1.h>
-#include <cryb/hmac.h>
+#include <cryb/hmac_sha1.h>
 #include <cryb/oath.h>
 
 #define StToNum(St) (St)
@@ -62,7 +61,7 @@ DT(const uint8_t *String)
 unsigned int
 oath_hotp(const uint8_t *K, size_t Klen, uint64_t seq, unsigned int Digit)
 {
-	hmac_ctx ctx;
+	hmac_sha1_ctx ctx;
 	uint8_t C[8];
 	uint8_t HS[20];
 	uint32_t Sbits, Snum;
@@ -74,9 +73,9 @@ oath_hotp(const uint8_t *K, size_t Klen, uint64_t seq, unsigned int Digit)
 	}
 
 	/* HS = HMAC-SHA-1(K,C) */
-	hmac_init(&ctx, K, Klen);
-	hmac_update(&ctx, (const uint8_t *)&C, sizeof C);
-	hmac_final(&ctx, HS);
+	hmac_sha1_init(&ctx, K, Klen);
+	hmac_sha1_update(&ctx, (const uint8_t *)&C, sizeof C);
+	hmac_sha1_final(&ctx, HS);
 
 	Sbits = DT(HS);
 	Snum = StToNum(Sbits);

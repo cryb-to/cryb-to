@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2014 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,27 @@
  * $Cryb$
  */
 
-#ifndef CRYB_HMAC_H_INCLUDED
-#define CRYB_HMAC_H_INCLUDED
+#ifndef CRYB_HMAC_SHA1_H_INCLUDED
+#define CRYB_HMAC_SHA1_H_INCLUDED
 
-#include <cryb/hmac_sha1.h>
+#include <cryb/sha1.h>
+
+#define HMAC_SHA1_MAC_LEN		20
+
+#define hmac_sha1_ctx			cryb_hmac_sha1_ctx
+#define hmac_sha1_init			cryb_hmac_sha1_init
+#define hmac_sha1_update		cryb_hmac_sha1_update
+#define hmac_sha1_final			cryb_hmac_sha1_final
+#define hmac_sha1_complete		cryb_hmac_sha1_complete
+
+typedef struct {
+	sha1_ctx sha1_ctx;
+	uint8_t key[64];
+} hmac_sha1_ctx;
+
+void hmac_sha1_init(hmac_sha1_ctx *, const void *, size_t);
+void hmac_sha1_update(hmac_sha1_ctx *, const void *, size_t);
+void hmac_sha1_final(hmac_sha1_ctx *, void *);
+void hmac_sha1_complete(const void *, size_t, const void *, size_t, void *);
 
 #endif

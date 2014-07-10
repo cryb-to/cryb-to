@@ -48,10 +48,10 @@
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 
-#define HMAC_LEN 20
+#define HMAC_SHA1_MAC_LEN 20
 
 static void
-t_hmac_complete(const void *key, size_t keylen,
+t_hmac_sha1_complete(const void *key, size_t keylen,
     const void *msg, size_t msglen, uint8_t *mac)
 {
 	HMAC_CTX ctx;
@@ -68,8 +68,8 @@ t_hmac_complete(const void *key, size_t keylen,
 #include <cryb/sha1.h>
 #include <cryb/hmac.h>
 
-#define t_hmac_complete(key, keylen, msg, msglen, mac)			\
-	hmac_complete(key, keylen, msg, msglen, mac)
+#define t_hmac_sha1_complete(key, keylen, msg, msglen, mac)			\
+	hmac_sha1_complete(key, keylen, msg, msglen, mac)
 
 #endif
 
@@ -81,8 +81,8 @@ static struct t_vector {
 	uint8_t key[100];
 	size_t keylen;
 	const char *msg;
-	const uint8_t mac[HMAC_LEN];
-} t_hmac_vectors[] = {
+	const uint8_t mac[HMAC_SHA1_MAC_LEN];
+} t_hmac_sha1_vectors[] = {
 	{
 		"zero-length key, zero-length message",
 		{ },
@@ -180,20 +180,20 @@ static struct t_vector {
  * specified key and compare it to the expected result.
  */
 static int
-t_hmac_vector(char **desc CRYB_UNUSED, void *arg)
+t_hmac_sha1_vector(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_vector *vector = (struct t_vector *)arg;
-	uint8_t mac[HMAC_LEN];
+	uint8_t mac[HMAC_SHA1_MAC_LEN];
 
-	t_hmac_complete(vector->key, vector->keylen,
+	t_hmac_sha1_complete(vector->key, vector->keylen,
 	    (const uint8_t *)vector->msg, strlen(vector->msg),
 	    mac);
-	if (memcmp(mac, vector->mac, HMAC_LEN) != 0) {
+	if (memcmp(mac, vector->mac, HMAC_SHA1_MAC_LEN) != 0) {
 		t_verbose("expected ");
-		t_verbose_hex(vector->mac, HMAC_LEN);
+		t_verbose_hex(vector->mac, HMAC_SHA1_MAC_LEN);
 		t_verbose("\n");
 		t_verbose("got      ");
-		t_verbose_hex(mac, HMAC_LEN);
+		t_verbose_hex(mac, HMAC_SHA1_MAC_LEN);
 		t_verbose("\n");
 		return (0);
 	}
@@ -212,10 +212,10 @@ t_prepare(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
-	n = sizeof t_hmac_vectors / sizeof t_hmac_vectors[0];
+	n = sizeof t_hmac_sha1_vectors / sizeof t_hmac_sha1_vectors[0];
 	for (i = 0; i < n; ++i)
-		t_add_test(t_hmac_vector, &t_hmac_vectors[i],
-		    t_hmac_vectors[i].desc);
+		t_add_test(t_hmac_sha1_vector, &t_hmac_sha1_vectors[i],
+		    t_hmac_sha1_vectors[i].desc);
 	return (0);
 }
 

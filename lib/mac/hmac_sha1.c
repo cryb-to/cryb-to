@@ -45,14 +45,12 @@
 #endif
 
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 
-#include <cryb/sha1.h>
-#include <cryb/hmac.h>
+#include <cryb/hmac_sha1.h>
 
 void
-hmac_init(hmac_ctx *ctx, const uint8_t *key, size_t keylen)
+hmac_sha1_init(hmac_sha1_ctx *ctx, const void *key, size_t keylen)
 {
 	uint8_t ipad[64];
 
@@ -77,14 +75,14 @@ hmac_init(hmac_ctx *ctx, const uint8_t *key, size_t keylen)
 }
 
 void
-hmac_update(hmac_ctx *ctx, const uint8_t *buf, size_t len)
+hmac_sha1_update(hmac_sha1_ctx *ctx, const void *buf, size_t len)
 {
 
 	sha1_update(&ctx->sha1_ctx, buf, len);
 }
 
 void
-hmac_final(hmac_ctx *ctx, uint8_t *mac)
+hmac_sha1_final(hmac_sha1_ctx *ctx, void *mac)
 {
 	uint8_t digest[20], opad[64];
 
@@ -99,12 +97,12 @@ hmac_final(hmac_ctx *ctx, uint8_t *mac)
 }
 
 void
-hmac_complete(const uint8_t *key, size_t keylen,
-    const uint8_t *buf, size_t len, uint8_t *mac)
+hmac_sha1_complete(const void *key, size_t keylen,
+    const void *buf, size_t len, void *mac)
 {
-	hmac_ctx ctx;
+	hmac_sha1_ctx ctx;
 
-	hmac_init(&ctx, key, keylen);
-	hmac_update(&ctx, buf, len);
-	hmac_final(&ctx, mac);
+	hmac_sha1_init(&ctx, key, keylen);
+	hmac_sha1_update(&ctx, buf, len);
+	hmac_sha1_final(&ctx, mac);
 }

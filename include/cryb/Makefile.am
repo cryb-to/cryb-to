@@ -8,6 +8,7 @@ cryb_HEADERS = \
 	bitwise.h \
 	digest.h \
 	hmac.h \
+	hmac_sha1.h \
 	hotp.h \
 	md.h \
 	md2.h \
