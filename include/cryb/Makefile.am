@@ -24,5 +24,9 @@ cryb_HEADERS = \
 
 noinst_HEADERS = \
 	coverage.h \
+	ctype.h \
 	impl.h \
-	nocoverage.h
+	nocoverage.h \
+	strlcat.h \
+	strlcmp.h \
+	strlcpy.h
