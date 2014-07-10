@@ -51,6 +51,7 @@
 #include <cryb/digest.h>
 #include <cryb/bitwise.h>
 
+#include <cryb/digest.h>
 #include <cryb/sha1.h>
 
 static uint32_t sha1_h[5] = {
@@ -171,3 +172,13 @@ sha1_complete(const void *buf, size_t len, void *digest)
 	sha1_update(&ctx, buf, len);
 	sha1_final(&ctx, digest);
 }
+
+struct digest_algorithm sha1_digest = {
+	.name			 = "sha1",
+	.contextlen		 = sizeof sha1_digest,
+	.digestlen		 = SHA1_DIGEST_LEN,
+	.init			 = (digest_init_func)sha1_init,
+	.update			 = (digest_update_func)sha1_update,
+	.final			 = (digest_final_func)sha1_final,
+	.complete		 = (digest_complete_func)sha1_complete,
+};

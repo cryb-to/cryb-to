@@ -38,6 +38,15 @@
 
 #define SHA1_DIGEST_LEN 20
 
+#define sha1_algorithm			cryb_sha1_algorithm
+#define sha1_ctx			cryb_sha1_ctx
+#define sha1_init			cryb_sha1_init
+#define sha1_update			cryb_sha1_update
+#define sha1_final			cryb_sha1_final
+#define sha1_complete			cryb_sha1_complete
+
+extern struct digest_algorithm sha1_algorithm;
+
 typedef struct sha1_ctx {
 	uint8_t block[64];
 	size_t blocklen;
@@ -45,10 +54,8 @@ typedef struct sha1_ctx {
 	uint32_t h[5], k[4];
 } sha1_ctx;
 
-#define sha1_init	cryb_sha1_init
-#define sha1_update	cryb_sha1_update
-#define sha1_final	cryb_sha1_final
-#define sha1_complete	cryb_sha1_complete
+extern struct digest_algorithm sha1_algorithm;
+
 void sha1_init(sha1_ctx *);
 void sha1_update(sha1_ctx *, const void *, size_t);
 void sha1_final(sha1_ctx *, void *);

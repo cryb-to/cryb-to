@@ -36,50 +36,34 @@
 #ifndef CRYB_DIGEST_H_INCLUDED
 #define CRYB_DIGEST_H_INCLUDED
 
+#define digest_init_func		cryb_digest_init_func
+#define digest_update_func		cryb_digest_update_func
+#define digest_final_func		cryb_digest_final_func
+#define digest_complete_func		cryb_digest_complete_func
+#define digest_algorithm		cryb_digest_algorithm
+#define digest_init			cryb_digest_init
+#define digest_update			cryb_digest_update
+#define digest_final			cryb_digest_final
+#define digest_complete			cryb_digest_complete
+
 typedef void *(*digest_init_func)(void);
 typedef void (*digest_update_func)(void *, const void *, size_t);
 typedef void (*digest_final_func)(void *, void *);
 typedef int (*digest_complete_func)(const void *, size_t, void *);
 
-struct digest_algorithm {
+typedef struct digest_algorithm {
 	const char		*name;		/* algorithm name */
-	size_t			 ctxsize;	/* size of context structure */
-	size_t			 resultlen;	/* length of the result */
-	digest_init_func	 init;
-	digest_update_func	 update;
-	digest_final_func	 final;
-	digest_complete_func	 complete;
-};
+	size_t			 contextlen;	/* size of context structure */
+	size_t			 digestlen;	/* length of the digest */
+	digest_init_func	 init;		/* initialization method */
+	digest_update_func	 update;	/* update method */
+	digest_final_func	 final;		/* finalization method */
+	digest_complete_func	 complete;	/* one-shot method */
+} digest_algorithm;
 
-const struct digest_algorithm *cryb_digest_algorithm(const char *);
-
-void *cryb_digest_init(const char *);
-void cryb_digest_update(void *, const void *, size_t);
-void cryb_digest_final(void *, void *);
-int cryb_digest_complete(const char *, const void *, size_t, void *);
-
-static inline void *
-digest_init(const char *alg)
-{
-	return (cryb_digest_init(alg));
-}
-
-static inline void
-digest_update(void *ctx, const void *msg, size_t msglen)
-{
-	cryb_digest_update(ctx, msg, msglen);
-}
-
-static inline void
-digest_final(void *ctx, void *md)
-{
-	cryb_digest_final(ctx, md);
-}
-
-static inline int
-digest_complete(const char *alg, const void *msg, size_t msglen, void *md)
-{
-	return (cryb_digest_complete(alg, msg, msglen, md));
-}
+void *digest_init(const char *);
+void digest_update(void *, const void *, size_t);
+void digest_final(void *, void *);
+int digest_complete(const char *, const void *, size_t, void *);
 
 #endif

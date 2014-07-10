@@ -259,3 +259,13 @@ md5_complete(const void *buf, size_t len, void *digest)
 	md5_update(&ctx, buf, len);
 	md5_final(&ctx, digest);
 }
+
+struct digest_algorithm md5_digest = {
+	.name			 = "md5",
+	.contextlen		 = sizeof md5_digest,
+	.digestlen		 = MD5_DIGEST_LEN,
+	.init			 = (digest_init_func)md5_init,
+	.update			 = (digest_update_func)md5_update,
+	.final			 = (digest_final_func)md5_final,
+	.complete		 = (digest_complete_func)md5_complete,
+};

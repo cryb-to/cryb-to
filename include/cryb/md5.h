@@ -38,6 +38,15 @@
 
 #define MD5_DIGEST_LEN 16
 
+#define md5_algorithm			cryb_md5_algorithm
+#define md5_ctx				cryb_md5_ctx
+#define md5_init			cryb_md5_init
+#define md5_update			cryb_md5_update
+#define md5_final			cryb_md5_final
+#define md5_complete			cryb_md5_complete
+
+extern struct digest_algorithm md5_algorithm;
+
 typedef struct md5_ctx {
 	uint8_t		 block[64];
 	size_t		 blocklen;
@@ -45,10 +54,6 @@ typedef struct md5_ctx {
 	uint32_t	 h[4];
 } md5_ctx;
 
-#define md5_init	cryb_md5_init
-#define md5_update	cryb_md5_update
-#define md5_final	cryb_md5_final
-#define md5_complete	cryb_md5_complete
 void md5_init(md5_ctx *);
 void md5_update(md5_ctx *, const void *, size_t);
 void md5_final(md5_ctx *, void *);
