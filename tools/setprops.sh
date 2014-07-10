@@ -10,12 +10,14 @@ while read f ; do
 	[ -f "$f" ] || continue
 	istext "$f" || continue
 	case $f in
+	*rsaref*.[ch])
+		;;
 	*.sh|*.pl)
 		svn propset svn:executable \* $f
 		;&
 	*)
 		svn propset eol-style native $f
-		svn propset svn:keywords Id $f
+		svn propset svn:keywords "Cryb=%H" $f
 		;;
 	esac
 done
