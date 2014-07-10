@@ -46,7 +46,7 @@
 #define digest_final			cryb_digest_final
 #define digest_complete			cryb_digest_complete
 
-typedef void *(*digest_init_func)(void);
+typedef void (*digest_init_func)(void *);
 typedef void (*digest_update_func)(void *, const void *, size_t);
 typedef void (*digest_final_func)(void *, void *);
 typedef int (*digest_complete_func)(const void *, size_t, void *);
