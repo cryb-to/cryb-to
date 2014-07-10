@@ -34,8 +34,9 @@
 #ifndef CRYB_STRLCMP_H_INCLUDED
 #define CRYB_STRLCMP_H_INCLUDED
 
-#ifndef HAVE_STRLCMP
 int cryb_strlcmp(const char *, const char *, size_t);
+
+#ifndef HAVE_STRLCMP
 #undef strlcmp
 #define strlcmp(...) cryb_strlcmp(__VA_ARGS__)
 #endif

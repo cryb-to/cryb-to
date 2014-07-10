@@ -31,11 +31,12 @@
  * $Cryb$
  */
 
-#ifndef OPENPAM_STRLCPY_H_INCLUDED
-#define OPENPAM_STRLCPY_H_INCLUDED
+#ifndef CRYB_STRLCPY_H_INCLUDED
+#define CRYB_STRLCPY_H_INCLUDED
+
+size_t cryb_strlcpy(char *, const char *, size_t);
 
 #ifndef HAVE_STRLCPY
-size_t cryb_strlcpy(char *, const char *, size_t);
 #undef strlcpy
 #define strlcpy(arg, ...) cryb_strlcpy(arg, __VA_ARGS__)
 #endif

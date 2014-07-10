@@ -31,11 +31,12 @@
  * $Cryb$
  */
 
-#ifndef OPENPAM_STRLCAT_H_INCLUDED
-#define OPENPAM_STRLCAT_H_INCLUDED
+#ifndef CRYB_STRLCAT_H_INCLUDED
+#define CRYB_STRLCAT_H_INCLUDED
+
+size_t cryb_strlcat(char *, const char *, size_t);
 
 #ifndef HAVE_STRLCAT
-size_t cryb_strlcat(char *, const char *, size_t);
 #undef strlcat
 #define strlcat(arg, ...) cryb_strlcat(arg, __VA_ARGS__)
 #endif
