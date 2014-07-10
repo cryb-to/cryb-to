@@ -196,12 +196,13 @@ t_sha1_short_updates(char **desc CRYB_UNUSED, void *arg)
  */
 #define T_PERF_ITERATIONS 1000
 static int
-t_sha1_perf(const char **desc, void *arg)
+t_sha1_perf(char **desc, void *arg)
 {
 	struct timespec ts, te;
 	unsigned long ns;
 	uint8_t digest[SHA1_DIGEST_LEN];
 	char *msg, *comment;
+	size_t msglen = *(size_t *)arg;
 
 	if ((msg = calloc(1, msglen)) == NULL)
 		err(1, "calloc()");
@@ -216,32 +217,8 @@ t_sha1_perf(const char **desc, void *arg)
 	    msglen, T_PERF_ITERATIONS, ns);
 	if (comment == NULL)
 		err(1, "asprintf()");
-	*desc = (const char *)comment;
+	*desc = comment;
 	return (1);
-}
-#endif
-
-
-#ifdef BENCHMARKS
-/*
- * Microbenchmarks
- */
-T_FUNC(perf_0, "microbenchmark with empty message")
-{
-
-	return (t_sha1_perf(0, desc));
-}
-
-T_FUNC(perf_1000, "microbenchmark with 1,000-byte message")
-{
-
-	return (t_sha1_perf(1000, desc));
-}
-
-T_FUNC(perf_1000000, "microbenchmark with 1,000,000-byte message")
-{
-
-	return (t_sha1_perf(1000000, desc));
 }
 #endif
 
@@ -274,6 +251,15 @@ t_prepare(int argc, char *argv[])
 	 */
 	t_add_test(t_sha1_short_updates, &t_sha1_vectors[4],
 	    "multiple short updates");
+#endif
+#ifdef BENCHMARKS
+	static size_t one = 1, thousand = 1000, million = 1000000;
+	t_add_test(t_sha1_perf, &one,
+	    "performance test (1 byte)");
+	t_add_test(t_sha1_perf, &thousand,
+	    "performance test (1,000 bytes)");
+	t_add_test(t_sha1_perf, &million,
+	    "performance test (1,000,000 bytes)");
 #endif
 	return (0);
 }

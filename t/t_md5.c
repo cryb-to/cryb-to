@@ -176,12 +176,13 @@ t_md5_vector(char **desc CRYB_UNUSED, void *arg)
  */
 #define T_PERF_ITERATIONS 1000
 static int
-t_md5_perf(char **desc CRYB_UNUSED, void *arg)
+t_md5_perf(char **desc, void *arg)
 {
 	struct timespec ts, te;
 	unsigned long ns;
 	uint8_t digest[MD5_DIGEST_LEN];
 	char *msg, *comment;
+	size_t msglen = *(size_t *)arg;
 
 	if ((msg = calloc(1, msglen)) == NULL)
 		err(1, "calloc()");
@@ -196,7 +197,7 @@ t_md5_perf(char **desc CRYB_UNUSED, void *arg)
 	    msglen, T_PERF_ITERATIONS, ns);
 	if (comment == NULL)
 		err(1, "asprintf()");
-	*desc = (const char *)comment;
+	*desc = comment;
 	return (1);
 }
 #endif
@@ -221,31 +222,6 @@ t_md5_short_updates(char **desc CRYB_UNUSED, void *arg)
 	md5_update(&ctx, vector->msg + i, len - i);
         md5_final(&ctx, digest);
 	return (memcmp(digest, vector->digest, MD5_DIGEST_LEN) == 0);
-}
-#endif
-
-
-#ifdef BENCHMARKS
-/*
- * Microbenchmarks
- */
-int
-t_md5_perf_0, "microbenchmark with empty message")
-{
-
-	return (t_md5_perf(0, desc));
-}
-
-T_FUNC(perf_1000, "microbenchmark with 1,000-byte message")
-{
-
-	return (t_md5_perf(1000, desc));
-}
-
-T_FUNC(perf_1000000, "microbenchmark with 1,000,000-byte message")
-{
-
-	return (t_md5_perf(1000000, desc));
 }
 #endif
 
@@ -278,7 +254,15 @@ t_prepare(int argc, char *argv[])
 	 */
 	t_add_test(t_md5_short_updates, &t_md5_vectors[6],
 	    "multiple short updates");
-//	t_add_test(t_md5_partial
+#endif
+#ifdef BENCHMARKS
+	static size_t one = 1, thousand = 1000, million = 1000000;
+	t_add_test(t_md5_perf, &one,
+	    "performance test (1 byte)");
+	t_add_test(t_md5_perf, &thousand,
+	    "performance test (1,000 bytes)");
+	t_add_test(t_md5_perf, &million,
+	    "performance test (1,000,000 bytes)");
 #endif
 	return (0);
 }
