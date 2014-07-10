@@ -30,7 +30,7 @@
  * Author: Dag-Erling Smørgrav <des@des.no>
  * Sponsor: the University of Oslo
  *
- * $Cryb: trunk/t/t_sha384.c 3 2014-07-04 11:20:46Z des $
+ * $Cryb$
  */
 
 #include "cryb/impl.h"
