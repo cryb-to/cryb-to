@@ -10,6 +10,8 @@ cryb_HEADERS = \
 	hmac.h \
 	hotp.h \
 	mac.h \
+	md2.h \
+	md4.h \
 	md5.h \
 	oath.h \
 	oath_constants.h \
@@ -18,6 +20,9 @@ cryb_HEADERS = \
 	rfc3986.h \
 	rfc4648.h \
 	sha1.h \
+	sha256.h \
+	sha384.h \
+	sha512.h \
 	to.h \
 	totp.h \
 	version.h

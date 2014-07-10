@@ -35,10 +35,6 @@
 
 #include "cryb/impl.h"
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-
 #ifdef HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif
@@ -47,6 +43,9 @@
 #define _BSD_SOURCE
 #include <endian.h>
 #endif
+
+#include <stdint.h>
+#include <string.h>
 
 #include <cryb/digest.h>
 #include <cryb/bitwise.h>
@@ -119,19 +118,19 @@ sha1_update(struct sha1_ctx *ctx, const void *buf, size_t len)
 	size_t copylen;
 
 	while (len) {
-		if (ctx->blocklen > 0 || len < 64) {
+		if (ctx->blocklen > 0 || len < sizeof ctx->block) {
 			copylen = sizeof ctx->block - ctx->blocklen;
 			if (copylen > len)
 				copylen = len;
 			memcpy(ctx->block + ctx->blocklen, buf, copylen);
 			ctx->blocklen += copylen;
-			if (ctx->blocklen == 64) {
+			if (ctx->blocklen == sizeof ctx->block) {
 				sha1_compute(ctx, ctx->block);
 				ctx->blocklen = 0;
-				memset(ctx->block, 0, 64);
+				memset(ctx->block, 0, sizeof ctx->block);
 			}
 		} else {
-			copylen = 64;
+			copylen = sizeof ctx->block;
 			sha1_compute(ctx, buf);
 		}
 		ctx->bitlen += copylen * 8;
@@ -149,7 +148,7 @@ sha1_final(struct sha1_ctx *ctx, void *digest)
 	if (ctx->blocklen > 56) {
 		sha1_compute(ctx, ctx->block);
 		ctx->blocklen = 0;
-		memset(ctx->block, 0, 64);
+		memset(ctx->block, 0, sizeof ctx->block);
 	}
 	hi = htobe32(ctx->bitlen >> 32);
 	lo = htobe32(ctx->bitlen & 0xffffffffUL);

@@ -38,14 +38,14 @@
 
 #define SHA1_DIGEST_LEN 20
 
-#define sha1_algorithm			cryb_sha1_algorithm
+#define sha1_digest			cryb_sha1_digest
 #define sha1_ctx			cryb_sha1_ctx
 #define sha1_init			cryb_sha1_init
 #define sha1_update			cryb_sha1_update
 #define sha1_final			cryb_sha1_final
 #define sha1_complete			cryb_sha1_complete
 
-extern struct digest_algorithm sha1_algorithm;
+extern struct digest_algorithm sha1_digest;
 
 typedef struct sha1_ctx {
 	uint8_t block[64];

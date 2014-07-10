@@ -45,26 +45,41 @@ TESTS += t_ctype
 TESTS += t_rfc3986 t_rfc4648
 
 # libcryb-digest
-TESTS += t_md5
+TESTS += t_md2 t_md4 t_md5
 if WITH_OPENSSL
-TESTS += t_md5_openssl
+TESTS += t_md4_openssl t_md5_openssl
+t_md4_openssl_SOURCES = t_md4.c
+t_md4_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_md4_openssl_LDADD = $(OPENSSL_LDADD)
 t_md5_openssl_SOURCES = t_md5.c
 t_md5_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_md5_openssl_LDADD = $(OPENSSL_LDADD)
 endif
 if WITH_RSAREF
-TESTS += t_md5_rsaref
+TESTS += t_md2_rsaref t_md5_rsaref
+t_md2_rsaref_SOURCES = t_md2.c
+t_md2_rsaref_CFLAGS = $(RSAREF_INCLUDES) $(RSAREF_CFLAGS)
+t_md2_rsaref_LDADD = $(RSAREF_LDADD)
 t_md5_rsaref_SOURCES = t_md5.c
 t_md5_rsaref_CFLAGS = $(RSAREF_INCLUDES) $(RSAREF_CFLAGS)
 t_md5_rsaref_LDADD = $(RSAREF_LDADD)
 endif
 
-TESTS += t_sha1
+TESTS += t_sha1 t_sha256 t_sha384 t_sha512
 if WITH_OPENSSL
-TESTS += t_sha1_openssl
+TESTS += t_sha1_openssl t_sha256_openssl t_sha384_openssl t_sha512_openssl
 t_sha1_openssl_SOURCES = t_sha1.c
 t_sha1_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_sha1_openssl_LDADD = $(OPENSSL_LDADD)
+t_sha256_openssl_SOURCES = t_sha256.c
+t_sha256_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_sha256_openssl_LDADD = $(OPENSSL_LDADD)
+t_sha384_openssl_SOURCES = t_sha384.c
+t_sha384_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_sha384_openssl_LDADD = $(OPENSSL_LDADD)
+t_sha512_openssl_SOURCES = t_sha512.c
+t_sha512_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_sha512_openssl_LDADD = $(OPENSSL_LDADD)
 endif
 
 # libcryb-mac
