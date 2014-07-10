@@ -9,7 +9,6 @@ cryb_HEADERS = \
 	digest.h \
 	hmac.h \
 	hotp.h \
-	mac.h \
 	md2.h \
 	md4.h \
 	md5.h \
