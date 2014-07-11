@@ -96,6 +96,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	c = ctx->h[2];
 	d = ctx->h[3];
 	e = ctx->h[4];
+
 	sha1_step( 0, a, sha1_ch(b, c, d), e, w);
 	sha1_step( 1, a, sha1_ch(b, c, d), e, w);
 	sha1_step( 2, a, sha1_ch(b, c, d), e, w);
@@ -116,6 +117,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	sha1_step(17, a, sha1_ch(b, c, d), e, w);
 	sha1_step(18, a, sha1_ch(b, c, d), e, w);
 	sha1_step(19, a, sha1_ch(b, c, d), e, w);
+
 	sha1_step(20, a, sha1_parity(b, c, d), e, w);
 	sha1_step(21, a, sha1_parity(b, c, d), e, w);
 	sha1_step(22, a, sha1_parity(b, c, d), e, w);
@@ -136,6 +138,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	sha1_step(37, a, sha1_parity(b, c, d), e, w);
 	sha1_step(38, a, sha1_parity(b, c, d), e, w);
 	sha1_step(39, a, sha1_parity(b, c, d), e, w);
+
 	sha1_step(40, a, sha1_maj(b, c, d), e, w);
 	sha1_step(41, a, sha1_maj(b, c, d), e, w);
 	sha1_step(42, a, sha1_maj(b, c, d), e, w);
@@ -156,6 +159,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	sha1_step(57, a, sha1_maj(b, c, d), e, w);
 	sha1_step(58, a, sha1_maj(b, c, d), e, w);
 	sha1_step(59, a, sha1_maj(b, c, d), e, w);
+
 	sha1_step(60, a, sha1_parity(b, c, d), e, w);
 	sha1_step(61, a, sha1_parity(b, c, d), e, w);
 	sha1_step(62, a, sha1_parity(b, c, d), e, w);
@@ -176,6 +180,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	sha1_step(77, a, sha1_parity(b, c, d), e, w);
 	sha1_step(78, a, sha1_parity(b, c, d), e, w);
 	sha1_step(79, a, sha1_parity(b, c, d), e, w);
+
 	ctx->h[0] += a;
 	ctx->h[1] += b;
 	ctx->h[2] += c;
