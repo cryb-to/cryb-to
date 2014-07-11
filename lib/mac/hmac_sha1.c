@@ -55,19 +55,10 @@ hmac_sha1_init(hmac_sha1_ctx *ctx, const void *key, size_t keylen)
 	uint8_t ipad[64];
 
 	memset(ctx, 0, sizeof *ctx);
-#if 1
         if (keylen > sizeof ctx->key)
                 sha1_complete(key, keylen, ctx->key);
         else
                 memcpy(ctx->key, key, keylen);
-#else
-	uint8_t keybuf[sizeof ctx->key] = { 0 };
-	sha1_complete(key, keylen, keybuf);
-	if (keylen > sizeof ctx->key)
-		memcpy(ctx->key, keybuf, SHA1_DIGEST_LEN);
-	else
-		memcpy(ctx->key, key, keylen);
-#endif
 	sha1_init(&ctx->sha1_ctx);
 	for (unsigned int i = 0; i < sizeof ipad; ++i)
 		ipad[i] = 0x36 ^ ctx->key[i];
