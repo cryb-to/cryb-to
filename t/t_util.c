@@ -70,7 +70,7 @@ int
 t_compare_str(const char *expected, const char *received)
 {
 
-	if (strcmp(expected, received, len) != 0) {
+	if (strcmp(expected, received) != 0) {
 		t_verbose("expected %s\n", expected);
 		t_verbose("received %s\n", received);
 		return (0);

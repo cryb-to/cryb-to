@@ -83,7 +83,7 @@ void t_fcloseall(void);
  * Various utilities
  */
 int t_compare_mem(const void *, const void *, size_t);
-int t_compare_str(const char *, const char *, size_t);
+int t_compare_str(const char *, const char *);
 
 /*
  * Useful constants
