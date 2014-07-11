@@ -86,112 +86,106 @@ md5_init(md5_ctx *ctx)
 		(a) += (((b) & (c)) | (~(b) & (d)));			\
 		(a) += (x)[(i)] + md5_k[(i)];				\
 		(a) = rol((a), (s)) + (b);				\
-		++(i);							\
 	} while (0)
 
 #define md5_g(i, a, b, c, d, x, s) do {					\
 		(a) += (((b) & (d)) | ((c) & ~(d)));			\
 		(a) += (x)[(5 * (i) + 1) % 16] + md5_k[(i)];		\
 		(a) = rol((a), (s)) + (b);				\
-		++(i);							\
 	} while (0)
 
 #define md5_h(i, a, b, c, d, x, s) do {					\
 		(a) += ((b) ^ (c) ^ (d));				\
 		(a) += (x)[(3 * (i) + 5) % 16] + md5_k[(i)];		\
 		(a) = rol((a), (s)) + (b);				\
-		++(i);							\
 	} while (0)
 
 #define md5_i(i, a, b, c, d, x, s) do {					\
 		(a) += ((c) ^ ((b) | ~(d)));				\
 		(a) += (x)[(7 * (i)) % 16] + md5_k[(i)];		\
 		(a) = rol((a), (s)) + (b);				\
-		++(i);							\
 	} while (0)
 
 static void
 md5_compute(md5_ctx *ctx, const uint8_t *block)
 {
 	uint32_t w[16], a, b, c, d;
-	int i;
 
 	memcpy(w, block, 64);
-	for (i = 0; i < 16; ++i)
+	for (int i = 0; i < 16; ++i)
 		w[i] = le32toh(w[i]);
 	a = ctx->h[0];
 	b = ctx->h[1];
 	c = ctx->h[2];
 	d = ctx->h[3];
-	i = 0;
 
-	md5_f(i, a, b, c, d, w,  7);
-	md5_f(i, d, a, b, c, w, 12);
-	md5_f(i, c, d, a, b, w, 17);
-	md5_f(i, b, c, d, a, w, 22);
-	md5_f(i, a, b, c, d, w,  7);
-	md5_f(i, d, a, b, c, w, 12);
-	md5_f(i, c, d, a, b, w, 17);
-	md5_f(i, b, c, d, a, w, 22);
-	md5_f(i, a, b, c, d, w,  7);
-	md5_f(i, d, a, b, c, w, 12);
-	md5_f(i, c, d, a, b, w, 17);
-	md5_f(i, b, c, d, a, w, 22);
-	md5_f(i, a, b, c, d, w,  7);
-	md5_f(i, d, a, b, c, w, 12);
-	md5_f(i, c, d, a, b, w, 17);
-	md5_f(i, b, c, d, a, w, 22);
+	md5_f( 0, a, b, c, d, w,  7);
+	md5_f( 1, d, a, b, c, w, 12);
+	md5_f( 2, c, d, a, b, w, 17);
+	md5_f( 3, b, c, d, a, w, 22);
+	md5_f( 4, a, b, c, d, w,  7);
+	md5_f( 5, d, a, b, c, w, 12);
+	md5_f( 6, c, d, a, b, w, 17);
+	md5_f( 7, b, c, d, a, w, 22);
+	md5_f( 8, a, b, c, d, w,  7);
+	md5_f( 9, d, a, b, c, w, 12);
+	md5_f(10, c, d, a, b, w, 17);
+	md5_f(11, b, c, d, a, w, 22);
+	md5_f(12, a, b, c, d, w,  7);
+	md5_f(13, d, a, b, c, w, 12);
+	md5_f(14, c, d, a, b, w, 17);
+	md5_f(15, b, c, d, a, w, 22);
 
-	md5_g(i, a, b, c, d, w,  5);
-	md5_g(i, d, a, b, c, w,  9);
-	md5_g(i, c, d, a, b, w, 14);
-	md5_g(i, b, c, d, a, w, 20);
-	md5_g(i, a, b, c, d, w,  5);
-	md5_g(i, d, a, b, c, w,  9);
-	md5_g(i, c, d, a, b, w, 14);
-	md5_g(i, b, c, d, a, w, 20);
-	md5_g(i, a, b, c, d, w,  5);
-	md5_g(i, d, a, b, c, w,  9);
-	md5_g(i, c, d, a, b, w, 14);
-	md5_g(i, b, c, d, a, w, 20);
-	md5_g(i, a, b, c, d, w,  5);
-	md5_g(i, d, a, b, c, w,  9);
-	md5_g(i, c, d, a, b, w, 14);
-	md5_g(i, b, c, d, a, w, 20);
+	md5_g(16, a, b, c, d, w,  5);
+	md5_g(17, d, a, b, c, w,  9);
+	md5_g(18, c, d, a, b, w, 14);
+	md5_g(19, b, c, d, a, w, 20);
+	md5_g(20, a, b, c, d, w,  5);
+	md5_g(21, d, a, b, c, w,  9);
+	md5_g(22, c, d, a, b, w, 14);
+	md5_g(23, b, c, d, a, w, 20);
+	md5_g(24, a, b, c, d, w,  5);
+	md5_g(25, d, a, b, c, w,  9);
+	md5_g(26, c, d, a, b, w, 14);
+	md5_g(27, b, c, d, a, w, 20);
+	md5_g(28, a, b, c, d, w,  5);
+	md5_g(29, d, a, b, c, w,  9);
+	md5_g(30, c, d, a, b, w, 14);
+	md5_g(31, b, c, d, a, w, 20);
 
-	md5_h(i, a, b, c, d, w,  4);
-	md5_h(i, d, a, b, c, w, 11);
-	md5_h(i, c, d, a, b, w, 16);
-	md5_h(i, b, c, d, a, w, 23);
-	md5_h(i, a, b, c, d, w,  4);
-	md5_h(i, d, a, b, c, w, 11);
-	md5_h(i, c, d, a, b, w, 16);
-	md5_h(i, b, c, d, a, w, 23);
-	md5_h(i, a, b, c, d, w,  4);
-	md5_h(i, d, a, b, c, w, 11);
-	md5_h(i, c, d, a, b, w, 16);
-	md5_h(i, b, c, d, a, w, 23);
-	md5_h(i, a, b, c, d, w,  4);
-	md5_h(i, d, a, b, c, w, 11);
-	md5_h(i, c, d, a, b, w, 16);
-	md5_h(i, b, c, d, a, w, 23);
+	md5_h(32, a, b, c, d, w,  4);
+	md5_h(33, d, a, b, c, w, 11);
+	md5_h(34, c, d, a, b, w, 16);
+	md5_h(35, b, c, d, a, w, 23);
+	md5_h(36, a, b, c, d, w,  4);
+	md5_h(37, d, a, b, c, w, 11);
+	md5_h(38, c, d, a, b, w, 16);
+	md5_h(39, b, c, d, a, w, 23);
+	md5_h(40, a, b, c, d, w,  4);
+	md5_h(41, d, a, b, c, w, 11);
+	md5_h(42, c, d, a, b, w, 16);
+	md5_h(43, b, c, d, a, w, 23);
+	md5_h(44, a, b, c, d, w,  4);
+	md5_h(45, d, a, b, c, w, 11);
+	md5_h(46, c, d, a, b, w, 16);
+	md5_h(47, b, c, d, a, w, 23);
 
-	md5_i(i, a, b, c, d, w,  6);
-	md5_i(i, d, a, b, c, w, 10);
-	md5_i(i, c, d, a, b, w, 15);
-	md5_i(i, b, c, d, a, w, 21);
-	md5_i(i, a, b, c, d, w,  6);
-	md5_i(i, d, a, b, c, w, 10);
-	md5_i(i, c, d, a, b, w, 15);
-	md5_i(i, b, c, d, a, w, 21);
-	md5_i(i, a, b, c, d, w,  6);
-	md5_i(i, d, a, b, c, w, 10);
-	md5_i(i, c, d, a, b, w, 15);
-	md5_i(i, b, c, d, a, w, 21);
-	md5_i(i, a, b, c, d, w,  6);
-	md5_i(i, d, a, b, c, w, 10);
-	md5_i(i, c, d, a, b, w, 15);
-	md5_i(i, b, c, d, a, w, 21);
+	md5_i(48, a, b, c, d, w,  6);
+	md5_i(49, d, a, b, c, w, 10);
+	md5_i(50, c, d, a, b, w, 15);
+	md5_i(51, b, c, d, a, w, 21);
+	md5_i(52, a, b, c, d, w,  6);
+	md5_i(53, d, a, b, c, w, 10);
+	md5_i(54, c, d, a, b, w, 15);
+	md5_i(55, b, c, d, a, w, 21);
+	md5_i(56, a, b, c, d, w,  6);
+	md5_i(57, d, a, b, c, w, 10);
+	md5_i(58, c, d, a, b, w, 15);
+	md5_i(59, b, c, d, a, w, 21);
+	md5_i(60, a, b, c, d, w,  6);
+	md5_i(61, d, a, b, c, w, 10);
+	md5_i(62, c, d, a, b, w, 15);
+	md5_i(63, b, c, d, a, w, 21);
 
 	ctx->h[0] += a;
 	ctx->h[1] += b;
