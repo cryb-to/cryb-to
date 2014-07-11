@@ -2,10 +2,6 @@
 
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
-if WITH_BENCHMARKS
-AM_CPPFLAGS += -DBENCHMARKS
-endif
-
 noinst_HEADERS = t.h
 
 # Common support code

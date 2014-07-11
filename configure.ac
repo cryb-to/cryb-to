@@ -23,14 +23,6 @@ LT_INIT()
 # other programs
 AC_PROG_INSTALL
 
-# Include benchmarks in unit tests
-AC_ARG_WITH([benchmarks],
-    AC_HELP_STRING([--with-benchmarks],
-	[include benchmarks in unit tests]),
-    [],
-    [with_benchmarks=no])
-AM_CONDITIONAL([WITH_BENCHMARKS], [test x"$with_benchmarks" = x"yes"])
-
 # OpenSSL versions of the unit tests for comparison
 AC_ARG_WITH([openssl],
     AC_HELP_STRING([--with-openssl],

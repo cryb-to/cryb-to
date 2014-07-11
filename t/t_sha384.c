@@ -205,7 +205,7 @@ t_sha384_short_updates(char **desc CRYB_UNUSED, void *arg)
 }
 #endif
 
-#ifdef BENCHMARKS
+
 /*
  * Performance test: measure the time spent computing the SHA384 sum of a
  * message of the specified length.
@@ -236,7 +236,6 @@ t_sha384_perf(char **desc, void *arg)
 	*desc = comment;
 	return (1);
 }
-#endif
 
 
 /***************************************************************************
@@ -268,15 +267,15 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_sha384_short_updates, &t_sha384_vectors[4],
 	    "multiple short updates");
 #endif
-#ifdef BENCHMARKS
-	static size_t one = 1, thousand = 1000, million = 1000000;
-	t_add_test(t_sha384_perf, &one,
-	    "performance test (1 byte)");
-	t_add_test(t_sha384_perf, &thousand,
-	    "performance test (1,000 bytes)");
-	t_add_test(t_sha384_perf, &million,
-	    "performance test (1,000,000 bytes)");
-#endif
+	if (getenv("CRYB_PERFTEST")) {
+		static size_t one = 1, thousand = 1000, million = 1000000;
+		t_add_test(t_sha384_perf, &one,
+		    "performance test (1 byte)");
+		t_add_test(t_sha384_perf, &thousand,
+		    "performance test (1,000 bytes)");
+		t_add_test(t_sha384_perf, &million,
+		    "performance test (1,000,000 bytes)");
+	}
 	return (0);
 }
 
