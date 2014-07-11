@@ -47,12 +47,6 @@
 
 extern digest_algorithm sha256_digest;
 
-#define hmac_sha256_init cryb_hmac_sha256_init
-#define hmac_sha256_update cryb_hmac_sha256_update
-#define hmac_sha256_final cryb_hmac_sha256_final
-#define hmac_sha256_complete cryb_hmac_sha256_complete
-#define hmac_sha256_ctx cryb_hmac_sha256_ctx
-
 /* Context structure for SHA256 operations. */
 typedef struct {
 	uint32_t state[8];
@@ -84,39 +78,6 @@ void sha256_final(sha256_ctx *, uint8_t[SHA256_DIGEST_LEN]);
  * Compute the SHA256 hash of ${len} bytes from $in} and write it to ${digest}.
  */
 void sha256_complete(const void *, size_t, uint8_t[SHA256_DIGEST_LEN]);
-
-/* Context structure for HMAC-SHA256 operations. */
-typedef struct {
-	sha256_ctx ictx;
-	sha256_ctx octx;
-} hmac_sha256_ctx;
-
-/**
- * hmac_sha256_init(ctx, K, Klen):
- * Initialize the HMAC-SHA256 context ${ctx} with ${Klen} bytes of key from
- * ${K}.
- */
-void hmac_sha256_init(hmac_sha256_ctx *, const void *, size_t);
-
-/**
- * hmac_sha256_update(ctx, in, len):
- * Input ${len} bytes from ${in} into the HMAC-SHA256 context ${ctx}.
- */
-void hmac_sha256_update(hmac_sha256_ctx *, const void *, size_t);
-
-/**
- * hmac_sha256_final(ctx, digest):
- * Output the HMAC-SHA256 of the data input to the context ${ctx} into the
- * buffer ${digest}.
- */
-void hmac_sha256_final(hmac_sha256_ctx *, uint8_t[SHA256_DIGEST_LEN]);
-
-/**
- * hmac_sha256_complete(K, Klen, in, len, digest):
- * Compute the HMAC-SHA256 of ${len} bytes from ${in} using the key ${K} of
- * length ${Klen}, and write the result to ${digest}.
- */
-void hmac_sha256_complete(const void *, size_t, const void *, size_t, uint8_t[32]);
 
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):

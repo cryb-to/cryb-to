@@ -54,9 +54,6 @@ typedef struct
     uint64_t total[2];		/*!< number of bytes processed  */
     uint64_t state[8];		/*!< intermediate digest state  */
     uint8_t buffer[128];	/*!< data block being processed */
-
-    uint8_t ipad[128];		/*!< HMAC: inner padding        */
-    uint8_t opad[128];		/*!< HMAC: outer padding        */
 }
 sha384_ctx;
 
@@ -97,45 +94,6 @@ void sha384_final( sha384_ctx *ctx, unsigned char output[64] );
  */
 void sha384_complete( const void *input, int ilen,
            unsigned char output[64] );
-
-/**
- * \brief          SHA-384 HMAC context setup
- *
- * \param ctx      HMAC context to be initialized
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- */
-void sha384_hmac_init( sha384_ctx *ctx, unsigned char *key, int keylen );
-
-/**
- * \brief          SHA-384 HMAC process buffer
- *
- * \param ctx      HMAC context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void sha384_hmac_update( sha384_ctx *ctx, unsigned char *input, int ilen );
-
-/**
- * \brief          SHA-384 HMAC final digest
- *
- * \param ctx      HMAC context
- * \param output   SHA-384/384 HMAC checksum result
- */
-void sha384_hmac_final( sha384_ctx *ctx, unsigned char output[64] );
-
-/**
- * \brief          Output = HMAC-SHA-384( hmac key, input buffer )
- *
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   HMAC-SHA-384/384 result
- */
-void sha384_hmac_complete( unsigned char *key, int keylen,
-                unsigned char *input, int ilen,
-                unsigned char output[64] );
 
 #ifdef __cplusplus
 }

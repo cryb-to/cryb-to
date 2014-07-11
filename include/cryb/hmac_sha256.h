@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2014 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,27 @@
  * $Cryb$
  */
 
-#ifndef CRYB_HMAC_H_INCLUDED
-#define CRYB_HMAC_H_INCLUDED
+#ifndef CRYB_HMAC_SHA256_H_INCLUDED
+#define CRYB_HMAC_SHA256_H_INCLUDED
 
-#include <cryb/hmac_sha1.h>
-#include <cryb/hmac_sha256.h>
-#include <cryb/hmac_sha384.h>
-#include <cryb/hmac_sha512.h>
+#include <cryb/sha256.h>
+
+#define HMAC_SHA256_MAC_LEN		32
+
+#define hmac_sha256_ctx			cryb_hmac_sha256_ctx
+#define hmac_sha256_init		cryb_hmac_sha256_init
+#define hmac_sha256_update		cryb_hmac_sha256_update
+#define hmac_sha256_final		cryb_hmac_sha256_final
+#define hmac_sha256_complete		cryb_hmac_sha256_complete
+
+typedef struct {
+	sha256_ctx ictx;
+	sha256_ctx octx;
+} hmac_sha256_ctx;
+
+void hmac_sha256_init(hmac_sha256_ctx *, const void *, size_t);
+void hmac_sha256_update(hmac_sha256_ctx *, const void *, size_t);
+void hmac_sha256_final(hmac_sha256_ctx *, void *);
+void hmac_sha256_complete(const void *, size_t, const void *, size_t, void *);
 
 #endif

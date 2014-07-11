@@ -316,98 +316,7 @@ sha256_complete(const void * in, size_t len, uint8_t digest[SHA256_DIGEST_LEN])
 	sha256_final(&ctx, digest);
 }
 
-/**
- * hmac_sha256_init(ctx, K, Klen):
- * Initialize the HMAC-SHA256 context ${ctx} with ${Klen} bytes of key from
- * ${K}.
- */
-void
-hmac_sha256_init(hmac_sha256_ctx * ctx, const void * _K, size_t Klen)
-{
-	uint8_t pad[64];
-	uint8_t khash[SHA256_DIGEST_LEN];
-	const uint8_t * K = _K;
-	size_t i;
-
-	/* If Klen > 64, the key is really SHA256(K). */
-	if (Klen > 64) {
-		sha256_init(&ctx->ictx);
-		sha256_update(&ctx->ictx, K, Klen);
-		sha256_final(&ctx->ictx, khash);
-		K = khash;
-		Klen = sizeof khash;
-	}
-
-	/* Inner SHA256 operation is SHA256(K xor [block of 0x36] || data). */
-	sha256_init(&ctx->ictx);
-	memset(pad, 0x36, 64);
-	for (i = 0; i < Klen; i++)
-		pad[i] ^= K[i];
-	sha256_update(&ctx->ictx, pad, 64);
-
-	/* Outer SHA256 operation is SHA256(K xor [block of 0x5c] || hash). */
-	sha256_init(&ctx->octx);
-	memset(pad, 0x5c, 64);
-	for (i = 0; i < Klen; i++)
-		pad[i] ^= K[i];
-	sha256_update(&ctx->octx, pad, 64);
-
-	/* Clean the stack. */
-	memset(khash, 0, sizeof khash);
-	memset(pad, 0, 64);
-}
-
-/**
- * hmac_sha256_update(ctx, in, len):
- * Input ${len} bytes from ${in} into the HMAC-SHA256 context ${ctx}.
- */
-void
-hmac_sha256_update(hmac_sha256_ctx * ctx, const void *in, size_t len)
-{
-
-	/* Feed data to the inner SHA256 operation. */
-	sha256_update(&ctx->ictx, in, len);
-}
-
-/**
- * hmac_sha256_final(ctx, digest):
- * Output the HMAC-SHA256 of the data input to the context ${ctx} into the
- * buffer ${digest}.
- */
-void
-hmac_sha256_final(hmac_sha256_ctx * ctx, uint8_t digest[SHA256_DIGEST_LEN])
-{
-	uint8_t ihash[SHA256_DIGEST_LEN];
-
-	/* Finish the inner SHA256 operation. */
-	sha256_final(&ctx->ictx, ihash);
-
-	/* Feed the inner hash to the outer SHA256 operation. */
-	sha256_update(&ctx->octx, ihash, sizeof ihash);
-
-	/* Finish the outer SHA256 operation. */
-	sha256_final(&ctx->octx, digest);
-
-	/* Clean the stack. */
-	memset(ihash, 0, sizeof ihash);
-}
-
-/**
- * hmac_sha256_complete(K, Klen, in, len, digest):
- * Compute the HMAC-SHA256 of ${len} bytes from ${in} using the key ${K} of
- * length ${Klen}, and write the result to ${digest}.
- */
-void
-hmac_sha256_complete(const void * K, size_t Klen, const void * in, size_t len,
-    uint8_t digest[SHA256_DIGEST_LEN])
-{
-	hmac_sha256_ctx ctx;
-
-	hmac_sha256_init(&ctx, K, Klen);
-	hmac_sha256_update(&ctx, in, len);
-	hmac_sha256_final(&ctx, digest);
-}
-
+#if 0
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
  * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
@@ -464,6 +373,7 @@ pbkdf2_sha256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
 	/* Clean PShctx, since we never called _final on it. */
 	memset(&PShctx, 0, sizeof(hmac_sha256_ctx));
 }
+#endif
 
 digest_algorithm sha256_digest = {
 	.name			 = "sha256",

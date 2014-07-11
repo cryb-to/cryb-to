@@ -79,12 +79,21 @@ t_sha512_openssl_LDADD = $(OPENSSL_LDADD)
 endif
 
 # libcryb-mac
-TESTS += t_hmac_sha1
+TESTS += t_hmac_sha1 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
 if WITH_OPENSSL
-TESTS += t_hmac_sha1_openssl
+TESTS += t_hmac_sha1_openssl t_hmac_sha256_openssl t_hmac_sha384_openssl t_hmac_sha512_openssl
 t_hmac_sha1_openssl_SOURCES = t_hmac_sha1.c
 t_hmac_sha1_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha1_openssl_LDADD = $(OPENSSL_LDADD)
+t_hmac_sha256_openssl_SOURCES = t_hmac_sha256.c
+t_hmac_sha256_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_hmac_sha256_openssl_LDADD = $(OPENSSL_LDADD)
+t_hmac_sha384_openssl_SOURCES = t_hmac_sha384.c
+t_hmac_sha384_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_hmac_sha384_openssl_LDADD = $(OPENSSL_LDADD)
+t_hmac_sha512_openssl_SOURCES = t_hmac_sha512.c
+t_hmac_sha512_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_hmac_sha512_openssl_LDADD = $(OPENSSL_LDADD)
 endif
 
 check_PROGRAMS = $(TESTS)
