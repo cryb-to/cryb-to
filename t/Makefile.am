@@ -6,7 +6,7 @@ noinst_HEADERS = t.h
 
 # Common support code
 check_LTLIBRARIES = libt.la
-libt_la_SOURCES = t_main.c t_file.c
+libt_la_SOURCES = t_main.c t_file.c t_const.c
 
 # Link in the test driver and the full cryb library
 LDADD = $(builddir)/libt.la \

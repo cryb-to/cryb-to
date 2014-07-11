@@ -79,4 +79,10 @@ void t_frewind(struct t_file *);
 void t_fclose(struct t_file *);
 void t_fcloseall(void);
 
+/*
+ * Useful constants
+ */
+extern const uint8_t t_zero[256];
+extern const uint8_t t_seq8[256];
+
 #endif
