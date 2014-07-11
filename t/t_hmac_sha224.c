@@ -47,8 +47,9 @@
 
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
+#include <openssl/sha.h>
 
-#define HMAC_SHA224_MAC_LEN 32
+#define HMAC_SHA224_MAC_LEN SHA224_DIGEST_LENGTH
 
 static void
 t_hmac_sha224_complete(const void *key, size_t keylen,

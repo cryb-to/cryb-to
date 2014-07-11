@@ -47,8 +47,9 @@
 
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
+#include <openssl/sha.h>
 
-#define HMAC_SHA512_MAC_LEN 64
+#define HMAC_SHA512_MAC_LEN SHA512_DIGEST_LENGTH
 
 static void
 t_hmac_sha512_complete(const void *key, size_t keylen,
