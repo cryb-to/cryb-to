@@ -157,16 +157,7 @@ t_md4_vector(char **desc CRYB_UNUSED, void *arg)
 	uint8_t digest[MD4_DIGEST_LEN];
 
 	t_md4_complete(vector->msg, strlen(vector->msg), digest);
-	if (memcmp(digest, vector->digest, MD4_DIGEST_LEN) != 0) {
-		t_verbose("expected ");
-		t_verbose_hex(vector->digest, MD4_DIGEST_LEN);
-		t_verbose("\n");
-		t_verbose("got	    ");
-		t_verbose_hex(digest, MD4_DIGEST_LEN);
-		t_verbose("\n");
-		return (0);
-	}
-	return (1);
+	return (t_compare_mem(vector->digest, digest, MD4_DIGEST_LEN));
 }
 
 

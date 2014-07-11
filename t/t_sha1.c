@@ -154,16 +154,7 @@ t_sha1_vector(char **desc CRYB_UNUSED, void *arg)
 		t_sha1_complete(msg, 1000000, digest);
 		free(msg);
 	}
-	if (memcmp(digest, vector->digest, SHA1_DIGEST_LEN) != 0) {
-		t_verbose("expected ");
-		t_verbose_hex(vector->digest, SHA1_DIGEST_LEN);
-		t_verbose("\n");
-		t_verbose("got      ");
-		t_verbose_hex(digest, SHA1_DIGEST_LEN);
-		t_verbose("\n");
-		return (0);
-	}
-	return (1);
+	return (t_compare_mem(vector->digest, digest, SHA1_DIGEST_LEN));
 }
 
 

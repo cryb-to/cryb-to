@@ -181,16 +181,7 @@ t_hmac_sha512_vector(char **desc CRYB_UNUSED, void *arg)
 	t_hmac_sha512_complete(vector->key, vector->keylen,
 	    (const uint8_t *)vector->msg, strlen(vector->msg),
 	    mac);
-	if (memcmp(mac, vector->mac, HMAC_SHA512_MAC_LEN) != 0) {
-		t_verbose("expected ");
-		t_verbose_hex(vector->mac, HMAC_SHA512_MAC_LEN);
-		t_verbose("\n");
-		t_verbose("got      ");
-		t_verbose_hex(mac, HMAC_SHA512_MAC_LEN);
-		t_verbose("\n");
-		return (0);
-	}
-	return (1);
+	return (t_compare_mem(vector->mac, mac, HMAC_SHA512_MAC_LEN));
 }
 
 
