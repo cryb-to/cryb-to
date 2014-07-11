@@ -133,8 +133,8 @@ void md4_hmac_final( md4_ctx *ctx, unsigned char output[16] );
  * \param output   HMAC-MD4 result
  */
 void md4_hmac_complete( unsigned char *key, int keylen,
-               unsigned char *input, int ilen,
-               unsigned char output[16] );
+	       unsigned char *input, int ilen,
+	       unsigned char output[16] );
 
 #ifdef __cplusplus
 }

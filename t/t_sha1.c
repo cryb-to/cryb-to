@@ -179,12 +179,12 @@ t_sha1_short_updates(char **desc CRYB_UNUSED, void *arg)
 	sha1_ctx ctx;
 	int i, len;
 
-        sha1_init(&ctx);
+	sha1_init(&ctx);
 	len = strlen(vector->msg);
 	for (i = 0; i + 5 < len; i += 5)
 		sha1_update(&ctx, vector->msg + i, 5);
 	sha1_update(&ctx, vector->msg + i, len - i);
-        sha1_final(&ctx, digest);
+	sha1_final(&ctx, digest);
 	return (memcmp(digest, vector->digest, SHA1_DIGEST_LEN) == 0);
 }
 #endif

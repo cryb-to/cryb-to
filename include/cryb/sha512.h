@@ -93,7 +93,7 @@ void sha512_final( sha512_ctx *ctx, unsigned char output[64] );
  * \param output   SHA-384/512 checksum result
  */
 void sha512_complete( const void *input, int ilen,
-           unsigned char output[64] );
+	   unsigned char output[64] );
 
 #ifdef __cplusplus
 }

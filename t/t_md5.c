@@ -182,12 +182,12 @@ t_md5_short_updates(char **desc CRYB_UNUSED, void *arg)
 	md5_ctx ctx;
 	int i, len;
 
-        md5_init(&ctx);
+	md5_init(&ctx);
 	len = strlen(vector->msg);
 	for (i = 0; i + 5 < len; i += 5)
 		md5_update(&ctx, vector->msg + i, 5);
 	md5_update(&ctx, vector->msg + i, len - i);
-        md5_final(&ctx, digest);
+	md5_final(&ctx, digest);
 	return (memcmp(digest, vector->digest, MD5_DIGEST_LEN) == 0);
 }
 #endif

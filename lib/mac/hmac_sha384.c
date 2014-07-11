@@ -56,10 +56,10 @@ hmac_sha384_init(hmac_sha384_ctx *ctx, const void *key, size_t keylen)
 
 	/* prepare key */
 	memset(keybuf, 0, sizeof keybuf);
-        if (keylen > sizeof keybuf)
-                sha384_complete(key, keylen, keybuf);
-        else
-                memcpy(keybuf, key, keylen);
+	if (keylen > sizeof keybuf)
+		sha384_complete(key, keylen, keybuf);
+	else
+		memcpy(keybuf, key, keylen);
 
 	/* input pad */
 	for (unsigned int i = 0; i < sizeof pad; ++i)

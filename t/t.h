@@ -46,7 +46,7 @@ typedef int (t_func)(char **, void *);
 struct t_test {
 	t_func *func;
 	void *arg;
- 	char *desc;
+	char *desc;
 };
 
 extern const char *t_progname;

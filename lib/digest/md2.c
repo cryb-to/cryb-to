@@ -86,30 +86,30 @@ static void md2_process( md2_ctx *ctx )
 
     for( i = 0; i < 16; i++ )
     {
-        ctx->state[i + 16] = ctx->buffer[i];
-        ctx->state[i + 32] =
-            (unsigned char)( ctx->buffer[i] ^ ctx->state[i]);
+	ctx->state[i + 16] = ctx->buffer[i];
+	ctx->state[i + 32] =
+	    (unsigned char)( ctx->buffer[i] ^ ctx->state[i]);
     }
 
     for( i = 0; i < 18; i++ )
     {
-        for( j = 0; j < 48; j++ )
-        {
-            ctx->state[j] = (unsigned char)
-               ( ctx->state[j] ^ PI_SUBST[t] );
-            t  = ctx->state[j];
-        }
+	for( j = 0; j < 48; j++ )
+	{
+	    ctx->state[j] = (unsigned char)
+	       ( ctx->state[j] ^ PI_SUBST[t] );
+	    t  = ctx->state[j];
+	}
 
-        t = (unsigned char)( t + i );
+	t = (unsigned char)( t + i );
     }
 
     t = ctx->cksum[15];
 
     for( i = 0; i < 16; i++ )
     {
-        ctx->cksum[i] = (unsigned char)
-           ( ctx->cksum[i] ^ PI_SUBST[ctx->buffer[i] ^ t] );
-        t  = ctx->cksum[i];
+	ctx->cksum[i] = (unsigned char)
+	   ( ctx->cksum[i] ^ PI_SUBST[ctx->buffer[i] ^ t] );
+	t  = ctx->cksum[i];
     }
 }
 
@@ -122,22 +122,22 @@ void md2_update( md2_ctx *ctx, const void *input, int ilen )
 
     while( ilen > 0 )
     {
-        if( ctx->left + ilen > 16 )
-            fill = 16 - ctx->left;
-        else
-            fill = ilen;
+	if( ctx->left + ilen > 16 )
+	    fill = 16 - ctx->left;
+	else
+	    fill = ilen;
 
-        memcpy( ctx->buffer + ctx->left, input, fill );
+	memcpy( ctx->buffer + ctx->left, input, fill );
 
-        ctx->left += fill;
-        input += fill;
-        ilen  -= fill;
+	ctx->left += fill;
+	input += fill;
+	ilen  -= fill;
 
-        if( ctx->left == 16 )
-        {
-            ctx->left = 0;
-            md2_process( ctx );
-        }
+	if( ctx->left == 16 )
+	{
+	    ctx->left = 0;
+	    md2_process( ctx );
+	}
     }
 }
 
@@ -152,7 +152,7 @@ void md2_final( md2_ctx *ctx, unsigned char *output )
     x = (unsigned char)( 16 - ctx->left );
 
     for( i = ctx->left; i < 16; i++ )
-        ctx->buffer[i] = x;
+	ctx->buffer[i] = x;
 
     md2_process( ctx );
 
@@ -186,9 +186,9 @@ void md2_hmac_init( md2_ctx *ctx, unsigned char *key, int keylen )
 
     if( keylen > 64 )
     {
-        md2_complete( key, keylen, sum );
-        keylen = sizeof sum;
-        key = sum;
+	md2_complete( key, keylen, sum );
+	keylen = sizeof sum;
+	key = sum;
     }
 
     memset( ctx->ipad, 0x36, sizeof ctx->ipad );
@@ -196,8 +196,8 @@ void md2_hmac_init( md2_ctx *ctx, unsigned char *key, int keylen )
 
     for( i = 0; i < keylen; i++ )
     {
-        ctx->ipad[i] = (unsigned char)( ctx->ipad[i] ^ key[i] );
-        ctx->opad[i] = (unsigned char)( ctx->opad[i] ^ key[i] );
+	ctx->ipad[i] = (unsigned char)( ctx->ipad[i] ^ key[i] );
+	ctx->opad[i] = (unsigned char)( ctx->opad[i] ^ key[i] );
     }
 
     md2_init( ctx );
@@ -234,7 +234,7 @@ void md2_hmac_final( md2_ctx *ctx, unsigned char *output )
  * output = HMAC-MD2( hmac key, input buffer )
  */
 void md2_hmac_complete( unsigned char *key, int keylen, unsigned char *input, int ilen,
-               unsigned char *output )
+	       unsigned char *output )
 {
     md2_ctx ctx;
 

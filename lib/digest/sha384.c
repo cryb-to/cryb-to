@@ -48,13 +48,13 @@
 #define GET_UINT64_BE(n,b,i)                            \
 do {                                                    \
     (n) = ( (uint64_t) (b)[(i)    ] << 56 )             \
-        | ( (uint64_t) (b)[(i) + 1] << 48 )             \
-        | ( (uint64_t) (b)[(i) + 2] << 40 )             \
-        | ( (uint64_t) (b)[(i) + 3] << 32 )             \
-        | ( (uint64_t) (b)[(i) + 4] << 24 )             \
-        | ( (uint64_t) (b)[(i) + 5] << 16 )             \
-        | ( (uint64_t) (b)[(i) + 6] <<  8 )             \
-        | ( (uint64_t) (b)[(i) + 7]       );            \
+	| ( (uint64_t) (b)[(i) + 1] << 48 )             \
+	| ( (uint64_t) (b)[(i) + 2] << 40 )             \
+	| ( (uint64_t) (b)[(i) + 3] << 32 )             \
+	| ( (uint64_t) (b)[(i) + 4] << 24 )             \
+	| ( (uint64_t) (b)[(i) + 5] << 16 )             \
+	| ( (uint64_t) (b)[(i) + 6] <<  8 )             \
+	| ( (uint64_t) (b)[(i) + 7]       );            \
 } while (0)
 #endif
 
@@ -167,13 +167,13 @@ static void sha384_process( sha384_ctx *ctx, const unsigned char *data )
 
     for( i = 0; i < 16; i++ )
     {
-        GET_UINT64_BE( W[i], data, i << 3 );
+	GET_UINT64_BE( W[i], data, i << 3 );
     }
 
     for( ; i < 80; i++ )
     {
-        W[i] = S1(W[i -  2]) + W[i -  7] +
-               S0(W[i - 15]) + W[i - 16];
+	W[i] = S1(W[i -  2]) + W[i -  7] +
+	       S0(W[i - 15]) + W[i - 16];
     }
 
     A = ctx->state[0];
@@ -188,14 +188,14 @@ static void sha384_process( sha384_ctx *ctx, const unsigned char *data )
 
     do
     {
-        P( A, B, C, D, E, F, G, H, W[i], K[i] ); i++;
-        P( H, A, B, C, D, E, F, G, W[i], K[i] ); i++;
-        P( G, H, A, B, C, D, E, F, W[i], K[i] ); i++;
-        P( F, G, H, A, B, C, D, E, W[i], K[i] ); i++;
-        P( E, F, G, H, A, B, C, D, W[i], K[i] ); i++;
-        P( D, E, F, G, H, A, B, C, W[i], K[i] ); i++;
-        P( C, D, E, F, G, H, A, B, W[i], K[i] ); i++;
-        P( B, C, D, E, F, G, H, A, W[i], K[i] ); i++;
+	P( A, B, C, D, E, F, G, H, W[i], K[i] ); i++;
+	P( H, A, B, C, D, E, F, G, W[i], K[i] ); i++;
+	P( G, H, A, B, C, D, E, F, W[i], K[i] ); i++;
+	P( F, G, H, A, B, C, D, E, W[i], K[i] ); i++;
+	P( E, F, G, H, A, B, C, D, W[i], K[i] ); i++;
+	P( D, E, F, G, H, A, B, C, W[i], K[i] ); i++;
+	P( C, D, E, F, G, H, A, B, W[i], K[i] ); i++;
+	P( B, C, D, E, F, G, H, A, W[i], K[i] ); i++;
     }
     while( i < 80 );
 
@@ -218,7 +218,7 @@ void sha384_update( sha384_ctx *ctx, const void *input, int ilen )
     uint64_t left;
 
     if( ilen <= 0 )
-        return;
+	return;
 
     left = ctx->total[0] & 0x7F;
     fill = (int)( 128 - left );
@@ -226,29 +226,29 @@ void sha384_update( sha384_ctx *ctx, const void *input, int ilen )
     ctx->total[0] += ilen;
 
     if( ctx->total[0] < (uint64_t) ilen )
-        ctx->total[1]++;
+	ctx->total[1]++;
 
     if( left && ilen >= fill )
     {
-        memcpy( (void *) (ctx->buffer + left),
-                (void *) input, fill );
-        sha384_process( ctx, ctx->buffer );
-        input += fill;
-        ilen  -= fill;
-        left = 0;
+	memcpy( (void *) (ctx->buffer + left),
+		(void *) input, fill );
+	sha384_process( ctx, ctx->buffer );
+	input += fill;
+	ilen  -= fill;
+	left = 0;
     }
 
     while( ilen >= 128 )
     {
-        sha384_process( ctx, input );
-        input += 128;
-        ilen  -= 128;
+	sha384_process( ctx, input );
+	input += 128;
+	ilen  -= 128;
     }
 
     if( ilen > 0 )
     {
-        memcpy( (void *) (ctx->buffer + left),
-                (void *) input, ilen );
+	memcpy( (void *) (ctx->buffer + left),
+		(void *) input, ilen );
     }
 }
 
@@ -274,7 +274,7 @@ void sha384_final( sha384_ctx *ctx, unsigned char output[64] )
     unsigned char msglen[16];
 
     high = ( ctx->total[0] >> 61 )
-         | ( ctx->total[1] <<  3 );
+	 | ( ctx->total[1] <<  3 );
     low  = ( ctx->total[0] <<  3 );
 
     PUT_UINT64_BE( high, msglen, 0 );
@@ -298,7 +298,7 @@ void sha384_final( sha384_ctx *ctx, unsigned char output[64] )
  * output = SHA-384( input buffer )
  */
 void sha384_complete( const void *input, int ilen,
-           unsigned char output[64] )
+	   unsigned char output[64] )
 {
     sha384_ctx ctx;
 
