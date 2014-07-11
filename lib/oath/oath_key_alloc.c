@@ -66,8 +66,9 @@ oath_key_alloc(void)
 			key->locked = 1;
 	} else {
 		/* openpam_log(PAM_LOG_ERROR, "mmap(): %m"); */
-		if ((key = calloc(sizeof *key, 1)) == NULL)
+		if ((key = calloc(sizeof *key, 1)) == NULL) {
 			/* openpam_log(PAM_LOG_ERROR, "malloc(): %m") */;
+		}
 	}
 	return (key);
 }
