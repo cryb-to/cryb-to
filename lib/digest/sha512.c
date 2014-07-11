@@ -41,8 +41,6 @@
 
 #include <cryb/sha512.h>
 
-static int is384 = 0;
-
 /*
  * 64-bit integer manipulation macros (big endian)
  */
@@ -132,30 +130,14 @@ void sha512_init( sha512_ctx *ctx )
     ctx->total[0] = 0;
     ctx->total[1] = 0;
 
-    if( is384 == 0 )
-    {
-        /* SHA-512 */
-        ctx->state[0] = UL64(0x6A09E667F3BCC908);
-        ctx->state[1] = UL64(0xBB67AE8584CAA73B);
-        ctx->state[2] = UL64(0x3C6EF372FE94F82B);
-        ctx->state[3] = UL64(0xA54FF53A5F1D36F1);
-        ctx->state[4] = UL64(0x510E527FADE682D1);
-        ctx->state[5] = UL64(0x9B05688C2B3E6C1F);
-        ctx->state[6] = UL64(0x1F83D9ABFB41BD6B);
-        ctx->state[7] = UL64(0x5BE0CD19137E2179);
-    }
-    else
-    {
-        /* SHA-384 */
-        ctx->state[0] = UL64(0xCBBB9D5DC1059ED8);
-        ctx->state[1] = UL64(0x629A292A367CD507);
-        ctx->state[2] = UL64(0x9159015A3070DD17);
-        ctx->state[3] = UL64(0x152FECD8F70E5939);
-        ctx->state[4] = UL64(0x67332667FFC00B31);
-        ctx->state[5] = UL64(0x8EB44A8768581511);
-        ctx->state[6] = UL64(0xDB0C2E0D64F98FA7);
-        ctx->state[7] = UL64(0x47B5481DBEFA4FA4);
-    }
+    ctx->state[0] = UL64(0x6A09E667F3BCC908);
+    ctx->state[1] = UL64(0xBB67AE8584CAA73B);
+    ctx->state[2] = UL64(0x3C6EF372FE94F82B);
+    ctx->state[3] = UL64(0xA54FF53A5F1D36F1);
+    ctx->state[4] = UL64(0x510E527FADE682D1);
+    ctx->state[5] = UL64(0x9B05688C2B3E6C1F);
+    ctx->state[6] = UL64(0x1F83D9ABFB41BD6B);
+    ctx->state[7] = UL64(0x5BE0CD19137E2179);
 }
 
 static void sha512_process( sha512_ctx *ctx, const unsigned char *data )
@@ -311,11 +293,8 @@ void sha512_final( sha512_ctx *ctx, unsigned char output[64] )
     PUT_UINT64_BE( ctx->state[4], output, 32 );
     PUT_UINT64_BE( ctx->state[5], output, 40 );
 
-    if( is384 == 0 )
-    {
-        PUT_UINT64_BE( ctx->state[6], output, 48 );
-        PUT_UINT64_BE( ctx->state[7], output, 56 );
-    }
+    PUT_UINT64_BE( ctx->state[6], output, 48 );
+    PUT_UINT64_BE( ctx->state[7], output, 56 );
 }
 
 /*
@@ -344,7 +323,7 @@ void sha512_hmac_init( sha512_ctx *ctx, unsigned char *key, int keylen )
     if( keylen > 128 )
     {
         sha512_complete( key, keylen, sum );
-        keylen = ( is384 ) ? 48 : 64;
+        keylen = SHA512_DIGEST_LEN;
         key = sum;
     }
 
@@ -380,7 +359,7 @@ void sha512_hmac_final( sha512_ctx *ctx, unsigned char output[64] )
     int hlen;
     unsigned char tmpbuf[64];
 
-    hlen = ( is384 == 0 ) ? 64 : 48;
+    hlen = SHA512_DIGEST_LEN;
 
     sha512_final( ctx, tmpbuf );
     sha512_init( ctx );
