@@ -52,38 +52,47 @@
 void
 hmac_sha1_init(hmac_sha1_ctx *ctx, const void *key, size_t keylen)
 {
-	uint8_t ipad[64];
+	uint8_t keybuf[SHA1_BLOCK_LEN], pad[SHA1_BLOCK_LEN];
 
-	memset(ctx, 0, sizeof *ctx);
-        if (keylen > sizeof ctx->key)
-                sha1_complete(key, keylen, ctx->key);
+	/* prepare key */
+	memset(keybuf, 0, sizeof keybuf);
+        if (keylen > sizeof keybuf)
+                sha1_complete(key, keylen, keybuf);
         else
-                memcpy(ctx->key, key, keylen);
-	sha1_init(&ctx->sha1_ctx);
-	for (unsigned int i = 0; i < sizeof ipad; ++i)
-		ipad[i] = 0x36 ^ ctx->key[i];
-	sha1_update(&ctx->sha1_ctx, ipad, sizeof ipad);
+                memcpy(keybuf, key, keylen);
+
+	/* input pad */
+	for (unsigned int i = 0; i < sizeof pad; ++i)
+		pad[i] = 0x36 ^ keybuf[i];
+	sha1_init(&ctx->ictx);
+	sha1_update(&ctx->ictx, pad, sizeof pad);
+
+	/* output pad */
+	for (unsigned int i = 0; i < sizeof pad; ++i)
+		pad[i] = 0x5c ^ keybuf[i];
+	sha1_init(&ctx->octx);
+	sha1_update(&ctx->octx, pad, sizeof pad);
+
+	/* hide the evidence */
+	memset(keybuf, 0, sizeof keybuf);
+	memset(pad, 0, sizeof pad);
 }
 
 void
 hmac_sha1_update(hmac_sha1_ctx *ctx, const void *buf, size_t len)
 {
 
-	sha1_update(&ctx->sha1_ctx, buf, len);
+	sha1_update(&ctx->ictx, buf, len);
 }
 
 void
 hmac_sha1_final(hmac_sha1_ctx *ctx, void *mac)
 {
-	uint8_t digest[20], opad[64];
+	uint8_t digest[SHA1_DIGEST_LEN];
 
-	sha1_final(&ctx->sha1_ctx, digest);
-	for (unsigned int i = 0; i < sizeof opad; ++i)
-		opad[i] = 0x5c ^ ctx->key[i];
-	sha1_init(&ctx->sha1_ctx);
-	sha1_update(&ctx->sha1_ctx, opad, sizeof opad);
-	sha1_update(&ctx->sha1_ctx, digest, sizeof digest);
-	sha1_final(&ctx->sha1_ctx, mac);
+	sha1_final(&ctx->ictx, digest);
+	sha1_update(&ctx->octx, digest, sizeof digest);
+	sha1_final(&ctx->octx, mac);
 	memset(ctx, 0, sizeof *ctx);
 }
 

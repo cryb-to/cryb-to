@@ -43,8 +43,8 @@
 #define hmac_sha1_complete		cryb_hmac_sha1_complete
 
 typedef struct {
-	sha1_ctx sha1_ctx;
-	uint8_t key[64];
+	sha1_ctx ictx;
+	sha1_ctx octx;
 } hmac_sha1_ctx;
 
 void hmac_sha1_init(hmac_sha1_ctx *, const void *, size_t);
