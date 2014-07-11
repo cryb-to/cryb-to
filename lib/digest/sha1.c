@@ -66,10 +66,23 @@ sha1_init(sha1_ctx *ctx)
 	memcpy(ctx->h, sha1_h, sizeof ctx->h);
 }
 
+#define sha1_ch(x, y, z)	((x & y) ^ (~x & z))
+#define sha1_parity(x, y, z)	((x ^ y ^ z))
+#define sha1_maj(x, y, z)	(((x & y) ^ (x & z) ^ (y & z)))
+#define sha1_step(t, a, f, e, w)					\
+	do {								\
+		uint32_t T = rol(a, 5) + f + e + sha1_k[t/20] + w[t];	\
+		e = d;							\
+		d = c;							\
+		c = rol(b, 30);						\
+		b = a;							\
+		a = T;							\
+	} while (0)
+
 static void
 sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 {
-	uint32_t w[80], a, b, c, d, e, f, temp;
+	uint32_t w[80], a, b, c, d, e;
 
 	memcpy(w, block, 64);
 #if !WORDS_BIGENDIAN
@@ -85,22 +98,86 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	c = ctx->h[2];
 	d = ctx->h[3];
 	e = ctx->h[4];
-	for (int t = 0; t < 80; ++t) {
-		if (t < 20)
-			f = (b & c) ^ ((~b) & d);
-		else if (t < 40)
-			f = b ^ c ^ d;
-		else if (t < 60)
-			f = (b & c) ^ (b & d) ^ (c & d);
-		else
-			f = b ^ c ^ d;
-		temp = rol(a, 5) + f + e + w[t] + sha1_k[t/20];
-		e = d;
-		d = c;
-		c = ror(b, 2);
-		b = a;
-		a = temp;
-	}
+	sha1_step( 0, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 1, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 2, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 3, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 4, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 5, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 6, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 7, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 8, a, sha1_ch(b, c, d), e, w);
+	sha1_step( 9, a, sha1_ch(b, c, d), e, w);
+	sha1_step(10, a, sha1_ch(b, c, d), e, w);
+	sha1_step(11, a, sha1_ch(b, c, d), e, w);
+	sha1_step(12, a, sha1_ch(b, c, d), e, w);
+	sha1_step(13, a, sha1_ch(b, c, d), e, w);
+	sha1_step(14, a, sha1_ch(b, c, d), e, w);
+	sha1_step(15, a, sha1_ch(b, c, d), e, w);
+	sha1_step(16, a, sha1_ch(b, c, d), e, w);
+	sha1_step(17, a, sha1_ch(b, c, d), e, w);
+	sha1_step(18, a, sha1_ch(b, c, d), e, w);
+	sha1_step(19, a, sha1_ch(b, c, d), e, w);
+	sha1_step(20, a, sha1_parity(b, c, d), e, w);
+	sha1_step(21, a, sha1_parity(b, c, d), e, w);
+	sha1_step(22, a, sha1_parity(b, c, d), e, w);
+	sha1_step(23, a, sha1_parity(b, c, d), e, w);
+	sha1_step(24, a, sha1_parity(b, c, d), e, w);
+	sha1_step(25, a, sha1_parity(b, c, d), e, w);
+	sha1_step(26, a, sha1_parity(b, c, d), e, w);
+	sha1_step(27, a, sha1_parity(b, c, d), e, w);
+	sha1_step(28, a, sha1_parity(b, c, d), e, w);
+	sha1_step(29, a, sha1_parity(b, c, d), e, w);
+	sha1_step(30, a, sha1_parity(b, c, d), e, w);
+	sha1_step(31, a, sha1_parity(b, c, d), e, w);
+	sha1_step(32, a, sha1_parity(b, c, d), e, w);
+	sha1_step(33, a, sha1_parity(b, c, d), e, w);
+	sha1_step(34, a, sha1_parity(b, c, d), e, w);
+	sha1_step(35, a, sha1_parity(b, c, d), e, w);
+	sha1_step(36, a, sha1_parity(b, c, d), e, w);
+	sha1_step(37, a, sha1_parity(b, c, d), e, w);
+	sha1_step(38, a, sha1_parity(b, c, d), e, w);
+	sha1_step(39, a, sha1_parity(b, c, d), e, w);
+	sha1_step(40, a, sha1_maj(b, c, d), e, w);
+	sha1_step(41, a, sha1_maj(b, c, d), e, w);
+	sha1_step(42, a, sha1_maj(b, c, d), e, w);
+	sha1_step(43, a, sha1_maj(b, c, d), e, w);
+	sha1_step(44, a, sha1_maj(b, c, d), e, w);
+	sha1_step(45, a, sha1_maj(b, c, d), e, w);
+	sha1_step(46, a, sha1_maj(b, c, d), e, w);
+	sha1_step(47, a, sha1_maj(b, c, d), e, w);
+	sha1_step(48, a, sha1_maj(b, c, d), e, w);
+	sha1_step(49, a, sha1_maj(b, c, d), e, w);
+	sha1_step(50, a, sha1_maj(b, c, d), e, w);
+	sha1_step(51, a, sha1_maj(b, c, d), e, w);
+	sha1_step(52, a, sha1_maj(b, c, d), e, w);
+	sha1_step(53, a, sha1_maj(b, c, d), e, w);
+	sha1_step(54, a, sha1_maj(b, c, d), e, w);
+	sha1_step(55, a, sha1_maj(b, c, d), e, w);
+	sha1_step(56, a, sha1_maj(b, c, d), e, w);
+	sha1_step(57, a, sha1_maj(b, c, d), e, w);
+	sha1_step(58, a, sha1_maj(b, c, d), e, w);
+	sha1_step(59, a, sha1_maj(b, c, d), e, w);
+	sha1_step(60, a, sha1_parity(b, c, d), e, w);
+	sha1_step(61, a, sha1_parity(b, c, d), e, w);
+	sha1_step(62, a, sha1_parity(b, c, d), e, w);
+	sha1_step(63, a, sha1_parity(b, c, d), e, w);
+	sha1_step(64, a, sha1_parity(b, c, d), e, w);
+	sha1_step(65, a, sha1_parity(b, c, d), e, w);
+	sha1_step(66, a, sha1_parity(b, c, d), e, w);
+	sha1_step(67, a, sha1_parity(b, c, d), e, w);
+	sha1_step(68, a, sha1_parity(b, c, d), e, w);
+	sha1_step(69, a, sha1_parity(b, c, d), e, w);
+	sha1_step(70, a, sha1_parity(b, c, d), e, w);
+	sha1_step(71, a, sha1_parity(b, c, d), e, w);
+	sha1_step(72, a, sha1_parity(b, c, d), e, w);
+	sha1_step(73, a, sha1_parity(b, c, d), e, w);
+	sha1_step(74, a, sha1_parity(b, c, d), e, w);
+	sha1_step(75, a, sha1_parity(b, c, d), e, w);
+	sha1_step(76, a, sha1_parity(b, c, d), e, w);
+	sha1_step(77, a, sha1_parity(b, c, d), e, w);
+	sha1_step(78, a, sha1_parity(b, c, d), e, w);
+	sha1_step(79, a, sha1_parity(b, c, d), e, w);
 	ctx->h[0] += a;
 	ctx->h[1] += b;
 	ctx->h[2] += c;
