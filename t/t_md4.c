@@ -169,6 +169,29 @@ t_md4_vector(char **desc CRYB_UNUSED, void *arg)
 	return (1);
 }
 
+
+#if !defined(WITH_OPENSSL) && !defined(WITH_RSAREF)
+/*
+ * Various corner cases and error conditions
+ */
+static int
+t_md4_short_updates(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_vector *vector = (struct t_vector *)arg;
+	uint8_t digest[MD4_DIGEST_LEN];
+	md4_ctx ctx;
+	int i, len;
+
+	md4_init(&ctx);
+	len = strlen(vector->msg);
+	for (i = 0; i + 5 < len; i += 5)
+		md4_update(&ctx, vector->msg + i, 5);
+	md4_update(&ctx, vector->msg + i, len - i);
+	md4_final(&ctx, digest);
+	return (memcmp(digest, vector->digest, MD4_DIGEST_LEN) == 0);
+}
+#endif
+
 #ifdef BENCHMARKS
 /*
  * Performance test: measure the time spent computing the MD4 sum of a
@@ -199,29 +222,6 @@ t_md4_perf(char **desc, void *arg)
 		err(1, "asprintf()");
 	*desc = comment;
 	return (1);
-}
-#endif
-
-
-#if !defined(WITH_OPENSSL) && !defined(WITH_RSAREF)
-/*
- * Various corner cases and error conditions
- */
-static int
-t_md4_short_updates(char **desc CRYB_UNUSED, void *arg)
-{
-	struct t_vector *vector = (struct t_vector *)arg;
-	uint8_t digest[MD4_DIGEST_LEN];
-	md4_ctx ctx;
-	int i, len;
-
-	md4_init(&ctx);
-	len = strlen(vector->msg);
-	for (i = 0; i + 5 < len; i += 5)
-		md4_update(&ctx, vector->msg + i, 5);
-	md4_update(&ctx, vector->msg + i, len - i);
-	md4_final(&ctx, digest);
-	return (memcmp(digest, vector->digest, MD4_DIGEST_LEN) == 0);
 }
 #endif
 
