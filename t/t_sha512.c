@@ -215,6 +215,7 @@ t_sha512_short_updates(char **desc CRYB_UNUSED, void *arg)
 }
 #endif
 
+
 #ifdef BENCHMARKS
 /*
  * Performance test: measure the time spent computing the SHA512 sum of a

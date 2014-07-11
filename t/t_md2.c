@@ -153,6 +153,30 @@ t_md2_vector(char **desc CRYB_UNUSED, void *arg)
 	return (1);
 }
 
+
+#if !defined(WITH_RSAREF)
+/*
+ * Various corner cases and error conditions
+ */
+static int
+t_md2_short_updates(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_vector *vector = (struct t_vector *)arg;
+	uint8_t digest[MD2_DIGEST_LEN];
+	md2_ctx ctx;
+	int i, len;
+
+	md2_init(&ctx);
+	len = strlen(vector->msg);
+	for (i = 0; i + 5 < len; i += 5)
+		md2_update(&ctx, vector->msg + i, 5);
+	md2_update(&ctx, vector->msg + i, len - i);
+	md2_final(&ctx, digest);
+	return (memcmp(digest, vector->digest, MD2_DIGEST_LEN) == 0);
+}
+#endif
+
+
 #ifdef BENCHMARKS
 /*
  * Performance test: measure the time spent computing the MD2 sum of a
@@ -183,29 +207,6 @@ t_md2_perf(char **desc, void *arg)
 		err(1, "asprintf()");
 	*desc = comment;
 	return (1);
-}
-#endif
-
-
-#if !defined(WITH_RSAREF)
-/*
- * Various corner cases and error conditions
- */
-static int
-t_md2_short_updates(char **desc CRYB_UNUSED, void *arg)
-{
-	struct t_vector *vector = (struct t_vector *)arg;
-	uint8_t digest[MD2_DIGEST_LEN];
-	md2_ctx ctx;
-	int i, len;
-
-	md2_init(&ctx);
-	len = strlen(vector->msg);
-	for (i = 0; i + 5 < len; i += 5)
-		md2_update(&ctx, vector->msg + i, 5);
-	md2_update(&ctx, vector->msg + i, len - i);
-	md2_final(&ctx, digest);
-	return (memcmp(digest, vector->digest, MD2_DIGEST_LEN) == 0);
 }
 #endif
 

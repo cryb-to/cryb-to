@@ -169,6 +169,30 @@ t_md5_vector(char **desc CRYB_UNUSED, void *arg)
 	return (1);
 }
 
+
+#if !defined(WITH_OPENSSL) && !defined(WITH_RSAREF)
+/*
+ * Various corner cases and error conditions
+ */
+static int
+t_md5_short_updates(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_vector *vector = (struct t_vector *)arg;
+	uint8_t digest[MD5_DIGEST_LEN];
+	md5_ctx ctx;
+	int i, len;
+
+        md5_init(&ctx);
+	len = strlen(vector->msg);
+	for (i = 0; i + 5 < len; i += 5)
+		md5_update(&ctx, vector->msg + i, 5);
+	md5_update(&ctx, vector->msg + i, len - i);
+        md5_final(&ctx, digest);
+	return (memcmp(digest, vector->digest, MD5_DIGEST_LEN) == 0);
+}
+#endif
+
+
 #ifdef BENCHMARKS
 /*
  * Performance test: measure the time spent computing the MD5 sum of a
@@ -199,29 +223,6 @@ t_md5_perf(char **desc, void *arg)
 		err(1, "asprintf()");
 	*desc = comment;
 	return (1);
-}
-#endif
-
-
-#if !defined(WITH_OPENSSL) && !defined(WITH_RSAREF)
-/*
- * Various corner cases and error conditions
- */
-static int
-t_md5_short_updates(char **desc CRYB_UNUSED, void *arg)
-{
-	struct t_vector *vector = (struct t_vector *)arg;
-	uint8_t digest[MD5_DIGEST_LEN];
-	md5_ctx ctx;
-	int i, len;
-
-        md5_init(&ctx);
-	len = strlen(vector->msg);
-	for (i = 0; i + 5 < len; i += 5)
-		md5_update(&ctx, vector->msg + i, 5);
-	md5_update(&ctx, vector->msg + i, len - i);
-        md5_final(&ctx, digest);
-	return (memcmp(digest, vector->digest, MD5_DIGEST_LEN) == 0);
 }
 #endif
 

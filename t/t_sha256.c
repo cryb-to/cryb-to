@@ -194,6 +194,7 @@ t_sha256_short_updates(char **desc CRYB_UNUSED, void *arg)
 }
 #endif
 
+
 #ifdef BENCHMARKS
 /*
  * Performance test: measure the time spent computing the SHA256 sum of a
