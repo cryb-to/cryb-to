@@ -87,11 +87,11 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	e = ctx->h[4];
 	for (int t = 0; t < 80; ++t) {
 		if (t < 20)
-			f = (b & c) | ((~b) & d);
+			f = (b & c) ^ ((~b) & d);
 		else if (t < 40)
 			f = b ^ c ^ d;
 		else if (t < 60)
-			f = (b & c) | (b & d) | (c & d);
+			f = (b & c) ^ (b & d) ^ (c & d);
 		else
 			f = b ^ c ^ d;
 		temp = rol(a, 5) + f + e + w[t] + sha1_k[t/20];
