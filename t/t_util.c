@@ -55,7 +55,7 @@ t_compare_mem(const void *expected, const void *received, size_t len)
 		t_verbose("expected ");
 		t_verbose_hex(expected, len);
 		t_verbose("\n");
-		t_verbose("received      ");
+		t_verbose("received ");
 		t_verbose_hex(received, len);
 		t_verbose("\n");
 		return (0);
