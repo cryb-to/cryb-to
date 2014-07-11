@@ -31,64 +31,49 @@
  * $Cryb$
  */
 
-#ifndef T_H_INCLUDED
-#define T_H_INCLUDED
+#include "cryb/impl.h"
 
-CRYB_DISABLE_COVERAGE
+#include <err.h>
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <syslog.h>
+#include <unistd.h>
 
-/*
- * Structure describing a test.  Includes a pointer to the function that
- * performs the test, a pointer to the default description or comment
- * associated with the test, and a pointer to arbitrary data passed to the
- * test function.
- */
-typedef int (t_func)(char **, void *);
-struct t_test {
-	t_func *func;
-	void *arg;
-	char *desc;
-};
-
-extern const char *t_progname;
-
-void t_add_test(t_func *, void *, const char *, ...);
-void t_add_tests(struct t_test *, int);
-
-int t_prepare(int, char **);
-void t_cleanup(void);
-
-void t_verbose_hex(const uint8_t *, size_t);
-void t_verbose(const char *, ...)
-	CRYB_PRINTF(1, 2);
+#include "t.h"
 
 /*
- * Convenience functions for temp files
+ * Compare two buffers, and print a verbose message if they differ.
  */
-struct t_file {
-	char *name;
-	FILE *file;
-	struct t_file *prev, *next;
-};
+int
+t_compare_mem(const void *expected, const void *received, size_t len)
+{
 
-struct t_file *t_fopen(const char *);
-int t_fprintf(struct t_file *, const char *, ...)
-	CRYB_PRINTF(2, 3);
-int t_ferror(struct t_file *);
-int t_feof(struct t_file *);
-void t_frewind(struct t_file *);
-void t_fclose(struct t_file *);
-void t_fcloseall(void);
+	if (memcmp(expected, received, len) != 0) {
+		t_verbose("expected ");
+		t_verbose_hex(expected, len);
+		t_verbose("\n");
+		t_verbose("received      ");
+		t_verbose_hex(received, len);
+		t_verbose("\n");
+		return (0);
+	}
+	return (1);
+}
 
 /*
- * Various utilities
+ * Compare two strings, and print a verbose message if they differ.
  */
-int t_compare_mem(const void *, const void *, size_t);
-int t_compare_str(const char *, const char *, size_t);
+int
+t_compare_str(const char *expected, const char *received)
+{
 
-/*
- * Useful constants
- */
-extern const uint8_t t_zero[256];
-extern const uint8_t t_seq8[256];
-
-#endif
+	if (strcmp(expected, received, len) != 0) {
+		t_verbose("expected %s\n", expected);
+		t_verbose("received %s\n", received);
+		return (0);
+	}
+	return (1);
+}
