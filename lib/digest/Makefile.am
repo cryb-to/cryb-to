@@ -9,6 +9,7 @@ libcryb_digest_la_SOURCES = \
 	md4.c \
 	md5.c \
 	sha1.c \
+	sha224.c \
 	sha256.c \
 	sha384.c \
 	sha512.c

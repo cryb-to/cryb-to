@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2014 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,13 +29,27 @@
  * $Cryb$
  */
 
-#ifndef CRYB_HMAC_H_INCLUDED
-#define CRYB_HMAC_H_INCLUDED
+#ifndef CRYB_HMAC_SHA224_H_INCLUDED
+#define CRYB_HMAC_SHA224_H_INCLUDED
 
-#include <cryb/hmac_sha1.h>
-#include <cryb/hmac_sha224.h>
-#include <cryb/hmac_sha256.h>
-#include <cryb/hmac_sha384.h>
-#include <cryb/hmac_sha512.h>
+#include <cryb/sha224.h>
+
+#define HMAC_SHA224_MAC_LEN		28
+
+#define hmac_sha224_ctx			cryb_hmac_sha224_ctx
+#define hmac_sha224_init		cryb_hmac_sha224_init
+#define hmac_sha224_update		cryb_hmac_sha224_update
+#define hmac_sha224_final		cryb_hmac_sha224_final
+#define hmac_sha224_complete		cryb_hmac_sha224_complete
+
+typedef struct {
+	sha224_ctx ictx;
+	sha224_ctx octx;
+} hmac_sha224_ctx;
+
+void hmac_sha224_init(hmac_sha224_ctx *, const void *, size_t);
+void hmac_sha224_update(hmac_sha224_ctx *, const void *, size_t);
+void hmac_sha224_final(hmac_sha224_ctx *, void *);
+void hmac_sha224_complete(const void *, size_t, const void *, size_t, void *);
 
 #endif

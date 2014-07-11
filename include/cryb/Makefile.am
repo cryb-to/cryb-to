@@ -9,6 +9,7 @@ cryb_HEADERS = \
 	digest.h \
 	hmac.h \
 	hmac_sha1.h \
+	hmac_sha224.h \
 	hmac_sha256.h \
 	hmac_sha384.h \
 	hmac_sha512.h \
@@ -25,6 +26,7 @@ cryb_HEADERS = \
 	rfc4648.h \
 	sha.h \
 	sha1.h \
+	sha224.h \
 	sha256.h \
 	sha384.h \
 	sha512.h \

@@ -61,15 +61,18 @@ t_md5_rsaref_CFLAGS = $(RSAREF_INCLUDES) $(RSAREF_CFLAGS)
 t_md5_rsaref_LDADD = $(RSAREF_LDADD)
 endif
 
-TESTS += t_sha1 t_sha256 t_sha384 t_sha512
+TESTS += t_sha1 t_sha224 t_sha256 t_sha384 t_sha512
 if WITH_OPENSSL
-TESTS += t_sha1_openssl t_sha256_openssl t_sha384_openssl t_sha512_openssl
+TESTS += t_sha1_openssl t_sha224_openssl t_sha256_openssl t_sha384_openssl t_sha512_openssl
 t_sha1_openssl_SOURCES = t_sha1.c
 t_sha1_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_sha1_openssl_LDADD = $(OPENSSL_LDADD)
 t_sha256_openssl_SOURCES = t_sha256.c
 t_sha256_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_sha256_openssl_LDADD = $(OPENSSL_LDADD)
+t_sha224_openssl_SOURCES = t_sha224.c
+t_sha224_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_sha224_openssl_LDADD = $(OPENSSL_LDADD)
 t_sha384_openssl_SOURCES = t_sha384.c
 t_sha384_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_sha384_openssl_LDADD = $(OPENSSL_LDADD)
@@ -79,15 +82,18 @@ t_sha512_openssl_LDADD = $(OPENSSL_LDADD)
 endif
 
 # libcryb-mac
-TESTS += t_hmac_sha1 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
+TESTS += t_hmac_sha1 t_hmac_sha224 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
 if WITH_OPENSSL
-TESTS += t_hmac_sha1_openssl t_hmac_sha256_openssl t_hmac_sha384_openssl t_hmac_sha512_openssl
+TESTS += t_hmac_sha1_openssl t_hmac_sha224_openssl t_hmac_sha256_openssl t_hmac_sha384_openssl t_hmac_sha512_openssl
 t_hmac_sha1_openssl_SOURCES = t_hmac_sha1.c
 t_hmac_sha1_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha1_openssl_LDADD = $(OPENSSL_LDADD)
 t_hmac_sha256_openssl_SOURCES = t_hmac_sha256.c
 t_hmac_sha256_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha256_openssl_LDADD = $(OPENSSL_LDADD)
+t_hmac_sha224_openssl_SOURCES = t_hmac_sha224.c
+t_hmac_sha224_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_hmac_sha224_openssl_LDADD = $(OPENSSL_LDADD)
 t_hmac_sha384_openssl_SOURCES = t_hmac_sha384.c
 t_hmac_sha384_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha384_openssl_LDADD = $(OPENSSL_LDADD)
