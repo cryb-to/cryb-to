@@ -52,9 +52,9 @@ extern digest_algorithm sha1_digest;
 
 typedef struct {
 	uint8_t block[64];
-	size_t blocklen;
+	uint32_t blocklen;
+	uint32_t h[5];
 	uint64_t bitlen;
-	uint32_t h[5], k[4];
 } sha1_ctx;
 
 extern digest_algorithm sha1_algorithm;

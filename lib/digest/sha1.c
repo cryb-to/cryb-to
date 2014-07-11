@@ -64,7 +64,6 @@ sha1_init(sha1_ctx *ctx)
 
 	memset(ctx, 0, sizeof *ctx);
 	memcpy(ctx->h, sha1_h, sizeof ctx->h);
-	memcpy(ctx->k, sha1_k, sizeof ctx->k);
 }
 
 static void
@@ -95,7 +94,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 			f = (b & c) | (b & d) | (c & d);
 		else
 			f = b ^ c ^ d;
-		temp = rol(a, 5) + f + e + w[t] + ctx->k[t/20];
+		temp = rol(a, 5) + f + e + w[t] + sha1_k[t/20];
 		e = d;
 		d = c;
 		c = ror(b, 2);
