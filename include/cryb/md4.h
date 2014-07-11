@@ -54,9 +54,6 @@ typedef struct
     unsigned long total[2];     /*!< number of bytes processed  */
     unsigned long state[4];     /*!< intermediate digest state  */
     unsigned char buffer[64];   /*!< data block being processed */
-
-    unsigned char ipad[64];     /*!< HMAC: inner padding        */
-    unsigned char opad[64];     /*!< HMAC: outer padding        */
 }
 md4_ctx;
 
@@ -96,45 +93,6 @@ void md4_final( md4_ctx *ctx, unsigned char output[16] );
  * \param output   MD4 checksum result
  */
 void md4_complete( const void *input, int ilen, unsigned char output[16] );
-
-/**
- * \brief          MD4 HMAC context setup
- *
- * \param ctx      HMAC context to be initialized
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- */
-void md4_hmac_init( md4_ctx *ctx, unsigned char *key, int keylen );
-
-/**
- * \brief          MD4 HMAC process buffer
- *
- * \param ctx      HMAC context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void md4_hmac_update( md4_ctx *ctx, unsigned char *input, int ilen );
-
-/**
- * \brief          MD4 HMAC final digest
- *
- * \param ctx      HMAC context
- * \param output   MD4 HMAC checksum result
- */
-void md4_hmac_final( md4_ctx *ctx, unsigned char output[16] );
-
-/**
- * \brief          Output = HMAC-MD4( hmac key, input buffer )
- *
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   HMAC-MD4 result
- */
-void md4_hmac_complete( unsigned char *key, int keylen,
-	       unsigned char *input, int ilen,
-	       unsigned char output[16] );
 
 #ifdef __cplusplus
 }

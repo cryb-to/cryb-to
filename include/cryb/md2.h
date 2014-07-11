@@ -54,9 +54,6 @@ typedef struct
     unsigned char cksum[16];    /*!< checksum of the data block */
     unsigned char state[48];    /*!< intermediate digest state  */
     unsigned char buffer[16];   /*!< data block being processed */
-
-    unsigned char ipad[64];     /*!< HMAC: inner padding        */
-    unsigned char opad[64];     /*!< HMAC: outer padding        */
     int left;                   /*!< amount of data in buffer   */
 } md2_ctx;
 
@@ -96,45 +93,6 @@ void md2_final( md2_ctx *ctx, unsigned char output[16] );
  * \param output   MD2 checksum result
  */
 void md2_complete( const void *input, int ilen, unsigned char output[16] );
-
-/**
- * \brief          MD2 HMAC context setup
- *
- * \param ctx      HMAC context to be initialized
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- */
-void md2_hmac_init( md2_ctx *ctx, unsigned char *key, int keylen );
-
-/**
- * \brief          MD2 HMAC process buffer
- *
- * \param ctx      HMAC context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void md2_hmac_update( md2_ctx *ctx, unsigned char *input, int ilen );
-
-/**
- * \brief          MD2 HMAC final digest
- *
- * \param ctx      HMAC context
- * \param output   MD2 HMAC checksum result
- */
-void md2_hmac_final( md2_ctx *ctx, unsigned char output[16] );
-
-/**
- * \brief          Output = HMAC-MD2( hmac key, input buffer )
- *
- * \param key      HMAC secret key
- * \param keylen   length of the HMAC key
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   HMAC-MD2 result
- */
-void md2_hmac_complete( unsigned char *key, int keylen,
-               unsigned char *input, int ilen,
-               unsigned char output[16] );
 
 #ifdef __cplusplus
 }
