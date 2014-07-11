@@ -85,10 +85,8 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 	uint32_t w[80], a, b, c, d, e;
 
 	memcpy(w, block, 64);
-#if !WORDS_BIGENDIAN
 	for (int i = 0; i < 16; ++i)
 		w[i] = be32toh(w[i]);
-#endif
 	for (int i = 16; i < 80; ++i) {
 		w[i] = w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16];
 		w[i] = rol(w[i], 1);

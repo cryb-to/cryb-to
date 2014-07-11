@@ -117,10 +117,8 @@ md5_compute(md5_ctx *ctx, const uint8_t *block)
 	int i;
 
 	memcpy(w, block, 64);
-#if WORDS_BIGENDIAN
 	for (i = 0; i < 16; ++i)
 		w[i] = le32toh(w[i]);
-#endif
 	a = ctx->h[0];
 	b = ctx->h[1];
 	c = ctx->h[2];
