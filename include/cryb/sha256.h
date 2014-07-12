@@ -71,13 +71,13 @@ void sha256_update(sha256_ctx *, const void *, size_t);
  * Output the SHA256 hash of the data input to the context ${ctx} into the
  * buffer ${digest}.
  */
-void sha256_final(sha256_ctx *, uint8_t[SHA256_DIGEST_LEN]);
+void sha256_final(sha256_ctx *, uint8_t *);
 
 /**
  * sha256_complete(in, len, digest):
  * Compute the SHA256 hash of ${len} bytes from $in} and write it to ${digest}.
  */
-void sha256_complete(const void *, size_t, uint8_t[SHA256_DIGEST_LEN]);
+void sha256_complete(const void *, size_t, uint8_t *);
 
 /**
  * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):

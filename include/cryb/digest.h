@@ -43,8 +43,8 @@
 typedef void digest_ctx;
 typedef void (*digest_init_func)(digest_ctx *);
 typedef void (*digest_update_func)(digest_ctx *, const void *, size_t);
-typedef void (*digest_final_func)(digest_ctx *, void *);
-typedef int (*digest_complete_func)(const void *, size_t, void *);
+typedef void (*digest_final_func)(digest_ctx *, uint8_t *);
+typedef int (*digest_complete_func)(const void *, size_t, uint8_t *);
 
 typedef struct {
 	const char		*name;		/* algorithm name */

@@ -289,7 +289,7 @@ sha224_update(sha224_ctx * ctx, const void *in, size_t len)
  * buffer ${digest}.
  */
 void
-sha224_final(sha224_ctx * ctx, uint8_t digest[SHA224_DIGEST_LEN])
+sha224_final(sha224_ctx * ctx, uint8_t *digest)
 {
 
 	/* Add padding. */
@@ -299,7 +299,7 @@ sha224_final(sha224_ctx * ctx, uint8_t digest[SHA224_DIGEST_LEN])
 	be32enc_vect(digest, ctx->state, SHA224_DIGEST_LEN);
 
 	/* Clear the context state. */
-	memset((void *)ctx, 0, sizeof(*ctx));
+	memset(ctx, 0, sizeof(*ctx));
 }
 
 /**
@@ -307,7 +307,7 @@ sha224_final(sha224_ctx * ctx, uint8_t digest[SHA224_DIGEST_LEN])
  * Compute the SHA224 hash of ${len} bytes from $in} and write it to ${digest}.
  */
 void
-sha224_complete(const void * in, size_t len, uint8_t digest[SHA224_DIGEST_LEN])
+sha224_complete(const void * in, size_t len, uint8_t *digest)
 {
 	sha224_ctx ctx;
 

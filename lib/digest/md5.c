@@ -221,7 +221,7 @@ md5_update(md5_ctx *ctx, const void *buf, size_t len)
 }
 
 void
-md5_final(md5_ctx *ctx, void *digest)
+md5_final(md5_ctx *ctx, uint8_t *digest)
 {
 
 	ctx->block[ctx->blocklen++] = 0x80;
@@ -241,7 +241,7 @@ md5_final(md5_ctx *ctx, void *digest)
 }
 
 void
-md5_complete(const void *buf, size_t len, void *digest)
+md5_complete(const void *buf, size_t len, uint8_t *digest)
 {
 	md5_ctx ctx;
 

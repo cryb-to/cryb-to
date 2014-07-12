@@ -83,7 +83,7 @@ void sha384_update( sha384_ctx *ctx, const void *input, int ilen );
  * \param ctx      SHA-384 context
  * \param output   SHA-384/384 checksum result
  */
-void sha384_final( sha384_ctx *ctx, unsigned char output[64] );
+void sha384_final( sha384_ctx *ctx, uint8_t *output );
 
 /**
  * \brief          Output = SHA-384( input buffer )
@@ -92,8 +92,7 @@ void sha384_final( sha384_ctx *ctx, unsigned char output[64] );
  * \param ilen     length of the input data
  * \param output   SHA-384/384 checksum result
  */
-void sha384_complete( const void *input, int ilen,
-           unsigned char output[64] );
+void sha384_complete( const void *input, int ilen, uint8_t *output );
 
 #ifdef __cplusplus
 }

@@ -37,11 +37,12 @@
 
 #include "cryb/impl.h"
 
+#include <stdint.h>
 #include <string.h>
 
 #include <cryb/md2.h>
 
-static const unsigned char PI_SUBST[256] =
+static const uint8_t PI_SUBST[256] =
 {
     0x29, 0x2E, 0x43, 0xC9, 0xA2, 0xD8, 0x7C, 0x01, 0x3D, 0x36,
     0x54, 0xA1, 0xEC, 0xF0, 0x06, 0x13, 0x62, 0xA7, 0x05, 0xF3,
@@ -82,32 +83,32 @@ void md2_init( md2_ctx *ctx )
 static void md2_process( md2_ctx *ctx )
 {
     int i, j;
-    unsigned char t = 0;
+    uint8_t t = 0;
 
     for( i = 0; i < 16; i++ )
     {
 	ctx->state[i + 16] = ctx->buffer[i];
 	ctx->state[i + 32] =
-	    (unsigned char)( ctx->buffer[i] ^ ctx->state[i]);
+	    (uint8_t)( ctx->buffer[i] ^ ctx->state[i]);
     }
 
     for( i = 0; i < 18; i++ )
     {
 	for( j = 0; j < 48; j++ )
 	{
-	    ctx->state[j] = (unsigned char)
+	    ctx->state[j] = (uint8_t)
 	       ( ctx->state[j] ^ PI_SUBST[t] );
 	    t  = ctx->state[j];
 	}
 
-	t = (unsigned char)( t + i );
+	t = (uint8_t)( t + i );
     }
 
     t = ctx->cksum[15];
 
     for( i = 0; i < 16; i++ )
     {
-	ctx->cksum[i] = (unsigned char)
+	ctx->cksum[i] = (uint8_t)
 	   ( ctx->cksum[i] ^ PI_SUBST[ctx->buffer[i] ^ t] );
 	t  = ctx->cksum[i];
     }
@@ -144,12 +145,12 @@ void md2_update( md2_ctx *ctx, const void *input, int ilen )
 /*
  * MD2 final digest
  */
-void md2_final( md2_ctx *ctx, unsigned char *output )
+void md2_final( md2_ctx *ctx, uint8_t *output )
 {
     int i;
-    unsigned char x;
+    uint8_t x;
 
-    x = (unsigned char)( 16 - ctx->left );
+    x = (uint8_t)( 16 - ctx->left );
 
     for( i = ctx->left; i < 16; i++ )
 	ctx->buffer[i] = x;
@@ -165,7 +166,7 @@ void md2_final( md2_ctx *ctx, unsigned char *output )
 /*
  * output = MD2( input buffer )
  */
-void md2_complete( const void *input, int ilen, unsigned char *output )
+void md2_complete( const void *input, int ilen, uint8_t *output )
 {
     md2_ctx ctx;
 

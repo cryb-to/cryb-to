@@ -216,7 +216,7 @@ sha1_update(sha1_ctx *ctx, const void *buf, size_t len)
 }
 
 void
-sha1_final(sha1_ctx *ctx, void *digest)
+sha1_final(sha1_ctx *ctx, uint8_t *digest)
 {
 	uint32_t hi, lo;
 
@@ -239,7 +239,7 @@ sha1_final(sha1_ctx *ctx, void *digest)
 }
 
 void
-sha1_complete(const void *buf, size_t len, void *digest)
+sha1_complete(const void *buf, size_t len, uint8_t *digest)
 {
 	sha1_ctx ctx;
 

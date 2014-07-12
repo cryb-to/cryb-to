@@ -86,7 +86,7 @@ hmac_sha384_update(hmac_sha384_ctx *ctx, const void *buf, size_t len)
 }
 
 void
-hmac_sha384_final(hmac_sha384_ctx *ctx, void *mac)
+hmac_sha384_final(hmac_sha384_ctx *ctx, uint8_t *mac)
 {
 	uint8_t digest[SHA384_DIGEST_LEN];
 
@@ -98,7 +98,7 @@ hmac_sha384_final(hmac_sha384_ctx *ctx, void *mac)
 
 void
 hmac_sha384_complete(const void *key, size_t keylen,
-    const void *buf, size_t len, void *mac)
+    const void *buf, size_t len, uint8_t *mac)
 {
 	hmac_sha384_ctx ctx;
 

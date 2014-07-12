@@ -71,13 +71,13 @@ void sha224_update(sha224_ctx *, const void *, size_t);
  * Output the SHA224 hash of the data input to the context ${ctx} into the
  * buffer ${digest}.
  */
-void sha224_final(sha224_ctx *, uint8_t[SHA224_DIGEST_LEN]);
+void sha224_final(sha224_ctx *, uint8_t *);
 
 /**
  * sha224_complete(in, len, digest):
  * Compute the SHA224 hash of ${len} bytes from $in} and write it to ${digest}.
  */
-void sha224_complete(const void *, size_t, uint8_t[SHA224_DIGEST_LEN]);
+void sha224_complete(const void *, size_t, uint8_t *);
 
 /**
  * PBKDF2_SHA224(passwd, passwdlen, salt, saltlen, c, buf, dkLen):

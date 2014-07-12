@@ -51,9 +51,9 @@ extern digest_algorithm md4_digest;
  */
 typedef struct
 {
-    unsigned long total[2];     /*!< number of bytes processed  */
-    unsigned long state[4];     /*!< intermediate digest state  */
-    unsigned char buffer[64];   /*!< data block being processed */
+    uint32_t total[2];		/*!< number of bytes processed  */
+    uint32_t state[4];		/*!< intermediate digest state  */
+    uint8_t buffer[64];		/*!< data block being processed */
 }
 md4_ctx;
 
@@ -83,7 +83,7 @@ void md4_update( md4_ctx *ctx, const void *input, int ilen );
  * \param ctx      MD4 context
  * \param output   MD4 checksum result
  */
-void md4_final( md4_ctx *ctx, unsigned char output[16] );
+void md4_final( md4_ctx *ctx, uint8_t *output );
 
 /**
  * \brief          Output = MD4( input buffer )
@@ -92,7 +92,7 @@ void md4_final( md4_ctx *ctx, unsigned char output[16] );
  * \param ilen     length of the input data
  * \param output   MD4 checksum result
  */
-void md4_complete( const void *input, int ilen, unsigned char output[16] );
+void md4_complete( const void *input, int ilen, uint8_t *output );
 
 #ifdef __cplusplus
 }

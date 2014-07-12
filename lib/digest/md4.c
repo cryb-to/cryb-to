@@ -37,6 +37,16 @@
 
 #include "cryb/impl.h"
 
+#ifdef HAVE_SYS_ENDIAN_H
+#include <sys/endian.h>
+#endif
+
+#ifdef HAVE_ENDIAN_H
+#define _BSD_SOURCE
+#include <endian.h>
+#endif
+
+#include <stdint.h>
 #include <string.h>
 
 #include <cryb/md4.h>
@@ -44,25 +54,13 @@
 /*
  * 32-bit integer manipulation macros (little endian)
  */
-#ifndef GET_ULONG_LE
-#define GET_ULONG_LE(n,b,i)                             \
-do {                                                    \
-    (n) = ( (unsigned long) (b)[(i)    ]       )        \
-        | ( (unsigned long) (b)[(i) + 1] <<  8 )        \
-        | ( (unsigned long) (b)[(i) + 2] << 16 )        \
-        | ( (unsigned long) (b)[(i) + 3] << 24 );       \
-} while (0)
-#endif
+#undef GET_ULONG_LE
+#define GET_ULONG_LE(n,b,i)						\
+	do { (n) = le32dec((uint8_t *)(b) + (i)); } while (0)
 
-#ifndef PUT_ULONG_LE
-#define PUT_ULONG_LE(n,b,i)                             \
-do {                                                    \
-    (b)[(i)    ] = (unsigned char) ( (n)       );       \
-    (b)[(i) + 1] = (unsigned char) ( (n) >>  8 );       \
-    (b)[(i) + 2] = (unsigned char) ( (n) >> 16 );       \
-    (b)[(i) + 3] = (unsigned char) ( (n) >> 24 );       \
-} while (0)
-#endif
+#undef PUT_ULONG_LE
+#define PUT_ULONG_LE(n,b,i)						\
+	do { le32enc((uint8_t *)(b) + (i), (n)); } while (0)
 
 /*
  * MD4 context setup
@@ -78,9 +76,9 @@ void md4_init( md4_ctx *ctx )
     ctx->state[3] = 0x10325476;
 }
 
-static void md4_process( md4_ctx *ctx, const unsigned char *data )
+static void md4_process( md4_ctx *ctx, const uint8_t *data )
 {
-    unsigned long X[16], A, B, C, D;
+    uint32_t X[16], A, B, C, D;
 
     GET_ULONG_LE( X[ 0], data,  0 );
     GET_ULONG_LE( X[ 1], data,  4 );
@@ -187,7 +185,7 @@ static void md4_process( md4_ctx *ctx, const unsigned char *data )
 void md4_update( md4_ctx *ctx, const void *input, int ilen )
 {
     int fill;
-    unsigned long left;
+    uint32_t left;
 
     if( ilen <= 0 )
         return;
@@ -198,13 +196,12 @@ void md4_update( md4_ctx *ctx, const void *input, int ilen )
     ctx->total[0] += ilen;
     ctx->total[0] &= 0xFFFFFFFF;
 
-    if( ctx->total[0] < (unsigned long) ilen )
+    if( ctx->total[0] < (uint32_t) ilen )
         ctx->total[1]++;
 
     if( left && ilen >= fill )
     {
-        memcpy( (void *) (ctx->buffer + left),
-                (void *) input, fill );
+        memcpy( (ctx->buffer + left), input, fill );
         md4_process( ctx, ctx->buffer );
         input += fill;
         ilen  -= fill;
@@ -220,12 +217,11 @@ void md4_update( md4_ctx *ctx, const void *input, int ilen )
 
     if( ilen > 0 )
     {
-        memcpy( (void *) (ctx->buffer + left),
-                (void *) input, ilen );
+        memcpy( (ctx->buffer + left), input, ilen );
     }
 }
 
-static const unsigned char md4_padding[64] =
+static const uint8_t md4_padding[64] =
 {
  0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -236,11 +232,11 @@ static const unsigned char md4_padding[64] =
 /*
  * MD4 final digest
  */
-void md4_final( md4_ctx *ctx, unsigned char *output )
+void md4_final( md4_ctx *ctx, uint8_t *output )
 {
-    unsigned long last, padn;
-    unsigned long high, low;
-    unsigned char msglen[8];
+    uint32_t last, padn;
+    uint32_t high, low;
+    uint8_t msglen[8];
 
     high = ( ctx->total[0] >> 29 )
          | ( ctx->total[1] <<  3 );
@@ -264,7 +260,7 @@ void md4_final( md4_ctx *ctx, unsigned char *output )
 /*
  * output = MD4( input buffer )
  */
-void md4_complete( const void *input, int ilen, unsigned char *output )
+void md4_complete( const void *input, int ilen, uint8_t *output )
 {
     md4_ctx ctx;
 

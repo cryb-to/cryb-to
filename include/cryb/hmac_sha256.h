@@ -49,7 +49,7 @@ typedef struct {
 
 void hmac_sha256_init(hmac_sha256_ctx *, const void *, size_t);
 void hmac_sha256_update(hmac_sha256_ctx *, const void *, size_t);
-void hmac_sha256_final(hmac_sha256_ctx *, void *);
-void hmac_sha256_complete(const void *, size_t, const void *, size_t, void *);
+void hmac_sha256_final(hmac_sha256_ctx *, uint8_t *);
+void hmac_sha256_complete(const void *, size_t, const void *, size_t, uint8_t *);
 
 #endif

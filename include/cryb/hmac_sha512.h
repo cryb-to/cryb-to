@@ -49,7 +49,7 @@ typedef struct {
 
 void hmac_sha512_init(hmac_sha512_ctx *, const void *, size_t);
 void hmac_sha512_update(hmac_sha512_ctx *, const void *, size_t);
-void hmac_sha512_final(hmac_sha512_ctx *, void *);
-void hmac_sha512_complete(const void *, size_t, const void *, size_t, void *);
+void hmac_sha512_final(hmac_sha512_ctx *, uint8_t *);
+void hmac_sha512_complete(const void *, size_t, const void *, size_t, uint8_t *);
 
 #endif

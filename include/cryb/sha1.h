@@ -61,7 +61,7 @@ extern digest_algorithm sha1_algorithm;
 
 void sha1_init(sha1_ctx *);
 void sha1_update(sha1_ctx *, const void *, size_t);
-void sha1_final(sha1_ctx *, void *);
-void sha1_complete(const void *, size_t, void *);
+void sha1_final(sha1_ctx *, uint8_t *);
+void sha1_complete(const void *, size_t, uint8_t *);
 
 #endif

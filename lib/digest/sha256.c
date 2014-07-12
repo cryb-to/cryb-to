@@ -289,7 +289,7 @@ sha256_update(sha256_ctx * ctx, const void *in, size_t len)
  * buffer ${digest}.
  */
 void
-sha256_final(sha256_ctx * ctx, uint8_t digest[SHA256_DIGEST_LEN])
+sha256_final(sha256_ctx * ctx, uint8_t *digest)
 {
 
 	/* Add padding. */
@@ -299,7 +299,7 @@ sha256_final(sha256_ctx * ctx, uint8_t digest[SHA256_DIGEST_LEN])
 	be32enc_vect(digest, ctx->state, SHA256_DIGEST_LEN);
 
 	/* Clear the context state. */
-	memset((void *)ctx, 0, sizeof(*ctx));
+	memset(ctx, 0, sizeof(*ctx));
 }
 
 /**
@@ -307,7 +307,7 @@ sha256_final(sha256_ctx * ctx, uint8_t digest[SHA256_DIGEST_LEN])
  * Compute the SHA256 hash of ${len} bytes from $in} and write it to ${digest}.
  */
 void
-sha256_complete(const void * in, size_t len, uint8_t digest[SHA256_DIGEST_LEN])
+sha256_complete(const void * in, size_t len, uint8_t *digest)
 {
 	sha256_ctx ctx;
 

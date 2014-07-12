@@ -51,10 +51,10 @@ extern digest_algorithm md2_algorithm;
  */
 typedef struct
 {
-    unsigned char cksum[16];    /*!< checksum of the data block */
-    unsigned char state[48];    /*!< intermediate digest state  */
-    unsigned char buffer[16];   /*!< data block being processed */
-    int left;                   /*!< amount of data in buffer   */
+    uint8_t cksum[16];		/*!< checksum of the data block */
+    uint8_t state[48];		/*!< intermediate digest state	*/
+    uint8_t buffer[16];		/*!< data block being processed */
+    int left;			/*!< amount of data in buffer	*/
 } md2_ctx;
 
 #ifdef __cplusplus
@@ -83,7 +83,7 @@ void md2_update( md2_ctx *ctx, const void *input, int ilen );
  * \param ctx      MD2 context
  * \param output   MD2 checksum result
  */
-void md2_final( md2_ctx *ctx, unsigned char output[16] );
+void md2_final( md2_ctx *ctx, uint8_t *output );
 
 /**
  * \brief          Output = MD2( input buffer )
@@ -92,7 +92,7 @@ void md2_final( md2_ctx *ctx, unsigned char output[16] );
  * \param ilen     length of the input data
  * \param output   MD2 checksum result
  */
-void md2_complete( const void *input, int ilen, unsigned char output[16] );
+void md2_complete( const void *input, int ilen, uint8_t *output );
 
 #ifdef __cplusplus
 }
