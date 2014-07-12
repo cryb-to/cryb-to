@@ -48,7 +48,11 @@
 
 #include <openssl/sha.h>
 
-#define SHA512_DIGEST_LEN SHA512_DIGEST_LENGTH
+#define SHA512_DIGEST_LEN	SHA512_DIGEST_LENGTH
+#define sha512_ctx		SHA512_CTX
+#define sha512_init(c)		SHA512_Init(c)
+#define sha512_update(c, m, l)	SHA512_Update(c, m, l)
+#define sha512_final(c, d)	SHA512_Final(d, c)
 
 static void
 t_sha512_complete(const void *msg, size_t msglen, uint8_t *digest)
@@ -239,6 +243,40 @@ t_sha512_perf(char **desc, void *arg)
 }
 
 
+/*
+ * Test the carry operation on the byte counter.
+ */
+static int
+t_sha512_carry(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	sha512_ctx ctx;
+	uint8_t digest[SHA512_DIGEST_LEN];
+	static uint8_t expect[SHA512_DIGEST_LEN] = {
+		0xbd, 0x25, 0x6d, 0xa8, 0xbf, 0xe0, 0x6c, 0xf0,
+		0xc1, 0x8c, 0xe9, 0x58, 0xb8, 0xce, 0x43, 0xc7,
+		0x9a, 0x3d, 0xec, 0x10, 0x58, 0x55, 0x00, 0x7f,
+		0xe7, 0x75, 0x48, 0x66, 0xb2, 0x18, 0xc3, 0x98,
+		0x91, 0x11, 0x75, 0x88, 0x53, 0x3e, 0xb3, 0x4b,
+		0x83, 0x93, 0xca, 0x18, 0x8a, 0xbe, 0x32, 0x7d,
+		0x4a, 0x54, 0x16, 0xbb, 0xdf, 0x9e, 0x9c, 0x3a,
+		0xd7, 0x22, 0xc8, 0x0d, 0x71, 0x0f, 0x76, 0xc0,
+	};
+
+	sha512_init(&ctx);
+#if WITH_OPENSSL
+	/* openssl counts bits */
+	ctx.Nl = 0xffffffffffffff80LLU << 3LLU;
+	ctx.Nh = 0xffffffffffffff80LLU >> 61LLU;
+#else
+	/* cryb counts bytes and multiplies at the end */
+	ctx.total[0] = 0xffffffffffffff80LLU;
+#endif
+	sha512_update(&ctx, t_seq8, 256);
+	sha512_final(&ctx, digest);
+	return (t_compare_mem(expect, digest, SHA512_DIGEST_LEN));
+}
+
+
 /***************************************************************************
  * Boilerplate
  */
@@ -277,6 +315,7 @@ t_prepare(int argc, char *argv[])
 		t_add_test(t_sha512_perf, &million,
 		    "performance test (1,000,000 bytes)");
 	}
+	t_add_test(t_sha512_carry, NULL, "byte counter carry");
 	return (0);
 }
 

@@ -48,7 +48,11 @@
 
 #include <openssl/sha.h>
 
-#define SHA384_DIGEST_LEN SHA384_DIGEST_LENGTH
+#define SHA384_DIGEST_LEN	SHA384_DIGEST_LENGTH
+#define sha384_ctx		SHA512_CTX	/* yes, 512 is correct */
+#define sha384_init(c)		SHA384_Init(c)
+#define sha384_update(c, m, l)	SHA384_Update(c, m, l)
+#define sha384_final(c, d)	SHA384_Final(d, c)
 
 static void
 t_sha384_complete(const void *msg, size_t msglen, uint8_t *digest)
@@ -229,6 +233,38 @@ t_sha384_perf(char **desc, void *arg)
 }
 
 
+/*
+ * Test the carry operation on the byte counter.
+ */
+static int
+t_sha384_carry(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	sha384_ctx ctx;
+	uint8_t digest[SHA384_DIGEST_LEN];
+	static uint8_t expect[SHA384_DIGEST_LEN] = {
+		0x04, 0xa8, 0xab, 0x2a, 0x7d, 0xe6, 0x68, 0x22,
+		0xcd, 0x45, 0xfd, 0xc5, 0x41, 0x62, 0x32, 0xca,
+		0x6c, 0x59, 0x92, 0x41, 0x77, 0x99, 0xca, 0xa7,
+		0xe2, 0xf0, 0x28, 0x77, 0x2b, 0x33, 0xbe, 0xa0,
+		0xbe, 0xee, 0x4d, 0xd1, 0x9e, 0x18, 0xc4, 0x5f,
+		0x47, 0x91, 0xb3, 0xd1, 0x9c, 0x3a, 0x81, 0xfb,
+	};
+
+	sha384_init(&ctx);
+#if WITH_OPENSSL
+	/* openssl counts bits */
+	ctx.Nl = 0xffffffffffffff80LLU << 3LLU;
+	ctx.Nh = 0xffffffffffffff80LLU >> 61LLU;
+#else
+	/* cryb counts bytes and multiplies at the end */
+	ctx.total[0] = 0xffffffffffffff80LLU;
+#endif
+	sha384_update(&ctx, t_seq8, 256);
+	sha384_final(&ctx, digest);
+	return (t_compare_mem(expect, digest, SHA384_DIGEST_LEN));
+}
+
+
 /***************************************************************************
  * Boilerplate
  */
@@ -267,6 +303,7 @@ t_prepare(int argc, char *argv[])
 		t_add_test(t_sha384_perf, &million,
 		    "performance test (1,000,000 bytes)");
 	}
+	t_add_test(t_sha384_carry, NULL, "byte counter carry");
 	return (0);
 }
 
