@@ -67,8 +67,7 @@
  */
 void md4_init( md4_ctx *ctx )
 {
-    ctx->total[0] = 0;
-    ctx->total[1] = 0;
+    ctx->total = 0;
 
     ctx->state[0] = 0x67452301;
     ctx->state[1] = 0xEFCDAB89;
@@ -190,14 +189,10 @@ void md4_update( md4_ctx *ctx, const void *input, int ilen )
     if( ilen <= 0 )
         return;
 
-    left = ctx->total[0] & 0x3F;
+    left = ctx->total & 0x3F;
     fill = 64 - left;
 
-    ctx->total[0] += ilen;
-    ctx->total[0] &= 0xFFFFFFFF;
-
-    if( ctx->total[0] < (uint32_t) ilen )
-        ctx->total[1]++;
+    ctx->total += ilen;
 
     if( left && ilen >= fill )
     {
@@ -235,17 +230,11 @@ static const uint8_t md4_padding[64] =
 void md4_final( md4_ctx *ctx, uint8_t *output )
 {
     uint32_t last, padn;
-    uint32_t high, low;
     uint8_t msglen[8];
 
-    high = ( ctx->total[0] >> 29 )
-         | ( ctx->total[1] <<  3 );
-    low  = ( ctx->total[0] <<  3 );
+    le64enc(msglen, ctx->total << 3);
 
-    PUT_ULONG_LE( low,  msglen, 0 );
-    PUT_ULONG_LE( high, msglen, 4 );
-
-    last = ctx->total[0] & 0x3F;
+    last = ctx->total & 0x3F;
     padn = ( last < 56 ) ? ( 56 - last ) : ( 120 - last );
 
     md4_update( ctx, md4_padding, padn );

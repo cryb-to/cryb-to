@@ -51,7 +51,7 @@ extern digest_algorithm md4_digest;
  */
 typedef struct
 {
-    uint32_t total[2];		/*!< number of bytes processed  */
+    uint64_t total;		/*!< number of bytes processed  */
     uint32_t state[4];		/*!< intermediate digest state  */
     uint8_t buffer[64];		/*!< data block being processed */
 }
