@@ -45,6 +45,7 @@
 #define T_MAGIC_STR	"squeamish ossifrage"
 #define T_MAGIC_LEN	(sizeof(T_MAGIC_STR) - 1)
 #define T_BUFSIZE	(T_MAGIC_LEN + 1 + T_MAGIC_LEN + 1)
+#define T_CANARY	0x7f
 
 struct t_case {
 	const char *desc;
@@ -130,12 +131,17 @@ static int
 t_strlcat(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_case *t = arg;
-	char buf[T_BUFSIZE];
+	char buf[T_BUFSIZE + 1];
 	size_t sz;
 	int ret;
 
-	memcpy(buf, t->buf, sizeof buf);
-	sz = strlcat(buf, t->in, sizeof buf);
+	memcpy(buf, t->buf, sizeof t->buf);
+	buf[T_BUFSIZE] = T_CANARY;
+	sz = strlcat(buf, t->in, T_BUFSIZE);
+	if (buf[T_BUFSIZE] != T_CANARY) {
+		t_verbose("buffer overflow");
+		return (0);
+	}
 	ret = t_compare_sz(t->sz, sz);
 	if (t->out != NULL)
 		ret = ret && t_compare_str(t->out, buf);
