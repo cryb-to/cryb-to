@@ -84,6 +84,27 @@ void t_fcloseall(void);
  */
 int t_compare_mem(const void *, const void *, size_t);
 int t_compare_str(const char *, const char *);
+#define t_compare_num(n, t) int t_compare_##n(t, t);
+t_compare_num(i, int);
+t_compare_num(u, unsigned int);
+t_compare_num(il, long);
+t_compare_num(ul, unsigned long);
+t_compare_num(ill, long long);
+t_compare_num(ull, unsigned long long);
+t_compare_num(sz, size_t);
+t_compare_num(i8, int8_t);
+t_compare_num(u8, uint8_t);
+t_compare_num(x8, uint8_t);
+t_compare_num(i16, int16_t);
+t_compare_num(u16, uint16_t);
+t_compare_num(x16, uint16_t);
+t_compare_num(i32, int32_t);
+t_compare_num(u32, uint32_t);
+t_compare_num(x32, uint32_t);
+t_compare_num(i64, int64_t);
+t_compare_num(u64, uint64_t);
+t_compare_num(x64, uint64_t);
+#undef t_compare_num
 
 /*
  * Useful constants
