@@ -6,6 +6,11 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])
 AM_CONFIG_HEADER([include/config.h])
 
+############################################################################
+#
+# Toolchain
+#
+
 # C compiler and features
 AC_LANG(C)
 AC_PROG_CC
@@ -23,21 +28,18 @@ LT_INIT()
 # other programs
 AC_PROG_INSTALL
 
-# OpenSSL versions of the unit tests for comparison
-AC_ARG_WITH([openssl],
-    AC_HELP_STRING([--with-openssl],
-	[build unit tests with OpenSSL support]),
-    [],
-    [with_openssl=no])
-AM_CONDITIONAL([WITH_OPENSSL], [test x"$with_openssl" = x"yes"])
+############################################################################
+#
+# Headers and functions
+#
 
-# RSAREF versions of the unit tests for comparison
-AC_ARG_WITH([rsaref],
-    AC_HELP_STRING([--with-rsaref],
-	[build unit tests with RSAREF support]),
-    [],
-    [with_rsaref=no])
-AM_CONDITIONAL([WITH_RSAREF], [test x"$with_rsaref" = x"yes"])
+AC_CHECK_HEADERS([endian.h sys/endian.h])
+AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
+
+############################################################################
+#
+# Build options
+#
 
 # Documentation
 AC_ARG_WITH([doc],
@@ -71,6 +73,27 @@ AC_ARG_WITH([oath],
     [with_oath=yes])
 AM_CONDITIONAL([WITH_OATH], [test x"$with_oath" = x"yes"])
 
+############################################################################
+#
+# Debugging
+#
+
+# OpenSSL versions of the unit tests for comparison
+AC_ARG_WITH([openssl],
+    AC_HELP_STRING([--with-openssl],
+	[build unit tests with OpenSSL support]),
+    [],
+    [with_openssl=no])
+AM_CONDITIONAL([WITH_OPENSSL], [test x"$with_openssl" = x"yes"])
+
+# RSAREF versions of the unit tests for comparison
+AC_ARG_WITH([rsaref],
+    AC_HELP_STRING([--with-rsaref],
+	[build unit tests with RSAREF support]),
+    [],
+    [with_rsaref=no])
+AM_CONDITIONAL([WITH_RSAREF], [test x"$with_rsaref" = x"yes"])
+
 # Developer-friendly compiler flags
 AC_ARG_ENABLE([developer-warnings],
     AS_HELP_STRING([--enable-developer-warnings],
@@ -85,9 +108,10 @@ AC_ARG_ENABLE([werror],
 	[use -Werror (default is NO)]),
     [CFLAGS="${CFLAGS} -Werror"])
 
-AC_CHECK_HEADERS([endian.h sys/endian.h])
-
-AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
+############################################################################
+#
+# Output
+#
 
 AC_CONFIG_FILES([
     Makefile
