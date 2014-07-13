@@ -1,0 +1,10 @@
+#!/bin/sh
+
+srcdir="@abs_top_srcdir@"
+export COVFILE="${srcdir}/test.cov"
+gmake -C "${srcdir}" clean
+rm "${COVFILE}"
+cov01 -1
+gmake -C "${srcdir}" check
+cov01 -0
+gmake -C "${srcdir}" clean

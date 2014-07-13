@@ -11,4 +11,6 @@ EXTRA_DIST = \
 	LICENSE \
 	README \
 	RELNOTES \
-	autogen.sh
+	autogen.sh \
+	tools/coverage.sh.in \
+	tools/setprops.sh
