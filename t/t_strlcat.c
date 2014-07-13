@@ -139,7 +139,7 @@ t_strlcat(char **desc CRYB_UNUSED, void *arg)
 	buf[T_BUFSIZE] = T_CANARY;
 	sz = strlcat(buf, t->in, T_BUFSIZE);
 	if (buf[T_BUFSIZE] != T_CANARY) {
-		t_verbose("buffer overflow");
+		t_verbose("buffer overflow\n");
 		return (0);
 	}
 	ret = t_compare_sz(t->sz, sz);
