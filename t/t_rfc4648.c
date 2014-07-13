@@ -134,28 +134,28 @@ static int
 b32enc(const char *in, size_t ilen, char *out, size_t *olen)
 {
 
-	return base32_encode((const uint8_t *)in, ilen, out, olen);
+	return (base32_encode((const uint8_t *)in, ilen, out, olen));
 }
 
 static int
 b32dec(const char *in, size_t ilen, char *out, size_t *olen)
 {
 
-	return base32_decode(in, ilen, (uint8_t *)out, olen);
+	return (base32_decode(in, ilen, (uint8_t *)out, olen));
 }
 
 static int
 b64enc(const char *in, size_t ilen, char *out, size_t *olen)
 {
 
-	return base64_encode((const uint8_t *)in, ilen, out, olen);
+	return (base64_encode((const uint8_t *)in, ilen, out, olen));
 }
 
 static int
 b64dec(const char *in, size_t ilen, char *out, size_t *olen)
 {
 
-	return base64_decode(in, ilen, (uint8_t *)out, olen);
+	return (base64_decode(in, ilen, (uint8_t *)out, olen));
 }
 
 static struct t_case t_cases[] = {
