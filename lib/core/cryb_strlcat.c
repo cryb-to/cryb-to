@@ -43,11 +43,12 @@ cryb_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t len;
 
-	for (len = 0; *dst && size > 1; ++len, --size)
-		dst++;
-	for (; *src && size > 1; ++len, --size)
-		*dst++ = *src++;
-	*dst = '\0';
+	for (len = 0; *dst && len < size; ++len, ++dst)
+		/* nothing */;
+	for (; *src && len + 1 < size; ++len, ++src, ++dst)
+		*dst = *src;
+	if (len < size)
+		*dst = '\0';
 	while (*src)
 		++len, ++src;
 	return (len);
