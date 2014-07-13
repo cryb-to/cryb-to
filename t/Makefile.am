@@ -35,7 +35,7 @@ endif
 TESTS =
 
 # libcryb-core
-TESTS += t_ctype
+TESTS += t_ctype t_strlcat
 
 # libcryb-enc
 TESTS += t_rfc3986 t_rfc4648
