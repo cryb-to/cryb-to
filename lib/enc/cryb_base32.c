@@ -122,7 +122,7 @@ base32_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
 			bits |= (uint64_t)in[1] << 24;
 		case 1:
 			bits |= (uint64_t)in[0] << 32;
-		CRYB_NO_DEFAULT_CASE
+		CRYB_NO_DEFAULT_CASE;
 		}
 		*out++ = b32enc[bits >> 35 & 0x1f];
 		*out++ = b32enc[bits >> 30 & 0x1f];

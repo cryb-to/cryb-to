@@ -114,7 +114,7 @@ base64_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
 			bits |= (uint32_t)in[1] << 8;
 		case 1:
 			bits |= (uint32_t)in[0] << 16;
-		CRYB_NO_DEFAULT_CASE
+		CRYB_NO_DEFAULT_CASE;
 		}
 		*out++ = b64enc[bits >> 18 & 0x3f];
 		*out++ = b64enc[bits >> 12 & 0x3f];
