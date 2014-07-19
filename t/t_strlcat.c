@@ -144,7 +144,7 @@ t_strlcat(char **desc CRYB_UNUSED, void *arg)
 	}
 	ret = t_compare_sz(t->sz, sz);
 	if (t->out != NULL)
-		ret = ret && t_compare_str(t->out, buf);
+		ret &= t_compare_str(t->out, buf);
 	return (ret);
 }
 
