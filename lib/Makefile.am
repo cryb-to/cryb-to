@@ -4,6 +4,7 @@ SUBDIRS = \
 	core \
 	digest \
 	enc \
+	hash \
 	mac \
 	rand \
 	oath

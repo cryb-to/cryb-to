@@ -121,6 +121,7 @@ AC_CONFIG_FILES([
     lib/core/Makefile
     lib/digest/Makefile
     lib/enc/Makefile
+    lib/hash/Makefile
     lib/mac/Makefile
     lib/oath/Makefile
     lib/rand/Makefile
