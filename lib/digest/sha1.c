@@ -71,10 +71,10 @@ sha1_init(sha1_ctx *ctx)
 #define sha1_maj(x, y, z)	(((x & y) ^ (x & z) ^ (y & z)))
 #define sha1_step(t, a, f, e, w)					\
 	do {								\
-		uint32_t T = rol(a, 5) + f + e + sha1_k[t/20] + w[t];	\
+		uint32_t T = rol32(a, 5) + f + e + sha1_k[t/20] + w[t];	\
 		e = d;							\
 		d = c;							\
-		c = rol(b, 30);						\
+		c = rol32(b, 30);					\
 		b = a;							\
 		a = T;							\
 	} while (0)
@@ -89,7 +89,7 @@ sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 		w[i] = be32toh(w[i]);
 	for (int i = 16; i < 80; ++i) {
 		w[i] = w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16];
-		w[i] = rol(w[i], 1);
+		w[i] = rol32(w[i], 1);
 	}
 	a = ctx->h[0];
 	b = ctx->h[1];

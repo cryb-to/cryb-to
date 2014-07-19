@@ -36,18 +36,21 @@
 #ifndef CRYB_BITWISE_H_INCLUDED
 #define CRYB_BITWISE_H_INCLUDED
 
-static inline uint32_t
-rol(uint32_t i, int n)
-{
+#define CRYB_ROL_ROR(N)							\
+	static inline uint##N##_t rol##N(uint##N##_t i, int n)		\
+	{								\
+		return (i << n | i >> (N - n));				\
+	}								\
+	static inline uint##N##_t ror##N(uint##N##_t i, int n)		\
+	{								\
+		return (i << (N - n) | i >> n);				\
+	}
 
-	return (i << n | i >> (32 - n));
-}
+CRYB_ROL_ROR(8);
+CRYB_ROL_ROR(16);
+CRYB_ROL_ROR(32);
+CRYB_ROL_ROR(64);
 
-static inline uint32_t
-ror(uint32_t i, int n)
-{
-
-	return (i << (32 - n) | i >> n);
-}
+#undef CRYB_ROL_ROR
 
 #endif

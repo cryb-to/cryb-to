@@ -85,25 +85,25 @@ md5_init(md5_ctx *ctx)
 #define md5_f(i, a, b, c, d, x, s) do {					\
 		(a) += (((b) & (c)) | (~(b) & (d)));			\
 		(a) += (x)[(i)] + md5_k[(i)];				\
-		(a) = rol((a), (s)) + (b);				\
+		(a) = rol32((a), (s)) + (b);				\
 	} while (0)
 
 #define md5_g(i, a, b, c, d, x, s) do {					\
 		(a) += (((b) & (d)) | ((c) & ~(d)));			\
 		(a) += (x)[(5 * (i) + 1) % 16] + md5_k[(i)];		\
-		(a) = rol((a), (s)) + (b);				\
+		(a) = rol32((a), (s)) + (b);				\
 	} while (0)
 
 #define md5_h(i, a, b, c, d, x, s) do {					\
 		(a) += ((b) ^ (c) ^ (d));				\
 		(a) += (x)[(3 * (i) + 5) % 16] + md5_k[(i)];		\
-		(a) = rol((a), (s)) + (b);				\
+		(a) = rol32((a), (s)) + (b);				\
 	} while (0)
 
 #define md5_i(i, a, b, c, d, x, s) do {					\
 		(a) += ((c) ^ ((b) | ~(d)));				\
 		(a) += (x)[(7 * (i)) % 16] + md5_k[(i)];		\
-		(a) = rol((a), (s)) + (b);				\
+		(a) = rol32((a), (s)) + (b);				\
 	} while (0)
 
 static void

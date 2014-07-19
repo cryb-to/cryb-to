@@ -71,10 +71,10 @@ murmur3_32_hash(const void *data, size_t len, uint32_t seed)
 		bytes += 4;
 		res -= 4;
 		k *= 0xcc9e2d51;
-		k = rol(k, 15);
+		k = rol32(k, 15);
 		k *= 0x1b873593;
 		hash ^= k;
-		hash = rol(hash, 13);
+		hash = rol32(hash, 13);
 		hash *= 5;
 		hash += 0xe6546b64;
 	}
@@ -91,7 +91,7 @@ murmur3_32_hash(const void *data, size_t len, uint32_t seed)
 		case 1:
 			k |= bytes[0];
 			k *= 0xcc9e2d51;
-			k = rol(k, 15);
+			k = rol32(k, 15);
 			k *= 0x1b873593;
 			hash ^= k;
 			break;
