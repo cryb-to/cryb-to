@@ -6,6 +6,7 @@ cryb_HEADERS = \
 	algorithm.h \
 	attributes.h \
 	bitwise.h \
+	cpe.h \
 	digest.h \
 	hash.h \
 	hmac.h \

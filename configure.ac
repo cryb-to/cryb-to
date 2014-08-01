@@ -119,6 +119,7 @@ AC_CONFIG_FILES([
     include/cryb/Makefile
     lib/Makefile
     lib/core/Makefile
+    lib/cpe/Makefile
     lib/digest/Makefile
     lib/enc/Makefile
     lib/hash/Makefile

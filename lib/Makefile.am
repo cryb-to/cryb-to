@@ -2,6 +2,7 @@
 
 SUBDIRS = \
 	core \
+	cpe \
 	digest \
 	enc \
 	hash \
