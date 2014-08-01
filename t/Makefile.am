@@ -3,6 +3,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
 noinst_HEADERS = t.h
+EXTRA_DIST =
 
 # Common support code
 check_LTLIBRARIES = libt.la
@@ -37,6 +38,8 @@ TESTS =
 
 # libcryb-core
 TESTS += t_ctype t_strlcat t_strlcpy
+TESTS += t_string t_wstring
+EXTRA_DIST += t__string.c
 
 # libcryb-enc
 TESTS += t_rfc3986 t_rfc4648
