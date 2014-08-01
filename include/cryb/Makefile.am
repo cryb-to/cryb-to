@@ -33,7 +33,8 @@ cryb_HEADERS = \
 	string.h \
 	to.h \
 	totp.h \
-	version.h
+	version.h \
+	wstring.h
 
 noinst_HEADERS = \
 	coverage.h \
