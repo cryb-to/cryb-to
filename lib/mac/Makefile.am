@@ -1,5 +1,3 @@
-# $Cryb$
-
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
 lib_LTLIBRARIES = libcryb-mac.la

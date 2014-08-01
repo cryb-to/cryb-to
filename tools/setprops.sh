@@ -17,7 +17,7 @@ while read f ; do
 		;&
 	*)
 		svn propset eol-style native $f
-		svn propset svn:keywords "Cryb=%H" $f
+		#svn propset svn:keywords "Cryb=%H" $f
 		;;
 	esac
 done

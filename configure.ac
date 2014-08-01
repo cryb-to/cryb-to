@@ -1,6 +1,5 @@
 AC_PREREQ([2.63])
-AC_REVISION([$Cryb$])
-AC_INIT([cryb.to], [trunk], [des@des.no], [crybto], [http://cryb.to/])
+AC_INIT([cryb.to], [devel], [des@des.no], [crybto], [http://cryb.to/])
 AC_CONFIG_SRCDIR([include/cryb/to.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign])

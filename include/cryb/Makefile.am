@@ -1,5 +1,3 @@
-# $Cryb$
-
 crybdir = $(includedir)/cryb
 
 cryb_HEADERS = \

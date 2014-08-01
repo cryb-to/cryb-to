@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# $Cryb$
-#
 
 libtoolize --copy --force
 aclocal -I m4

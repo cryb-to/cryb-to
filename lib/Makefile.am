@@ -1,5 +1,3 @@
-# $Cryb$
-
 SUBDIRS = \
 	core \
 	cpe \

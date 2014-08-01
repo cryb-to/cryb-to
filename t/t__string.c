@@ -25,10 +25,6 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * Author: Dag-Erling Smørgrav <des@des.no>
- *
- * $Cryb: trunk/t/t_ctype.c 8 2014-07-10 13:17:47Z des $
  */
 
 static int
