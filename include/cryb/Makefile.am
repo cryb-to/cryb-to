@@ -31,6 +31,7 @@ cryb_HEADERS = \
 	sha256.h \
 	sha384.h \
 	sha512.h \
+	string.h \
 	to.h \
 	totp.h \
 	version.h
