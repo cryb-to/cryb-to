@@ -30,14 +30,9 @@
 #ifndef CRYB_CPE_H_INCLUDED
 #define CRYB_CPE_H_INCLUDED
 
-#define CPE22_VER	202
-#define CPE22_NATTR	7
-
-#define CPE23_VER	203
-#define CPE23_NATTR	11
-
 #define cpe_name	cryb_cpe_name
 
+#define cpe22_ver	202
 enum cpe22_attributes {
 	/* CPE 2.2 attributes */
 	cpe22_part,
@@ -51,6 +46,7 @@ enum cpe22_attributes {
 	cpe22_nattr
 };
 
+#define cpe23_ver	203
 enum cpe23_attributes {
 	/* CPE 2.2 attributes */
 	cpe23_part	= cpe22_part,

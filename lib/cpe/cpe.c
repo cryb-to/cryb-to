@@ -103,8 +103,8 @@ cpe_new(void)
 
 	if ((ncpe = calloc(1, sizeof *ncpe)) == NULL)
 		return (NULL);
-	ncpe->ver = CPE23_VER;
-	ncpe->nattr = CPE23_NATTR;
+	ncpe->ver = cpe23_ver;
+	ncpe->nattr = cpe23_nattr;
 	return (ncpe);
 }
 
@@ -145,10 +145,10 @@ cpe_upgrade(const struct cpe_name *cpe)
 {
 
 	switch (cpe->ver) {
-	case CPE22_VER:
+	case cpe22_ver:
 		/* already latest */
 		return (cpe_clone(cpe));
-	case CPE23_VER:
+	case cpe23_ver:
 		return (cpe_upgrade22(cpe));
 	default:
 		return (NULL);
