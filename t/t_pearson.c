@@ -30,7 +30,6 @@
 #include "cryb/impl.h"
 
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <cryb/hash.h>

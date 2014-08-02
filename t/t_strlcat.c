@@ -30,7 +30,6 @@
 #include "cryb/impl.h"
 
 #include <stdint.h>
-#include <stdio.h>
 #include <string.h>
 
 #undef HAVE_STRLCAT

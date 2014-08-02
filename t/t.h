@@ -57,6 +57,7 @@ void t_verbose_hex(const uint8_t *, size_t);
 void t_verbose(const char *, ...)
 	CRYB_PRINTF(1, 2);
 
+#ifdef _IONBF /* proxy for <stdio.h> */
 /*
  * Convenience functions for temp files
  */
@@ -74,6 +75,7 @@ int t_feof(struct t_file *);
 void t_frewind(struct t_file *);
 void t_fclose(struct t_file *);
 void t_fcloseall(void);
+#endif
 
 /*
  * Various utilities
