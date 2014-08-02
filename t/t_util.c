@@ -84,31 +84,32 @@ t_compare_##n(t expected, t received)					\
 {									\
 									\
 	if (received != expected) {					\
-		t_verbose("expected %" pf "\n", expected);		\
-		t_verbose("received %" pf "\n", received);		\
+		t_verbose("expected " pf "\n", expected);		\
+		t_verbose("received " pf "\n", received);		\
 		return (0);						\
 	}								\
 	return (1);							\
 }
 
-t_compare_num(i, int, "d");
-t_compare_num(u, unsigned int, "u");
-t_compare_num(il, long, "ld");
-t_compare_num(ul, unsigned long, "lu");
-t_compare_num(ill, long long, "lld");
-t_compare_num(ull, unsigned long long, "llu");
-t_compare_num(sz, size_t, "zu");
-t_compare_num(i8, int8_t, PRId8);
-t_compare_num(u8, uint8_t, PRIu8);
-t_compare_num(x8, uint8_t, "#" PRIx8);
-t_compare_num(i16, int16_t, PRId16);
-t_compare_num(u16, uint16_t, PRIu16);
-t_compare_num(x16, uint16_t, "#" PRIx16);
-t_compare_num(i32, int32_t, PRId32);
-t_compare_num(u32, uint32_t, PRIu32);
-t_compare_num(x32, uint32_t, "#" PRIx32);
-t_compare_num(i64, int64_t, PRId64);
-t_compare_num(u64, uint64_t, PRIu64);
-t_compare_num(x64, uint64_t, "#" PRIx64);
+t_compare_num(i,	int,			"%d");
+t_compare_num(u,	unsigned int,		"%u");
+t_compare_num(il,	long,			"%ld");
+t_compare_num(ul,	unsigned long,		"%lu");
+t_compare_num(ill,	long long,		"%lld");
+t_compare_num(ull,	unsigned long long,	"%llu");
+t_compare_num(sz,	size_t,			"%zu");
+t_compare_num(ssz,	ssize_t,		"%zd");
+t_compare_num(i8,	int8_t,			"%" PRId8);
+t_compare_num(u8,	uint8_t,		"%" PRIu8);
+t_compare_num(x8,	uint8_t,		"0x%" PRIx8);
+t_compare_num(i16,	int16_t,		"%" PRId16);
+t_compare_num(u16,	uint16_t,		"%" PRIu16);
+t_compare_num(x16,	uint16_t,		"0x%" PRIx16);
+t_compare_num(i32,	int32_t,		"%" PRId32);
+t_compare_num(u32,	uint32_t,		"%" PRIu32);
+t_compare_num(x32,	uint32_t,		"0x%" PRIx32);
+t_compare_num(i64,	int64_t,		"%" PRId64);
+t_compare_num(u64,	uint64_t,		"%" PRIu64);
+t_compare_num(x64,	uint64_t,		"0x%" PRIx64);
 
 #undef t_compare_num
