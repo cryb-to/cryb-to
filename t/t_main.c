@@ -53,9 +53,13 @@ void
 t_verbose_hex(const uint8_t *buf, size_t len)
 {
 
-	if (verbose)
-		while (len--)
+	if (verbose) {
+		while (len--) {
 			fprintf(stderr, "%02x", *buf++);
+			if (len > 0 && len % 4 == 0)
+				fprintf(stderr, " ");
+		}
+	}
 }
 
 /*
