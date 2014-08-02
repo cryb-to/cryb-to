@@ -102,6 +102,7 @@ t_compare_num(x32, uint32_t);
 t_compare_num(i64, int64_t);
 t_compare_num(u64, uint64_t);
 t_compare_num(x64, uint64_t);
+t_compare_num(ptr, void *);
 #undef t_compare_num
 
 /*
