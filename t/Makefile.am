@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 # Common support code
 check_LTLIBRARIES = libt.la
-libt_la_SOURCES = t_main.c t_file.c t_util.c t_const.c
+libt_la_SOURCES = t_main.c t_file.c t_util.c t_const.c t_malloc.c
 
 # Link in the test driver and the full cryb library
 LDADD = $(builddir)/libt.la \
