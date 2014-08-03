@@ -108,11 +108,14 @@ static struct mapping *mappings;
 /* if non-zero, all allocations fail */
 int t_malloc_fail;
 
+/* if non-zero, unintentional allocation failures are fatal */
+int t_malloc_fatal;
+
 /*
  * Return a pointer to inaccessible memory.
  */
 static void *
-malloc_null(void)
+t_malloc_null(void)
 {
 	struct bucket *b;
 
@@ -128,8 +131,12 @@ malloc_null(void)
 	return (b->base);
 }
 
+/*
+ * Allocate a direct mapping.  Round up the size to the nearest multiple
+ * of 8192, call mmap() with the correct arguments, and verify the result.
+ */
 static void *
-malloc_mapped(size_t size)
+t_malloc_mapped(size_t size)
 {
 	struct mapping *m;
 
@@ -150,8 +157,13 @@ malloc_mapped(size_t size)
 	return (m->base);
 }
 
+/*
+ * Allocate from a bucket.  Round up the size to the nearest power of two,
+ * select the appropriate bucket, and return the first free or unused
+ * block.
+ */
 static void *
-malloc_bucket(size_t size)
+t_malloc_bucket(size_t size)
 {
 	unsigned int shift;
 	struct bucket *b;
@@ -196,62 +208,72 @@ malloc_bucket(size_t size)
 	return (p);
 }
 
+/*
+ * Core malloc() logic: select the correct backend based on the requested
+ * allocation size and call it.
+ */
+void *
+t_malloc(size_t size)
+{
+
+	/* select and call the right backend */
+	if (size == 0)
+		return (t_malloc_null());
+	else if (size > (1 << BUCKET_MAX_SHIFT))
+		return (t_malloc_mapped(size));
+	else
+		return (t_malloc_bucket(size));
+}
+
+/*
+ * Allocate an object of the requested size.  According to the standard,
+ * the content of the allocated memory is undefined; we fill it with
+ * easily recognizable garbage.
+ */
 void *
 malloc(size_t size)
 {
 	void *p;
 
-	/* asked to fail */
 	if (t_malloc_fail) {
 		errno = ENOMEM;
 		return (NULL);
 	}
-
-	/* select and call the right backend */
-	if (size == 0)
-		p = malloc_null();
-	else if (size > (1 << BUCKET_MAX_SHIFT))
-		p = malloc_mapped(size);
-	else
-		p = malloc_bucket(size);
-	if (p == NULL)
-		return (NULL);
-
-	/* fill with garbage */
+	p = t_malloc(size);
+	if (p == NULL && t_malloc_fatal)
+		abort();
 	memset(p, BUCKET_FILL_ALLOC, size);
-
-	/* done! */
+	/* XXX fill the slop with garbage */
 	return (p);
 }
 
+/*
+ * Allocate an array of n objects of the requested size and initialize it
+ * to zero.
+ */
 void *
 calloc(size_t n, size_t size)
 {
 	void *p;
 
-	/* asked to fail */
 	if (t_malloc_fail) {
 		errno = ENOMEM;
 		return (NULL);
 	}
-
-	/* select and call the right backend */
-	if (size == 0)
-		p = malloc_null();
-	else if (size > (1 << BUCKET_MAX_SHIFT))
-		p = malloc_mapped(n * size);
-	else
-		p = malloc_bucket(n * size);
-	if (p == NULL)
-		return (NULL);
-
-	/* fill with zeroes */
+	p = t_malloc(n * size);
+	if (p == NULL && t_malloc_fatal)
+		abort();
 	memset(p, 0, n * size);
-
-	/* done! */
+	/* XXX fill the slop with garbage */
 	return (p);
 }
 
+/*
+ * Grow or shrink an allocated object, preserving its contents up to the
+ * smaller of the object's original and new size.  According to the
+ * standard, the object may be either grown or shrunk in place or replaced
+ * with a new one.  We always allocate a new object and free the old one.
+ */
 void *
 realloc(void *o, size_t size)
 {
@@ -290,16 +312,26 @@ realloc(void *o, size_t size)
 	abort();
 
 found:
-	if ((p = malloc(size)) == NULL)
+	if ((p = t_malloc(size)) == NULL) {
+		if (t_malloc_fatal)
+			abort();
 		return (NULL);
+	}
 	if (size > osize)
 		memcpy(p, o, osize);
 	else
 		memcpy(p, o, size);
+	/* XXX fill the slop with garbage */
 	free(o);
 	return (p);
 }
 
+/*
+ * Free an allocated object.  According to the standard, the content of
+ * the memory previously occupied by the object is undefined.  We fill it
+ * with easily recognizable garbage to facilitate debugging use-after-free
+ * bugs.
+ */
 void
 free(void *p)
 {

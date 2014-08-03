@@ -111,4 +111,10 @@ t_compare_num(ptr, void *);
 extern const uint8_t t_zero[256];
 extern const uint8_t t_seq8[256];
 
+/*
+ * Debugging allocator
+ */
+extern int t_malloc_fail;
+extern int t_malloc_fatal;
+
 #endif

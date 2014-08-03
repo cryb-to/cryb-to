@@ -155,6 +155,9 @@ main(int argc, char *argv[])
 	char *desc;
 	int opt;
 
+	/* make all unintentional allocation failures fatal */
+	t_malloc_fatal = 1;
+
 	/* make stdout line-buffered to preserve ordering */
 	setvbuf(stdout, NULL, _IOLBF, 0);
 
