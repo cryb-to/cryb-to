@@ -66,7 +66,6 @@ mpi_cmp_abs(cryb_mpi *X, cryb_mpi *Y)
 int
 mpi_cmp(cryb_mpi *X, cryb_mpi *Y)
 {
-	int i;
 
 	if (X->neg) {
 		if (Y->neg)
