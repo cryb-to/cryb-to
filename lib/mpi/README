@@ -1,0 +1,16 @@
+Portable multiple-precision integer library.
+
+The interface is loosely based on XySSL's MPI library.  The
+implementation was written from scratch based on the algorithms
+described in Menezes, van Oorschot and Vanstone: _Handbook of Applied
+Cryptography_, CRC Press, 1996.  The full text of the HAC is available
+for personal use at http://www.cacr.math.uwaterloo.ca/hac/.
+
+This implementation sacrifices performance for portability and
+readability, but attempts have been made to structure it in such a way
+that critical portions can easily be replaced with machine-dependent
+optimized versions.
+
+The code assumes a 64-bit machine or a 32-bit machine where 64-bit
+integer arithmetic is supported but not necessarily efficient; 64-bit
+operations are used only to simplify overflow handling.

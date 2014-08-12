@@ -14,6 +14,7 @@ LDADD = $(builddir)/libt.la \
 	$(top_builddir)/lib/digest/libcryb-digest.la \
 	$(top_builddir)/lib/hash/libcryb-hash.la \
 	$(top_builddir)/lib/mac/libcryb-mac.la \
+	$(top_builddir)/lib/mpi/libcryb-mpi.la \
 	$(top_builddir)/lib/rand/libcryb-rand.la \
 	$(top_builddir)/lib/oath/libcryb-oath.la
 
@@ -106,5 +107,8 @@ t_hmac_sha512_openssl_SOURCES = t_hmac_sha512.c
 t_hmac_sha512_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha512_openssl_LDADD = $(OPENSSL_LDADD)
 endif
+
+# libcryb-mpi
+TESTS += t_mpi
 
 check_PROGRAMS = $(TESTS)

@@ -5,6 +5,7 @@ SUBDIRS = \
 	enc \
 	hash \
 	mac \
+	mpi \
 	rand \
 	oath
 

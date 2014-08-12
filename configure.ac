@@ -123,6 +123,7 @@ AC_CONFIG_FILES([
     lib/enc/Makefile
     lib/hash/Makefile
     lib/mac/Makefile
+    lib/mpi/Makefile
     lib/oath/Makefile
     lib/rand/Makefile
     lib/rsaref/Makefile

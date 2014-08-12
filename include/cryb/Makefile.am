@@ -18,6 +18,7 @@ cryb_HEADERS = \
 	md2.h \
 	md4.h \
 	md5.h \
+	mpi.h \
 	oath.h \
 	oath_constants.h \
 	oath_types.h \
