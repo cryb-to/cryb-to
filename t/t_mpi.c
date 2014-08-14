@@ -200,6 +200,7 @@ t_mpi_grow_twice(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 		ret &= 0;
 	}
 	ret &= t_mpi_grown(&x);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -256,15 +257,15 @@ t_mpi_destroy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_set_positive(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x;
+	cryb_mpi x = { };
 	int ret = 1;
 
-	mpi_init(&x);
 	mpi_set(&x, 0x19700101);
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
 	ret &= t_compare_i(0, x.neg);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -274,15 +275,15 @@ t_mpi_set_positive(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_set_negative(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x;
+	cryb_mpi x = { };
 	int ret = 1;
 
-	mpi_init(&x);
 	mpi_set(&x, -0x19700101);
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
 	ret &= t_compare_u(1, x.neg);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -293,11 +294,14 @@ static int
 t_mpi_negate_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
 	cryb_mpi x = { };
+	int ret = 1;
 
 	mpi_zero(&x);
 	assert(x.words[0] == 0 && x.msb == 0 && x.neg == 0);
 	mpi_negate(&x);
-	return (t_mpi_is_zero(&x));
+	ret &= t_mpi_is_zero(&x);
+	mpi_destroy(&x);
+	return (ret);
 }
 
 /*
@@ -322,6 +326,7 @@ t_mpi_negate_nonzero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
 	ret &= t_compare_u(1, x.neg);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -342,6 +347,7 @@ t_mpi_copy_same(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
 	ret &= t_compare_u(1, x.neg);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -361,6 +367,7 @@ t_mpi_copy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, y.words[0]);
 	ret &= t_compare_u(29, y.msb);
 	ret &= t_compare_u(1, y.neg);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -384,6 +391,8 @@ t_mpi_copy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, y.words[0]);
 	ret &= t_compare_u(29, y.msb);
 	ret &= t_compare_u(1, y.neg);
+	mpi_destroy(&x);
+	mpi_destroy(&y);
 	return (ret);
 }
 
@@ -404,6 +413,8 @@ t_mpi_copy_long(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_mem(x.words, y.words, (x.msb + 7) / 8);
 	ret &= t_compare_u(x.msb, y.msb);
 	ret &= t_compare_u(x.neg, y.neg);
+	mpi_destroy(&x);
+	mpi_destroy(&y);
 	return (ret);
 }
 
@@ -427,6 +438,8 @@ t_mpi_swap_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, y.words[0]);
 	ret &= t_compare_u(29, y.msb);
 	ret &= t_compare_u(1, y.neg);
+	mpi_destroy(&x);
+	mpi_destroy(&y);
 	return (ret);
 }
 
@@ -454,6 +467,8 @@ t_mpi_swap_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_x32(0x19700101, y.words[0]);
 	ret &= t_compare_u(29, y.msb);
 	ret &= t_compare_u(1, y.neg);
+	mpi_destroy(&x);
+	mpi_destroy(&y);
 	return (ret);
 }
 
@@ -534,6 +549,7 @@ t_mpi_load(char **desc CRYB_UNUSED, void *arg)
 	mpi_load(&x, tc->v, tc->vlen);
 	ret &= t_compare_mem(tc->e, x.words, sizeof tc->e);
 	ret &= t_compare_u(tc->msb, x.msb);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -553,6 +569,38 @@ t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	}
 	ret &= t_compare_mem(large_e, x.words, sizeof large_e);
 	ret &= t_compare_u(256 * 8, x.msb);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+
+/***************************************************************************
+ * Comparison
+ */
+
+static struct t_cmp_case {
+	const char *desc;
+	uint8_t a[16];
+	size_t alen;
+	uint8_t b[16];
+	size_t blen;
+	int cmpabs, cmp;
+} t_cmp_cases[] = {
+};
+
+static int
+t_mpi_cmp(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_cmp_case *tc = arg;
+	cryb_mpi a = { }, b = { };
+	int ret = 1;
+
+	mpi_load(&a, tc->a, tc->alen);
+	mpi_load(&b, tc->b, tc->blen);
+	ret &= t_compare_int(tc->cmpabs, mpi_cmp_abs(&a, &b));
+	ret &= t_compare_int(tc->cmp, mpi_cmp(&a, &b));
+	mpi_destroy(&a);
+	mpi_destroy(&b);
 	return (ret);
 }
 
@@ -627,11 +675,15 @@ t_mpi_lsh(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_lsh_case *tc = arg;
 	cryb_mpi x = { }, e = { };
+	int ret = 1;
 
 	mpi_load(&x, tc->v, tc->vlen);
 	mpi_load(&e, tc->e, tc->elen);
 	mpi_lshift(&x, tc->n);
-	return (t_compare_mem(e.swords, x.swords, sizeof e.swords));
+	ret &= t_compare_mem(e.swords, x.swords, sizeof e.swords);
+	mpi_destroy(&x);
+	mpi_destroy(&e);
+	return (ret);
 }
 
 /*
@@ -653,6 +705,7 @@ t_mpi_large_lsh(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_mem(t_zero, x.words, sizeof x.words[0]);
 	ret &= t_compare_mem(large_e, x.words + 1, sizeof large_e);
 	ret &= t_compare_u(256 * 8 + 32, x.msb);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -722,11 +775,15 @@ t_mpi_rsh(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_rsh_case *tc = arg;
 	cryb_mpi x = { }, e = { };
+	int ret = 1;
 
 	mpi_load(&x, tc->v, tc->vlen);
 	mpi_load(&e, tc->e, tc->elen);
 	mpi_rshift(&x, tc->n);
-	return (t_compare_mem(e.swords, x.swords, sizeof e.swords));
+	ret &= t_compare_mem(e.swords, x.swords, sizeof e.swords);
+	mpi_destroy(&x);
+	mpi_destroy(&e);
+	return (ret);
 }
 
 
@@ -797,6 +854,10 @@ t_mpi_add(char **desc CRYB_UNUSED, void *arg)
 	ret &= t_compare_mem(e.swords, x.swords, CRYB_MPI_SWORDS);
 	ret &= t_compare_u(e.msb, x.msb);
 	ret &= t_compare_u(e.neg, x.neg);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
 	return (ret);
 }
 
@@ -816,6 +877,9 @@ t_mpi_add_b_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_mem(e.swords, a.swords, CRYB_MPI_SWORDS);
 	ret &= t_compare_u(e.msb, a.msb);
 	ret &= t_compare_u(e.neg, a.neg);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
 	return (ret);
 }
 
@@ -835,6 +899,8 @@ t_mpi_add_a_to_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_mem(e.swords, b.swords, CRYB_MPI_SWORDS);
 	ret &= t_compare_u(e.msb, b.msb);
 	ret &= t_compare_u(e.neg, b.neg);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
 	return (ret);
 }
 
@@ -883,9 +949,16 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_swap_static, NULL, "swap (static)");
 	t_add_test(t_mpi_swap_grown, NULL, "swap (grown)");
 
+	/* load / store */
 	for (i = 0; i < sizeof t_load_cases / sizeof t_load_cases[0]; ++i)
 		t_add_test(t_mpi_load, &t_load_cases[i], t_load_cases[i].desc);
 	t_add_test(t_mpi_large_load, NULL, "large load");
+
+	/* comparison */
+	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
+		t_add_test(t_mpi_cmp, &t_cmp_cases[i], t_cmp_cases[i].desc);
+
+	/* left / right shift */
 	for (i = 0; i < sizeof t_lsh_cases / sizeof t_lsh_cases[0]; ++i)
 		t_add_test(t_mpi_lsh, &t_lsh_cases[i], t_lsh_cases[i].desc);
 	t_add_test(t_mpi_large_lsh, NULL, "large left shift");
@@ -893,6 +966,8 @@ t_prepare(int argc, char *argv[])
 		t_add_test(t_mpi_rsh, &t_rsh_cases[i], t_rsh_cases[i].desc);
 	for (i = 0; i < sizeof t_add_cases / sizeof t_add_cases[0]; ++i)
 		t_add_test(t_mpi_add, &t_add_cases[i], t_add_cases[i].desc);
+
+	/* add / subtract */
 	t_add_test(t_mpi_add_a_to_b, NULL, "add into first operand");
 	t_add_test(t_mpi_add_b_to_a, NULL, "add into second operand");
 	return (0);
@@ -901,4 +976,6 @@ t_prepare(int argc, char *argv[])
 void
 t_cleanup(void)
 {
+
+	mpi_destroy(&z);
 }
