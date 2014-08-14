@@ -586,6 +586,12 @@ static struct t_cmp_case {
 	size_t blen;
 	int cmpabs, cmp;
 } t_cmp_cases[] = {
+	{
+		"0 == 0",
+		{ 0x00, }, 1,
+		{ 0x00, }, 1,
+		0, 0,
+	},
 };
 
 static int
@@ -597,8 +603,8 @@ t_mpi_cmp(char **desc CRYB_UNUSED, void *arg)
 
 	mpi_load(&a, tc->a, tc->alen);
 	mpi_load(&b, tc->b, tc->blen);
-	ret &= t_compare_int(tc->cmpabs, mpi_cmp_abs(&a, &b));
-	ret &= t_compare_int(tc->cmp, mpi_cmp(&a, &b));
+	ret &= t_compare_i(tc->cmpabs, mpi_cmp_abs(&a, &b));
+	ret &= t_compare_i(tc->cmp, mpi_cmp(&a, &b));
 	mpi_destroy(&a);
 	mpi_destroy(&b);
 	return (ret);

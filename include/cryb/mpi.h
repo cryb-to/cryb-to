@@ -53,5 +53,7 @@ int mpi_lshift(cryb_mpi *, unsigned int);
 int mpi_rshift(cryb_mpi *, unsigned int);
 int mpi_add_abs(cryb_mpi *, cryb_mpi *, cryb_mpi *);
 int mpi_sub_abs(cryb_mpi *, cryb_mpi *, cryb_mpi *);
+int mpi_cmp_abs(cryb_mpi *, cryb_mpi *);
+int mpi_cmp(cryb_mpi *, cryb_mpi *);
 
 #endif
