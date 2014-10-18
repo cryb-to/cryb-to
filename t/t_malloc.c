@@ -123,7 +123,7 @@ t_malloc_null(void)
 	if (b->base == NULL) {
 		b->base = mmap(NULL, BUCKET_SIZE, PROT_NONE,
 		    MAP_ANON | MAP_NOCORE | MAP_NOSYNC | MAP_SHARED, -1, 0);
-		if (b->base == NULL)
+		if (b->base == MAP_FAILED)
 			abort();
 		b->top = b->base + BUCKET_SIZE;
 		b->free = b->unused = b->base;
@@ -145,7 +145,7 @@ t_malloc_mapped(size_t size)
 	size = ((size + 8191) >> 13) << 13;
 	m->base = mmap(NULL, size, PROT_READ | PROT_WRITE,
 	    MAP_ANON | MAP_NOSYNC | MAP_SHARED, -1, 0);
-	if (m->base == NULL) {
+	if (m->base == MAP_FAILED) {
 		free(m);
 		errno = ENOMEM;
 		return (NULL);
@@ -179,7 +179,7 @@ t_malloc_bucket(size_t size)
 	if (b->base == NULL) {
 		b->base = mmap(NULL, BUCKET_SIZE, PROT_READ | PROT_WRITE,
 		    MAP_ANON | MAP_NOSYNC | MAP_SHARED, -1, 0);
-		if (b->base == NULL)
+		if (b->base == MAP_FAILED)
 			abort();
 		b->top = b->base + BUCKET_SIZE;
 		b->free = b->unused = b->base;
