@@ -200,10 +200,10 @@ t_sha224_perf(char **desc, void *arg)
 
 	if ((msg = calloc(1, msglen)) == NULL)
 		err(1, "calloc()");
-	clock_gettime(CLOCK_MONOTONIC_PRECISE, &ts);
+	clock_gettime(CLOCK_MONOTONIC, &ts);
 	for (int i = 0; i < T_PERF_ITERATIONS; ++i)
 		t_sha224_complete(msg, msglen, digest);
-	clock_gettime(CLOCK_MONOTONIC_PRECISE, &te);
+	clock_gettime(CLOCK_MONOTONIC, &te);
 	free(msg);
 	ns = te.tv_sec * 1000000000LU + te.tv_nsec;
 	ns -= ts.tv_sec * 1000000000LU + ts.tv_nsec;

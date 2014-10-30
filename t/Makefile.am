@@ -8,7 +8,8 @@ check_LTLIBRARIES = libt.la
 libt_la_SOURCES = t_main.c t_file.c t_util.c t_const.c t_malloc.c
 
 # Link in the test driver and the full cryb library
-LDADD = $(builddir)/libt.la \
+LDADD = ${RT_LIBS} \
+	$(builddir)/libt.la \
 	$(top_builddir)/lib/core/libcryb-core.la \
 	$(top_builddir)/lib/enc/libcryb-enc.la \
 	$(top_builddir)/lib/digest/libcryb-digest.la \
