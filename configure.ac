@@ -35,6 +35,10 @@ AC_PROG_INSTALL
 AC_CHECK_HEADERS([endian.h sys/endian.h])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 
+# For tracing allocations in unit tests
+AC_CHECK_HEADERS([sys/ktrace.h])
+AC_CHECK_FUNCS([utrace])
+
 ############################################################################
 #
 # Build options
