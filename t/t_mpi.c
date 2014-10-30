@@ -120,7 +120,7 @@ t_mpi_init(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 }
 
 /*
- * Very basic value-setting test, zero.
+ * Very basic value-setting test, zero.  More complex cases below.
  */
 static int
 t_mpi_set_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
@@ -139,7 +139,7 @@ t_mpi_set_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_fast_init(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 
 	mpi_set(&x, 0);
 	return (t_mpi_is_zero(&x));
@@ -151,7 +151,7 @@ t_mpi_fast_init(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_grow_ok(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, 1);
@@ -169,7 +169,7 @@ t_mpi_grow_ok(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_grow_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	++t_malloc_fail;
@@ -186,7 +186,7 @@ t_mpi_grow_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_grow_twice(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	uint32_t *p;
 	int ret = 1;
 
@@ -210,7 +210,7 @@ t_mpi_grow_twice(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_destroy_uninit(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 
 	mpi_destroy(&x);
 	return (t_mpi_is_zero(&x));
@@ -222,7 +222,7 @@ t_mpi_destroy_uninit(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_destroy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 
 	assert(sizeof large_v >= sizeof x.swords);
 	mpi_load(&x, large_v, sizeof x.swords);
@@ -237,7 +237,7 @@ t_mpi_destroy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_destroy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 
 	assert(sizeof large_v > sizeof x.swords);
 	mpi_load(&x, large_v, sizeof large_v);
@@ -257,7 +257,7 @@ t_mpi_destroy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_set_positive(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, 0x19700101);
@@ -275,7 +275,7 @@ t_mpi_set_positive(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_set_negative(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -293,7 +293,7 @@ t_mpi_set_negative(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_negate_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_zero(&x);
@@ -310,7 +310,7 @@ t_mpi_negate_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_negate_nonzero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -336,7 +336,7 @@ t_mpi_negate_nonzero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_copy_same(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	/* how do you really test this?  oh well */
@@ -357,7 +357,7 @@ t_mpi_copy_same(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_copy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { }, y = { };
+	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -377,7 +377,7 @@ t_mpi_copy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_copy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { }, y = { };
+	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -402,7 +402,7 @@ t_mpi_copy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_copy_long(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { }, y = { };
+	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, large_v, sizeof large_v);
@@ -424,7 +424,7 @@ t_mpi_copy_long(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_swap_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { }, y = { };
+	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -449,7 +449,7 @@ t_mpi_swap_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_swap_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { }, y = { };
+	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
@@ -543,7 +543,7 @@ static int
 t_mpi_load(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_load_case *tc = arg;
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, tc->v, tc->vlen);
@@ -559,7 +559,7 @@ t_mpi_load(char **desc CRYB_UNUSED, void *arg)
 static int
 t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, large_v, sizeof large_v);
@@ -598,7 +598,7 @@ static int
 t_mpi_cmp(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_cmp_case *tc = arg;
-	cryb_mpi a = { }, b = { };
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&a, tc->a, tc->alen);
@@ -680,7 +680,7 @@ static int
 t_mpi_lsh(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_lsh_case *tc = arg;
-	cryb_mpi x = { }, e = { };
+	cryb_mpi x = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, tc->v, tc->vlen);
@@ -699,7 +699,7 @@ t_mpi_lsh(char **desc CRYB_UNUSED, void *arg)
 static int
 t_mpi_large_lsh(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi x = { };
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, large_v, sizeof large_v);
@@ -780,7 +780,7 @@ static int
 t_mpi_rsh(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_rsh_case *tc = arg;
-	cryb_mpi x = { }, e = { };
+	cryb_mpi x = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&x, tc->v, tc->vlen);
@@ -850,7 +850,8 @@ static int
 t_mpi_add(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_add_case *tc = arg;
-	cryb_mpi a = { }, b = { }, e = { }, x = { };
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&a, tc->a, (tc->amsb + 7) / 8);
@@ -873,7 +874,7 @@ t_mpi_add(char **desc CRYB_UNUSED, void *arg)
 static int
 t_mpi_add_b_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi a = { }, b = { }, e = { };
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&a, 0x19700101);
@@ -895,7 +896,7 @@ t_mpi_add_b_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 static int
 t_mpi_add_a_to_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
-	cryb_mpi a = { }, b = { }, e = { };
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_set(&a, 0x19700101);

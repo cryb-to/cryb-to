@@ -40,6 +40,9 @@ typedef struct cryb_mpi {
 	uint32_t	 swords[CRYB_MPI_SWORDS];
 } cryb_mpi;
 
+/* all-zeroes MPI - not the same as a zero-value MPI! */
+#define CRYB_MPI_ZERO	{ 0, 0, 0, 0, { 0 } }
+
 void mpi_init(cryb_mpi *);
 void mpi_destroy(cryb_mpi *);
 int mpi_grow(cryb_mpi *, unsigned int);
