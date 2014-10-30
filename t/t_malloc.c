@@ -32,6 +32,14 @@
 #include <sys/param.h>
 #include <sys/mman.h>
 
+#ifndef MAP_NOCORE
+#define MAP_NOCORE 0
+#endif
+
+#ifndef MAP_NOSYNC
+#define MAP_NOSYNC 0
+#endif
+
 #ifdef HAVE_UTRACE
 #include <sys/uio.h>
 #include <sys/ktrace.h>
@@ -39,6 +47,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -216,7 +225,7 @@ t_malloc_bucket(size_t size)
 	void *p;
 
 	/* select bucket */
-	for (shift = BUCKET_MIN_SHIFT; (1 << shift) < size; ++shift)
+	for (shift = BUCKET_MIN_SHIFT; (1U << shift) < size; ++shift)
 		/* nothing */ ;
 	assert(shift >= BUCKET_MIN_SHIFT && shift <= BUCKET_MAX_SHIFT);
 	b = &buckets[shift];
@@ -243,7 +252,7 @@ t_malloc_bucket(size_t size)
 	/* update the free block pointer */
 	if (b->free == b->unused) {
 		/* never been used before, increment free pointer */
-		b->free = b->unused = b->unused + (1 << shift);
+		b->free = b->unused = b->unused + (1U << shift);
 	} else {
 		/* previously used, disconnect from free list */
 		b->free = *(char **)p;
@@ -266,7 +275,7 @@ t_malloc(size_t size)
 	/* select and call the right backend */
 	if (size == 0)
 		return (t_malloc_null());
-	else if (size > (1 << BUCKET_MAX_SHIFT))
+	else if (size > (1U << BUCKET_MAX_SHIFT))
 		return (t_malloc_mapped(size));
 	else
 		return (t_malloc_bucket(size));
@@ -351,8 +360,8 @@ realloc(void *o, size_t size)
 		b = &buckets[shift];
 		if (o >= b->base && o < b->top) {
 			/* found our bucket */
-			assert(PDIFF(o, b->base) % (1 << shift) == 0);
-			osize = 1 << shift;
+			assert(PDIFF(o, b->base) % (1U << shift) == 0);
+			osize = 1U << shift;
 			goto found;
 		}
 	}
@@ -422,8 +431,8 @@ free(void *p)
 		b = &buckets[shift];
 		if (p >= b->base && p < b->top) {
 			/* found our bucket */
-			assert(PDIFF(p, b->base) % (1 << shift) == 0);
-			memset(p, BUCKET_FILL_FREE, 1 << shift);
+			assert(PDIFF(p, b->base) % (1U << shift) == 0);
+			memset(p, BUCKET_FILL_FREE, 1U << shift);
 			/* connect the block to the free list */
 			*(char **)p = b->free;
 			b->free = p;
