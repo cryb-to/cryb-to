@@ -201,13 +201,15 @@ main(int argc, char *argv[])
 		}
 	}
 
-	/* clean up and exit */
+	/* clean up as much as possible before we exit */
 	t_cleanup();
+	t_fcloseall();
 	for (n = 0; n < t_plan_len; ++n) {
 		free(t_plan[n]->desc);
 		free(t_plan[n]);
 	}
 	free(t_plan);
+	setvbuf(stdout, NULL, _IONBF, 0);
 	if (verbose)
 		t_malloc_printstats(stderr);
 	exit(fail > 0 ? 1 : 0);
