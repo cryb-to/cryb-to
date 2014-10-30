@@ -34,8 +34,16 @@ AC_PROG_INSTALL
 #
 
 AC_CHECK_HEADERS([endian.h sys/endian.h])
-AC_CHECK_FUNCS([be32enc be32dec le32enc le32dec])
-AC_CHECK_FUNCS([be64enc be64dec le64enc le64dec])
+AC_CHECK_DECLS([be32enc, be32dec, le32enc, le32dec,
+    be64enc, be64dec, le64enc, le64dec], [], [], [[
+#ifdef HAVE_SYS_ENDIAN_H
+#include <sys/endian.h>
+#endif
+#ifdef HAVE_ENDIAN_H
+#include <endian.h>
+#endif
+]])
+AC_CHECK_DECLS([])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 
 # For tracing allocations in unit tests
