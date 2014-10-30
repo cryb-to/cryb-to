@@ -138,6 +138,24 @@ t_add_tests(struct t_test *t, int n)
 }
 
 /*
+ * Run a single test
+ */
+static int
+t_run_test(struct t_test *t, int n)
+{
+	char *desc;
+
+	desc = t->desc ? t->desc : "no description";
+	if ((*t->func)(&desc, t->arg)) {
+		printf("ok %d - %s\n", n + 1, desc);
+		return (1);
+	} else {
+		printf("not ok %d - %s\n", n + 1, desc);
+		return (0);
+	}
+}
+
+/*
  * Print usage string and exit.
  */
 static void
@@ -152,7 +170,6 @@ int
 main(int argc, char *argv[])
 {
 	unsigned int n, pass, fail;
-	char *desc;
 	int opt;
 
 	/* make all unintentional allocation failures fatal */
@@ -189,17 +206,9 @@ main(int argc, char *argv[])
 		errx(1, "no plan\n");
 
 	/* run the tests */
-	printf("1..%zu\n", t_plan_len);
-	for (n = pass = fail = 0; n < t_plan_len; ++n) {
-		desc = t_plan[n]->desc ? t_plan[n]->desc : "no description";
-		if ((*t_plan[n]->func)(&desc, t_plan[n]->arg)) {
-			printf("ok %d - %s\n", n + 1, desc);
-			++pass;
-		} else {
-			printf("not ok %d - %s\n", n + 1, desc);
-			++fail;
-		}
-	}
+	printf("1..%zu\n", t_plan_len + 1);
+	for (n = pass = fail = 0; n < t_plan_len; ++n)
+		t_run_test(t_plan[n], n + 1) ? ++pass : ++fail;
 
 	/* clean up as much as possible before we exit */
 	t_cleanup();
@@ -212,5 +221,6 @@ main(int argc, char *argv[])
 	setvbuf(stdout, NULL, _IONBF, 0);
 	if (verbose)
 		t_malloc_printstats(stderr);
+	t_run_test(&t_memory_leak, t_plan_len + 1) ? ++pass : ++fail;
 	exit(fail > 0 ? 1 : 0);
 }

@@ -467,3 +467,32 @@ t_malloc_printstats(FILE *f)
 			    b->nalloc - b->nfree);
 	}
 }
+
+/*
+ * Test that fails if we leaked memory
+ */
+static int
+t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
+{
+	struct bucket *b;
+	unsigned int shift;
+	unsigned long nleaked;
+
+	for (nleaked = shift = 0; shift <= BUCKET_MAX_SHIFT; ++shift) {
+		b = &buckets[shift];
+		nleaked += b->nalloc - b->nfree;
+	}
+	if (nleaked > 0) {
+		asprintf(desc, "%lu allocation(s) leaked", nleaked);
+		return (0);
+	} else {
+		*desc = "no memory leaked";
+		return (1);
+	}
+}
+
+struct t_test t_memory_leak = {
+	.func = &t_malloc_leaked,
+	.arg = NULL,
+	.desc = "memory leak check",
+};

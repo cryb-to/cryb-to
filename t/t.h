@@ -119,5 +119,6 @@ extern int t_malloc_fatal;
 #ifdef _IONBF /* proxy for <stdio.h> */
 void t_malloc_printstats(FILE *);
 #endif
+extern struct t_test t_memory_leak;
 
 #endif
