@@ -15,6 +15,7 @@ AC_LANG(C)
 AC_PROG_CC
 AC_PROG_CC_STDC
 AC_PROG_CPP
+AC_GNU_SOURCE
 AC_C_CONST
 AC_C_RESTRICT
 AC_C_VOLATILE
@@ -33,11 +34,25 @@ AC_PROG_INSTALL
 #
 
 AC_CHECK_HEADERS([endian.h sys/endian.h])
+AC_CHECK_FUNCS([be32enc be32dec le32enc le32dec])
+AC_CHECK_FUNCS([be64enc be64dec le64enc le64dec])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 
 # For tracing allocations in unit tests
 AC_CHECK_HEADERS([sys/ktrace.h])
 AC_CHECK_FUNCS([utrace])
+
+############################################################################
+#
+# Extra libraries
+#
+
+save_LIBS="${LIBS}"
+LIBS=""
+AC_CHECK_LIB(rt, clock_gettime)
+RT_LIBS="${LIBS}"
+LIBS="${save_LIBS}"
+AC_SUBST(RT_LIBS)
 
 ############################################################################
 #
