@@ -404,6 +404,10 @@ free(void *p)
 
 	UTRACE_FREE(p);
 
+	/* free(NULL) */
+	if (p == NULL)
+		return;
+
 	/* was this a zero-size allocation? */
 	if (p == buckets[0].base) {
 		++buckets[0].nfree;
