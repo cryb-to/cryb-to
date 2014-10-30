@@ -39,7 +39,12 @@ AC_CHECK_FUNCS([be64enc be64dec le64enc le64dec])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 
 # For tracing allocations in unit tests
-AC_CHECK_HEADERS([sys/ktrace.h])
+AC_CHECK_HEADERS([sys/uio.h sys/ktrace.h], [], [], [[
+#include <sys/param.h>
+#ifdef HAVE_SYS_UIO_H
+#include <sys/uio.h>
+#endif
+]])
 AC_CHECK_FUNCS([utrace])
 
 ############################################################################

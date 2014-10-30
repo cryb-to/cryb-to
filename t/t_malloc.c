@@ -41,8 +41,12 @@
 #endif
 
 #ifdef HAVE_UTRACE
+#ifdef HAVE_SYS_KTRACE_H
+#ifdef HAVE_SYS_UIO_H
 #include <sys/uio.h>
+#endif
 #include <sys/ktrace.h>
+#endif
 #endif
 
 #include <assert.h>
