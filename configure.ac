@@ -62,7 +62,7 @@ AC_CHECK_FUNCS([utrace])
 
 save_LIBS="${LIBS}"
 LIBS=""
-AC_CHECK_LIB(rt, clock_gettime)
+AC_SEARCH_LIBS([clock_gettime], [rt])
 RT_LIBS="${LIBS}"
 LIBS="${save_LIBS}"
 AC_SUBST(RT_LIBS)
