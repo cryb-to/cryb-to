@@ -34,6 +34,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -91,6 +92,8 @@ struct bucket {
 	void		*top;		/* top of bucket */
 	void		*free;		/* first free block */
 	void		*unused;	/* first never-used block */
+	unsigned long	 nalloc;
+	unsigned long	 nfree;
 };
 
 struct mapping {
@@ -104,6 +107,7 @@ static struct bucket buckets[BUCKET_MAX_SHIFT + 1];
 
 /* mapping metadata */
 static struct mapping *mappings;
+unsigned long nmapalloc, nmapfree;
 
 /* if non-zero, all allocations fail */
 int t_malloc_fail;
@@ -128,6 +132,7 @@ t_malloc_null(void)
 		b->top = b->base + BUCKET_SIZE;
 		b->free = b->unused = b->base;
 	}
+	++b->nalloc;
 	return (b->base);
 }
 
@@ -154,6 +159,7 @@ t_malloc_mapped(size_t size)
 	m->next = mappings;
 	m->prev = NULL;
 	mappings = m;
+	++nmapalloc;
 	return (m->base);
 }
 
@@ -205,6 +211,7 @@ t_malloc_bucket(size_t size)
 	}
 
 	/* done! */
+	++b->nalloc;
 	return (p);
 }
 
@@ -340,8 +347,10 @@ free(void *p)
 	unsigned int shift;
 
 	/* was this a zero-size allocation? */
-	if (p == buckets[0].base)
+	if (p == buckets[0].base) {
+		++buckets[0].nfree;
 		return;
+	}
 
 	/* was this a direct mapping? */
 	for (m = mappings; m != NULL; m = m->next) {
@@ -357,6 +366,7 @@ free(void *p)
 				mappings = m->next;
 			/* fall through and free metadata */
 			p = m;
+			++nmapfree;
 			break;
 		}
 		assert(p < m->base || p >= m->top);
@@ -372,10 +382,30 @@ free(void *p)
 			/* connect the block to the free list */
 			*(char **)p = b->free;
 			b->free = p;
+			++b->nfree;
 			return;
 		}
 	}
 
 	/* oops */
 	abort();
+}
+
+/*
+ * Print allocator statistics
+ */
+void
+t_malloc_printstats(FILE *f)
+{
+	struct bucket *b;
+	unsigned int shift;
+
+	fprintf(f, "%6s %9s %9s %9s\n", "bucket", "alloc", "free", "leak");
+	for (shift = 0; shift <= BUCKET_MAX_SHIFT; ++shift) {
+		b = &buckets[shift];
+		if (b->nalloc > 0)
+			fprintf(f, " 1^%-3u %9lu %9lu %9lu\n",
+			    shift, b->nalloc, b->nfree,
+			    b->nalloc - b->nfree);
+	}
 }

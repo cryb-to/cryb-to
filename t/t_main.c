@@ -203,5 +203,12 @@ main(int argc, char *argv[])
 
 	/* clean up and exit */
 	t_cleanup();
+	for (n = 0; n < t_plan_len; ++n) {
+		free(t_plan[n]->desc);
+		free(t_plan[n]);
+	}
+	free(t_plan);
+	if (verbose)
+		t_malloc_printstats(stderr);
 	exit(fail > 0 ? 1 : 0);
 }
