@@ -6,6 +6,7 @@ cryb_HEADERS = \
 	bitwise.h \
 	cpe.h \
 	digest.h \
+	endian.h \
 	hash.h \
 	hmac.h \
 	hmac_sha1.h \

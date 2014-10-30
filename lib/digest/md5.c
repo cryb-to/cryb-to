@@ -30,19 +30,11 @@
 
 #include "cryb/impl.h"
 
-#ifdef HAVE_SYS_ENDIAN_H
-#include <sys/endian.h>
-#endif
-
-#ifdef HAVE_ENDIAN_H
-#define _BSD_SOURCE
-#include <endian.h>
-#endif
-
 #include <stdint.h>
 #include <string.h>
 
 #include <cryb/bitwise.h>
+#include <cryb/endian.h>
 #include <cryb/md5.h>
 
 /* initial state */
