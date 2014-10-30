@@ -29,8 +29,13 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
+#include <sys/param.h>
 #include <sys/mman.h>
+
+#ifdef HAVE_UTRACE
+#include <sys/uio.h>
+#include <sys/ktrace.h>
+#endif
 
 #include <assert.h>
 #include <errno.h>
@@ -44,7 +49,8 @@
  * Very simple, non-thread-safe malloc() implementation tailored for unit
  * tests.  The most important feature of this implementation is the
  * t_malloc_fail flag, which can be used to force malloc(), calloc() and
- * realloc() calls to fail.
+ * realloc() calls to fail.  It also emits jemalloc-compatible trace
+ * records on platforms that have utrace(2).
  *
  * Allocations are satisfied either from a bucket or by direct mapping.
  * The allocation size is first rounded to the nearest power of two or 16,
@@ -114,6 +120,40 @@ int t_malloc_fail;
 
 /* if non-zero, unintentional allocation failures are fatal */
 int t_malloc_fatal;
+
+#if HAVE_UTRACE
+
+/*
+ * Record malloc() / realloc() / free() events
+ */
+static void
+trace_malloc_event(const void *o, size_t s, const void *p)
+{
+	struct { const void *o; size_t s; const void *p; } mu = { o, s, p };
+	int serrno = errno;
+
+	(void)utrace(&mu, sizeof mu);
+	errno = serrno;
+}
+
+#define UTRACE_MALLOC(s, p)						\
+	trace_malloc_event(NULL, (s), (p))
+#define UTRACE_REALLOC(o, s, p)						\
+	trace_malloc_event((o), (s), (p))
+#define UTRACE_FREE(o)							\
+	trace_malloc_event((o), 0, NULL)
+
+#else
+
+#define UTRACE_MALLOC(s, p)						\
+	do { (void)(s); (void)(p); } while (0)
+#define UTRACE_REALLOC(o, s, p)						\
+	do { (void)(o); (void)(s); (void)(p); } while (0)
+#define UTRACE_FREE(o)							\
+	do { (void)(o); } while (0)
+
+#endif
+
 
 /*
  * Return a pointer to inaccessible memory.
@@ -251,6 +291,7 @@ malloc(size_t size)
 		abort();
 	memset(p, BUCKET_FILL_ALLOC, size);
 	/* XXX fill the slop with garbage */
+	UTRACE_MALLOC(size, p);
 	return (p);
 }
 
@@ -272,6 +313,7 @@ calloc(size_t n, size_t size)
 		abort();
 	memset(p, 0, n * size);
 	/* XXX fill the slop with garbage */
+	UTRACE_MALLOC(size, p);
 	return (p);
 }
 
@@ -329,6 +371,7 @@ found:
 	else
 		memcpy(p, o, size);
 	/* XXX fill the slop with garbage */
+	UTRACE_REALLOC(o, size, p);
 	free(o);
 	return (p);
 }
@@ -345,6 +388,8 @@ free(void *p)
 	struct mapping *m;
 	struct bucket *b;
 	unsigned int shift;
+
+	UTRACE_FREE(p);
 
 	/* was this a zero-size allocation? */
 	if (p == buckets[0].base) {
