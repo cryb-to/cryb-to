@@ -65,18 +65,25 @@ enum cpe23_attributes {
 	cpe23_nattr
 };
 
-struct cpe_name {
+typedef struct cpe_name {
 	int	 ver;
 	int	 nattr;
 	wchar_t	*attr[];
-};
+} cpe_name;
 
-struct cpe_name *cpe_upgrade(const struct cpe_name *);
-struct cpe_name *cpe_from_string(const wchar_t *);
-wchar_t *cpe_to_string(const struct cpe_name *);
-struct cpe_name *cpe_from_string(const wchar_t *);
-wchar_t *cpe_to_string(const struct cpe_name *);
-struct cpe_name *cpe_from_string(const wchar_t *);
-wchar_t *cpe_to_string(const struct cpe_name *);
+cpe_name *cpe_new(void);
+void cpe_destroy(cpe_name *);
+cpe_name *cpe_clone(const cpe_name *);
+
+cpe_name *cpe_upgrade(const cpe_name *);
+
+cpe_name *cpe_unbind_fs(const wstring *);
+wstring *cpe_bind_to_fs(const cpe_name *);
+
+cpe_name *cpe_unbind_uri(const wstring *);
+wstring *cpe_bind_to_uri(const cpe_name *);
+
+cpe_name *cpe_from_wfn(const wchar_t *);
+wchar_t *cpe_to_wfn(const cpe_name *);
 
 #endif

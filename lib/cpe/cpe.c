@@ -30,15 +30,17 @@
 #include "cryb/impl.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <wchar.h>
 
+#include <cryb/wstring.h>
 #include <cryb/cpe.h>
 
 /*
  * Free all memory allocated to a cpe structure.
  */
 void
-cpe_destroy(struct cpe_name *cpe)
+cpe_destroy(cpe_name *cpe)
 {
 
 	if (cpe == NULL)
@@ -54,7 +56,7 @@ cpe_destroy(struct cpe_name *cpe)
  * corresponding attribute in the destination will be an empty string.
  */
 static int
-cpe_copy_attr(struct cpe_name *dst, const struct cpe_name *src, int base, int nattr)
+cpe_copy_attr(cpe_name *dst, const cpe_name *src, int base, int nattr)
 {
 
 	if (base < 0 || nattr < 0 || base + nattr > src->nattr ||
@@ -77,10 +79,10 @@ cpe_copy_attr(struct cpe_name *dst, const struct cpe_name *src, int base, int na
  * Duplicate a cpe structure.  Any attributes that are NULL in the source
  * will be empty strings in the destination.
  */
-struct cpe_name *
-cpe_clone(const struct cpe_name *cpe)
+cpe_name *
+cpe_clone(const cpe_name *cpe)
 {
-	struct cpe_name *ncpe;
+	cpe_name *ncpe;
 
 	ncpe = calloc(1, sizeof *ncpe +
 	    cpe->nattr * sizeof *ncpe->attr);
@@ -96,10 +98,10 @@ cpe_clone(const struct cpe_name *cpe)
 /*
  * Allocate a new cpe structure.
  */
-struct cpe_name *
+cpe_name *
 cpe_new(void)
 {
-	struct cpe_name *ncpe;
+	cpe_name *ncpe;
 
 	if ((ncpe = calloc(1, sizeof *ncpe)) == NULL)
 		return (NULL);
@@ -111,10 +113,10 @@ cpe_new(void)
 /*
  * Upgrade a cpe 2.2 structure to the latest supported version.
  */
-struct cpe_name *
-cpe_upgrade22(const struct cpe_name *cpe)
+cpe_name *
+cpe_upgrade22(const cpe_name *cpe)
 {
-	struct cpe_name *ncpe;
+	cpe_name *ncpe;
 
 	if ((ncpe = cpe_new()) == NULL)
 		return (NULL);
@@ -140,15 +142,15 @@ cpe_upgrade22(const struct cpe_name *cpe)
 /*
  * Upgrade a cpe structure to the latest supported version.
  */
-struct cpe_name *
-cpe_upgrade(const struct cpe_name *cpe)
+cpe_name *
+cpe_upgrade(const cpe_name *cpe)
 {
 
 	switch (cpe->ver) {
-	case cpe22_ver:
+	case cpe23_ver:
 		/* already latest */
 		return (cpe_clone(cpe));
-	case cpe23_ver:
+	case cpe22_ver:
 		return (cpe_upgrade22(cpe));
 	default:
 		return (NULL);

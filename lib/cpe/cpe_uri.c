@@ -29,20 +29,22 @@
 
 #include "cryb/impl.h"
 
+#include <unistd.h>
 #include <wchar.h>
 
+#include <cryb/wstring.h>
 #include <cryb/cpe.h>
 
-struct cpe *
-cpe_unbind_uri(const wchar_t *str)
+cpe_name *
+cpe_unbind_uri(const wstring *str)
 {
 
 	(void)str;
 	return (NULL);
 }
 
-wchar_t *
-cpe_bind_to_uri(const struct cpe *cpe)
+wstring *
+cpe_bind_to_uri(const cpe_name *cpe)
 {
 
 	(void)cpe;

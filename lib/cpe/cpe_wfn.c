@@ -29,11 +29,13 @@
 
 #include "cryb/impl.h"
 
+#include <unistd.h>
 #include <wchar.h>
 
+#include <cryb/wstring.h>
 #include <cryb/cpe.h>
 
-struct cpe *
+cpe_name *
 cpe_from_wfn(const wchar_t *str)
 {
 
@@ -42,7 +44,7 @@ cpe_from_wfn(const wchar_t *str)
 }
 
 wchar_t *
-cpe_to_wfn(const struct cpe *cpe)
+cpe_to_wfn(const cpe_name *cpe)
 {
 
 	(void)cpe;
