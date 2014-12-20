@@ -1,0 +1,8 @@
+The aim of the Cryb.to project is to provide a collcetion of correct,
+well-written, well-tested and well-documented implementations of both
+low-level cryptographic primitives and higher-level security-related
+interfaces under a permissive license.
+
+The Cryb libraries are the first and primary product of the Cryb.to
+project.  They include low-level cryptographic primitives and support
+code such as safe string handling and containers.
