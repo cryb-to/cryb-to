@@ -478,6 +478,7 @@ t_malloc_printstats(FILE *f)
 static int
 t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
 {
+#if !CRYB_COVERAGE
 	struct bucket *b;
 	unsigned int shift;
 	unsigned long nleaked;
@@ -493,6 +494,9 @@ t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
 		*desc = "no memory leaked";
 		return (1);
 	}
+#else
+	return (-1);
+#endif
 }
 
 struct t_test t_memory_leak = {

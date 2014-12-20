@@ -144,10 +144,15 @@ static int
 t_run_test(struct t_test *t, int n)
 {
 	char *desc;
+	int ret;
 
 	desc = t->desc ? t->desc : "no description";
-	if ((*t->func)(&desc, t->arg)) {
+	ret = (*t->func)(&desc, t->arg);
+	if (ret > 0) {
 		printf("ok %d - %s\n", n + 1, desc);
+		return (1);
+	} else if (ret < 0) {
+		printf("ok %d - # skip %s\n", n + 1, desc);
 		return (1);
 	} else {
 		printf("not ok %d - %s\n", n + 1, desc);
