@@ -159,6 +159,6 @@ AC_CONFIG_FILES([
     lib/rand/Makefile
     lib/rsaref/Makefile
     t/Makefile
-    tools/coverage.sh
 ])
+AC_CONFIG_FILES([tools/coverage.sh], [chmod +x tools/coverage.sh])
 AC_OUTPUT
