@@ -29,6 +29,7 @@
 
 #include "cryb/impl.h"
 
+#include <limits.h>
 #include <stdint.h>
 #include <string.h>
 #include <time.h>
@@ -53,11 +54,11 @@ oath_totp_current(const struct oath_key *k)
 	uint64_t seq;
 
 	if (k == NULL)
-		return (-1);
+		return (UINT_MAX);
 	if (k->mode != om_totp)
-		return (-1);
+		return (UINT_MAX);
 	if (k->timestep == 0)
-		return (-1);
+		return (UINT_MAX);
 	seq = time(NULL) / k->timestep;
 	code = oath_hotp(k->key, k->keylen, seq, k->digits);
 	return (code);
@@ -76,7 +77,7 @@ oath_totp_match(struct oath_key *k, unsigned int response, int window)
 
 	if (k == NULL)
 		return (-1);
-	if (window < 1)
+	if (window < 0)
 		return (-1);
 	if (k->mode != om_totp)
 		return (-1);
