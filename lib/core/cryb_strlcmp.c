@@ -33,12 +33,16 @@
 
 #include <cryb/strlcmp.h>
 
-/* like strcmp, but only compares up to len characters */
+/*
+ * Like strncmp, but also asserts that s1[len] == '\0'.  Useful in parsers
+ * to verify that the next len characters of the input (s2) match a
+ * specific keyword (s1).
+ */
 int
 cryb_strlcmp(const char *s1, const char *s2, size_t len)
 {
 
-	for (; len && *s1 && *s2; --len, ++s1, ++s2)
+	for (; len && *s2; --len, ++s1, ++s2)
 		if (*s1 != *s2)
 			return ((unsigned char)*s1 - (unsigned char)*s2);
 	return ((unsigned char)*s1);
