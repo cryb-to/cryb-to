@@ -32,7 +32,7 @@
 
 size_t cryb_strlcat(char *, const char *, size_t);
 
-#ifndef HAVE_STRLCAT
+#if !HAVE_STRLCAT
 #undef strlcat
 #define strlcat(arg, ...) cryb_strlcat(arg, __VA_ARGS__)
 #endif

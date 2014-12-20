@@ -40,9 +40,9 @@
 #define MAP_NOSYNC 0
 #endif
 
-#ifdef HAVE_UTRACE
-#ifdef HAVE_SYS_KTRACE_H
-#ifdef HAVE_SYS_UIO_H
+#if HAVE_UTRACE
+#if HAVE_SYS_KTRACE_H
+#if HAVE_SYS_UIO_H
 #include <sys/uio.h>
 #endif
 #include <sys/ktrace.h>

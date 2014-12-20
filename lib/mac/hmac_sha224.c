@@ -30,11 +30,11 @@
 
 #include "cryb/impl.h"
 
-#ifdef HAVE_SYS_ENDIAN_H
+#if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif
 
-#ifdef HAVE_ENDIAN_H
+#if HAVE_ENDIAN_H
 #define _BSD_SOURCE
 #include <endian.h>
 #endif

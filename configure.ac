@@ -36,10 +36,10 @@ AC_PROG_INSTALL
 AC_CHECK_HEADERS([endian.h sys/endian.h])
 AC_CHECK_DECLS([be32enc, be32dec, le32enc, le32dec,
     be64enc, be64dec, le64enc, le64dec], [], [], [[
-#ifdef HAVE_SYS_ENDIAN_H
+#if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif
-#ifdef HAVE_ENDIAN_H
+#if HAVE_ENDIAN_H
 #include <endian.h>
 #endif
 ]])
@@ -48,7 +48,7 @@ AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 # For tracing allocations in unit tests
 AC_CHECK_HEADERS([sys/uio.h sys/ktrace.h], [], [], [[
 #include <sys/param.h>
-#ifdef HAVE_SYS_UIO_H
+#if HAVE_SYS_UIO_H
 #include <sys/uio.h>
 #endif
 ]])

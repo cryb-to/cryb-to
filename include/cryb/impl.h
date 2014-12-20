@@ -30,7 +30,7 @@
 #ifndef CRYB_IMPL_H_INCLUDED
 #define CRYB_IMPL_H_INCLUDED
 
-#ifdef HAVE_CONFIG_H
+#if HAVE_CONFIG_H
 # include "config.h"
 #endif
 

@@ -32,7 +32,7 @@
 
 int cryb_strlcmp(const char *, const char *, size_t);
 
-#ifndef HAVE_STRLCMP
+#if !HAVE_STRLCMP
 #undef strlcmp
 #define strlcmp(...) cryb_strlcmp(__VA_ARGS__)
 #endif

@@ -30,36 +30,36 @@
 #ifndef CRYB_ENDIAN_H_INCLUDED
 #define CRYB_ENDIAN_H_INCLUDED
 
-#ifdef HAVE_SYS_ENDIAN_H
+#if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif
 
-#ifdef HAVE_ENDIAN_H
+#if HAVE_ENDIAN_H
 #include <endian.h>
 #endif
 
-#ifndef HAVE_DECL_BE32ENC
+#if !HAVE_DECL_BE32ENC
 #define be32enc cryb_be32enc
 #endif
-#ifndef HAVE_DECL_BE32DEC
+#if !HAVE_DECL_BE32DEC
 #define be32dec cryb_be32dec
 #endif
-#ifndef HAVE_DECL_BE64ENC
+#if !HAVE_DECL_BE64ENC
 #define be64enc cryb_be64enc
 #endif
-#ifndef HAVE_DECL_BE64DEC
+#if !HAVE_DECL_BE64DEC
 #define be64dec cryb_be64dec
 #endif
-#ifndef HAVE_DECL_LE32ENC
+#if !HAVE_DECL_LE32ENC
 #define le32enc cryb_le32enc
 #endif
-#ifndef HAVE_DECL_LE32DEC
+#if !HAVE_DECL_LE32DEC
 #define le32dec cryb_le32dec
 #endif
-#ifndef HAVE_DECL_LE64ENC
+#if !HAVE_DECL_LE64ENC
 #define le64enc cryb_le64enc
 #endif
-#ifndef HAVE_DECL_LE64DEC
+#if !HAVE_DECL_LE64DEC
 #define le64dec cryb_le64dec
 #endif
 

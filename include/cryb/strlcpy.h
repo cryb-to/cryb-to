@@ -32,7 +32,7 @@
 
 size_t cryb_strlcpy(char *, const char *, size_t);
 
-#ifndef HAVE_STRLCPY
+#if !HAVE_STRLCPY
 #undef strlcpy
 #define strlcpy(arg, ...) cryb_strlcpy(arg, __VA_ARGS__)
 #endif
