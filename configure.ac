@@ -160,5 +160,6 @@ AC_CONFIG_FILES([
     lib/rsaref/Makefile
     t/Makefile
 ])
+AC_CONFIG_FILES([mkpkgng], [chmod +x mkpkgng])
 AC_CONFIG_FILES([tools/coverage.sh], [chmod +x tools/coverage.sh])
 AC_OUTPUT
