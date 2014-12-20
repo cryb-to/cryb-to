@@ -31,9 +31,11 @@
 #define CRYB_COVERAGE_H_INCLUDED
 
 #if _BullseyeCoverage
-# define CRYB_DISABLE_COVERAGE _Pragma("BullseyeCoverage save off")
-# define CRYB_RESTORE_COVERAGE _Pragma("BullseyeCoverage restore")
+# define CRYB_COVERAGE		1
+# define CRYB_DISABLE_COVERAGE	_Pragma("BullseyeCoverage save off")
+# define CRYB_RESTORE_COVERAGE	_Pragma("BullseyeCoverage restore")
 #else
+# define CRYB_COVERAGE		0
 # define CRYB_DISABLE_COVERAGE
 # define CRYB_RESTORE_COVERAGE
 #endif
