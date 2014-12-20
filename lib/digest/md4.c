@@ -46,7 +46,7 @@
  */
 #undef GET_ULONG_LE
 #define GET_ULONG_LE(n,b,i)						\
-	do { (n) = le32dec((uint8_t *)(b) + (i)); } while (0)
+	do { (n) = le32dec((const uint8_t *)(b) + (i)); } while (0)
 
 #undef PUT_ULONG_LE
 #define PUT_ULONG_LE(n,b,i)						\

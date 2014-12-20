@@ -75,10 +75,10 @@ cryb_be32enc(void *p, uint32_t u32)
 static inline uint32_t
 cryb_be32dec(const void *p)
 {
-	return ((uint32_t)((uint8_t *)p)[3] |
-	    (uint32_t)((uint8_t *)p)[2] << 8 |
-	    (uint32_t)((uint8_t *)p)[1] << 16 |
-	    (uint32_t)((uint8_t *)p)[0] << 24);
+	return ((uint32_t)((const uint8_t *)p)[3] |
+	    (uint32_t)((const uint8_t *)p)[2] << 8 |
+	    (uint32_t)((const uint8_t *)p)[1] << 16 |
+	    (uint32_t)((const uint8_t *)p)[0] << 24);
 }
 
 static inline void
@@ -97,14 +97,14 @@ cryb_be64enc(void *p, uint64_t u64)
 static inline uint64_t
 cryb_be64dec(const void *p)
 {
-	return ((uint64_t)((uint8_t *)p)[7] |
-	    (uint64_t)((uint8_t *)p)[6] << 8 |
-	    (uint64_t)((uint8_t *)p)[5] << 16 |
-	    (uint64_t)((uint8_t *)p)[4] << 24 |
-	    (uint64_t)((uint8_t *)p)[3] << 32 |
-	    (uint64_t)((uint8_t *)p)[2] << 40 |
-	    (uint64_t)((uint8_t *)p)[1] << 48 |
-	    (uint64_t)((uint8_t *)p)[0] << 56);
+	return ((uint64_t)((const uint8_t *)p)[7] |
+	    (uint64_t)((const uint8_t *)p)[6] << 8 |
+	    (uint64_t)((const uint8_t *)p)[5] << 16 |
+	    (uint64_t)((const uint8_t *)p)[4] << 24 |
+	    (uint64_t)((const uint8_t *)p)[3] << 32 |
+	    (uint64_t)((const uint8_t *)p)[2] << 40 |
+	    (uint64_t)((const uint8_t *)p)[1] << 48 |
+	    (uint64_t)((const uint8_t *)p)[0] << 56);
 }
 
 static inline void
@@ -119,10 +119,10 @@ cryb_le32enc(void *p, uint32_t u32)
 static inline uint32_t
 cryb_le32dec(const void *p)
 {
-	return ((uint32_t)((uint8_t *)p)[0] |
-	    (uint32_t)((uint8_t *)p)[1] << 8 |
-	    (uint32_t)((uint8_t *)p)[2] << 16 |
-	    (uint32_t)((uint8_t *)p)[3] << 24);
+	return ((uint32_t)((const uint8_t *)p)[0] |
+	    (uint32_t)((const uint8_t *)p)[1] << 8 |
+	    (uint32_t)((const uint8_t *)p)[2] << 16 |
+	    (uint32_t)((const uint8_t *)p)[3] << 24);
 }
 
 static inline void
@@ -141,14 +141,14 @@ cryb_le64enc(void *p, uint64_t u64)
 static inline uint64_t
 cryb_le64dec(const void *p)
 {
-	return ((uint64_t)((uint8_t *)p)[0] |
-	    (uint64_t)((uint8_t *)p)[1] << 8 |
-	    (uint64_t)((uint8_t *)p)[2] << 16 |
-	    (uint64_t)((uint8_t *)p)[3] << 24 |
-	    (uint64_t)((uint8_t *)p)[4] << 32 |
-	    (uint64_t)((uint8_t *)p)[5] << 40 |
-	    (uint64_t)((uint8_t *)p)[6] << 48 |
-	    (uint64_t)((uint8_t *)p)[7] << 56);
+	return ((uint64_t)((const uint8_t *)p)[0] |
+	    (uint64_t)((const uint8_t *)p)[1] << 8 |
+	    (uint64_t)((const uint8_t *)p)[2] << 16 |
+	    (uint64_t)((const uint8_t *)p)[3] << 24 |
+	    (uint64_t)((const uint8_t *)p)[4] << 32 |
+	    (uint64_t)((const uint8_t *)p)[5] << 40 |
+	    (uint64_t)((const uint8_t *)p)[6] << 48 |
+	    (uint64_t)((const uint8_t *)p)[7] << 56);
 }
 
 #endif

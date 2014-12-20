@@ -279,7 +279,7 @@ void sha512_final( sha512_ctx *ctx, uint8_t *output )
     last = (int)( ctx->total[0] & 0x7F );
     padn = ( last < 112 ) ? ( 112 - last ) : ( 240 - last );
 
-    sha512_update( ctx, (uint8_t *) sha512_padding, padn );
+    sha512_update( ctx, (const uint8_t *) sha512_padding, padn );
     sha512_update( ctx, msglen, 16 );
 
     PUT_UINT64_BE( ctx->state[0], output,  0 );
