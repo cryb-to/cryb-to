@@ -38,28 +38,28 @@
 #include <endian.h>
 #endif
 
-#ifndef HAVE_BE32ENC
+#ifndef HAVE_DECL_BE32ENC
 #define be32enc cryb_be32enc
 #endif
-#ifndef HAVE_BE32DEC
+#ifndef HAVE_DECL_BE32DEC
 #define be32dec cryb_be32dec
 #endif
-#ifndef HAVE_BE64ENC
+#ifndef HAVE_DECL_BE64ENC
 #define be64enc cryb_be64enc
 #endif
-#ifndef HAVE_BE64DEC
+#ifndef HAVE_DECL_BE64DEC
 #define be64dec cryb_be64dec
 #endif
-#ifndef HAVE_LE32ENC
+#ifndef HAVE_DECL_LE32ENC
 #define le32enc cryb_le32enc
 #endif
-#ifndef HAVE_LE32DEC
+#ifndef HAVE_DECL_LE32DEC
 #define le32dec cryb_le32dec
 #endif
-#ifndef HAVE_LE64ENC
+#ifndef HAVE_DECL_LE64ENC
 #define le64enc cryb_le64enc
 #endif
-#ifndef HAVE_LE64DEC
+#ifndef HAVE_DECL_LE64DEC
 #define le64dec cryb_le64dec
 #endif
 

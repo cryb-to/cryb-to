@@ -43,7 +43,6 @@ AC_CHECK_DECLS([be32enc, be32dec, le32enc, le32dec,
 #include <endian.h>
 #endif
 ]])
-AC_CHECK_DECLS([])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
 
 # For tracing allocations in unit tests
