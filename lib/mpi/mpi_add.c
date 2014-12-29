@@ -36,7 +36,6 @@
 
 /*
  * Store the sum of the absolutes values of A and B in X.
- * XXX safe for either A or B to be the same object as X but not both
  */
 int
 mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
@@ -44,36 +43,53 @@ mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	unsigned int i;
 	uint32_t c;
 
-	if (X == B)
-		B = A, A = X;
-	if (X != A)
-		mpi_copy(X, A);
-	/* 0 + 0 = 0 */
-	if (X->msb == 0 && B->msb == 0)
+	/*
+	 * Trivial cases: A and B are identical and / or both zero.
+	 */
+	if (A->msb == 0 && B->msb == 0)
 		return (0);
-	/* make room */
-	if (mpi_grow(X, X->msb + 1) != 0 || mpi_grow(X, B->msb + 1) != 0)
+	if (A == B) {
+		if (X != A && mpi_copy(X, A) != 0)
+			return (-1);
+		return (mpi_lshift(X, 1));
+	}
+
+	/*
+	 * Normalize our operands: if X is identical to either A or B, we
+	 * want it to be A.  Otherwise, copy A into X.  In either case,
+	 * make sure X is large enough for the largest possible sum.
+	 */
+	if (X == B) {
+		B = A;
+		A = X;
+	}
+	if (mpi_grow(X, A->msb + 1) != 0 || mpi_grow(X, B->msb + 1) != 0)
 		return (-1);
+	if (X != A)
+		/* this cannot fail */
+		mpi_copy(X, A);
+
+	/*
+	 * From now on, we are adding B to X and A is irrelevant.
+	 */
+
 	/* add B into X word by word until we run out of B */
 	for (c = i = 0; i < (B->msb + 31) / 32; ++i) {
-		// fprintf(stderr, "0x%08x + 0x%08x (%u)", X->words[i], B->words[i], c);
 		X->words[i] += c;
 		c = (X->words[i] < c);
 		X->words[i] += B->words[i];
 		c += (X->words[i] < B->words[i]);
-		// fprintf(stderr, " = 0x%08x (%u)\n", X->words[i], c);
 	}
 	/* keep propagating carry */
 	while (c) {
-		// fprintf(stderr, "0x%08x + 0x%08x (%u)", X->words[i], 0, c);
 		X->words[i] += c;
 		c = (X->words[i] < c);
-		// fprintf(stderr, " = 0x%08x (%u)\n", X->words[i], c);
 		++i;
 	}
 	if (X->words[i] == 0)
 		--i;
 	/* compute msb of msw */
+	/* XXX should use flsl() */
 	for (X->msb = 31; X->msb > 0; --X->msb)
 		if (X->words[i] & (1 << X->msb))
 			break;
