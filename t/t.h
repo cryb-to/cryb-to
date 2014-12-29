@@ -105,6 +105,9 @@ t_compare_num(x64, uint64_t);
 t_compare_num(ptr, void *);
 #undef t_compare_num
 
+int t_str_is_true(const char *);
+int t_str_is_false(const char *);
+
 /*
  * Useful constants
  */

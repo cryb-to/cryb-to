@@ -240,7 +240,7 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_md4_short_updates, &t_md4_vectors[6],
 	    "multiple short updates");
 #endif
-	if (getenv("CRYB_PERFTEST")) {
+	if (t_str_is_true(getenv("CRYB_PERFTEST"))) {
 		static size_t one = 1, thousand = 1000, million = 1000000;
 		t_add_test(t_md4_perf, &one,
 		    "performance test (1 byte)");
