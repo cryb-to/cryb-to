@@ -1,10 +1,26 @@
 #!/bin/sh
 
+usage() {
+	echo "usage: ${0##*/} [-jN]" >&2
+	exit 1
+}
+
+while getopts "j:" opt ; do
+	case $opt in
+	j)
+		j="-j$OPTARG"
+		;;
+	*)
+		usage
+		;;
+	esac
+done
+
 srcdir="@abs_top_srcdir@"
 export COVFILE="${srcdir}/test.cov"
 gmake -C "${srcdir}" clean
-rm "${COVFILE}"
+find "${srcdir}" -type f -name "${COVFILE##*/}" -delete
 cov01 -1
-gmake -C "${srcdir}" check
+gmake -C "${srcdir}" $j check || exit 1
 cov01 -0
 gmake -C "${srcdir}" clean
