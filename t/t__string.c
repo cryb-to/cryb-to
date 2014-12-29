@@ -100,13 +100,12 @@ static struct t_compare_case {
 };
 
 static int
-t_compare_test(char **desc, void *arg)
+t_compare_test(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_compare_case *t = arg;
 	string *s1, *s2;
 	int ret;
 
-	asprintf(desc, "%s(%s)", "string_compare", *desc);
 	if ((s1 = string_new()) == NULL ||
 	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
 	    (s2 = string_new()) == NULL ||
@@ -119,13 +118,12 @@ t_compare_test(char **desc, void *arg)
 }
 
 static int
-t_equal_test(char **desc, void *arg)
+t_equal_test(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_compare_case *t = arg;
 	string *s1, *s2;
 	int ret;
 
-	asprintf(desc, "%s(%s)", "string_equal", *desc);
 	if ((s1 = string_new()) == NULL ||
 	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
 	    (s2 = string_new()) == NULL ||
@@ -153,10 +151,10 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_noop, NULL, "no-op");
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
 		t_add_test(t_compare_test, &t_compare_cases[i],
-		    t_compare_cases[i].desc);
+		    "%s(%s)", "string_compare", t_compare_cases[i].desc);
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
 		t_add_test(t_equal_test, &t_compare_cases[i],
-		    t_compare_cases[i].desc);
+		    "%s(%s)", "string_equal", t_compare_cases[i].desc);
 	return (0);
 }
 
