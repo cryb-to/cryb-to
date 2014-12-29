@@ -309,5 +309,5 @@ string_equal(const string *s1, const string *s2)
 	for (p1 = s1->buf, p2 = s2->buf; *p1 && *p2; ++p1, ++p2)
 		if (*p1 != *p2)
 			return (0);
-	return (1);
+	return (*p1 || *p2 ? 0 : 1);
 }
