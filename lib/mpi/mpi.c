@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <cryb/endian.h>
 #include <cryb/mpi.h>
 
 /* n rounded up to nearest multiple of p */
@@ -180,11 +181,7 @@ mpi_load(cryb_mpi *X, const uint8_t *a, size_t len)
 		return (-1);
 	/* load whole words */
 	for (i = 0; len >= 4; ++i, len -= 4)
-		X->words[i] =
-		    a[len - 4] << 24 |
-		    a[len - 3] << 16 |
-		    a[len - 2] << 8 |
-		    a[len - 1];
+		X->words[i] = be32dec(&a[len - 4]);
 	/* load remaining bytes */
 	switch (len) {
 	case 3:
@@ -200,6 +197,7 @@ mpi_load(cryb_mpi *X, const uint8_t *a, size_t len)
 	}
 	/* i now points to the msw */
 	/* compute msb of msw */
+	/* XXX use flsl() */
 	for (X->msb = 31; X->msb > 0; --X->msb)
 		if (X->words[i] & (1 << X->msb))
 			break;
@@ -217,8 +215,6 @@ mpi_set(cryb_mpi *X, int32_t z)
 	uint32_t zabs;
 
 	mpi_zero(X);
-	if (mpi_grow(X, sizeof z * 8) != 0)
-		return (-1);
 	if (z < 0) {
 		X->neg = 1;
 		zabs = -z;
@@ -226,6 +222,7 @@ mpi_set(cryb_mpi *X, int32_t z)
 		zabs = z;
 	}
 	X->words[0] = zabs;
+	/* XXX use flsl() */
 	while (zabs > 0) {
 		X->msb++;
 		zabs >>= 1;
