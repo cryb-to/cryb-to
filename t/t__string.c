@@ -50,49 +50,49 @@ static struct t_compare_case {
 	int cmp;
 } t_compare_cases[] = {
 	{
-		"both empty",
+		"empty with empty",
 		CS(""),
 		CS(""),
 		0,
 	},
 	{
-		"empty with non-empty (left)",
+		"empty with non-empty",
 		CS(""),
 		CS("xyzzy"),
 		-1,
 	},
 	{
-		"empty with non-empty (right)",
+		"non-empty with empty",
 		CS("xyzzy"),
 		CS(""),
 		1,
 	},
 	{
-		"equal non-empty",
+		"non-empty with same non-empty",
 		CS("xyzzy"),
 		CS("xyzzy"),
 		0,
 	},
 	{
-		"unequal of equal length (left)",
+		"non-empty with later non-empty",
 		CS("abba"),
 		CS("baba"),
 		-1,
 	},
 	{
-		"unequal of equal length (right)",
+		"non-empty with earlier non-empty",
 		CS("baba"),
 		CS("abba"),
 		1,
 	},
 	{
-		"prefix (left)",
+		"non-empty prefix with non-empty",
 		CS("baba"),
 		CS("babaorum"),
 		-1,
 	},
 	{
-		"prefix (right)",
+		"non-empty with non-empty prefix",
 		CS("babaorum"),
 		CS("baba"),
 		1,
@@ -100,18 +100,38 @@ static struct t_compare_case {
 };
 
 static int
-t_compare_test(char **desc CRYB_UNUSED, void *arg)
+t_compare_test(char **desc, void *arg)
 {
 	struct t_compare_case *t = arg;
 	string *s1, *s2;
 	int ret;
 
+	asprintf(desc, "%s(%s)", "string_compare", *desc);
 	if ((s1 = string_new()) == NULL ||
 	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
 	    (s2 = string_new()) == NULL ||
 	    string_append_cs(s2, t->s2, SIZE_MAX) < 0)
 		return (0);
 	ret = string_compare(s1, s2) == t->cmp;
+	string_delete(s2);
+	string_delete(s1);
+	return (ret);
+}
+
+static int
+t_equal_test(char **desc, void *arg)
+{
+	struct t_compare_case *t = arg;
+	string *s1, *s2;
+	int ret;
+
+	asprintf(desc, "%s(%s)", "string_equal", *desc);
+	if ((s1 = string_new()) == NULL ||
+	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
+	    (s2 = string_new()) == NULL ||
+	    string_append_cs(s2, t->s2, SIZE_MAX) < 0)
+		return (0);
+	ret = (string_equal(s1, s2) == 0) == (t->cmp != 0);
 	string_delete(s2);
 	string_delete(s1);
 	return (ret);
@@ -133,6 +153,9 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_noop, NULL, "no-op");
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
 		t_add_test(t_compare_test, &t_compare_cases[i],
+		    t_compare_cases[i].desc);
+	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
+		t_add_test(t_equal_test, &t_compare_cases[i],
 		    t_compare_cases[i].desc);
 	return (0);
 }

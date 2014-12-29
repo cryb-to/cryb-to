@@ -32,6 +32,7 @@
 #include <sys/types.h>
 
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include <cryb/string.h>
