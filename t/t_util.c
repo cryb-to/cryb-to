@@ -126,6 +126,7 @@ t_str_is_true(const char *str)
 	if (str == NULL || *str == '\0')
 		return (0);
 	if (strcmp(str, "1") == 0 ||
+	    strcasecmp(str, "on") == 0 ||
 	    strcasecmp(str, "y") == 0 ||
 	    strcasecmp(str, "yes") == 0 ||
 	    strcasecmp(str, "t") == 0 ||
@@ -145,6 +146,7 @@ t_str_is_false(const char *str)
 	if (str == NULL || *str == '\0')
 		return (0);
 	if (strcmp(str, "0") == 0 ||
+	    strcasecmp(str, "off") == 0 ||
 	    strcasecmp(str, "n") == 0 ||
 	    strcasecmp(str, "no") == 0 ||
 	    strcasecmp(str, "f") == 0 ||
