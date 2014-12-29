@@ -175,6 +175,7 @@ int
 main(int argc, char *argv[])
 {
 	unsigned int n, pass, fail;
+	size_t nt;
 	int opt;
 
 	/* make all unintentional allocation failures fatal */
@@ -210,8 +211,18 @@ main(int argc, char *argv[])
 	if (t_plan_len == 0)
 		errx(1, "no plan\n");
 
+	/* do not check for leaks when doing coverage analysis */
+	nt = t_plan_len;
+#if CRYB_COVERAGE
+	nt = t_str_is_true(getenv("CRYB_LEAKTEST")) ?
+	    t_plan_len + 1 : t_plan_len;
+#else
+	nt = t_str_is_false(getenv("CRYB_LEAKTEST")) ?
+	    t_plan_len : t_plan_len + 1;
+#endif
+
 	/* run the tests */
-	printf("1..%zu\n", t_plan_len + 1);
+	printf("1..%zu\n", nt);
 	for (n = pass = fail = 0; n < t_plan_len; ++n)
 		t_run_test(t_plan[n], n + 1) ? ++pass : ++fail;
 
@@ -224,8 +235,10 @@ main(int argc, char *argv[])
 	}
 	free(t_plan);
 	setvbuf(stdout, NULL, _IONBF, 0);
-	if (verbose)
-		t_malloc_printstats(stderr);
-	t_run_test(&t_memory_leak, t_plan_len + 1) ? ++pass : ++fail;
+	if (nt > t_plan_len) {
+		if (verbose)
+			t_malloc_printstats(stderr);
+		t_run_test(&t_memory_leak, nt) ? ++pass : ++fail;
+	}
 	exit(fail > 0 ? 1 : 0);
 }
