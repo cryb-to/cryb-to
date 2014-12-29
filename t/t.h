@@ -118,6 +118,7 @@ extern const uint8_t t_seq8[256];
  * Debugging allocator
  */
 extern int t_malloc_fail;
+extern int t_malloc_fail_after;
 extern int t_malloc_fatal;
 #ifdef _IONBF /* proxy for <stdio.h> */
 void t_malloc_printstats(FILE *);
