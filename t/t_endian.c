@@ -66,7 +66,7 @@ T_DEC(le, 64)
 		uint##w##_t enc;					\
 									\
 		cryb_##e##w##enc(&enc, e##w);				\
-		return (t_compare_x##w(*(uint##w##_t *)s##w, enc));	\
+		return (t_compare_x##w(*(const uint##w##_t *)s##w, enc)); \
 	}
 
 T_ENC(be, 32)
