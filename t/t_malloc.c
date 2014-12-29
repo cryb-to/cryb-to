@@ -131,6 +131,9 @@ unsigned long nmapalloc, nmapfree;
 /* if non-zero, all allocations fail */
 int t_malloc_fail;
 
+/* if non-zero, all allocations will fail after a countdown */
+int t_malloc_fail_after;
+
 /* if non-zero, unintentional allocation failures are fatal */
 int t_malloc_fatal;
 
@@ -298,6 +301,8 @@ malloc(size_t size)
 	if (t_malloc_fail) {
 		errno = ENOMEM;
 		return (NULL);
+	} else if (t_malloc_fail_after > 0 && --t_malloc_fail_after == 0) {
+		t_malloc_fail = 1;
 	}
 	p = t_malloc(size);
 	if (p == NULL && t_malloc_fatal)
@@ -320,6 +325,8 @@ calloc(size_t n, size_t size)
 	if (t_malloc_fail) {
 		errno = ENOMEM;
 		return (NULL);
+	} else if (t_malloc_fail_after > 0 && --t_malloc_fail_after == 0) {
+		t_malloc_fail = 1;
 	}
 	p = t_malloc(n * size);
 	if (p == NULL && t_malloc_fatal)
@@ -374,6 +381,12 @@ realloc(void *o, size_t size)
 	abort();
 
 found:
+	if (t_malloc_fail) {
+		errno = ENOMEM;
+		return (NULL);
+	} else if (t_malloc_fail_after > 0 && --t_malloc_fail_after == 0) {
+		t_malloc_fail = 1;
+	}
 	if ((p = t_malloc(size)) == NULL) {
 		if (t_malloc_fatal)
 			abort();
