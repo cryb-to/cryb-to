@@ -42,8 +42,8 @@ mpi_lshift(cryb_mpi *X, unsigned int c)
 {
 	unsigned int cl, i;
 
-	/* zero shift */
-	if (c == 0)
+	/* operands are zero */
+	if (c == 0 || X->msb == 0)
 		return (0);
 	/* make room */
 	if (mpi_grow(X, X->msb + c) != 0)
@@ -79,8 +79,8 @@ mpi_rshift(cryb_mpi *X, unsigned int c)
 {
 	unsigned int cl, i;
 
-	/* zero shift */
-	if (c == 0)
+	/* operands are zero */
+	if (c == 0 || X->msb == 0)
 		return (0);
 	/* shift wider than number, result is zero */
 	if (X->msb <= c) {
