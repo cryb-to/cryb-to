@@ -136,9 +136,13 @@ mpi_copy(cryb_mpi *X, const cryb_mpi *Y)
 
 	if (X == Y)
 		return (0);
-	mpi_zero(X);
+	if (Y->msb == 0) {
+		mpi_zero(X);
+		return (0);
+	}
 	if (mpi_grow(X, Y->msb) != 0)
 		return (-1);
+	mpi_zero(X);
 	X->msb = Y->msb;
 	X->neg = Y->neg;
 	memcpy(X->words, Y->words, X->size * sizeof *X->words);
