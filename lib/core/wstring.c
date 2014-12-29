@@ -54,5 +54,7 @@
 #define string_append_string	wstring_append_wstring
 #define string_printf		wstring_printf
 #define string_vprintf		wstring_vprintf
+#define string_compare		wstring_compare
+#define string_equal		wstring_equal
 
 #include "_string.c"

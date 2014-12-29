@@ -41,6 +41,8 @@
 #define string_append_string	cryb_string_append_string
 #define string_printf		cryb_string_printf
 #define string_vprintf		cryb_string_vprintf
+#define string_compare		cryb_string_compare
+#define string_equal		cryb_string_equal
 
 typedef struct cryb_string string;
 
@@ -57,5 +59,7 @@ ssize_t	 string_printf(string *, const char *, ...);
 #ifdef va_start
 ssize_t	 string_vprintf(string *, const char *, va_list);
 #endif
+int	 string_compare(const string *, const string *);
+int	 string_equal(const string *, const string *);
 
 #endif

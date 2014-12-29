@@ -28,7 +28,7 @@
  */
 
 static int
-t_foo(char **desc CRYB_UNUSED, void *arg)
+t_noop(char **desc CRYB_UNUSED, void *arg)
 {
 	string *str;
 
@@ -37,4 +37,107 @@ t_foo(char **desc CRYB_UNUSED, void *arg)
 		return (0);
 	string_delete(str);
 	return (1);
+}
+
+
+/***************************************************************************
+ * Comparisons
+ */
+
+static struct t_compare_case {
+	const char *desc;
+	const char_t *s1, *s2;
+	int cmp;
+} t_compare_cases[] = {
+	{
+		"both empty",
+		CS(""),
+		CS(""),
+		0,
+	},
+	{
+		"empty with non-empty (left)",
+		CS(""),
+		CS("xyzzy"),
+		-1,
+	},
+	{
+		"empty with non-empty (right)",
+		CS("xyzzy"),
+		CS(""),
+		1,
+	},
+	{
+		"equal non-empty",
+		CS("xyzzy"),
+		CS("xyzzy"),
+		0,
+	},
+	{
+		"unequal of equal length (left)",
+		CS("abba"),
+		CS("baba"),
+		-1,
+	},
+	{
+		"unequal of equal length (right)",
+		CS("baba"),
+		CS("abba"),
+		1,
+	},
+	{
+		"prefix (left)",
+		CS("baba"),
+		CS("babaorum"),
+		-1,
+	},
+	{
+		"prefix (right)",
+		CS("babaorum"),
+		CS("baba"),
+		1,
+	},
+};
+
+static int
+t_compare_test(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_compare_case *t = arg;
+	string *s1, *s2;
+	int ret;
+
+	if ((s1 = string_new()) == NULL ||
+	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
+	    (s2 = string_new()) == NULL ||
+	    string_append_cs(s2, t->s2, SIZE_MAX) < 0)
+		return (0);
+	ret = string_compare(s1, s2) == t->cmp;
+	string_delete(s2);
+	string_delete(s1);
+	return (ret);
+}
+
+
+/***************************************************************************
+ * Boilerplate
+ */
+
+int
+t_prepare(int argc, char *argv[])
+{
+	unsigned int i;
+
+	(void)argc;
+	(void)argv;
+
+	t_add_test(t_noop, NULL, "no-op");
+	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
+		t_add_test(t_compare_test, &t_compare_cases[i],
+		    t_compare_cases[i].desc);
+	return (0);
+}
+
+void
+t_cleanup(void)
+{
 }

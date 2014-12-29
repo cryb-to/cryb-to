@@ -41,6 +41,8 @@
 #define wstring_append_wstring	cryb_wstring_append_wstring
 #define wstring_printf		cryb_wstring_printf
 #define wstring_vprintf		cryb_wstring_vprintf
+#define wstring_compare		cryb_wstring_compare
+#define wstring_equal		cryb_wstring_equal
 
 typedef struct cryb_wstring wstring;
 
@@ -50,12 +52,14 @@ void	 wstring_delete(wstring *);
 int	 wstring_expand(wstring *, size_t);
 void	 wstring_shrink(wstring *);
 ssize_t	 wstring_trunc(wstring *, size_t);
-ssize_t	 wstring_append_c(wstring *, wchar_t);
-ssize_t	 wstring_append_cs(wstring *, const wchar_t *, size_t);
+ssize_t	 wstring_append_wc(wstring *, wchar_t);
+ssize_t	 wstring_append_wcs(wstring *, const wchar_t *, size_t);
 ssize_t	 wstring_append_wstring(wstring *, const wstring *, size_t);
 ssize_t	 wstring_printf(wstring *, const wchar_t *, ...);
 #ifdef va_start
 ssize_t	 wstring_vprintf(wstring *, const wchar_t *, va_list);
 #endif
+int	 wstring_compare(const wstring *, const wstring *);
+int	 wstring_equal(const wstring *, const wstring *);
 
 #endif

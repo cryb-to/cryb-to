@@ -38,24 +38,8 @@
 
 #include "t.h"
 
+#define char_t			char
+
+#define CS(lit)			lit
+
 #include "t__string.c"
-
-
-/***************************************************************************
- * Boilerplate
- */
-
-int
-t_prepare(int argc, char *argv[])
-{
-
-	(void)argc;
-	(void)argv;
-	t_add_test(t_foo, NULL, "foo");
-	return (0);
-}
-
-void
-t_cleanup(void)
-{
-}

@@ -280,3 +280,34 @@ string_vprintf(string *str, const char_t *fmt, va_list ap)
 	str->buf[str->len] = 0;
 	return (str->len);
 }
+
+/*
+ * Compare two strings, returning a negative value if the first is
+ * lexically less than the second, a positive value if the opposite is
+ * true, and zero if they are equal.
+ */
+int
+string_compare(const string *s1, const string *s2)
+{
+	const char_t *p1, *p2;
+
+	for (p1 = s1->buf, p2 = s2->buf; *p1 && *p2; ++p1, ++p2)
+		if (*p1 != *p2)
+			return (*p1 < *p2 ? -1 : 1);
+	return (*p1 ? 1 : *p2 ? -1 : 0);
+}
+
+/*
+ * Compare two strings, returning true (non-zero) if they are equal and
+ * false (zero) if they are not.
+ */
+int
+string_equal(const string *s1, const string *s2)
+{
+	const char_t *p1, *p2;
+
+	for (p1 = s1->buf, p2 = s2->buf; *p1 && *p2; ++p1, ++p2)
+		if (*p1 != *p2)
+			return (0);
+	return (1);
+}

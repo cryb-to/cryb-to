@@ -40,6 +40,7 @@
 #include "t.h"
 
 #define char_t			wchar_t
+#define vsnprintf		vswprintf
 
 #define cryb_string		cryb_wstring
 #define string			wstring
@@ -55,25 +56,9 @@
 #define string_append_string	wstring_append_wstring
 #define string_printf		wstring_printf
 #define string_vprintf		wstring_vprintf
+#define string_compare		wstring_compare
+#define string_equal		wstring_equal
+
+#define CS(lit)			L ## lit
 
 #include "t__string.c"
-
-
-/***************************************************************************
- * Boilerplate
- */
-
-int
-t_prepare(int argc, char *argv[])
-{
-
-	(void)argc;
-	(void)argv;
-	t_add_test(t_foo, NULL, "foo");
-	return (0);
-}
-
-void
-t_cleanup(void)
-{
-}
