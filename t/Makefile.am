@@ -37,7 +37,7 @@ endif
 TESTS =
 
 # libcryb-core
-TESTS += t_ctype t_strlcat t_strlcmp t_strlcpy
+TESTS += t_ctype t_endian t_strlcat t_strlcmp t_strlcpy
 TESTS += t_string t_wstring
 EXTRA_DIST += t__string.c
 
