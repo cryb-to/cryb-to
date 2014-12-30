@@ -928,7 +928,7 @@ t_mpi_rsh(char **desc CRYB_UNUSED, void *arg)
 
 
 /***************************************************************************
- * Addition / subtraction
+ * Addition
  */
 
 static struct t_add_case {
@@ -1213,6 +1213,139 @@ t_mpi_add_a_and_a_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 
 /***************************************************************************
+ * Subtraction
+ */
+
+static struct t_sub_case {
+	const char *desc;
+	uint8_t a[16];
+	size_t amsb;
+	uint8_t b[16];
+	size_t bmsb;
+	uint8_t e[16];
+	size_t emsb;
+} t_sub_cases[] = {
+	{
+		"0 - 0 == 0",
+		{                                                       }, 0,
+		{                                                       }, 0,
+		{                                                       }, 0,
+	},
+	{
+		"0 - 1 == 1",
+		{                                                       }, 0,
+		{                                                 0x01, }, 1,
+		{                                                 0x01, }, 1,
+	},
+	{
+		"1 - 0 == 1",
+		{                                                 0x01, }, 1,
+		{                                                       }, 0,
+		{                                                 0x01, }, 1,
+	},
+	{
+		"4 - 2 == 2",
+		{                                                 0x04, }, 3,
+		{                                                 0x02, }, 2,
+		{                                                 0x02, }, 2,
+	},
+	{
+		"2 - 4 == 2",
+		{                                                 0x02, }, 2,
+		{                                                 0x04, }, 3,
+		{                                                 0x02, }, 2,
+	},
+	{
+		"0x120140901 - 0x119700101 == 0x6a40800",
+		{                         0x01, 0x20, 0x14, 0x09, 0x01, }, 33,
+		{                         0x01, 0x19, 0x70, 0x01, 0x01, }, 33,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27,
+	},
+	{
+		/* simple carry: from first to second */
+		"0x1000000000 - 0xfffffffff = 0x01",
+		{                         0x10, 0x00, 0x00, 0x00, 0x00, }, 37,
+		{                         0x0f, 0xff, 0xff, 0xff, 0xff, }, 36,
+		{                                                 0x01, }, 1,
+	},
+	{
+		/* complex carry: from first to second to third to fourth */
+		"0x010000000100000000 - 0xffffffffffffffff = 0x0100000001",
+		{ 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, }, 65,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64,
+		{                         0x01, 0x00, 0x00, 0x00, 0x01, }, 33,
+	},
+};
+
+static int
+t_mpi_sub_tc(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_sub_case *tc = arg;
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_load(&a, tc->a, (tc->amsb + 7) / 8);
+	mpi_load(&b, tc->b, (tc->bmsb + 7) / 8);
+	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
+	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_compare_mpi(&e, &x);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * All operands are different
+ */
+static int
+t_mpi_sub(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x19700101);
+	mpi_set(&b, 0x20140901);
+	mpi_set(&e, 0x20140901 - 0x19700101);
+	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_compare_mpi(&e, &x);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * As above, but allocation will fail
+ */
+static int
+t_mpi_sub_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_load(&a, large_v, sizeof large_v);
+	mpi_load(&b, large_v, sizeof large_v);
+	mpi_set(&x, 0x20140901);
+	mpi_set(&e, 0x20140901);
+	++t_malloc_fail;
+	ret &= t_compare_i(-1, mpi_sub_abs(&x, &a, &b));
+	--t_malloc_fail;
+	ret &= t_compare_mpi(&e, &x);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+
+/***************************************************************************
  * Boilerplate
  */
 
@@ -1283,7 +1416,7 @@ t_prepare(int argc, char *argv[])
 	for (i = 0; i < sizeof t_rsh_cases / sizeof t_rsh_cases[0]; ++i)
 		t_add_test(t_mpi_rsh, &t_rsh_cases[i], t_rsh_cases[i].desc);
 
-	/* add / subtract */
+	/* addition */
 	for (i = 0; i < sizeof t_add_cases / sizeof t_add_cases[0]; ++i)
 		t_add_test(t_mpi_add_tc, &t_add_cases[i], t_add_cases[i].desc);
 	t_add_test(t_mpi_add, NULL, "x = a + b");
@@ -1296,6 +1429,13 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_add_a_to_a_fail, NULL, "a = a + a (failure)");
 	t_add_test(t_mpi_add_a_and_a, NULL, "b = a + a");
 	t_add_test(t_mpi_add_a_and_a_fail, NULL, "b = a + a (failure)");
+
+	/* subtraction */
+	for (i = 0; i < sizeof t_sub_cases / sizeof t_sub_cases[0]; ++i)
+		t_add_test(t_mpi_sub_tc, &t_sub_cases[i], t_sub_cases[i].desc);
+	t_add_test(t_mpi_sub, NULL, "x = a - b");
+	t_add_test(t_mpi_sub_fail, NULL, "x = a - b (failure)");
+
 	return (0);
 }
 
