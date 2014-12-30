@@ -31,6 +31,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <cryb/mpi.h>
 
@@ -51,7 +52,7 @@ mpi_cmp_abs(cryb_mpi *X, cryb_mpi *Y)
 	if (X->msb < Y->msb)
 		return (-1);
 	/* no luck, compare word by word */
-	for (i = X->msb / 32; i >= 0; --i) {
+	for (i = (X->msb + 31) / 32; i >= 0; --i) {
 		if (X->words[i] > Y->words[i])
 			return (1);
 		if (X->words[i] < Y->words[i])
@@ -78,4 +79,26 @@ mpi_cmp(cryb_mpi *X, cryb_mpi *Y)
 		else
 			return (mpi_cmp_abs(X, Y));
 	}
+}
+
+/*
+ * Compare for equality
+ */
+int
+mpi_eq_abs(cryb_mpi *A, cryb_mpi *B)
+{
+
+	return (A->msb == B->msb &&
+	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
+}
+
+/*
+ * Compare for equality
+ */
+int
+mpi_eq(cryb_mpi *A, cryb_mpi *B)
+{
+
+	return (A->neg == B->neg && A->msb != B->msb &&
+	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
 }
