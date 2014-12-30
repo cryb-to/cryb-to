@@ -688,15 +688,61 @@ static struct t_cmp_case {
 	const char *desc;
 	int a, b, cmp;
 } t_cmp_cases[] = {
+	{ "-3 == -3",	-3,	-3,	 0 },
+	{ "-3 < -2",	-3,	-2,	-1 },
+	{ "-3 < -1",	-3,	-1,	-1 },
+	{ "-3 < 0",	-3,	 0,	-1 },
+	{ "-3 < 1",	-3,	 1,	-1 },
+	{ "-3 < 2",	-3,	 2,	-1 },
+	{ "-3 < 3",	-3,	 3,	-1 },
+
+	{ "-2 > -3",	-2,	-3,	 1 },
+	{ "-2 == -2",	-2,	-2,	 0 },
+	{ "-2 < -1",	-2,	-1,	-1 },
+	{ "-2 < 0",	-2,	 0,	-1 },
+	{ "-2 < 1",	-2,	 1,	-1 },
+	{ "-2 < 2",	-2,	 2,	-1 },
+	{ "-2 < 3",	-2,	 3,	-1 },
+
+	{ "-1 > -3",	-1,	-3,	 1 },
+	{ "-1 > -2",	-1,	-2,	 1 },
 	{ "-1 == -1",	-1,	-1,	 0 },
 	{ "-1 < 0",	-1,	 0,	-1 },
 	{ "-1 < 1",	-1,	 1,	-1 },
+	{ "-1 < 2",	-1,	 2,	-1 },
+	{ "-1 < 3",	-1,	 3,	-1 },
+
+	{ "0 > -3",	 0,	-3,	 1 },
+	{ "0 > -2",	 0,	-2,	 1 },
 	{ "0 > -1",	 0,	-1,	 1 },
 	{ "0 == 0",	 0,	 0,	 0 },
 	{ "0 < 1",	 0,	 1,	-1 },
+	{ "0 < 2",	 0,	 2,	-1 },
+	{ "0 < 3",	 0,	 3,	-1 },
+
+	{ "1 > -3",	 1,	-3,	 1 },
+	{ "1 > -2",	 1,	-2,	 1 },
 	{ "1 > -1",	 1,	-1,	 1 },
 	{ "1 > 0",	 1,	 0,	 1 },
 	{ "1 == 1",	 1,	 1,	 0 },
+	{ "1 < 2",	 1,	 2,	-1 },
+	{ "1 < 3",	 1,	 3,	-1 },
+
+	{ "2 > -3",	 2,	-3,	 1 },
+	{ "2 > -2",	 2,	-2,	 1 },
+	{ "2 > -1",	 2,	-1,	 1 },
+	{ "2 > 0",	 2,	 0,	 1 },
+	{ "2 > 1",	 2,	 1,	 1 },
+	{ "2 == 2",	 2,	 2,	 0 },
+	{ "2 < 3",	 2,	 3,	-1 },
+
+	{ "3 > -3",	 3,	-3,	 1 },
+	{ "3 > -2",	 3,	-2,	 1 },
+	{ "3 > -1",	 3,	-1,	 1 },
+	{ "3 > 0",	 3,	 0,	 1 },
+	{ "3 > 1",	 3,	 1,	 1 },
+	{ "3 > 2",	 3,	 2,	 1 },
+	{ "3 == 3",	 3,	 3,	 0 },
 };
 
 /*
@@ -711,26 +757,6 @@ t_mpi_cmp(char **desc CRYB_UNUSED, void *arg)
 
 	mpi_set(&a, tc->a);
 	mpi_set(&b, tc->b);
-	ret &= t_compare_i(tc->cmp, mpi_cmp(&a, &b));
-	mpi_destroy(&a);
-	mpi_destroy(&b);
-	return (ret);
-}
-
-/*
- * Compare two MPIs with garbage past the msb
- */
-static int
-t_mpi_cmp_garbage(char **desc CRYB_UNUSED, void *arg)
-{
-	struct t_cmp_case *tc = arg;
-	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO;
-	int ret = 1;
-
-	mpi_set(&a, tc->a);
-	a.words[1] = 2;
-	mpi_set(&b, tc->b);
-	b.words[1] = tc->cmp < 1 ? 1 : 3;
 	ret &= t_compare_i(tc->cmp, mpi_cmp(&a, &b));
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -1426,11 +1452,8 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_large_load_fail, NULL, "large load (failure)");
 
 	/* comparison */
-	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i) {
+	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
 		t_add_test(t_mpi_cmp, &t_cmp_cases[i], t_cmp_cases[i].desc);
-		t_add_test(t_mpi_cmp_garbage, &t_cmp_cases[i],
-		    "%s (trailing garbage)", t_cmp_cases[i].desc);
-	}
 
 	/* left / right shift */
 	for (i = 0; i < sizeof t_lsh_cases / sizeof t_lsh_cases[0]; ++i)
