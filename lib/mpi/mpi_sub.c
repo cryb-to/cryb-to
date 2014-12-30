@@ -42,7 +42,7 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 {
 	cryb_mpi *L, *G;
 	unsigned int i;
-	uint32_t c;
+	uint32_t c, cn;
 
 	/*
 	 * Trivial cases: A and B are the same or equal or at least one of
@@ -67,16 +67,18 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	if (mpi_grow(X, G->msb) != 0)
 		return (-1);
 
-	/* subtract B from A word by word until we run out of B */
-	for (c = i = 0; i < (G->msb + 31) / 32; ++i) {
-		X->words[i] = G->words[i] - c;
-		c = (G->words[i] < c) + (X->words[i] < L->words[i]);
-		X->words[i] -= L->words[i];
+	/* subtract L from G word by word until we run out of L */
+	for (c = i = 0; i < (L->msb + 31) / 32; ++i) {
+		cn = G->words[i] < c ||
+		    G->words[i] - c < L->words[i];
+		X->words[i] = G->words[i] - L->words[i] - c;
+		c = cn;
 	}
 	/* keep propagating carry */
 	while (c) {
+		cn = (G->words[i] < c);
 		X->words[i] = G->words[i] - c;
-		c = (G->words[i] > c);
+		c = cn;
 		++i;
 	}
 	while (i > 0 && X->words[i] == 0)
