@@ -40,48 +40,44 @@
 int
 mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 {
+	cryb_mpi *L, *G;
 	unsigned int i;
 	uint32_t c;
 
 	/*
-	 * Trivial cases: A and B are identical and / or both zero.
+	 * Trivial cases: A and B are the same or equal or at least one of
+	 * them is zero.
 	 */
-	if (A == B || (A->msb == 0 && B->msb == 0)) {
+	if (A == B || mpi_eq_abs(A, B)) {
 		mpi_zero(X);
 		return (0);
 	}
+	if (A->msb == 0)
+		return (X == B ? 0 : mpi_copy(X, B));
+	if (B->msb == 0)
+		return (X == A ? 0 : mpi_copy(X, A));
 
-	/*
-	 * Normalize our operands: if X is identical to either A or B, we
-	 * want it to be A.  Otherwise, copy A into X.  In either case,
-	 * make sure X is large enough for the largest possible sum.
-	 */
-	if (X == B && A != B) {
-		B = A;
-		A = X;
-	}
-	if (mpi_grow(X, X->msb) != 0 || mpi_grow(X, B->msb) != 0)
+	/* we want to subtract the smaller number from the larger */
+	if (mpi_cmp_abs(A, B) < 0)
+		L = A, G = B;
+	else
+		L = B, G = A;
+
+	/* make sure X is large enough for the largest possible result */
+	if (mpi_grow(X, G->msb))
 		return (-1);
-	if (X != A)
-		/* this cannot fail */
-		mpi_copy(X, A);
 
-	/*
-	 * From now on, we are subtracting B from X and A is irrelevant.
-	 */
-
-	/* subtract B from X word by word until we run out of B */
-	for (c = i = 0; i < (B->msb + 31) / 32; ++i) {
-		X->words[i] -= c;
-		c = (X->words[i] > c);
-		X->words[i] -= B->words[i];
-		c += (X->words[i] > B->words[i]);
+	/* subtract B from A word by word until we run out of B */
+	for (c = i = 0; i < (G->msb + 31) / 32; ++i) {
+		X->words[i] = G->words[i] - c;
+		c = (G->words[i] < c) + (X->words[i] < L->words[i]);
+		X->words[i] -= L->words[i];
 	}
 	/* keep propagating carry */
 	while (c) {
-		X->words[i] -= c;
-		c = (X->words[i] > c);
-		++i;
+		X->words[i] = G->words[i] - c;
+		c = (G->words[i] > c);
+		i += c;
 	}
 	if (X->words[i] == 0)
 		--i;
