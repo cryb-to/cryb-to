@@ -64,7 +64,7 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 		L = B, G = A;
 
 	/* make sure X is large enough for the largest possible result */
-	if (mpi_grow(X, G->msb))
+	if (mpi_grow(X, G->msb) != 0)
 		return (-1);
 
 	/* subtract B from A word by word until we run out of B */
@@ -77,9 +77,9 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	while (c) {
 		X->words[i] = G->words[i] - c;
 		c = (G->words[i] > c);
-		i += c;
+		++i;
 	}
-	if (X->words[i] == 0)
+	while (i > 0 && X->words[i] == 0)
 		--i;
 	/* compute msb of msw */
 	/* XXX use flsl() */
