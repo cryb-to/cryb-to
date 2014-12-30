@@ -57,7 +57,7 @@ mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	/*
 	 * Normalize our operands: if X is identical to either A or B, we
 	 * want it to be A.  Otherwise, copy A into X.  In either case,
-	 * make sure X is large enough for the largest possible sum.
+	 * make sure X is large enough for the largest possible result.
 	 */
 	if (X == B) {
 		B = A;
