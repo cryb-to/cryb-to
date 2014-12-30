@@ -1512,6 +1512,42 @@ t_mpi_sub_a_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	return (ret);
 }
 
+/*
+ * Target is the first operand, second operand is zero
+ */
+static int
+t_mpi_sub_z_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x20140901);
+	mpi_set(&e, 0x20140901);
+	ret &= t_compare_i(0, mpi_sub_abs(&a, &a, &z));
+	ret &= t_compare_mpi(&e, &a);
+	mpi_destroy(&a);
+	mpi_destroy(&e);
+	return (ret);
+}
+
+/*
+ * Target is the second operand, first operand is zero
+ */
+static int
+t_mpi_sub_b_from_z(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&b, 0x20140901);
+	mpi_set(&e, 0x20140901);
+	ret &= t_compare_i(0, mpi_sub_abs(&b, &z, &b));
+	ret &= t_compare_mpi(&e, &b);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	return (ret);
+}
+
 
 /***************************************************************************
  * Boilerplate
@@ -1608,6 +1644,8 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_sub_a_from_b, NULL, "b = a - b");
 	t_add_test(t_mpi_sub_a_from_b_fail, NULL, "b = a - b (failure)");
 	t_add_test(t_mpi_sub_a_from_a, NULL, "a = a - a");
+	t_add_test(t_mpi_sub_b_from_z, NULL, "b = 0 - b");
+	t_add_test(t_mpi_sub_z_from_a, NULL, "a = a - z");
 
 	return (0);
 }
