@@ -1350,7 +1350,7 @@ t_mpi_sub_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
-	mpi_load(&a, large_v, sizeof large_v);
+	mpi_load(&a, small_v, sizeof small_v);
 	mpi_load(&b, large_v, sizeof large_v);
 	mpi_set(&x, 0x20140901);
 	mpi_set(&e, 0x20140901);
