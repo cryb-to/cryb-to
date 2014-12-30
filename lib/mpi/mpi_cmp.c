@@ -52,7 +52,7 @@ mpi_cmp_abs(cryb_mpi *X, cryb_mpi *Y)
 	if (X->msb < Y->msb)
 		return (-1);
 	/* no luck, compare word by word */
-	for (i = (X->msb + 31) / 32; i >= 0; --i) {
+	for (i = X->msb / 32; i >= 0; --i) {
 		if (X->words[i] > Y->words[i])
 			return (1);
 		if (X->words[i] < Y->words[i])
