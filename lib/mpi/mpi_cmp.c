@@ -99,6 +99,6 @@ int
 mpi_eq(cryb_mpi *A, cryb_mpi *B)
 {
 
-	return (A->neg == B->neg && A->msb != B->msb &&
+	return (A->neg == B->neg && A->msb == B->msb &&
 	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
 }
