@@ -92,3 +92,30 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	X->msb += i * 32 + 1;
 	return (0);
 }
+
+/*
+ * Subtract one number from another.
+ */
+int
+mpi_sub(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
+{
+
+	if (A->neg && B->neg) {
+		if (mpi_sub_abs(X, A, B) < 0)
+			return (-1);
+		X->neg = (mpi_cmp_abs(A, B) > 0);
+	} else if (A->neg) {
+		if (mpi_add_abs(X, A, B) < 0)
+			return (-1);
+		X->neg = 1;
+	} else if (B->neg) {
+		if (mpi_add_abs(X, A, B) < 0)
+			return (-1);
+		X->neg = 0;
+	} else {
+		if (mpi_sub_abs(X, A, B) < 0)
+			return (-1);
+		X->neg = (mpi_cmp_abs(A, B) < 0);
+	}
+	return (0);
+}
