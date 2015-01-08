@@ -37,6 +37,10 @@
 
 #include <cryb/rand.h>
 
+/*
+ * Working placeholder until we come up with a proper API and start adding
+ * more methods.
+ */
 int
 rand_bytes(uint8_t *buf, size_t len)
 {
