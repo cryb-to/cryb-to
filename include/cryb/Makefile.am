@@ -5,6 +5,7 @@ cryb_HEADERS = \
 	attributes.h \
 	bitwise.h \
 	cpe.h \
+	ctype.h \
 	digest.h \
 	endian.h \
 	hash.h \
@@ -33,6 +34,9 @@ cryb_HEADERS = \
 	sha384.h \
 	sha512.h \
 	string.h \
+	strlcat.h \
+	strlcmp.h \
+	strlcpy.h \
 	to.h \
 	totp.h \
 	version.h \
@@ -40,9 +44,5 @@ cryb_HEADERS = \
 
 noinst_HEADERS = \
 	coverage.h \
-	ctype.h \
 	impl.h \
-	nocoverage.h \
-	strlcat.h \
-	strlcmp.h \
-	strlcpy.h
+	nocoverage.h
