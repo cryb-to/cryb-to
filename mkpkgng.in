@@ -81,6 +81,9 @@ if ! expr "$version" : "[0-9]{1,}$" >/dev/null ; then
 	if [ -n "$svnversion" ] ; then
 		package="$package-$version"
 		version="r$svnversion"
+	else
+		package="$package-$version"
+		version="$(date '+%Y%m%d')"
 	fi
 fi
 
@@ -98,7 +101,7 @@ make="$make --no-print-directory --quiet V=0"
 # Create temporary directory
 #
 info "Creating the temporary directory."
-tmproot=$(mktemp -d "${TMPDIR:-/tmp}/$package-$version.XXXXXX")
+tmproot=$(mktemp -d "${builddir}/$package-$version.XXXXXX")
 [ -n "$tmproot" -a -d "$tmproot" ] || \
     error "Unable to create the temporary directory."
 trap "exit 1" INT
