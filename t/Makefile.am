@@ -36,11 +36,12 @@ endif
 TESTS =
 
 # libcryb-core
-TESTS += t_ctype t_endian t_strlcat t_strlcmp t_strlcpy
+TESTS += t_ctype t_endian t_memset_s t_strlcat t_strlcmp t_strlcpy
 TESTS += t_string t_wstring
 EXTRA_DIST += t__string.c
 t_ctype_LDADD = $(libt) $(libcore)
 t_endian_LDADD = $(libt) $(libcore)
+t_memset_s_LDADD = $(libt) $(libcore)
 t_strlcat_LDADD = $(libt) $(libcore)
 t_strlcmp_LDADD = $(libt) $(libcore)
 t_strlcpy_LDADD = $(libt) $(libcore)

@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libcryb-core.la
 
 libcryb_core_la_SOURCES = \
 	cryb_core.c \
+	cryb_memset_s.c \
 	string.c \
 	cryb_strlcat.c \
 	cryb_strlcpy.c \
