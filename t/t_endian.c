@@ -37,10 +37,13 @@
 
 #include "t.h"
 
+static uint16_t be16 = 0xf001U;
 static uint32_t be32 = 0xdeadbeefUL;
 static uint64_t be64 = 0xdeadbeefcafef001ULL;
+static uint16_t le16 = 0x01f0U;
 static uint32_t le32 = 0xefbeaddeUL;
 static uint64_t le64 = 0x01f0fecaefbeaddeULL;
+static const void *s16 = "\xf0\x01";
 static const void *s32 = "\xde\xad\xbe\xef";
 static const void *s64 = "\xde\xad\xbe\xef\xca\xfe\xf0\x01";
 
@@ -54,8 +57,10 @@ static const void *s64 = "\xde\xad\xbe\xef\xca\xfe\xf0\x01";
 		return (t_compare_x##w(e##w, dec));			\
 	}
 
+T_DEC(be, 16)
 T_DEC(be, 32)
 T_DEC(be, 64)
+T_DEC(le, 16)
 T_DEC(le, 32)
 T_DEC(le, 64)
 
@@ -69,8 +74,10 @@ T_DEC(le, 64)
 		return (t_compare_x##w(*(const uint##w##_t *)s##w, enc)); \
 	}
 
+T_ENC(be, 16)
 T_ENC(be, 32)
 T_ENC(be, 64)
+T_ENC(le, 16)
 T_ENC(le, 32)
 T_ENC(le, 64)
 
@@ -90,12 +97,16 @@ t_prepare(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
+	T_DEC_ADD(be, 16);
 	T_DEC_ADD(be, 32);
 	T_DEC_ADD(be, 64);
+	T_DEC_ADD(le, 16);
 	T_DEC_ADD(le, 32);
 	T_DEC_ADD(le, 64);
+	T_ENC_ADD(be, 16);
 	T_ENC_ADD(be, 32);
 	T_ENC_ADD(be, 64);
+	T_ENC_ADD(le, 16);
 	T_ENC_ADD(le, 32);
 	T_ENC_ADD(le, 64);
 	return (0);

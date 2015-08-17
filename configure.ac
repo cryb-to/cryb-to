@@ -34,8 +34,11 @@ AC_PROG_INSTALL
 #
 
 AC_CHECK_HEADERS([endian.h sys/endian.h])
-AC_CHECK_DECLS([be32enc, be32dec, le32enc, le32dec,
-    be64enc, be64dec, le64enc, le64dec], [], [], [[
+AC_CHECK_DECLS([
+    be16enc, be16dec, le16enc, le16dec,
+    be32enc, be32dec, le32enc, le32dec,
+    be64enc, be64dec, le64enc, le64dec
+], [], [], [[
 #if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif

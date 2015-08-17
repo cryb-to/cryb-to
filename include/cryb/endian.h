@@ -38,6 +38,12 @@
 #include <endian.h>
 #endif
 
+#if !HAVE_DECL_BE16ENC
+#define be16enc cryb_be16enc
+#endif
+#if !HAVE_DECL_BE16DEC
+#define be16dec cryb_be16dec
+#endif
 #if !HAVE_DECL_BE32ENC
 #define be32enc cryb_be32enc
 #endif
@@ -49,6 +55,12 @@
 #endif
 #if !HAVE_DECL_BE64DEC
 #define be64dec cryb_be64dec
+#endif
+#if !HAVE_DECL_LE16ENC
+#define le16enc cryb_le16enc
+#endif
+#if !HAVE_DECL_LE16DEC
+#define le16dec cryb_le16dec
 #endif
 #if !HAVE_DECL_LE32ENC
 #define le32enc cryb_le32enc
@@ -62,6 +74,20 @@
 #if !HAVE_DECL_LE64DEC
 #define le64dec cryb_le64dec
 #endif
+
+static inline void
+cryb_be16enc(void *p, uint16_t u16)
+{
+	((uint8_t *)p)[1] = u16 & 0xff;
+	((uint8_t *)p)[0] = (u16 >> 8) & 0xff;
+}
+
+static inline uint16_t
+cryb_be16dec(const void *p)
+{
+	return ((uint16_t)((const uint8_t *)p)[1] |
+	    (uint16_t)((const uint8_t *)p)[0] << 8);
+}
 
 static inline void
 cryb_be32enc(void *p, uint32_t u32)
@@ -105,6 +131,20 @@ cryb_be64dec(const void *p)
 	    (uint64_t)((const uint8_t *)p)[2] << 40 |
 	    (uint64_t)((const uint8_t *)p)[1] << 48 |
 	    (uint64_t)((const uint8_t *)p)[0] << 56);
+}
+
+static inline void
+cryb_le16enc(void *p, uint16_t u16)
+{
+	((uint8_t *)p)[0] = u16 & 0xff;
+	((uint8_t *)p)[1] = (u16 >> 8) & 0xff;
+}
+
+static inline uint16_t
+cryb_le16dec(const void *p)
+{
+	return ((uint16_t)((const uint8_t *)p)[0] |
+	    (uint16_t)((const uint8_t *)p)[1] << 8);
 }
 
 static inline void
