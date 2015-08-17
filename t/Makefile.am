@@ -103,7 +103,8 @@ t_sha512_openssl_LDADD = $(libt) $(OPENSSL_LDADD) $(RT_LIBS)
 endif
 
 # libcryb-hash
-TESTS += t_murmur3_32 t_pearson
+TESTS += t_fletcher t_murmur3_32 t_pearson
+t_fletcher_LDADD = $(libt) $(libhash)
 t_murmur3_32_LDADD = $(libt) $(libhash)
 t_pearson_LDADD = $(libt) $(libhash)
 

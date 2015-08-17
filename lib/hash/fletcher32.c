@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,18 +27,36 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_HASH_H_INCLUDED
-#define CRYB_HASH_H_INCLUDED
+#include "cryb/impl.h"
 
-#define pearson_hash		cryb_pearson_hash
-#define pearson_hash_str	cryb_pearson_hash_str
-#define murmur3_32_hash		cryb_murmur3_32_hash
+#include <stdint.h>
+#include <string.h>
 
-uint16_t fletcher16_hash(const void *, size_t);
-uint32_t fletcher32_hash(const void *, size_t);
-uint64_t fletcher64_hash(const void *, size_t);
-uint8_t pearson_hash(const void *, size_t);
-uint8_t pearson_hash_str(const char *);
-uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
+#include <cryb/bitwise.h>
+#include <cryb/endian.h>
+#include <cryb/hash.h>
 
-#endif
+/*
+ * Simple implementation of Fletcher's checksum (32-bit version).  The
+ * input length is zero-padded to the nearest multiple of 2 bytes.
+ */
+uint32_t
+fletcher32_hash(const void *data, size_t len)
+{
+	const uint8_t *bytes;
+	uint32_t c0, c1;
+	uint16_t w;
+
+	for (bytes = data, c0 = c1 = 0; len > 1; len -= 2, bytes += 2) {
+		/* replace with be16toh() if input is aligned */
+		w = be16dec(bytes);
+		c0 = (c0 + w) % 0xffffU;
+		c1 = (c1 + c0) % 0xffffU;
+	}
+	if (len > 0) {
+		w = bytes[0] << 8;
+		c0 = (c0 + w) % 0xffffffffU;
+		c1 = (c1 + c0) % 0xffffffffU;
+	}
+	return (c1 << 16 | c0);
+}
