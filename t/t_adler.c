@@ -101,6 +101,13 @@ static struct t_case t_cases[] = {
 		.len	= 8,
 		.sum	= 0x00800025,
 	},
+	{
+		.desc	= "zeroes",
+		.data	= (const char *)t_zero,
+		.len	= sizeof t_zero,
+		.sum	= (sizeof t_zero << 16) | 1,
+	},
+	/* XXX need non-zero cases which exercise modulo */
 };
 
 /***************************************************************************

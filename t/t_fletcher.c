@@ -54,8 +54,8 @@ static struct t_case t_cases[] = {
 		.data	= "\x01\x02\x03\x04\x05\x06\x07\x08",
 		.len	= 0,
 		.sum16	= 0x00,
-		.sum32	= 0x00,
-		.sum64	= 0x00,
+		.sum32	= 0x0000,
+		.sum64	= 0x00000000,
 	},
 	{
 		.desc	= "len == 1",
@@ -121,6 +121,16 @@ static struct t_case t_cases[] = {
 		.sum32	= 0x1e281014,
 		.sum64	= 0x070a0d1006080a0c,
 	},
+	/* not really useful... */
+	{
+		.desc	= "zeroes",
+		.data	= (const char *)t_zero,
+		.len	= sizeof t_zero,
+		.sum16	= 0x00,
+		.sum32	= 0x0000,
+		.sum64	= 0x00000000,
+	},
+	/* XXX need non-zero cases which exercise modulo */
 };
 
 /***************************************************************************
