@@ -37,8 +37,14 @@
 #include <cryb/hash.h>
 
 /*
- * Simple implementation of Fletcher's checksum (64-bit version).  The
- * input length is zero-padded to the nearest multiple of 4 bytes.
+ * Simple implementation of the 64-bit variant of Fletcher's checksum,
+ * described in Fletcher, J. G. (January 1982), "An Arithmetic Checksum
+ * for Serial Transmissions", IEEE Transactions on Communications. COM-30
+ * (1): 247–252, doi:10.1109/tcom.1982.1095369
+ *
+ * The paper assumes that the input length is a multiple of the checksum
+ * algorithm's word size (half the checksum size).  This implementation
+ * will zero-pad the input up to the nearest multiple of the word size.
  */
 uint64_t
 fletcher64_hash(const void *data, size_t len)

@@ -37,7 +37,10 @@
 #include <cryb/hash.h>
 
 /*
- * Simple implementation of Fletcher's checksum (16-bit version).
+ * Simple implementation of the 16-bit variant of Fletcher's checksum,
+ * described in Fletcher, J. G. (January 1982), "An Arithmetic Checksum
+ * for Serial Transmissions", IEEE Transactions on Communications. COM-30
+ * (1): 247–252, doi:10.1109/tcom.1982.1095369
  */
 uint16_t
 fletcher16_hash(const void *data, size_t len)
