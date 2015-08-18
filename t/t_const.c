@@ -34,7 +34,7 @@
 
 #include "t.h"
 
-const uint8_t t_zero[256] = {
+const uint8_t t_zero[4096] = {
 };
 
 const uint8_t t_seq8[256] = {

@@ -111,7 +111,7 @@ int t_str_is_false(const char *);
 /*
  * Useful constants
  */
-extern const uint8_t t_zero[256];
+extern const uint8_t t_zero[4096];
 extern const uint8_t t_seq8[256];
 
 /*
