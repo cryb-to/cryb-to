@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,19 +27,27 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_HASH_H_INCLUDED
-#define CRYB_HASH_H_INCLUDED
+#include "cryb/impl.h"
 
-#define pearson_hash		cryb_pearson_hash
-#define pearson_hash_str	cryb_pearson_hash_str
-#define murmur3_32_hash		cryb_murmur3_32_hash
+#include <stdint.h>
+#include <string.h>
 
-uint32_t adler32_hash(const void *, size_t);
-uint16_t fletcher16_hash(const void *, size_t);
-uint32_t fletcher32_hash(const void *, size_t);
-uint64_t fletcher64_hash(const void *, size_t);
-uint8_t pearson_hash(const void *, size_t);
-uint8_t pearson_hash_str(const char *);
-uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
+#include <cryb/bitwise.h>
+#include <cryb/endian.h>
+#include <cryb/hash.h>
 
-#endif
+/*
+ * Simple implementation of the Adler-32 checksum described in RFC1905.
+ */
+uint32_t
+adler32_hash(const void *data, size_t len)
+{
+	const uint8_t *bytes;
+	uint32_t c0, c1;
+
+	for (bytes = data, c0 = 1, c1 = 0; len > 0; len--, bytes++) {
+		c0 = (c0 + *bytes) % 65521;
+		c1 = (c1 + c0) % 65521;
+	}
+	return (c1 << 16 | c0);
+}
