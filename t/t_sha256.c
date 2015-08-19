@@ -30,7 +30,6 @@
 
 #include "cryb/impl.h"
 
-#include <err.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -142,17 +141,14 @@ t_sha256_vector(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_vector *vector = (struct t_vector *)arg;
 	uint8_t digest[SHA256_DIGEST_LEN];
-	char *msg;
+	char msg[1000000];
 
 	if (vector->msg) {
 		t_sha256_complete(vector->msg, strlen(vector->msg), digest);
 	} else {
 		/* special case for FIPS test vector 3 */
-		if ((msg = malloc(1000000)) == NULL)
-			err(1, "malloc()");
 		memset(msg, 'a', 1000000);
 		t_sha256_complete(msg, 1000000, digest);
-		free(msg);
 	}
 	return (t_compare_mem(vector->digest, digest, SHA256_DIGEST_LEN));
 }
@@ -191,23 +187,17 @@ t_sha256_perf(char **desc, void *arg)
 	struct timespec ts, te;
 	unsigned long ns;
 	uint8_t digest[SHA256_DIGEST_LEN];
-	char *msg, *comment;
 	size_t msglen = *(size_t *)arg;
+	char msg[msglen];
 
-	if ((msg = calloc(1, msglen)) == NULL)
-		err(1, "calloc()");
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 	for (int i = 0; i < T_PERF_ITERATIONS; ++i)
 		t_sha256_complete(msg, msglen, digest);
 	clock_gettime(CLOCK_MONOTONIC, &te);
-	free(msg);
 	ns = te.tv_sec * 1000000000LU + te.tv_nsec;
 	ns -= ts.tv_sec * 1000000000LU + ts.tv_nsec;
-	asprintf(&comment, "%zu bytes: %d iterations in %'lu ns",
+	asprintf(desc, "%zu bytes: %d iterations in %'lu ns",
 	    msglen, T_PERF_ITERATIONS, ns);
-	if (comment == NULL)
-		err(1, "asprintf()");
-	*desc = comment;
 	return (1);
 }
 

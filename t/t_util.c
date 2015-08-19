@@ -29,7 +29,6 @@
 
 #include "cryb/impl.h"
 
-#include <err.h>
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdint.h>

@@ -30,7 +30,6 @@
 
 #include "cryb/impl.h"
 
-#include <err.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -174,23 +173,17 @@ t_md2_perf(char **desc, void *arg)
 	struct timespec ts, te;
 	unsigned long ns;
 	uint8_t digest[MD2_DIGEST_LEN];
-	char *msg, *comment;
 	size_t msglen = *(size_t *)arg;
+	char msg[msglen];
 
-	if ((msg = calloc(1, msglen)) == NULL)
-		err(1, "calloc()");
 	clock_gettime(CLOCK_MONOTONIC, &ts);
 	for (int i = 0; i < T_PERF_ITERATIONS; ++i)
 		t_md2_complete(msg, msglen, digest);
 	clock_gettime(CLOCK_MONOTONIC, &te);
-	free(msg);
 	ns = te.tv_sec * 1000000000LU + te.tv_nsec;
 	ns -= ts.tv_sec * 1000000000LU + ts.tv_nsec;
-	asprintf(&comment, "%zu bytes: %d iterations in %'lu ns",
+	asprintf(desc, "%zu bytes: %d iterations in %'lu ns",
 	    msglen, T_PERF_ITERATIONS, ns);
-	if (comment == NULL)
-		err(1, "asprintf()");
-	*desc = comment;
 	return (1);
 }
 
