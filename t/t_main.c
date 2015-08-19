@@ -30,6 +30,8 @@
 #include "cryb/impl.h"
 
 #include <err.h>
+#include <setjmp.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -138,25 +140,48 @@ t_add_tests(struct t_test *t, int n)
 }
 
 /*
+ * Signal handler for tests
+ */
+static jmp_buf sigjmp;
+static int sigs[] = {
+	SIGABRT, SIGBUS, SIGSEGV, SIGSYS, SIGPIPE, SIGALRM, SIGTERM,
+	0
+};
+
+static void
+t_handle_signal(int signo)
+{
+
+	longjmp(sigjmp, signo);
+}
+
+/*
  * Run a single test
  */
 static int
 t_run_test(struct t_test *t, int n)
 {
 	char *desc;
-	int ret;
+	int i, ret, signo;
 
+	for (i = 0; sigs[i] > 0; ++i)
+		signal(sigs[i], t_handle_signal);
 	desc = t->desc;
-	ret = (*t->func)(&desc, t->arg);
+	ret = 0;
+	if ((signo = setjmp(sigjmp)) == 0)
+		ret = (*t->func)(&desc, t->arg);
 	if (ret > 0)
-		printf("ok %d - ", n);
+		printf("ok %d - %s\n", n, desc ? desc : "no description");
 	else if (ret < 0)
-		printf("ok %d - # skip ", n);
+		printf("ok %d - # skip\n", n);
+	else if (signo == 0)
+		printf("not ok %d - %s\n", n, desc ? desc : "no description");
 	else
-		printf("not ok %d - ", n);
-	printf("%s\n", desc ? desc : "no description");
+		printf("not ok %d - caught signal %d\n", n, signo);
 	if (desc != t->desc)
 		free(desc);
+	for (i = 0; sigs[i] > 0; ++i)
+		signal(sigs[i], SIG_DFL);
 	return (ret);
 }
 
@@ -240,5 +265,6 @@ main(int argc, char *argv[])
 			t_malloc_printstats(stderr);
 		t_run_test(&t_memory_leak, nt) ? ++pass : ++fail;
 	}
+	t_verbose("%d out of %zd tests passed\n", pass, nt);
 	exit(fail > 0 ? 1 : 0);
 }
