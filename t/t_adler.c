@@ -133,12 +133,7 @@ t_prepare(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
-	ones8[0] = 1;
-	be16enc(&ones16[0], 1);
-	for (i = 1; i < 65536; ++i) {
-		ones8[i] = ones8[0];
-		ones16[i] = ones16[0];
-	}
+	memset(&ones8, 1, sizeof ones8);
 	n = sizeof t_cases / sizeof t_cases[0];
 	for (i = 0; i < n; ++i)
 		if (t_cases[i].sum != 0xffffffffLU)
