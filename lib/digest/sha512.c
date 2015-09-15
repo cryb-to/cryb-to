@@ -43,30 +43,30 @@
  * 64-bit integer manipulation macros (big endian)
  */
 #ifndef GET_UINT64_BE
-#define GET_UINT64_BE(n,b,i)                            \
-do {                                                    \
-    (n) = ( (uint64_t) (b)[(i)    ] << 56 )             \
-        | ( (uint64_t) (b)[(i) + 1] << 48 )             \
-        | ( (uint64_t) (b)[(i) + 2] << 40 )             \
-        | ( (uint64_t) (b)[(i) + 3] << 32 )             \
-        | ( (uint64_t) (b)[(i) + 4] << 24 )             \
-        | ( (uint64_t) (b)[(i) + 5] << 16 )             \
-        | ( (uint64_t) (b)[(i) + 6] <<  8 )             \
-        | ( (uint64_t) (b)[(i) + 7]       );            \
+#define GET_UINT64_BE(n,b,i)				\
+do {							\
+    (n) = ( (uint64_t) (b)[(i)	  ] << 56 )		\
+	| ( (uint64_t) (b)[(i) + 1] << 48 )		\
+	| ( (uint64_t) (b)[(i) + 2] << 40 )		\
+	| ( (uint64_t) (b)[(i) + 3] << 32 )		\
+	| ( (uint64_t) (b)[(i) + 4] << 24 )		\
+	| ( (uint64_t) (b)[(i) + 5] << 16 )		\
+	| ( (uint64_t) (b)[(i) + 6] <<	8 )		\
+	| ( (uint64_t) (b)[(i) + 7]	  );		\
 } while (0)
 #endif
 
 #ifndef PUT_UINT64_BE
-#define PUT_UINT64_BE(n,b,i)                            \
-do {                                                    \
-    (b)[(i)    ] = (uint8_t) ( (n) >> 56 );       \
-    (b)[(i) + 1] = (uint8_t) ( (n) >> 48 );       \
-    (b)[(i) + 2] = (uint8_t) ( (n) >> 40 );       \
-    (b)[(i) + 3] = (uint8_t) ( (n) >> 32 );       \
-    (b)[(i) + 4] = (uint8_t) ( (n) >> 24 );       \
-    (b)[(i) + 5] = (uint8_t) ( (n) >> 16 );       \
-    (b)[(i) + 6] = (uint8_t) ( (n) >>  8 );       \
-    (b)[(i) + 7] = (uint8_t) ( (n)       );       \
+#define PUT_UINT64_BE(n,b,i)				\
+do {							\
+    (b)[(i)    ] = (uint8_t) ( (n) >> 56 );		\
+    (b)[(i) + 1] = (uint8_t) ( (n) >> 48 );		\
+    (b)[(i) + 2] = (uint8_t) ( (n) >> 40 );		\
+    (b)[(i) + 3] = (uint8_t) ( (n) >> 32 );		\
+    (b)[(i) + 4] = (uint8_t) ( (n) >> 24 );		\
+    (b)[(i) + 5] = (uint8_t) ( (n) >> 16 );		\
+    (b)[(i) + 6] = (uint8_t) ( (n) >>  8 );		\
+    (b)[(i) + 7] = (uint8_t) ( (n)	 );		\
 } while (0)
 #endif
 
@@ -144,7 +144,7 @@ static void sha512_process( sha512_ctx *ctx, const uint8_t *data )
     uint64_t temp1, temp2, W[80];
     uint64_t A, B, C, D, E, F, G, H;
 
-#define  SHR(x,n) (x >> n)
+#define	 SHR(x,n) (x >> n)
 #define ROTR(x,n) (SHR(x,n) | (x << (64 - n)))
 
 #define S0(x) (ROTR(x, 1) ^ ROTR(x, 8) ^  SHR(x, 7))
@@ -156,22 +156,22 @@ static void sha512_process( sha512_ctx *ctx, const uint8_t *data )
 #define F0(x,y,z) ((x & y) | (z & (x | y)))
 #define F1(x,y,z) (z ^ (x & (y ^ z)))
 
-#define P(a,b,c,d,e,f,g,h,x,K)                  \
-{                                               \
-    temp1 = h + S3(e) + F1(e,f,g) + K + x;      \
-    temp2 = S2(a) + F0(a,b,c);                  \
-    d += temp1; h = temp1 + temp2;              \
+#define P(a,b,c,d,e,f,g,h,x,K)			\
+{						\
+    temp1 = h + S3(e) + F1(e,f,g) + K + x;	\
+    temp2 = S2(a) + F0(a,b,c);			\
+    d += temp1; h = temp1 + temp2;		\
 }
 
     for( i = 0; i < 16; i++ )
     {
-        GET_UINT64_BE( W[i], data, i << 3 );
+	GET_UINT64_BE( W[i], data, i << 3 );
     }
 
     for( ; i < 80; i++ )
     {
-        W[i] = S1(W[i -  2]) + W[i -  7] +
-               S0(W[i - 15]) + W[i - 16];
+	W[i] = S1(W[i -	 2]) + W[i -  7] +
+	       S0(W[i - 15]) + W[i - 16];
     }
 
     A = ctx->state[0];
@@ -186,14 +186,14 @@ static void sha512_process( sha512_ctx *ctx, const uint8_t *data )
 
     do
     {
-        P( A, B, C, D, E, F, G, H, W[i], K[i] ); i++;
-        P( H, A, B, C, D, E, F, G, W[i], K[i] ); i++;
-        P( G, H, A, B, C, D, E, F, W[i], K[i] ); i++;
-        P( F, G, H, A, B, C, D, E, W[i], K[i] ); i++;
-        P( E, F, G, H, A, B, C, D, W[i], K[i] ); i++;
-        P( D, E, F, G, H, A, B, C, W[i], K[i] ); i++;
-        P( C, D, E, F, G, H, A, B, W[i], K[i] ); i++;
-        P( B, C, D, E, F, G, H, A, W[i], K[i] ); i++;
+	P( A, B, C, D, E, F, G, H, W[i], K[i] ); i++;
+	P( H, A, B, C, D, E, F, G, W[i], K[i] ); i++;
+	P( G, H, A, B, C, D, E, F, W[i], K[i] ); i++;
+	P( F, G, H, A, B, C, D, E, W[i], K[i] ); i++;
+	P( E, F, G, H, A, B, C, D, W[i], K[i] ); i++;
+	P( D, E, F, G, H, A, B, C, W[i], K[i] ); i++;
+	P( C, D, E, F, G, H, A, B, W[i], K[i] ); i++;
+	P( B, C, D, E, F, G, H, A, W[i], K[i] ); i++;
     }
     while( i < 80 );
 
@@ -216,7 +216,7 @@ void sha512_update( sha512_ctx *ctx, const void *input, int ilen )
     uint64_t left;
 
     if( ilen <= 0 )
-        return;
+	return;
 
     left = ctx->total[0] & 0x7F;
     fill = (int)( 128 - left );
@@ -224,27 +224,27 @@ void sha512_update( sha512_ctx *ctx, const void *input, int ilen )
     ctx->total[0] += ilen;
 
     if( ctx->total[0] < (uint64_t) ilen )
-        ctx->total[1]++;
+	ctx->total[1]++;
 
     if( left && ilen >= fill )
     {
-        memcpy( (ctx->buffer + left), input, fill );
-        sha512_process( ctx, ctx->buffer );
-        input += fill;
-        ilen  -= fill;
-        left = 0;
+	memcpy( (ctx->buffer + left), input, fill );
+	sha512_process( ctx, ctx->buffer );
+	input += fill;
+	ilen  -= fill;
+	left = 0;
     }
 
     while( ilen >= 128 )
     {
-        sha512_process( ctx, input );
-        input += 128;
-        ilen  -= 128;
+	sha512_process( ctx, input );
+	input += 128;
+	ilen  -= 128;
     }
 
     if( ilen > 0 )
     {
-        memcpy( (ctx->buffer + left), input, ilen );
+	memcpy( (ctx->buffer + left), input, ilen );
     }
 }
 
@@ -270,11 +270,11 @@ void sha512_final( sha512_ctx *ctx, uint8_t *output )
     uint8_t msglen[16];
 
     high = ( ctx->total[0] >> 61 )
-         | ( ctx->total[1] <<  3 );
-    low  = ( ctx->total[0] <<  3 );
+	 | ( ctx->total[1] <<  3 );
+    low	 = ( ctx->total[0] <<  3 );
 
     PUT_UINT64_BE( high, msglen, 0 );
-    PUT_UINT64_BE( low,  msglen, 8 );
+    PUT_UINT64_BE( low,	 msglen, 8 );
 
     last = (int)( ctx->total[0] & 0x7F );
     padn = ( last < 112 ) ? ( 112 - last ) : ( 240 - last );

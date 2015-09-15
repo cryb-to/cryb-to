@@ -43,30 +43,30 @@
  * 64-bit integer manipulation macros (big endian)
  */
 #ifndef GET_UINT64_BE
-#define GET_UINT64_BE(n,b,i)                            \
-do {                                                    \
-    (n) = ( (uint64_t) (b)[(i)    ] << 56 )             \
-	| ( (uint64_t) (b)[(i) + 1] << 48 )             \
-	| ( (uint64_t) (b)[(i) + 2] << 40 )             \
-	| ( (uint64_t) (b)[(i) + 3] << 32 )             \
-	| ( (uint64_t) (b)[(i) + 4] << 24 )             \
-	| ( (uint64_t) (b)[(i) + 5] << 16 )             \
-	| ( (uint64_t) (b)[(i) + 6] <<  8 )             \
-	| ( (uint64_t) (b)[(i) + 7]       );            \
+#define GET_UINT64_BE(n,b,i)				\
+do {							\
+    (n) = ( (uint64_t) (b)[(i)	  ] << 56 )		\
+	| ( (uint64_t) (b)[(i) + 1] << 48 )		\
+	| ( (uint64_t) (b)[(i) + 2] << 40 )		\
+	| ( (uint64_t) (b)[(i) + 3] << 32 )		\
+	| ( (uint64_t) (b)[(i) + 4] << 24 )		\
+	| ( (uint64_t) (b)[(i) + 5] << 16 )		\
+	| ( (uint64_t) (b)[(i) + 6] <<	8 )		\
+	| ( (uint64_t) (b)[(i) + 7]	  );		\
 } while (0)
 #endif
 
 #ifndef PUT_UINT64_BE
-#define PUT_UINT64_BE(n,b,i)                            \
-do {                                                    \
-    (b)[(i)    ] = (uint8_t) ( (n) >> 56 );       \
-    (b)[(i) + 1] = (uint8_t) ( (n) >> 48 );       \
-    (b)[(i) + 2] = (uint8_t) ( (n) >> 40 );       \
-    (b)[(i) + 3] = (uint8_t) ( (n) >> 32 );       \
-    (b)[(i) + 4] = (uint8_t) ( (n) >> 24 );       \
-    (b)[(i) + 5] = (uint8_t) ( (n) >> 16 );       \
-    (b)[(i) + 6] = (uint8_t) ( (n) >>  8 );       \
-    (b)[(i) + 7] = (uint8_t) ( (n)       );       \
+#define PUT_UINT64_BE(n,b,i)				\
+do {							\
+    (b)[(i)    ] = (uint8_t) ( (n) >> 56 );		\
+    (b)[(i) + 1] = (uint8_t) ( (n) >> 48 );		\
+    (b)[(i) + 2] = (uint8_t) ( (n) >> 40 );		\
+    (b)[(i) + 3] = (uint8_t) ( (n) >> 32 );		\
+    (b)[(i) + 4] = (uint8_t) ( (n) >> 24 );		\
+    (b)[(i) + 5] = (uint8_t) ( (n) >> 16 );		\
+    (b)[(i) + 6] = (uint8_t) ( (n) >>  8 );		\
+    (b)[(i) + 7] = (uint8_t) ( (n)	 );		\
 } while (0)
 #endif
 
@@ -144,7 +144,7 @@ static void sha384_process( sha384_ctx *ctx, const uint8_t *data )
     uint64_t temp1, temp2, W[80];
     uint64_t A, B, C, D, E, F, G, H;
 
-#define  SHR(x,n) (x >> n)
+#define	 SHR(x,n) (x >> n)
 #define ROTR(x,n) (SHR(x,n) | (x << (64 - n)))
 
 #define S0(x) (ROTR(x, 1) ^ ROTR(x, 8) ^  SHR(x, 7))
@@ -156,11 +156,11 @@ static void sha384_process( sha384_ctx *ctx, const uint8_t *data )
 #define F0(x,y,z) ((x & y) | (z & (x | y)))
 #define F1(x,y,z) (z ^ (x & (y ^ z)))
 
-#define P(a,b,c,d,e,f,g,h,x,K)                  \
-{                                               \
-    temp1 = h + S3(e) + F1(e,f,g) + K + x;      \
-    temp2 = S2(a) + F0(a,b,c);                  \
-    d += temp1; h = temp1 + temp2;              \
+#define P(a,b,c,d,e,f,g,h,x,K)			\
+{						\
+    temp1 = h + S3(e) + F1(e,f,g) + K + x;	\
+    temp2 = S2(a) + F0(a,b,c);			\
+    d += temp1; h = temp1 + temp2;		\
 }
 
     for( i = 0; i < 16; i++ )
@@ -170,7 +170,7 @@ static void sha384_process( sha384_ctx *ctx, const uint8_t *data )
 
     for( ; i < 80; i++ )
     {
-	W[i] = S1(W[i -  2]) + W[i -  7] +
+	W[i] = S1(W[i -	 2]) + W[i -  7] +
 	       S0(W[i - 15]) + W[i - 16];
     }
 
@@ -271,10 +271,10 @@ void sha384_final( sha384_ctx *ctx, uint8_t *output )
 
     high = ( ctx->total[0] >> 61 )
 	 | ( ctx->total[1] <<  3 );
-    low  = ( ctx->total[0] <<  3 );
+    low	 = ( ctx->total[0] <<  3 );
 
     PUT_UINT64_BE( high, msglen, 0 );
-    PUT_UINT64_BE( low,  msglen, 8 );
+    PUT_UINT64_BE( low,	 msglen, 8 );
 
     last = (int)( ctx->total[0] & 0x7F );
     padn = ( last < 112 ) ? ( 112 - last ) : ( 240 - last );
