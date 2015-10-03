@@ -156,6 +156,7 @@ AC_CONFIG_FILES([
     include/Makefile
     include/cryb/Makefile
     lib/Makefile
+    lib/cipher/Makefile
     lib/core/Makefile
     lib/cpe/Makefile
     lib/digest/Makefile

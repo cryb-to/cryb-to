@@ -1,4 +1,5 @@
 SUBDIRS = \
+	cipher \
 	core \
 	cpe \
 	digest \
@@ -6,8 +7,8 @@ SUBDIRS = \
 	hash \
 	mac \
 	mpi \
-	rand \
-	oath
+	oath \
+	rand
 
 if WITH_RSAREF
 SUBDIRS += rsaref

@@ -1,9 +1,11 @@
 crybdir = $(includedir)/cryb
 
 cryb_HEADERS = \
+	aes.h \
 	algorithm.h \
 	attributes.h \
 	bitwise.h \
+	cipher.h \
 	cpe.h \
 	ctype.h \
 	digest.h \
@@ -26,6 +28,7 @@ cryb_HEADERS = \
 	oath_constants.h \
 	oath_types.h \
 	rand.h \
+	rc4.h \
 	rfc3986.h \
 	rfc4648.h \
 	sha.h \

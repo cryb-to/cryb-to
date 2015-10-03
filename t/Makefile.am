@@ -8,14 +8,15 @@ check_LTLIBRARIES = libt.la
 libt_la_SOURCES = t_main.c t_file.c t_util.c t_const.c t_malloc.c
 
 # Individual libraries
+libcipher = $(top_builddir)/lib/cipher/libcryb-cipher.la
 libcore = $(top_builddir)/lib/core/libcryb-core.la
-libenc = $(top_builddir)/lib/enc/libcryb-enc.la
 libdigest = $(top_builddir)/lib/digest/libcryb-digest.la
+libenc = $(top_builddir)/lib/enc/libcryb-enc.la
 libhash = $(top_builddir)/lib/hash/libcryb-hash.la
 libmac = $(top_builddir)/lib/mac/libcryb-mac.la
 libmpi = $(top_builddir)/lib/mpi/libcryb-mpi.la
-librand = $(top_builddir)/lib/rand/libcryb-rand.la
 liboath = $(top_builddir)/lib/oath/libcryb-oath.la
+librand = $(top_builddir)/lib/rand/libcryb-rand.la
 libt = $(builddir)/libt.la
 
 # Additional headers, flags and libraries for OpenSSL
@@ -34,6 +35,11 @@ endif
 
 # tests
 TESTS =
+
+# libcryb-cipher
+TESTS += t_aes t_rc4
+t_aes_LDADD = $(libt) $(libcipher)
+t_rc4_LDADD = $(libt) $(libcipher)
 
 # libcryb-core
 TESTS += t_ctype t_endian t_memset_s t_strlcat t_strlcmp t_strlcpy
