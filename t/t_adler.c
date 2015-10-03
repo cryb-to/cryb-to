@@ -76,6 +76,12 @@ static struct t_case t_cases[] = {
 		.len	= 0,
 		.sum	= 0x00000001,
 	},
+	{
+		.desc	= "squeamish ossifrage",
+		.data	= "the magic words are squeamish ossifrage",
+		.len	= 39,
+		.sum	= 0x23880edd,
+	},
 
 	/* overflow */
 	{
