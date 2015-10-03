@@ -111,9 +111,9 @@ mpi_zero(cryb_mpi *X)
 		MPI_FAST_INIT(X);
 	} else if (X->msb != 0) {
 		memset(X->words, 0, X->size);
-		X->neg = 0;
 		X->msb = 0;
 	}
+	X->neg = 0;
 }
 
 /*
