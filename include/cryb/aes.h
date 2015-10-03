@@ -51,7 +51,7 @@ typedef struct {
 	uint32_t buf[68];
 } aes_ctx;
 
-void aes_init(aes_ctx *, int, const uint8_t *, size_t);
+void aes_init(aes_ctx *, cipher_mode, const uint8_t *, size_t);
 void aes_update(aes_ctx *, const void *, size_t, void *);
 void aes_finish(aes_ctx *);
 

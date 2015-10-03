@@ -44,7 +44,7 @@ typedef struct {
 	uint8_t s[256], i, j;
 } rc4_ctx;
 
-void rc4_init(rc4_ctx *, int, const uint8_t *, size_t);
+void rc4_init(rc4_ctx *, cipher_mode, const uint8_t *, size_t);
 void rc4_update(rc4_ctx *, const void *, size_t, void *);
 void rc4_finish(rc4_ctx *);
 

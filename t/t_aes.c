@@ -68,7 +68,7 @@ t_aes_enc(char **desc CRYB_UNUSED, void *arg)
 	aes_ctx ctx;
 
 	asprintf(desc, "%s (encrypt)", t->desc);
-	aes_init(&ctx, 0, t->key, sizeof t->key);
+	aes_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, sizeof t->key);
 	aes_update(&ctx, t->ptext, AES_BLOCK_LEN, out);
 	aes_finish(&ctx);
 	return (t_compare_mem(t->ctext, out, AES_BLOCK_LEN));
@@ -82,7 +82,7 @@ t_aes_dec(char **desc CRYB_UNUSED, void *arg)
 	aes_ctx ctx;
 
 	asprintf(desc, "%s (decrypt)", t->desc);
-	aes_init(&ctx, 1, t->key, sizeof t->key);
+	aes_init(&ctx, CIPHER_MODE_DECRYPT, t->key, sizeof t->key);
 	aes_update(&ctx, t->ctext, AES_BLOCK_LEN, out);
 	aes_finish(&ctx);
 	return (t_compare_mem(t->ptext, out, AES_BLOCK_LEN));

@@ -37,12 +37,8 @@
 
 #include <cryb/rc4.h>
 
-
-#include <stdio.h>
-
-
 void
-rc4_init(rc4_ctx *ctx, int mode, const uint8_t *key, size_t keylen)
+rc4_init(rc4_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
 	unsigned int i, j;
 	uint8_t t;

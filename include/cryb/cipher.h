@@ -36,8 +36,13 @@
 #define cipher_finish_func		cryb_cipher_finish_func
 #define cipher_algorithm		cryb_cipher_algorithm
 
+typedef enum {
+	CIPHER_MODE_ENCRYPT	 = 0,
+	CIPHER_MODE_DECRYPT	 = 1,
+} cipher_mode;
+
 typedef void cipher_ctx;
-typedef void (*cipher_init_func)(cipher_ctx *, int, const uint8_t *, size_t);
+typedef void (*cipher_init_func)(cipher_ctx *, cipher_mode, const uint8_t *, size_t);
 typedef void (*cipher_update_func)(cipher_ctx *, const void *, size_t, void *);
 typedef void (*cipher_finish_func)(cipher_ctx *);
 

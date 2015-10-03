@@ -257,7 +257,7 @@ t_rc4(char **desc CRYB_UNUSED, void *arg)
 	uint8_t out[32];
 	rc4_ctx ctx;
 
-	rc4_init(&ctx, 0xf00l, t->key, t->keylen);
+	rc4_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen);
 	rc4_update(&ctx, t_zero, 32, out);
 	rc4_finish(&ctx);
 	return (t_compare_mem(t->stream, out, 32));

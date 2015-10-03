@@ -616,12 +616,12 @@ aes_dec(aes_ctx *ctx, const uint8_t *input, uint8_t *output)
 }
 
 void
-aes_init(aes_ctx *ctx, int mode, const uint8_t *key, size_t keylen)
+aes_init(aes_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
 
 	memset(ctx, 0, sizeof *ctx);
 	ctx->mode = mode;
-	if (ctx->mode)
+	if (ctx->mode == CIPHER_MODE_DECRYPT)
 		aes_setkey_dec(ctx, key, keylen * 8);
 	else
 		aes_setkey_enc(ctx, key, keylen * 8);
@@ -633,7 +633,7 @@ aes_update(aes_ctx *ctx, const void *in, size_t len, void *out)
 {
 
 	(void)len;
-	if (ctx->mode)
+	if (ctx->mode == CIPHER_MODE_DECRYPT)
 		aes_dec(ctx, in, out);
 	else
 		aes_enc(ctx, in, out);
