@@ -30,19 +30,11 @@
 
 #include "cryb/impl.h"
 
-#if HAVE_SYS_ENDIAN_H
-#include <sys/endian.h>
-#endif
-
-#if HAVE_ENDIAN_H
-#define _BSD_SOURCE
-#include <endian.h>
-#endif
-
 #include <stdint.h>
 #include <string.h>
 
 #include <cryb/bitwise.h>
+#include <cryb/endian.h>
 #include <cryb/sha1.h>
 
 static uint32_t sha1_h[5] = {
