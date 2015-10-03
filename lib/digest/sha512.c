@@ -309,7 +309,7 @@ void sha512_complete( const void *input, int ilen, uint8_t *output )
 
 digest_algorithm sha512_digest = {
 	.name			 = "sha512",
-	.contextlen		 = sizeof sha512_digest,
+	.contextlen		 = sizeof(sha512_ctx),
 	.blocklen		 = SHA512_BLOCK_LEN,
 	.digestlen		 = SHA512_DIGEST_LEN,
 	.init			 = (digest_init_func)sha512_init,

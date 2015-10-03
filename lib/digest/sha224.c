@@ -367,7 +367,7 @@ pbkdf2_sha224(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
 
 digest_algorithm sha224_digest = {
 	.name			 = "sha224",
-	.contextlen		 = sizeof sha224_digest,
+	.contextlen		 = sizeof(sha224_ctx),
 	.blocklen		 = SHA224_BLOCK_LEN,
 	.digestlen		 = SHA224_DIGEST_LEN,
 	.init			 = (digest_init_func)sha224_init,

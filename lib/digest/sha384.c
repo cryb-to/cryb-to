@@ -306,7 +306,7 @@ void sha384_complete( const void *input, int ilen, uint8_t *output )
 
 digest_algorithm sha384_digest = {
 	.name			 = "sha384",
-	.contextlen		 = sizeof sha384_digest,
+	.contextlen		 = sizeof(sha384_ctx),
 	.blocklen		 = SHA384_BLOCK_LEN,
 	.digestlen		 = SHA384_DIGEST_LEN,
 	.init			 = (digest_init_func)sha384_init,

@@ -367,7 +367,7 @@ pbkdf2_sha256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
 
 digest_algorithm sha256_digest = {
 	.name			 = "sha256",
-	.contextlen		 = sizeof sha256_digest,
+	.contextlen		 = sizeof(sha256_ctx),
 	.blocklen		 = SHA256_BLOCK_LEN,
 	.digestlen		 = SHA256_DIGEST_LEN,
 	.init			 = (digest_init_func)sha256_init,

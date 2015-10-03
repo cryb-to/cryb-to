@@ -237,7 +237,7 @@ sha1_complete(const void *buf, size_t len, uint8_t *digest)
 
 digest_algorithm sha1_digest = {
 	.name			 = "sha1",
-	.contextlen		 = sizeof sha1_digest,
+	.contextlen		 = sizeof(sha1_ctx),
 	.blocklen		 = SHA1_BLOCK_LEN,
 	.digestlen		 = SHA1_DIGEST_LEN,
 	.init			 = (digest_init_func)sha1_init,
