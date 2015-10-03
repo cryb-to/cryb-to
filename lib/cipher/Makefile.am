@@ -5,6 +5,5 @@ lib_LTLIBRARIES = libcryb-cipher.la
 libcryb_cipher_la_SOURCES = \
 	cryb_cipher.c \
 	\
-	cryb_aes.c \
-	cryb_rc4.c
-
+	aes.c \
+	rc4.c
