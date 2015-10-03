@@ -175,7 +175,7 @@ void md2_complete( const void *input, int ilen, uint8_t *output )
     memset( &ctx, 0, sizeof( md2_ctx ) );
 }
 
-digest_algorithm md2_algorithm = {
+digest_algorithm md2_digest = {
 	.name			 = "md2",
 	.contextlen		 = sizeof(md2_ctx),
 	.blocklen		 = MD2_BLOCK_LEN,

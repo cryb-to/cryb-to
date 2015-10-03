@@ -66,6 +66,6 @@ const digest_algorithm *get_digest_algorithm(const char *);
 #define digest_final(alg, ctx, md)					\
 	(alg)->final((ctx), (md))
 #define digest_complete(alg, buf, len, md)				\
-	(alg)->update((buf), (len), (md))
+	(alg)->complete((buf), (len), (md))
 
 #endif

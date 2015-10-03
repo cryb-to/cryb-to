@@ -30,8 +30,10 @@
 
 #include "cryb/impl.h"
 
+#include <stdint.h>
 #include <string.h>
 
+#include <cryb/digest.h>
 #include <cryb/md2.h>
 #include <cryb/md4.h>
 #include <cryb/md5.h>
@@ -46,13 +48,13 @@ static void
 init_digest_algorithms(void)
 {
 	static const digest_algorithm *algorithms[] = {
-		&md2_algorithm,
-		&md4_algorithm,
-		&md5_algorithm,
-		&sha1_algorithm,
-		&sha256_algorithm,
-		&sha384_algorithm,
-		&sha512_algorithm,
+		&md2_digest,
+		&md4_digest,
+		&md5_digest,
+		&sha1_digest,
+		&sha256_digest,
+		&sha384_digest,
+		&sha512_digest,
 		NULL
 	};
 	cryb_digest_algorithms = algorithms;
@@ -64,7 +66,7 @@ get_digest_algorithm(const char *name)
 	const digest_algorithm **algp;
 
 	if (cryb_digest_algorithms == NULL)
-		cryb_init_digest_algorithms();
+		init_digest_algorithms();
 	for (algp = cryb_digest_algorithms; *algp != NULL; ++algp)
 		if (strcasecmp((*algp)->name, name) == 0)
 			return (*algp);

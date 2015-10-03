@@ -52,8 +52,6 @@ typedef struct {
 	uint64_t bitlen;
 } sha1_ctx;
 
-extern digest_algorithm sha1_algorithm;
-
 void sha1_init(sha1_ctx *);
 void sha1_update(sha1_ctx *, const void *, size_t);
 void sha1_final(sha1_ctx *, uint8_t *);

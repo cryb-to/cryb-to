@@ -42,7 +42,7 @@
 #define md2_final			cryb_md2_final
 #define md2_complete			cryb_md2_complete
 
-extern digest_algorithm md2_algorithm;
+extern digest_algorithm md2_digest;
 
 /**
  * \brief          MD2 context structure

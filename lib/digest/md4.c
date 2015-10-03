@@ -250,7 +250,7 @@ void md4_complete( const void *input, int ilen, uint8_t *output )
     memset( &ctx, 0, sizeof( md4_ctx ) );
 }
 
-digest_algorithm md4_algorithm = {
+digest_algorithm md4_digest = {
 	.name			 = "md4",
 	.contextlen		 = sizeof(md4_ctx),
 	.blocklen		 = MD4_BLOCK_LEN,
