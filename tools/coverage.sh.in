@@ -16,11 +16,25 @@ while getopts "j:" opt ; do
 	esac
 done
 
+if cov01 -sq >/dev/null ; then
+	cov=true
+else
+	cov=false
+fi
+
 srcdir="@abs_top_srcdir@"
+htmldir="${srcdir}/cov"
 export COVFILE="${srcdir}/test.cov"
-gmake -C "${srcdir}" clean
-find "${srcdir}" -type f -name "${COVFILE##*/}" -delete
-cov01 -1
-gmake -C "${srcdir}" $j check || exit 1
-cov01 -0
-gmake -C "${srcdir}" clean
+if ! $cov ; then
+	# Rebuild with coverage enabled
+	gmake -C "${srcdir}" clean
+	cov01 -1
+fi
+covclear
+gmake -C "${srcdir}" $j check
+covhtml "${htmldir}"
+if ! $cov ; then
+	# Clean up
+	cov01 -0
+	gmake -C "${srcdir}" clean
+fi
