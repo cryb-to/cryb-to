@@ -609,7 +609,7 @@ cipher_algorithm aes128_cipher = {
 };
 
 cipher_algorithm aes192_cipher = {
-	.name			 = "aes",
+	.name			 = "aes192",
 	.contextlen		 = sizeof(aes_ctx),
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 192 / 8,
@@ -619,7 +619,7 @@ cipher_algorithm aes192_cipher = {
 };
 
 cipher_algorithm aes256_cipher = {
-	.name			 = "aes",
+	.name			 = "aes256",
 	.contextlen		 = sizeof(aes_ctx),
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 256 / 8,
