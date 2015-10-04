@@ -39,29 +39,6 @@
 #include <cryb/aes.h>
 
 /*
- * 32-bit integer manipulation macros (little endian)
- */
-#ifndef GET_ULONG_LE
-#define GET_ULONG_LE(n,b,i)				   \
-	do {						   \
-		(n) = ((uint32_t)(b)[(i)    ]      )	   \
-		    | ((uint32_t)(b)[(i) + 1] <<  8)	   \
-		    | ((uint32_t)(b)[(i) + 2] << 16)	   \
-		    | ((uint32_t)(b)[(i) + 3] << 24);	   \
-	} while (0)
-#endif
-
-#ifndef PUT_ULONG_LE
-#define PUT_ULONG_LE(n,b,i)                             \
-	do {						\
-		(b)[(i)    ] = (uint8_t)((n)      );	\
-		(b)[(i) + 1] = (uint8_t)((n) >>  8);	\
-		(b)[(i) + 2] = (uint8_t)((n) >> 16);	\
-		(b)[(i) + 3] = (uint8_t)((n) >> 24);	\
-	} while (0)
-#endif
-
-/*
  * Forward S-box
  */
 static const uint8_t FSb[256] = {
@@ -344,7 +321,7 @@ aes_setkey_enc(aes_ctx *ctx, const uint8_t *key, int keysize)
 	}
 	ctx->rk = RK = ctx->buf;
 	for (i = 0; i < (keysize >> 2); i++)
-		GET_ULONG_LE(RK[i], key, i << 2);
+		RK[i] = le32dec(key + (i << 2));
 	switch (ctx->nr) {
 	case 10:
 		for (i = 0; i < 10; i++, RK += 4) {
@@ -502,13 +479,13 @@ aes_enc(aes_ctx *ctx, const uint8_t *input, uint8_t *output)
 	uint32_t *RK, X0, X1, X2, X3, Y0, Y1, Y2, Y3;
 
 	RK = ctx->rk;
-	GET_ULONG_LE(X0, input,  0);
+	X0 = le32dec(input +  0);
 	X0 ^= *RK++;
-	GET_ULONG_LE(X1, input,  4);
+	X1 = le32dec(input +  4);
 	X1 ^= *RK++;
-	GET_ULONG_LE(X2, input,  8);
+	X2 = le32dec(input +  8);
 	X2 ^= *RK++;
-	GET_ULONG_LE(X3, input, 12);
+	X3 = le32dec(input + 12);
 	X3 ^= *RK++;
 	for (i = (ctx->nr >> 1) - 1; i > 0; i--) {
 		AES_FROUND(Y0, Y1, Y2, Y3, X0, X1, X2, X3);
@@ -535,10 +512,10 @@ aes_enc(aes_ctx *ctx, const uint8_t *input, uint8_t *output)
 	    (FSb[(Y0 >>  8) & 0xFF] <<  8) ^
 	    (FSb[(Y1 >> 16) & 0xFF] << 16) ^
 	    (FSb[(Y2 >> 24) & 0xFF] << 24);
-	PUT_ULONG_LE(X0, output,  0);
-	PUT_ULONG_LE(X1, output,  4);
-	PUT_ULONG_LE(X2, output,  8);
-	PUT_ULONG_LE(X3, output, 12);
+	le32enc(output +  0, X0);
+	le32enc(output +  4, X1);
+	le32enc(output +  8, X2);
+	le32enc(output + 12, X3);
 }
 
 /*
@@ -551,13 +528,13 @@ aes_dec(aes_ctx *ctx, const uint8_t *input, uint8_t *output)
 	uint32_t *RK, X0, X1, X2, X3, Y0, Y1, Y2, Y3;
 
 	RK = ctx->rk;
-	GET_ULONG_LE(X0, input,  0);
+	X0 = le32dec(input +  0);
 	X0 ^= *RK++;
-	GET_ULONG_LE(X1, input,  4);
+	X1 = le32dec(input +  4);
 	X1 ^= *RK++;
-	GET_ULONG_LE(X2, input,  8);
+	X2 = le32dec(input +  8);
 	X2 ^= *RK++;
-	GET_ULONG_LE(X3, input, 12);
+	X3 = le32dec(input + 12);
 	X3 ^= *RK++;
 	for (i = (ctx->nr >> 1) - 1; i > 0; i--) {
 		AES_RROUND(Y0, Y1, Y2, Y3, X0, X1, X2, X3);
@@ -584,10 +561,10 @@ aes_dec(aes_ctx *ctx, const uint8_t *input, uint8_t *output)
 	    (RSb[(Y2 >>  8) & 0xFF] <<  8) ^
 	    (RSb[(Y1 >> 16) & 0xFF] << 16) ^
 	    (RSb[(Y0 >> 24) & 0xFF] << 24);
-	PUT_ULONG_LE(X0, output,  0);
-	PUT_ULONG_LE(X1, output,  4);
-	PUT_ULONG_LE(X2, output,  8);
-	PUT_ULONG_LE(X3, output, 12);
+	le32enc(output +  0, X0);
+	le32enc(output +  4, X1);
+	le32enc(output +  8, X2);
+	le32enc(output + 12, X3);
 }
 
 void

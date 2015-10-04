@@ -42,17 +42,6 @@
 #include <cryb/md4.h>
 
 /*
- * 32-bit integer manipulation macros (little endian)
- */
-#undef GET_ULONG_LE
-#define GET_ULONG_LE(n,b,i)						\
-	do { (n) = le32dec((const uint8_t *)(b) + (i)); } while (0)
-
-#undef PUT_ULONG_LE
-#define PUT_ULONG_LE(n,b,i)						\
-	do { le32enc((uint8_t *)(b) + (i), (n)); } while (0)
-
-/*
  * MD4 context setup
  */
 void md4_init( md4_ctx *ctx )
@@ -69,22 +58,22 @@ static void md4_process( md4_ctx *ctx, const uint8_t *data )
 {
     uint32_t X[16], A, B, C, D;
 
-    GET_ULONG_LE( X[ 0], data,  0 );
-    GET_ULONG_LE( X[ 1], data,  4 );
-    GET_ULONG_LE( X[ 2], data,  8 );
-    GET_ULONG_LE( X[ 3], data, 12 );
-    GET_ULONG_LE( X[ 4], data, 16 );
-    GET_ULONG_LE( X[ 5], data, 20 );
-    GET_ULONG_LE( X[ 6], data, 24 );
-    GET_ULONG_LE( X[ 7], data, 28 );
-    GET_ULONG_LE( X[ 8], data, 32 );
-    GET_ULONG_LE( X[ 9], data, 36 );
-    GET_ULONG_LE( X[10], data, 40 );
-    GET_ULONG_LE( X[11], data, 44 );
-    GET_ULONG_LE( X[12], data, 48 );
-    GET_ULONG_LE( X[13], data, 52 );
-    GET_ULONG_LE( X[14], data, 56 );
-    GET_ULONG_LE( X[15], data, 60 );
+    X[ 0] = le32dec(data +  0);
+    X[ 1] = le32dec(data +  4);
+    X[ 2] = le32dec(data +  8);
+    X[ 3] = le32dec(data + 12);
+    X[ 4] = le32dec(data + 16);
+    X[ 5] = le32dec(data + 20);
+    X[ 6] = le32dec(data + 24);
+    X[ 7] = le32dec(data + 28);
+    X[ 8] = le32dec(data + 32);
+    X[ 9] = le32dec(data + 36);
+    X[10] = le32dec(data + 40);
+    X[11] = le32dec(data + 44);
+    X[12] = le32dec(data + 48);
+    X[13] = le32dec(data + 52);
+    X[14] = le32dec(data + 56);
+    X[15] = le32dec(data + 60);
 
 #define S(x,n) ((x << n) | ((x & 0xFFFFFFFF) >> (32 - n)))
 
@@ -230,10 +219,10 @@ void md4_final( md4_ctx *ctx, uint8_t *output )
     md4_update( ctx, md4_padding, padn );
     md4_update( ctx, msglen, 8 );
 
-    PUT_ULONG_LE( ctx->state[0], output,  0 );
-    PUT_ULONG_LE( ctx->state[1], output,  4 );
-    PUT_ULONG_LE( ctx->state[2], output,  8 );
-    PUT_ULONG_LE( ctx->state[3], output, 12 );
+    le32enc(output +  0,  ctx->state[0]);
+    le32enc(output +  4,  ctx->state[1]);
+    le32enc(output +  8,  ctx->state[2]);
+    le32enc(output + 12,  ctx->state[3]);
 }
 
 /*
