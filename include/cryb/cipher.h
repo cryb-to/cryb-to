@@ -63,8 +63,8 @@ const cipher_algorithm *get_cipher_algorithm(const char *);
 #define cipher_init(alg, ctx, mode, key, keylen)			\
 	(alg)->init((ctx), (mode), (key), (keylen))
 #define cipher_update(alg, ctx, in, len, out)				\
-	(alg)->update((ctx), (buf), (in), (len), (out))
+	(alg)->update((ctx), (in), (len), (out))
 #define cipher_finish(alg, ctx)						\
-	(alg)->finish((buf), (ctx))
+	(alg)->finish((ctx))
 
 #endif
