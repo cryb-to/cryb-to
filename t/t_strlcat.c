@@ -35,7 +35,7 @@
 #undef HAVE_STRLCAT
 #include <cryb/strlcat.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define T_MAGIC_STR	"squeamish ossifrage"
 #define T_MAGIC_LEN	(sizeof(T_MAGIC_STR) - 1)

@@ -1,11 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
-noinst_HEADERS = t.h
 EXTRA_DIST =
-
-# Test driver and support code
-check_LTLIBRARIES = libt.la
-libt_la_SOURCES = t_main.c t_file.c t_util.c t_const.c t_malloc.c
 
 # Individual libraries
 libcipher = $(top_builddir)/lib/cipher/libcryb-cipher.la
@@ -17,7 +12,7 @@ libmac = $(top_builddir)/lib/mac/libcryb-mac.la
 libmpi = $(top_builddir)/lib/mpi/libcryb-mpi.la
 liboath = $(top_builddir)/lib/oath/libcryb-oath.la
 librand = $(top_builddir)/lib/rand/libcryb-rand.la
-libt = $(builddir)/libt.la
+libt = $(top_builddir)/lib/test/libcryb-test.la
 
 # Additional headers, flags and libraries for OpenSSL
 if WITH_OPENSSL

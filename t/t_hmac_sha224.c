@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #if WITH_OPENSSL
 

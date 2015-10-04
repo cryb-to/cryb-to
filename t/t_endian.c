@@ -35,7 +35,7 @@
 
 #include <cryb/endian.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 static uint16_t be16 = 0xf001U;
 static uint32_t be32 = 0xdeadbeefUL;

@@ -36,7 +36,7 @@
 #undef HAVE_MEMSET_S
 #include <cryb/memset_s.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define T_BUF_LEN	32
 

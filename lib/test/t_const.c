@@ -32,7 +32,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 const uint8_t t_zero[4096] = {
 };

@@ -35,7 +35,7 @@
 
 #include <cryb/ctype.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define OC_DIGIT	"0123456789"
 #define OC_XDIGIT	OC_DIGIT "ABCDEFabcdef"

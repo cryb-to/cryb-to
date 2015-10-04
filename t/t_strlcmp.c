@@ -36,7 +36,7 @@
 #undef HAVE_STRLCMP
 #include <cryb/strlcmp.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define T_MAGIC_STR	"squeamish ossifrage"
 #define T_MAGIC_INITIAL	's'

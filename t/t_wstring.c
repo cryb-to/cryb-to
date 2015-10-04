@@ -38,7 +38,7 @@
 
 #include <cryb/wstring.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define char_t			wchar_t
 #define vsnprintf		vswprintf

@@ -38,7 +38,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 /*
  * Compare two buffers, and print a verbose message if they differ.

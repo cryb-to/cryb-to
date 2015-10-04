@@ -41,6 +41,7 @@ cryb_HEADERS = \
 	strlcat.h \
 	strlcmp.h \
 	strlcpy.h \
+	test.h \
 	to.h \
 	totp.h \
 	version.h \

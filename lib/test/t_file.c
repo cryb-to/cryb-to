@@ -39,7 +39,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 static struct t_file *tflist;
 

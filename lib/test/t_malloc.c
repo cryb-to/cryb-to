@@ -56,7 +56,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 /*
  * Very simple, non-thread-safe malloc() implementation tailored for unit

@@ -37,7 +37,7 @@
 
 #include <cryb/string.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define char_t			char
 

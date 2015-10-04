@@ -40,7 +40,7 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 /* program name */
 const char *t_progname;

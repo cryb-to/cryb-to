@@ -167,6 +167,7 @@ AC_CONFIG_FILES([
     lib/oath/Makefile
     lib/rand/Makefile
     lib/rsaref/Makefile
+    lib/test/Makefile
     t/Makefile
 ])
 AC_CONFIG_FILES([mkpkgng], [chmod +x mkpkgng])

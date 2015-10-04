@@ -36,7 +36,7 @@
 #include <cryb/endian.h>
 #include <cryb/mpi.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 
 /***************************************************************************

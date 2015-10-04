@@ -8,7 +8,8 @@ SUBDIRS = \
 	mac \
 	mpi \
 	oath \
-	rand
+	rand \
+	test
 
 if WITH_RSAREF
 SUBDIRS += rsaref

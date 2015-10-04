@@ -27,8 +27,10 @@
  * SUCH DAMAGE.
  */
 
-#ifndef T_H_INCLUDED
-#define T_H_INCLUDED
+#ifndef CRYB_TEST_H_INCLUDED
+#define CRYB_TEST_H_INCLUDED
+
+#include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
 

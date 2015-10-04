@@ -36,7 +36,7 @@
 #include <cryb/endian.h>
 #include <cryb/hash.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define ADLER32_INVALID	0xffffffffLU
 

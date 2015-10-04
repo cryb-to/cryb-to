@@ -316,8 +316,10 @@ aes_setkey_enc(aes_ctx *ctx, const uint8_t *key, int keysize)
 	case 32:
 		ctx->nr = 14;
 		break;
+CRYB_DISABLE_COVERAGE
 	default:
 		return;
+CRYB_RESTORE_COVERAGE
 	}
 	ctx->rk = RK = ctx->buf;
 	for (i = 0; i < (keysize >> 2); i++)
@@ -371,8 +373,10 @@ aes_setkey_enc(aes_ctx *ctx, const uint8_t *key, int keysize)
 			RK[15] = RK[7] ^ RK[14];
 		}
 		break;
+CRYB_DISABLE_COVERAGE
 	default:
 		break;
+CRYB_RESTORE_COVERAGE
 	}
 }
 
@@ -397,8 +401,10 @@ aes_setkey_dec(aes_ctx *ctx, const uint8_t *key, int keysize)
 	case 32:
 		ctx->nr = 14;
 		break;
+CRYB_DISABLE_COVERAGE
 	default:
 		return;
+CRYB_RESTORE_COVERAGE
 	}
 	ctx->rk = RK = ctx->buf;
 	aes_setkey_enc(&cty, key, keysize);

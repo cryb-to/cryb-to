@@ -36,7 +36,7 @@
 #include <cryb/endian.h>
 #include <cryb/hash.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define FLETCHER16_INVALID	0xffffU
 #define FLETCHER32_INVALID	0xffffffffLU

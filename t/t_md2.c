@@ -36,7 +36,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #if WITH_RSAREF
 

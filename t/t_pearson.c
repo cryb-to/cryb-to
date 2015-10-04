@@ -34,7 +34,7 @@
 
 #include <cryb/hash.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 #define T_MAGIC_WORD_1	"squeamish"
 #define T_MAGIC_WORD_2	"ossifrage"

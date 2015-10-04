@@ -39,7 +39,7 @@
 
 #include <cryb/rfc4648.h>
 
-#include "t.h"
+#include <cryb/test.h>
 
 struct t_case {
 	const char *desc;
