@@ -32,6 +32,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 #undef HAVE_MEMSET_S
 #include <cryb/memset_s.h>

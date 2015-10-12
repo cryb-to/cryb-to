@@ -32,6 +32,7 @@
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <cryb/endian.h>
 #include <cryb/mpi.h>

@@ -31,6 +31,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 #undef HAVE_STRLCAT
 #include <cryb/strlcat.h>
