@@ -137,6 +137,30 @@ t_equal_test(char **desc CRYB_UNUSED, void *arg)
 
 
 /***************************************************************************
+ * Miscellaneous functions
+ */
+
+static int
+t_trunc_test(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	string *s;
+	ssize_t len;
+	int ret;
+
+	if ((s = string_dup_cs(CS("magic ossifrage"), SIZE_MAX)) == NULL)
+		return (0);
+	if (!t_compare_sz(15, (len = string_len(s))))
+		return (0);
+	ret = t_compare_ssz(len, string_trunc(s, SIZE_MAX)) &
+	    t_compare_ssz(len, string_trunc(s, len + 1)) &
+	    t_compare_ssz(len, string_trunc(s, len)) &
+	    t_compare_ssz(len - 1, string_trunc(s, len - 1));
+	string_delete(s);
+	return (ret);
+}
+
+
+/***************************************************************************
  * Boilerplate
  */
 
@@ -155,6 +179,7 @@ t_prepare(int argc, char *argv[])
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
 		t_add_test(t_equal_test, &t_compare_cases[i],
 		    "%s(%s)", "string_equal", t_compare_cases[i].desc);
+	t_add_test(t_trunc_test, NULL, "string_trunc");
 	return (0);
 }
 

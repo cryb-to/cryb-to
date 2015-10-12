@@ -67,6 +67,16 @@ string_new(void)
 }
 
 /*
+ * Return the length of a string
+ */
+size_t
+string_len(const string *str)
+{
+
+	return (str->len);
+}
+
+/*
  * Duplicate an existing string
  */
 string *
@@ -82,6 +92,23 @@ string_dup(const string *str)
 	}
 	memcpy(newstr->buf, str->buf, L2S(str->len));
 	newstr->len = str->len;
+	return (newstr);
+}
+
+/*
+ * Duplicate an existing null-terminated string
+ */
+string *
+string_dup_cs(const char_t *cs, size_t len)
+{
+	string *newstr;
+
+	if ((newstr = string_new()) == NULL)
+		return (NULL);
+	if (string_append_cs(newstr, cs, len) < 0) {
+		string_delete(newstr);
+		return (NULL);
+	}
 	return (newstr);
 }
 

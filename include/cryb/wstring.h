@@ -31,7 +31,9 @@
 #define CRYB_WSTRING_H_INCLUDED
 
 #define wstring_new		cryb_wstring_new
+#define wstring_len		cryb_wstring_len
 #define wstring_dup		cryb_wstring_dup
+#define wstring_dup_wcs		cryb_wstring_dup_wcs
 #define wstring_delete		cryb_wstring_delete
 #define wstring_expand		cryb_wstring_expand
 #define wstring_shrink		cryb_wstring_shrink
@@ -47,7 +49,9 @@
 typedef struct cryb_wstring wstring;
 
 wstring	*wstring_new(void);
+size_t	 wstring_len(const wstring *);
 wstring	*wstring_dup(const wstring *);
+wstring	*wstring_dup_wcs(const wchar_t *, size_t);
 void	 wstring_delete(wstring *);
 int	 wstring_expand(wstring *, size_t);
 void	 wstring_shrink(wstring *);

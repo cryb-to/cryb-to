@@ -31,7 +31,9 @@
 #define CRYB_STRING_H_INCLUDED
 
 #define string_new		cryb_string_new
+#define string_len		cryb_string_len
 #define string_dup		cryb_string_dup
+#define string_dup_cs		cryb_string_dup_cs
 #define string_delete		cryb_string_delete
 #define string_expand		cryb_string_expand
 #define string_shrink		cryb_string_shrink
@@ -47,7 +49,9 @@
 typedef struct cryb_string string;
 
 string	*string_new(void);
+size_t	 string_len(const string *);
 string	*string_dup(const string *);
+string	*string_dup_cs(const char *, size_t);
 void	 string_delete(string *);
 int	 string_expand(string *, size_t);
 void	 string_shrink(string *);

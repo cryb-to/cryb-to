@@ -47,9 +47,11 @@
 #define string			wstring
 
 #define string_new		wstring_new
+#define string_len		wstring_len
 #define string_expand		wstring_expand
 #define string_shrink		wstring_shrink
 #define string_dup		wstring_dup
+#define string_dup_cs		wstring_dup_wcs
 #define string_delete		wstring_delete
 #define string_trunc		wstring_trunc
 #define string_append_c		wstring_append_wc
