@@ -92,6 +92,7 @@ t_compare_num(ul, unsigned long);
 t_compare_num(ill, long long);
 t_compare_num(ull, unsigned long long);
 t_compare_num(sz, size_t);
+t_compare_num(ssz, ssize_t);
 t_compare_num(i8, int8_t);
 t_compare_num(u8, uint8_t);
 t_compare_num(x8, uint8_t);
