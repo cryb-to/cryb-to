@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
-check_LTLIBRARIES = libcryb-test.la
+lib_LTLIBRARIES = libcryb-test.la
 libcryb_test_la_SOURCES = \
 	t_const.c \
 	t_file.c \
