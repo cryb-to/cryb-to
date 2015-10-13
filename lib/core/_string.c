@@ -28,10 +28,12 @@
  */
 
 /* size of static buffer used for short strings */
-#define STATIC_BUF_SIZE	(16 * sizeof(char_t))
+#define STATIC_BUF_LEN	16
+#define STATIC_BUF_SIZE	(STATIC_BUF_LEN * sizeof(char_t))
 
 /* threshold at which we switch from exponential to linear growth */
-#define LARGE_BUF_SIZE	(4096 * sizeof(char_t))
+#define LARGE_BUF_LEN	4096
+#define LARGE_BUF_SIZE	(LARGE_BUF_LEN * sizeof(char_t))
 
 /* minimum buffer size to store len characters + terminating zero */
 #define L2S(len) (((len) + 1) * sizeof(char_t))
@@ -46,7 +48,7 @@ struct cryb_string {
 	char_t	*buf;		/* pointer to buffer */
 	size_t	 size;		/* size of buffer in bytes */
 	size_t	 len;		/* length of string in characters */
-	char_t	 staticbuf[STATIC_BUF_SIZE];
+	char_t	 staticbuf[STATIC_BUF_LEN];
 };
 
 /*
@@ -190,6 +192,8 @@ string_shrink(string *str)
 			newbuf = realloc(str->buf, newsize);
 		} else {
 			newsize = LARGE_BUF_SIZE;
+			while (newsize / 2 > L2S(str->len))
+			    newsize = newsize / 2;
 			newbuf = realloc(str->buf, newsize);
 		}
 		str->buf = newbuf;
