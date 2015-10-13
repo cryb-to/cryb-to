@@ -27,8 +27,13 @@
  * SUCH DAMAGE.
  */
 
+#define T_MAGIC_STR		CS("xyzzy")
+#define T_MAGIC_LEN		(sizeof("xyzzy") - 1)
+#define T_LONG_MAGIC_STR	CS("squeamish ossifrage")
+#define T_LONG_MAGIC_LEN	(sizeof("squeamish ossifrage") - 1)
+
 static int
-t_noop(char **desc CRYB_UNUSED, void *arg)
+t_string_noop(char **desc CRYB_UNUSED, void *arg)
 {
 	string *str;
 
@@ -37,6 +42,115 @@ t_noop(char **desc CRYB_UNUSED, void *arg)
 		return (0);
 	string_delete(str);
 	return (1);
+}
+
+static int
+t_string_new(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	string *s;
+	int ret;
+
+	ret = 1;
+	t_malloc_fail_after = 1;
+	ret &= t_is_not_null(s = string_new());
+	string_delete(s);
+	ret &= t_is_null(s = string_new());
+	string_delete(s);
+	t_malloc_fail = 0;
+	return (ret);
+}
+
+
+/***************************************************************************
+ * Appending and expansion
+ */
+
+static struct t_append_case {
+	const char *desc;
+	const char_t *s;
+	size_t ilen;
+	ssize_t olen;
+	int fail;
+} t_append_cases[] = {
+	/* all short cases are performed with malloc failure enabled */
+	{
+		.desc	 = "empty with limit",
+		.s	 = CS(""),
+		.ilen	 = 0,
+		.olen	 = 0,
+		.fail	 = 1,
+	},
+	{
+		.desc	 = "empty without limit",
+		.s	 = CS(""),
+		.ilen	 = SIZE_MAX,
+		.olen	 = 0,
+		.fail	 = 1,
+	},
+	{
+		.desc	 = "short with limit",
+		.s	 = T_MAGIC_STR,
+		.ilen	 = T_MAGIC_LEN / 2,
+		.olen	 = T_MAGIC_LEN / 2,
+		.fail	 = 1,
+	},
+	{
+		.desc	 = "short without limit",
+		.s	 = T_MAGIC_STR,
+		.ilen	 = SIZE_MAX,
+		.olen	 = T_MAGIC_LEN,
+		.fail	 = 1,
+	},
+	/* expected to allocate (but we have no way to test that) */
+	{
+		.desc	 = "long",
+		.s	 = T_LONG_MAGIC_STR,
+		.ilen	 = SIZE_MAX,
+		.olen	 = T_LONG_MAGIC_LEN,
+		.fail	 = 0,
+	},
+	/* expected to try to allocate and fail */
+	{
+		.desc	 = "long with allocation failure",
+		.s	 = T_LONG_MAGIC_STR,
+		.ilen	 = SIZE_MAX,
+		.olen	 = -1,
+		.fail	 = 1,
+	},
+};
+
+static int
+t_string_append_cs(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_append_case *t = arg;
+	string *s;
+	int ret;
+
+	s = string_new();
+	t_malloc_fail = t->fail;
+	ret = t_compare_ssz(t->olen, string_append_cs(s, t->s, t->ilen));
+	t_malloc_fail = 0;
+	string_delete(s);
+	return (ret);
+}
+
+static int
+t_string_append_string(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_append_case *t = arg;
+	string *s, *os;
+	int ret;
+
+	s = string_new();
+	string_append_cs(s, CS("!"), 1);
+	os = string_dup_cs(t->s, SIZE_MAX);
+	t_malloc_fail = t->fail;
+	ret = t_compare_ssz(t->olen < 0 ? t->olen : t->olen + 1,
+	    string_append_string(s, os, t->ilen));
+	t_malloc_fail = 0;
+	string_delete(os);
+	string_delete(s);
+	return (ret);
 }
 
 
@@ -100,7 +214,7 @@ static struct t_compare_case {
 };
 
 static int
-t_compare_test(char **desc CRYB_UNUSED, void *arg)
+t_string_compare(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_compare_case *t = arg;
 	string *s1, *s2;
@@ -115,11 +229,11 @@ t_compare_test(char **desc CRYB_UNUSED, void *arg)
 }
 
 static int
-t_equal_test(char **desc CRYB_UNUSED, void *arg)
+t_string_equal(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_compare_case *t = arg;
 	string *s1, *s2;
-	int ret;
+	int ret = 1;
 
 	s1 = string_dup_cs(t->s1, SIZE_MAX);
 	s2 = string_dup_cs(t->s2, SIZE_MAX);
@@ -135,16 +249,15 @@ t_equal_test(char **desc CRYB_UNUSED, void *arg)
  */
 
 static int
-t_trunc_test(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+t_string_trunc(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
 	string *s;
 	ssize_t len;
 	int ret;
 
-	s = string_dup_cs(CS("magic ossifrage"), SIZE_MAX);
-	if (!t_compare_sz(15, (len = string_len(s))))
-		return (0);
-	ret = t_compare_ssz(len, string_trunc(s, SIZE_MAX)) &
+	s = string_dup_cs(T_MAGIC_STR, SIZE_MAX);
+	ret = t_compare_ssz(T_MAGIC_LEN, len = string_len(s)) &
+	    t_compare_ssz(len, string_trunc(s, SIZE_MAX)) &
 	    t_compare_ssz(len, string_trunc(s, len + 1)) &
 	    t_compare_ssz(len, string_trunc(s, len)) &
 	    t_compare_ssz(len - 1, string_trunc(s, len - 1));
@@ -166,14 +279,22 @@ t_prepare(int argc, char *argv[])
 	(void)argv;
 
 	t_malloc_fatal = 1;
-	t_add_test(t_noop, NULL, "no-op");
+	t_add_test(t_string_noop, NULL, "no-op");
+	t_add_test(t_string_new, NULL, "string_new");
+	for (i = 0; i < sizeof t_append_cases / sizeof *t_append_cases; ++i)
+		t_add_test(t_string_append_cs, &t_append_cases[i],
+		    "%s (%s)", "string_append_cs", t_append_cases[i].desc);
+	for (i = 0; i < sizeof t_append_cases / sizeof *t_append_cases; ++i)
+		t_add_test(t_string_append_string, &t_append_cases[i],
+		    "%s (%s)", "string_append_string", t_append_cases[i].desc);
+	// t_add_test(t_string_dup_cs, NULL, "string_dup_cs");
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
-		t_add_test(t_compare_test, &t_compare_cases[i],
-		    "%s(%s)", "string_compare", t_compare_cases[i].desc);
+		t_add_test(t_string_compare, &t_compare_cases[i],
+		    "%s (%s)", "string_compare", t_compare_cases[i].desc);
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
-		t_add_test(t_equal_test, &t_compare_cases[i],
-		    "%s(%s)", "string_equal", t_compare_cases[i].desc);
-	t_add_test(t_trunc_test, NULL, "string_trunc");
+		t_add_test(t_string_equal, &t_compare_cases[i],
+		    "%s (%s)", "string_equal", t_compare_cases[i].desc);
+	t_add_test(t_string_trunc, NULL, "string_trunc");
 	return (0);
 }
 
