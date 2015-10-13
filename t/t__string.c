@@ -106,12 +106,9 @@ t_compare_test(char **desc CRYB_UNUSED, void *arg)
 	string *s1, *s2;
 	int ret;
 
-	if ((s1 = string_new()) == NULL ||
-	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
-	    (s2 = string_new()) == NULL ||
-	    string_append_cs(s2, t->s2, SIZE_MAX) < 0)
-		return (0);
-	ret = string_compare(s1, s2) == t->cmp;
+	s1 = string_dup_cs(t->s1, SIZE_MAX);
+	s2 = string_dup_cs(t->s2, SIZE_MAX);
+	ret = t_compare_i(t->cmp, string_compare(s1, s2));
 	string_delete(s2);
 	string_delete(s1);
 	return (ret);
@@ -124,12 +121,9 @@ t_equal_test(char **desc CRYB_UNUSED, void *arg)
 	string *s1, *s2;
 	int ret;
 
-	if ((s1 = string_new()) == NULL ||
-	    string_append_cs(s1, t->s1, SIZE_MAX) < 0 ||
-	    (s2 = string_new()) == NULL ||
-	    string_append_cs(s2, t->s2, SIZE_MAX) < 0)
-		return (0);
-	ret = (string_equal(s1, s2) == 0) == (t->cmp != 0);
+	s1 = string_dup_cs(t->s1, SIZE_MAX);
+	s2 = string_dup_cs(t->s2, SIZE_MAX);
+	ret = t_compare_i(t->cmp != 0, string_equal(s1, s2) == 0);
 	string_delete(s2);
 	string_delete(s1);
 	return (ret);
@@ -147,8 +141,7 @@ t_trunc_test(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ssize_t len;
 	int ret;
 
-	if ((s = string_dup_cs(CS("magic ossifrage"), SIZE_MAX)) == NULL)
-		return (0);
+	s = string_dup_cs(CS("magic ossifrage"), SIZE_MAX);
 	if (!t_compare_sz(15, (len = string_len(s))))
 		return (0);
 	ret = t_compare_ssz(len, string_trunc(s, SIZE_MAX)) &
@@ -172,6 +165,7 @@ t_prepare(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
+	t_malloc_fatal = 1;
 	t_add_test(t_noop, NULL, "no-op");
 	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
 		t_add_test(t_compare_test, &t_compare_cases[i],
