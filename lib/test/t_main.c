@@ -170,6 +170,16 @@ t_run_test(struct t_test *t, int n)
 	ret = 0;
 	if ((signo = setjmp(sigjmp)) == 0)
 		ret = (*t->func)(&desc, t->arg);
+	if (t_malloc_fail != 0) {
+		t_verbose("WARNING: test case left t_malloc_fail = %d\n",
+		    t_malloc_fail);
+		t_malloc_fail = 0;
+	}
+	if (t_malloc_fail_after != 0) {
+		t_verbose("WARNING: test case left t_malloc_fail_after = %d\n",
+		    t_malloc_fail_after);
+		t_malloc_fail_after = 0;
+	}
 	if (ret > 0)
 		printf("ok %d - %s\n", n, desc ? desc : "no description");
 	else if (ret < 0)

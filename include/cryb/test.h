@@ -82,6 +82,8 @@ void t_fcloseall(void);
 /*
  * Various utilities
  */
+int t_is_null(const void *);
+int t_is_not_null(const void *);
 int t_compare_mem(const void *, const void *, size_t);
 int t_compare_str(const char *, const char *);
 #define t_compare_num(n, t) int t_compare_##n(t, t);

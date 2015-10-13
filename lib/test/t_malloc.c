@@ -126,7 +126,7 @@ static struct bucket buckets[BUCKET_MAX_SHIFT + 1];
 
 /* mapping metadata */
 static struct mapping *mappings;
-unsigned long nmapalloc, nmapfree;
+static unsigned long nmapalloc, nmapfree;
 
 /* if non-zero, all allocations fail */
 int t_malloc_fail;

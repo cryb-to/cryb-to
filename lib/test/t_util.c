@@ -41,6 +41,34 @@
 #include <cryb/test.h>
 
 /*
+ * Print a verbose message if a pointer is not null.
+ */
+int
+t_is_null(const void *ptr)
+{
+
+	if (ptr != NULL) {
+		t_verbose("expected null pointer, got non-null pointer\n");
+		return (0);
+	}
+	return (1);
+}
+
+/*
+ * Print a verbose message if a pointer is null.
+ */
+int
+t_is_not_null(const void *ptr)
+{
+
+	if (ptr == NULL) {
+		t_verbose("expected non-null pointer, got null pointer\n");
+		return (0);
+	}
+	return (1);
+}
+
+/*
  * Compare two buffers, and print a verbose message if they differ.
  */
 int
