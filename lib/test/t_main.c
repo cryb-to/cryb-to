@@ -48,6 +48,9 @@ const char *t_progname;
 /* verbose flag */
 static int verbose;
 
+/* whether to check for leaks */
+static int leaktest;
+
 /*
  * If verbose flag is set, print an array of bytes in hex
  */
@@ -161,9 +164,13 @@ t_handle_signal(int signo)
 static int
 t_run_test(struct t_test *t, int n)
 {
+	unsigned long snap1[16], snap2[16];
+	size_t snaplen;
 	char *desc;
 	int i, ret, signo;
 
+	if (leaktest && verbose)
+		t_malloc_snapshot(snap1, sizeof snap1);
 	for (i = 0; sigs[i] > 0; ++i)
 		signal(sigs[i], t_handle_signal);
 	desc = t->desc;
@@ -192,6 +199,13 @@ t_run_test(struct t_test *t, int n)
 		free(desc);
 	for (i = 0; sigs[i] > 0; ++i)
 		signal(sigs[i], SIG_DFL);
+	if (leaktest && verbose) {
+		snaplen = t_malloc_snapshot(snap2, sizeof snap2);
+		if (snaplen > sizeof snap2)
+			snaplen = sizeof snap2;
+		if (memcmp(snap1, snap2, snaplen) != 0)
+			t_verbose("WARNING: allocator state changed\n");
+	}
 	return (ret);
 }
 
@@ -202,7 +216,7 @@ static void
 usage(void)
 {
 
-	fprintf(stderr, "usage: %s [-v]\n", t_progname);
+	fprintf(stderr, "usage: %s [-Llv]\n", t_progname);
 	exit(1);
 }
 
@@ -228,9 +242,22 @@ main(int argc, char *argv[])
 	else
 		t_progname = argv[0];
 
+	/* check for leaks, unless doing coverage analysis */
+#if CRYB_COVERAGE
+	leaktest = t_str_is_true(getenv("CRYB_LEAKTEST"));
+#else
+	leaktest = !t_str_is_false(getenv("CRYB_LEAKTEST"));
+#endif
+
 	/* parse command line options */
-	while ((opt = getopt(argc, argv, "v")) != -1)
+	while ((opt = getopt(argc, argv, "Llv")) != -1)
 		switch (opt) {
+		case 'L':
+			leaktest = 0;
+			break;
+		case 'l':
+			leaktest = 1;
+			break;
 		case 'v':
 			verbose = 1;
 			break;
@@ -246,17 +273,8 @@ main(int argc, char *argv[])
 	if (t_plan_len == 0)
 		errx(1, "no plan\n");
 
-	/* do not check for leaks when doing coverage analysis */
-	nt = t_plan_len;
-#if CRYB_COVERAGE
-	nt = t_str_is_true(getenv("CRYB_LEAKTEST")) ?
-	    t_plan_len + 1 : t_plan_len;
-#else
-	nt = t_str_is_false(getenv("CRYB_LEAKTEST")) ?
-	    t_plan_len : t_plan_len + 1;
-#endif
-
 	/* run the tests */
+	nt = leaktest ? t_plan_len + 1 : t_plan_len;
 	printf("1..%zu\n", nt);
 	for (n = pass = fail = 0; n < t_plan_len; ++n)
 		t_run_test(t_plan[n], n + 1) ? ++pass : ++fail;
@@ -270,7 +288,7 @@ main(int argc, char *argv[])
 	}
 	free(t_plan);
 	setvbuf(stdout, NULL, _IONBF, 0);
-	if (nt > t_plan_len) {
+	if (leaktest) {
 		if (verbose)
 			t_malloc_printstats(stderr);
 		t_run_test(&t_memory_leak, nt) ? ++pass : ++fail;

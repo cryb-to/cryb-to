@@ -467,6 +467,31 @@ free(void *p)
 }
 
 /*
+ * Return a snapshot of the allocator state
+ */
+size_t
+t_malloc_snapshot(void *buf, size_t len)
+{
+	unsigned long snapshot[BUCKET_MAX_SHIFT * 2];
+	unsigned int i;
+
+	if (buf == NULL)
+		return (sizeof snapshot);
+	snapshot[0] = nmapalloc;
+	snapshot[1] = nmapfree;
+	for (i = 2; i < BUCKET_MIN_SHIFT; ++i)
+		snapshot[i * 2 - 2] = snapshot[i * 2 - 1] = 0;
+	for (i = BUCKET_MIN_SHIFT; i <= BUCKET_MAX_SHIFT; ++i) {
+		snapshot[i * 2 - 2] = buckets[i].nalloc;
+		snapshot[i * 2 - 1] = buckets[i].nfree;
+	}
+	if (len > sizeof snapshot)
+		len = sizeof snapshot;
+	memcpy(buf, snapshot, len);
+	return (sizeof snapshot);
+}
+
+/*
  * Print allocator statistics
  */
 void
