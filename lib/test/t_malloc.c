@@ -472,19 +472,16 @@ free(void *p)
 size_t
 t_malloc_snapshot(void *buf, size_t len)
 {
-	unsigned long snapshot[BUCKET_MAX_SHIFT * 2];
+	unsigned long snapshot[BUCKET_MAX_SHIFT];
 	unsigned int i;
 
 	if (buf == NULL)
 		return (sizeof snapshot);
-	snapshot[0] = nmapalloc;
-	snapshot[1] = nmapfree;
+	snapshot[0] = nmapalloc - nmapfree;
 	for (i = 2; i < BUCKET_MIN_SHIFT; ++i)
-		snapshot[i * 2 - 2] = snapshot[i * 2 - 1] = 0;
-	for (i = BUCKET_MIN_SHIFT; i <= BUCKET_MAX_SHIFT; ++i) {
-		snapshot[i * 2 - 2] = buckets[i].nalloc;
-		snapshot[i * 2 - 1] = buckets[i].nfree;
-	}
+		snapshot[i - 1] = 0;
+	for (i = BUCKET_MIN_SHIFT; i <= BUCKET_MAX_SHIFT; ++i)
+		snapshot[i - 1] = buckets[i].nalloc - buckets[i].nfree;
 	if (len > sizeof snapshot)
 		len = sizeof snapshot;
 	memcpy(buf, snapshot, len);
@@ -500,14 +497,17 @@ t_malloc_printstats(FILE *f)
 	struct bucket *b;
 	unsigned int shift;
 
-	fprintf(f, "%6s %9s %9s %9s\n", "bucket", "alloc", "free", "leak");
-	for (shift = 0; shift <= BUCKET_MAX_SHIFT; ++shift) {
+	fprintf(f, "%6s %9s %9s %9s\n", "bucket", "alloc", "free", "leaked");
+	for (shift = BUCKET_MIN_SHIFT; shift <= BUCKET_MAX_SHIFT; ++shift) {
 		b = &buckets[shift];
 		if (b->nalloc > 0)
 			fprintf(f, " 1^%-3u %9lu %9lu %9lu\n",
 			    shift, b->nalloc, b->nfree,
 			    b->nalloc - b->nfree);
 	}
+	if (nmapalloc > 0)
+		fprintf(f, "%6s %9lu %9lu %9lu\n", "mapped",
+		    nmapalloc, nmapfree, nmapalloc - nmapfree);
 }
 
 /*
@@ -520,10 +520,12 @@ t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
 	unsigned int shift;
 	unsigned long nleaked;
 
-	for (nleaked = shift = 0; shift <= BUCKET_MAX_SHIFT; ++shift) {
+	nleaked = 0;
+	for (shift = BUCKET_MIN_SHIFT; shift <= BUCKET_MAX_SHIFT; ++shift) {
 		b = &buckets[shift];
 		nleaked += b->nalloc - b->nfree;
 	}
+	nleaked += nmapalloc - nmapfree;
 	if (nleaked > 0)
 		asprintf(desc, "%lu allocation(s) leaked", nleaked);
 	else

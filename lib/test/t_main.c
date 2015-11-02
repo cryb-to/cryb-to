@@ -203,6 +203,7 @@ t_run_test(struct t_test *t, int n)
 		snaplen = t_malloc_snapshot(snap2, sizeof snap2);
 		if (snaplen > sizeof snap2)
 			snaplen = sizeof snap2;
+		t_compare_mem(snap1, snap2, snaplen);
 		if (memcmp(snap1, snap2, snaplen) != 0)
 			t_verbose("WARNING: allocator state changed\n");
 	}
