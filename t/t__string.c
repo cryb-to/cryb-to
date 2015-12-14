@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -256,7 +256,8 @@ t_string_trunc(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret;
 
 	s = string_dup_cs(T_MAGIC_STR, SIZE_MAX);
-	ret = t_compare_ssz(T_MAGIC_LEN, len = string_len(s)) &
+	len = string_len(s);
+	ret = t_compare_ssz(T_MAGIC_LEN, len) &
 	    t_compare_ssz(len, string_trunc(s, SIZE_MAX)) &
 	    t_compare_ssz(len, string_trunc(s, len + 1)) &
 	    t_compare_ssz(len, string_trunc(s, len)) &
