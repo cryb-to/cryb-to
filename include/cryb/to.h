@@ -30,4 +30,6 @@
 #ifndef CRYB_TO_H_INCLUDED
 #define CRYB_TO_H_INCLUDED
 
+#include <cryb/version.h>
+
 #endif

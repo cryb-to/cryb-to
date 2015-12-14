@@ -30,8 +30,9 @@ fi
 . ./autogen.sh
 
 ./configure \
-    --with-openssl \
-    --with-rsaref \
+    --enable-all \
+    --enable-openssl-tests \
+    --enable-rsaref-tests \
     --enable-developer-warnings \
     --enable-werror \
     "$@"

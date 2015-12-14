@@ -14,5 +14,6 @@ libcryb_oath_la_SOURCES = \
 
 libcryb_oath_la_LIBADD = \
 	$(top_builddir)/lib/digest/libcryb-digest.la \
+	$(top_builddir)/lib/enc/libcryb-enc.la \
 	$(top_builddir)/lib/mac/libcryb-mac.la \
-	$(top_builddir)/lib/enc/libcryb-enc.la
+	$(top_builddir)/lib/core/libcryb-core.la

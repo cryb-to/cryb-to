@@ -1,51 +1,108 @@
 crybdir = $(includedir)/cryb
 
-cryb_HEADERS = \
+cryb_HEADERS =
+
+if CRYB_CIPHER
+cryb_HEADERS += \
 	aes.h \
+	rc4.h \
+	\
+	cipher.h
+endif CRYB_CIPHER
+
+if CRYB_CORE
+cryb_HEADERS += \
 	algorithm.h \
 	attributes.h \
 	bitwise.h \
-	cipher.h \
-	cpe.h \
 	ctype.h \
-	digest.h \
 	endian.h \
-	hash.h \
-	hmac.h \
-	hmac_sha1.h \
-	hmac_sha224.h \
-	hmac_sha256.h \
-	hmac_sha384.h \
-	hmac_sha512.h \
-	hotp.h \
+	memset_s.h \
+	string.h \
+	strlcat.h \
+	strlcmp.h \
+	strlcpy.h \
+	version.h \
+	wstring.h \
+	\
+	to.h
+endif CRYB_CORE
+
+if CRYB_CPE
+cryb_HEADERS += \
+	\
+	cpe.h
+endif CRYB_CPE
+
+if CRYB_DIGEST
+cryb_HEADERS += \
 	md.h \
 	md2.h \
 	md4.h \
 	md5.h \
-	memset_s.h \
-	mpi.h \
-	oath.h \
-	oath_constants.h \
-	oath_types.h \
-	rand.h \
-	rc4.h \
-	rfc3986.h \
-	rfc4648.h \
 	sha.h \
 	sha1.h \
 	sha224.h \
 	sha256.h \
 	sha384.h \
 	sha512.h \
-	string.h \
-	strlcat.h \
-	strlcmp.h \
-	strlcpy.h \
-	test.h \
-	to.h \
+	\
+	digest.h
+endif CRYB_DIGEST
+
+if CRYB_ENC
+cryb_HEADERS += \
+	rfc3986.h \
+	rfc4648.h \
+	\
+	enc.h
+endif CRYB_ENC
+
+if CRYB_HASH
+cryb_HEADERS += \
+	\
+	hash.h
+endif CRYB_HASH
+
+if CRYB_MAC
+cryb_HEADERS += \
+	hmac.h \
+	hmac_sha1.h \
+	hmac_sha224.h \
+	hmac_sha256.h \
+	hmac_sha384.h \
+	hmac_sha512.h \
+	\
+	mac.h
+endif CRYB_MAC
+
+if CRYB_MPI
+cryb_HEADERS += \
+	\
+	mpi.h
+endif CRYB_MPI
+
+if CRYB_OATH
+cryb_HEADERS += \
+	hotp.h \
+	oath_constants.h \
+	oath_types.h \
 	totp.h \
-	version.h \
-	wstring.h
+	\
+	oath.h
+endif CRYB_OATH
+
+if CRYB_RAND
+cryb_HEADERS += \
+	\
+	rand.h
+endif CRYB_RAND
+
+if CRYB_TEST
+cryb_HEADERS += \
+	\
+	test.h
+endif CRYB_TEST
 
 noinst_HEADERS = \
 	coverage.h \

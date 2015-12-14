@@ -7,3 +7,6 @@ libcryb_cpe_la_SOURCES = \
 	cpe_string.c \
 	cpe_uri.c \
 	cpe_wfn.c
+
+libcryb_cpe_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la
