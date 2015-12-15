@@ -32,9 +32,11 @@
 #endif
 
 #include <errno.h>
+#include <limits.h>
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/coverage.h>
 #include <cryb/memset_s.h>
 
 /*
@@ -42,15 +44,19 @@
  * is overwritten even if the data will never be read.
  */
 int
-cryb_memset_s(void *s, size_t smax, int c, size_t n)
+cryb_memset_s(void *d, size_t dsz, int ch, size_t n)
 {
 	unsigned int i;
 
-	if (s == NULL)
+	if (d == NULL)
 		return (EINVAL);
-	for (i = 0; i < n && i < smax; ++i)
-		((volatile unsigned char *)s)[i] = (unsigned char)c;
-	if (n > smax)
+CRYB_DISABLE_COVERAGE
+	if (dsz > SIZE_MAX || n > SIZE_MAX)
+		return (ERANGE);
+CRYB_RESTORE_COVERAGE
+	for (i = 0; i < n && i < dsz; ++i)
+		((volatile unsigned char *)d)[i] = (unsigned char)ch;
+	if (n > dsz)
 		return (EOVERFLOW);
 	return (0);
 }
