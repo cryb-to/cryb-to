@@ -118,7 +118,7 @@ AC_CHECK_FUNCS([setrlimit])
 # C11 features
 # XXX our version has an incorrect prototype due to the lack of a test
 # for the existence of rsize_t and RSIZE_MAX.
-AC_CHECK_FUNCS([memset_s])
+AC_CHECK_FUNCS([memcpy_s memset_s])
 
 ############################################################################
 #
