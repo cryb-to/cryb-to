@@ -22,6 +22,8 @@ libcryb_core_la_SOURCES = \
 EXTRA_DIST = cryb_string_impl.c
 
 dist_man3_MANS = \
+	cryb_memcpy_s.3 \
+	cryb_memset_s.3 \
 	cryb_strlcat.3 \
 	cryb_strlcpy.3
 
