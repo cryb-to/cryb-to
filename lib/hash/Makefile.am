@@ -9,3 +9,7 @@ libcryb_hash_la_SOURCES = \
 	fletcher64.c \
 	murmur3_32.c \
 	pearson.c
+
+dist_man3_MANS = \
+	cryb_fletcher.3 \
+	cryb_hash.3

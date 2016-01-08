@@ -13,3 +13,6 @@ libcryb_digest_la_SOURCES = \
 	sha256.c \
 	sha384.c \
 	sha512.c
+
+dist_man3_MANS = \
+	cryb_sha1.3

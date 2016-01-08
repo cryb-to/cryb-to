@@ -12,3 +12,7 @@ libcryb_core_la_SOURCES = \
 	wstring.c
 
 EXTRA_DIST = _string.c
+
+dist_man3_MANS = \
+	cryb_strlcat.3 \
+	cryb_strlcpy.3
