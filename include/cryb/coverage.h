@@ -43,10 +43,14 @@
 /*
  * Use at end of switch which has no default case
  */
+#if CRYB_COVERAGE
 #define CRYB_NO_DEFAULT_CASE						\
 	CRYB_DISABLE_COVERAGE						\
 	default:							\
 		(void)0;						\
 	CRYB_RESTORE_COVERAGE
+#else
+#define CRYB_NO_DEFAULT_CASE
+#endif
 
 #endif
