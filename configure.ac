@@ -2,7 +2,7 @@ AC_PREREQ([2.63])
 AC_INIT([cryb.to], [devel], [des@des.no], [cryb-to], [http://cryb.to/])
 AC_CONFIG_SRCDIR([include/cryb/to.h])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-xz])
 AM_CONFIG_HEADER([include/config.h])
 
 ############################################################################
