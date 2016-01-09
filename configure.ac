@@ -108,7 +108,7 @@ AM_CONDITIONAL([RSAREF_TESTS], [test x"enable_rsaref_tests" = x"yes"])
 AC_ARG_ENABLE([developer-warnings],
     AS_HELP_STRING([--enable-developer-warnings],
 	[enable strict warnings (default is NO)]),
-    [CFLAGS="${CFLAGS} -Wall -Wextra -Wcast-qual"])
+    [CFLAGS="${CFLAGS} -Wall -Wextra -Wcast-qual -Wshadow"])
 AC_ARG_ENABLE([debugging-symbols],
     AS_HELP_STRING([--enable-debugging-symbols],
 	[enable debugging symbols (default is NO)]),
