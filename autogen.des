@@ -23,8 +23,8 @@ fi
 set -e
 
 if has cov01 ; then
-	cov01 -u
-	cov01 -0
+	cov01 -qu
+	cov01 -q0
 fi
 
 . ./autogen.sh
@@ -38,5 +38,5 @@ fi
     "$@"
 
 if has cov01 ; then
-	cov01 -o
+	cov01 -qo
 fi
