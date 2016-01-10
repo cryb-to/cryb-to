@@ -6,3 +6,6 @@ libcryb_enc_la_SOURCES = \
 	cryb_base32.c \
 	cryb_base64.c \
 	cryb_percent.c
+
+dist_man3_MANS = \
+	cryb_percent.3

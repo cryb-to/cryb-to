@@ -1,0 +1,145 @@
+.\"-
+.\" Copyright (c) 2014-2016 Dag-Erling Smørgrav
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. The name of the author may not be used to endorse or promote
+.\"    products derived from this software without specific prior written
+.\"    permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd January 10, 2016
+.Dt CRYB_PERCENT 3
+.Os
+.Sh NAME
+.Nm cryb_percent_decode ,
+.Nm cryb_percent_encode
+.Nd RFC 3986 percent-encoding
+.Sh SYNOPSIS
+.In sys/types.h
+.In cryb/rfc3986.h
+.Ft "int"
+.Fn cryb_percent_decode "const char *in" "size_t ilen" "char *out" "size_t olen"
+.Ft "int"
+.Fn cryb_percent_encode "const char *in" "size_t ilen" "char *out" "size_t olen"
+.Sh DESCRIPTION
+The
+.Fn cryb_percent_decode
+and
+.Fn cryb_percent_encode
+functions decode and encode percent-encoded strings as described in
+RFC 3986.
+.Pp
+In both cases, the
+.Fa in
+parameter points to the data to be decoded or encoded and the
+.Fa ilen
+parameter is its length.
+Decoding or encoding stops after
+.Fa ilen
+characters or when a NUL character is encountered, whichever comes
+first.
+If the exact length of the input string is not known,
+.Fa ilen
+can be set to
+.Dv SIZE_MAX
+to decode or encode the entire string.
+.Pp
+The
+.Fa out
+parameter points to a buffer in which the decoded or encoded data is
+to be stored.
+The
+.Fa olen
+parameter points to a
+.Vt size_t
+containing the size of that buffer, and is updated upon return to
+contain the actual size of the output, including the terminating NUL
+character.
+If the output buffer is too small to contain the output, the overflow
+is discarded, but the variable pointed to by
+.Fa olen
+still reflects the amount of space that would have been required to
+store it.
+.Pp
+The output is always NUL-terminated, regardless of how much or how
+little output was produced, provided that the initial value of
+.Fa olen
+is non-zero.
+.Pp
+If
+.Fa out
+is
+.Dv NULL
+and no other error is encountered, no output is produced, but the
+value pointed to by
+.Fa olen
+is still updated to reflect the amount of space required to hold the
+encoded or decoded sequence.
+.Sh RETURN VALUES
+The
+.Fn cryb_percent_decode
+and
+.Fn cryb_percent_encode
+return 0 if successful.
+.Pp
+If the output would have overflowed the buffer provided by the caller,
+they return -1 and set
+.Va errno
+to
+.Er ENOSPC ,
+and the output buffer contains as much decoded or encoded data as
+would fit.
+.Pp
+If an invalid input sequence is encountered, the
+.Fn cryb_percent_decode
+function returns -1 and sets
+.Va errno
+to
+.Er EINVAL ,
+and the output buffer contains the result of decoding the input up to
+the invalid sequence.
+.Sh IMPLEMENTATION NOTES
+The
+.In cryb/rfc3986.h
+header provides macros which allows these functions to be referred to
+without their
+.Dq Li cryb_
+prefix.
+.Sh SEE ALSO
+.Xr cryb_base32 3 ,
+.Xr cryb_base64 3
+.Sh REFERENCES
+.Rs
+.%A "Berners-Lee, T."
+.%A "Fielding, R."
+.%A "Masinter, L."
+.%D "January 2005"
+.%R "Uniform Resource Identifier (URI): Generic Syntax"
+.%O "RFC 3968"
+.Re
+.Sh AUTHORS
+The
+.Fn cryb_percent_decode
+and
+.Fn cryb_percent_encode
+functions and this manual page were written by
+.An Dag-Erling Sm\(/orgrav Aq Mt des@des.no .

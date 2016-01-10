@@ -51,22 +51,22 @@ percent_encode(const char *in, size_t ilen, char *out, size_t *olen)
 {
 	size_t len;
 
-	for (len = 0; ilen && *in; --ilen, ++in) {
+	for (len = 0; ilen > 0 && *in != '\0'; --ilen, ++in) {
 		if (is_uri(*in)) {
-			if (len++ < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = *in;
 		} else {
-			if (len++ < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = '%';
-			if (len++ < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = hex[(uint8_t)*in >> 4];
-			if (len++ < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = hex[(uint8_t)*in & 0xf];
 		}
 	}
-	if (len < *olen)
+	if (*olen > 0 && out != NULL)
 		*out = '\0';
-	if (len >= *olen) {
+	if (++len > *olen && out != NULL) {
 		/* overflow */
 		*olen = len;
 		errno = ENOSPC;
@@ -84,22 +84,25 @@ percent_decode(const char *in, size_t ilen, char *out, size_t *olen)
 {
 	size_t len;
 
-	for (len = 0; ilen && *in; --ilen, ++in) {
+	for (len = 0; ilen > 0 && *in != '\0'; --ilen, ++in) {
 		if (*in != '%') {
-			if (++len < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = *in;
 		} else if (ilen >= 3 && is_xdigit(in[1]) && is_xdigit(in[2])) {
-			if (++len < *olen)
+			if (++len < *olen && out != NULL)
 				*out++ = unhex(in[1]) << 4 | unhex(in[2]);
 			in += 2;
 		} else {
+			if (*olen > 0 && out != NULL)
+				*out = '\0';
+			*olen = ++len;
 			errno = EINVAL;
 			return (-1);
 		}
 	}
-	if (len < *olen)
+	if (*olen > 0 && out != NULL)
 		*out = '\0';
-	if (len >= *olen) {
+	if (++len > *olen && out != NULL) {
 		/* overflow */
 		*olen = len;
 		errno = ENOSPC;
