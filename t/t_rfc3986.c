@@ -54,56 +54,83 @@ struct t_case {
 
 /* basic encoding / decoding */
 #define T_ENCODE(i, o)							\
-	{ "percent_encode("#i")", percent_encode,			\
-	  i, sizeof i - 1, o, sizeof o, sizeof o - 1, 0, 0 }
+	{ .func = percent_encode,					\
+	  .in = i, .ilen = sizeof i,					\
+	  .out = o, .blen = sizeof o, .olen = sizeof o,			\
+	  .ret = 0, .err = 0 }
 #define T_DECODE(i, o)							\
-	{ "percent_decode("#i")", percent_decode,			\
-	  i, sizeof i - 1, o, sizeof o, sizeof o - 1, 0, 0 }
+	{ .func = percent_decode,					\
+	  .in = i, .ilen = sizeof i,					\
+	  .out = o, .blen = sizeof o, .olen = sizeof o,			\
+	  .ret = 0, .err = 0 }
 
 /* roundtrip encoding tests */
 #define T_ENCDEC(p, e)							\
 	T_ENCODE(p, e), T_DECODE(e, p)
 
 /* decoding failure */
-#define T_DECODE_FAIL(e, i)						\
-	{ "percent_decode("#i")", percent_decode, i,			\
-	  sizeof i - 1, NULL, 0, 0, -1, e }
+#define T_DECODE_FAIL(e, i, o)						\
+	{ .func = percent_decode,					\
+	  .in = i, .ilen = sizeof i - 1,				\
+	  .out = o, .blen = SIZE_MAX, .olen = sizeof o,			\
+	  .ret = -1, .err = e }
 
 /* input string shorter than input length */
-#define T_SHORT_INPUT_ENC(i, l)						\
-	{ "percent_encode (short input)", percent_encode,		\
-	  i, l, i, sizeof i, sizeof i - 1, 0, 0 }
-#define T_SHORT_INPUT_DEC(i, l)						\
-	{ "percent_decode (short input)", percent_decode,		\
-	  i, l, i, sizeof i, sizeof i - 1, 0, 0 }
+#define T_SHORT_INPUT_ENC(i, o)						\
+	{ .desc = "encode (short input)", .func = percent_encode,	\
+	  .in = i, .ilen = SIZE_MAX,					\
+	  .out = o, .blen = SIZE_MAX, .olen = sizeof o }
+#define T_SHORT_INPUT_DEC(i, o)						\
+	{ .desc = "decode (short input)", .func = percent_decode,	\
+	  .in = i, .ilen = SIZE_MAX,					\
+	  .out = o, .blen = SIZE_MAX, .olen = sizeof o }
+
+/* input string longer than input length */
+#define T_LONG_INPUT_ENC(i, il, o, ol)					\
+	{ .desc = "encode (long input)", .func = percent_encode,	\
+	  .in = i, .ilen = il, .out = o, .blen = ol, .olen = ol }
+#define T_LONG_INPUT_DEC(i, il, o, ol)					\
+	{ .desc = "decode (long input)", .func = percent_decode,	\
+	  .in = i, .ilen = il, .out = o, .blen = ol, .olen = ol }
 
 /* output string longer than output length */
-#define T_LONG_OUTPUT_ENC(i, l)					\
-	{ "percent_encode (long output)", percent_encode,		\
-	  i, sizeof i - 1, NULL, l, sizeof i - 1, -1, ENOSPC }
-#define T_LONG_OUTPUT_DEC(i, l)						\
-	{ "percent_decode (long output)", percent_decode,		\
-	  i, sizeof i - 1, NULL, l, sizeof i - 1, -1, ENOSPC }
+#define T_LONG_OUTPUT_ENC(i, o, l)					\
+	{ .desc = "encode (long output)", .func = percent_encode,	\
+	  .in = i, .ilen = SIZE_MAX,					\
+	  .out = o, .blen = l, .olen = sizeof o,			\
+	  .ret = -1, .err = ENOSPC }
+#define T_LONG_OUTPUT_DEC(i, o, l)					\
+	{ .desc = "decode (long output)", .func = percent_decode,	\
+	  .in = i, .ilen = SIZE_MAX,					\
+	  .out = o, .blen = l, .olen = sizeof o,			\
+	  .ret = -1, .err = ENOSPC }
 
-const char unreserved[] =
+static const char unreserved[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
     "0123456789"
     "-._~";
 
-const char reserved[] =
+static const char reserved[] =
     ":/?#[]@"			/* gen-delims */
     "!$&'()*+,;=";		/* sub-delims */
-const char reserved_upper[] =
+static const char reserved_upper[] =
     "%3A%2F%3F%23%5B%5D%40"
     "%21%24%26%27%28%29%2A%2B%2C%3B%3D";
-const char reserved_lower[] =
+static const char reserved_lower[] =
     "%3a%2f%3f%23%5b%5d%40"
     "%21%24%26%27%28%29%2a%2b%2c%3b%3d";
 
+static const char mixed[] =
+    "Magic = xyzzy";
+static const char mixed_upper[] =
+    "Magic%20%3D%20xyzzy";
+static const char mixed_lower[] =
+    "Magic%20%3d%20xyzzy";
+
 static struct t_case t_cases[] = {
 	/* empty string */
-	T_ENCDEC("",			""),
+	T_ENCDEC("", ""),
 
 	/* unreserved characters */
 	T_ENCDEC(unreserved, unreserved),
@@ -113,29 +140,163 @@ static struct t_case t_cases[] = {
 	T_DECODE(reserved_lower, reserved),
 
 	/* individual reserved characters */
-	/* XXX */
+	T_ENCDEC("!", "%21"),
+	T_ENCDEC("#", "%23"),
+	T_ENCDEC("$", "%24"),
+	T_ENCDEC("%", "%25"),
+	T_ENCDEC("&", "%26"),
+	T_ENCDEC("'", "%27"),
+	T_ENCDEC("(", "%28"),
+	T_ENCDEC(")", "%29"),
+	T_ENCDEC("*", "%2A"),
+	T_ENCDEC("+", "%2B"),
+	T_ENCDEC(",", "%2C"),
+	T_ENCDEC("/", "%2F"),
+	T_ENCDEC(";", "%3B"),
+	T_ENCDEC(":", "%3A"),
+	T_ENCDEC("=", "%3D"),
+	T_ENCDEC("?", "%3F"),
+	T_ENCDEC("@", "%40"),
+	T_ENCDEC("[", "%5B"),
+	T_ENCDEC("]", "%5D"),
+	T_DECODE("%2a",	"*"),
+	T_DECODE("%2b",	"+"),
+	T_DECODE("%2c",	","),
+	T_DECODE("%2f",	"/"),
+	T_DECODE("%3a",	":"),
+	T_DECODE("%3b",	";"),
+	T_DECODE("%3d",	"="),
+	T_DECODE("%3f",	"?"),
+	T_DECODE("%5b",	"["),
+	T_DECODE("%5d",	"]"),
 
 	/* too few characters after % */
-	T_DECODE_FAIL(EINVAL,		"%"),
+	T_DECODE_FAIL(EINVAL, "x%", "x"),
+	T_DECODE_FAIL(EINVAL, "x%0", "x"),
 
 	/* non-hex characters after % */
-	T_DECODE_FAIL(EINVAL,		"%0z"),
-	T_DECODE_FAIL(EINVAL,		"%zz"),
-	T_DECODE_FAIL(EINVAL,		"%z0"),
+	T_DECODE_FAIL(EINVAL, "x%0z", "x"),
+	T_DECODE_FAIL(EINVAL, "x%zz", "x"),
+	T_DECODE_FAIL(EINVAL, "x%z0", "x"),
 
 	/* input shorter than claimed */
-	T_SHORT_INPUT_ENC("-", 2),
-	T_SHORT_INPUT_DEC("-", 2),
+	T_SHORT_INPUT_ENC(reserved, reserved_upper),
+	T_SHORT_INPUT_DEC(reserved_lower, reserved),
+
+	/* input longer than claimed */
+	T_LONG_INPUT_ENC(mixed, 6, mixed_upper, 9),
+	T_LONG_INPUT_DEC(mixed_lower, 8, mixed, 7),
 
 	/* encoding into short buffer */
-	T_LONG_OUTPUT_ENC(unreserved, 1),
-	T_LONG_OUTPUT_ENC(reserved, 1),
-	T_LONG_OUTPUT_ENC(reserved, 2),
-	T_LONG_OUTPUT_ENC(reserved, 3),
+	T_LONG_OUTPUT_ENC(mixed, mixed_upper, 6),
+	T_LONG_OUTPUT_ENC(mixed, mixed_upper, 7),
+	T_LONG_OUTPUT_ENC(mixed, mixed_upper, 8),
+	T_LONG_OUTPUT_ENC(mixed, mixed_upper, 9),
 
 	/* decoding into short buffer */
-	T_LONG_OUTPUT_DEC(unreserved, 1),
-	T_LONG_OUTPUT_DEC(reserved_lower, 1),
+	T_LONG_OUTPUT_DEC(unreserved, unreserved, 5),
+	T_LONG_OUTPUT_DEC(reserved_lower, reserved, 5),
+
+	/* various no-output scenarios (decoding) */
+	{
+		.desc	= "decode (no output)",
+		.func	= percent_decode,
+		.in	= mixed_lower,
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= SIZE_MAX,
+		.olen	= sizeof mixed,
+		/* success */
+	},
+	{
+		.desc	= "decode (no output, invalid sequence)",
+		.func	= percent_decode,
+		.in	= "x%",
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= SIZE_MAX,
+		.olen	= 2,
+		.ret	= -1,
+		.err	= EINVAL,
+	},
+	{
+		.desc	= "decode (no space)",
+		.func	= percent_decode,
+		.in	= mixed_lower,
+		.ilen	= SIZE_MAX,
+		.out	= "",
+		.blen	= 0,
+		.olen	= sizeof mixed,
+		.ret	= -1,
+		.err	= ENOSPC,
+	},
+	{
+		.desc	= "decode (no space, invalid sequence)",
+		.func	= percent_decode,
+		.in	= "x%",
+		.ilen	= SIZE_MAX,
+		.out	= "",
+		.blen	= 0,
+		.olen	= 2,
+		/* invalid sequence trumps no space */
+		.ret	= -1,
+		.err	= EINVAL,
+	},
+	{
+		.desc	= "decode (no output, no space)",
+		.func	= percent_decode,
+		.in	= mixed_lower,
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= 0,
+		.olen	= sizeof mixed,
+		/* success */
+	},
+	{
+		.desc	= "decode (no output, no space, invalid sequence)",
+		.func	= percent_decode,
+		.in	= "x%",
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= 0,
+		.olen	= 2,
+		/* invalid sequence trumps no space */
+		.ret	= -1,
+		.err	= EINVAL,
+	},
+
+	/* various no-output scenarios (encoding) */
+	{
+		.desc	= "encode (no output)",
+		.func	= percent_encode,
+		.in	= mixed,
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= SIZE_MAX,
+		.olen	= sizeof mixed_upper,
+		/* success */
+	},
+	{
+		.desc	= "encode (no space)",
+		.func	= percent_encode,
+		.in	= mixed,
+		.ilen	= SIZE_MAX,
+		.out	= "",
+		.blen	= 0,
+		.olen	= sizeof mixed_upper,
+		.ret	= -1,
+		.err	= ENOSPC,
+	},
+	{
+		.desc	= "encode (no output, no space)",
+		.func	= percent_encode,
+		.in	= mixed,
+		.ilen	= SIZE_MAX,
+		.out	= NULL,
+		.blen	= 0,
+		.olen	= sizeof mixed_upper,
+		/* success */
+	},
 };
 
 /*
@@ -149,29 +310,17 @@ t_rfc3986(char **desc CRYB_UNUSED, void *arg)
 	size_t len;
 	int ret;
 
-	len = t->blen ? t->blen : sizeof buf;
-	ret = t->func(t->in, t->ilen, buf, &len);
-	if (ret != t->ret) {
-		t_verbose("expected return code %d, got %d\n",
-		    t->ret, ret);
-		return (0);
-	}
-	if (t->out && len != t->olen) {
-		t_verbose("expected output length %zu, got %zu\n",
-		    t->olen, len);
-		return (0);
-	}
-	if (t->ret != 0 && errno != t->err) {
-		t_verbose("expected errno %d, got %d\n",
-		    t->err, errno);
-		return (0);
-	}
-	if (t->ret == 0 && t->out && strncmp(buf, t->out, len) != 0) {
-		t_verbose("expected '%.*s' got '%.*s'\n",
-		    (int)t->olen, t->out, (int)len, buf);
-		return (0);
-	}
-	return (1);
+	memset(buf, 0, sizeof buf);
+	errno = 0;
+	len = t->blen > sizeof buf ? sizeof buf : t->blen;
+	ret = t_compare_i(t->ret,
+	    t->func(t->in, t->ilen, t->out ? buf : NULL, &len));
+	ret &= t_compare_sz(t->olen, len);
+	if (t->ret != 0 || errno != 0)
+		ret &= t_compare_i(t->err, errno);
+	if (t->out)
+		ret &= t_compare_strn(t->out, buf, t->blen - 1);
+	return (ret);
 }
 
 /*
@@ -180,13 +329,28 @@ t_rfc3986(char **desc CRYB_UNUSED, void *arg)
 int
 t_prepare(int argc, char *argv[])
 {
+	struct t_case *t;
 	int i, n;
 
 	(void)argc;
 	(void)argv;
 	n = sizeof t_cases / sizeof t_cases[0];
-	for (i = 0; i < n; ++i)
-		t_add_test(t_rfc3986, &t_cases[i], t_cases[i].desc);
+	for (i = 0; i < n; ++i) {
+		t = &t_cases[i];
+		if (t->desc) {
+			t_add_test(t_rfc3986, t, t->desc);
+		} else if (t->ret == 0) {
+			t_add_test(t_rfc3986, t,
+			    "%s \"%s\" -> \"%s\"",
+			    t->func == percent_encode ? "encode" : "decode",
+			    t->in, t->out);
+		} else {
+			t_add_test(t_rfc3986, t,
+			    "%s \"%s\" (failure)",
+			    t->func == percent_encode ? "encode" : "decode",
+			    t->in);
+		}
+	}
 	return (0);
 }
 
