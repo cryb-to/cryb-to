@@ -103,6 +103,22 @@ t_compare_str(const char *expected, const char *received)
 }
 
 /*
+ * Compare two strings up to a specific length, and print a verbose
+ * message if they differ.
+ */
+int
+t_compare_strn(const char *expected, const char *received, size_t len)
+{
+
+	if (strncmp(expected, received, len) != 0) {
+		t_verbose("expected %.*s\n", (int)len, expected);
+		t_verbose("received %.*s\n", (int)len, received);
+		return (0);
+	}
+	return (1);
+}
+
+/*
  * Compare two numbers, and print a verbose message if they differ.
  */
 #define t_compare_num(n, t, pf)						\
