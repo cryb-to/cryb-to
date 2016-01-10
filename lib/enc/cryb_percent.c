@@ -92,6 +92,7 @@ percent_decode(const char *in, size_t ilen, char *out, size_t *olen)
 			if (++len < *olen && out != NULL)
 				*out++ = unhex(in[1]) << 4 | unhex(in[2]);
 			in += 2;
+			ilen -= 2;
 		} else {
 			if (*olen > 0 && out != NULL)
 				*out = '\0';
