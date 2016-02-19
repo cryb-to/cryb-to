@@ -200,21 +200,33 @@ static void *
 t_malloc_mapped(size_t size)
 {
 	struct mapping *m;
+	size_t msize;
 
+	/* prepare metadata */
 	if ((m = malloc(sizeof *m)) == NULL)
 		return (NULL);
-	size = ((size + 8191) >> 13) << 13;
-	m->base = mmap(NULL, size, PROT_READ | PROT_WRITE,
+	msize = ((size + 8191) >> 13) << 13;
+
+	/* map a sufficiently large region */
+	m->base = mmap(NULL, msize, PROT_READ | PROT_WRITE,
 	    MAP_ANON | MAP_NOSYNC | MAP_SHARED, -1, 0);
 	if (m->base == MAP_FAILED) {
 		free(m);
 		errno = ENOMEM;
 		return (NULL);
 	}
-	m->top = PADD(m->base, size);
+	m->top = PADD(m->base, msize);
+
+	/* insert into linked list */
 	m->next = mappings;
 	m->prev = NULL;
 	mappings = m;
+
+	/* fill the slop */
+	if (msize > size)
+		memset(PADD(m->base, size), BUCKET_FILL_FREE, msize - size);
+
+	/* done! */
 	++nmapalloc;
 	return (m->base);
 }
@@ -229,6 +241,7 @@ t_malloc_bucket(size_t size)
 {
 	unsigned int shift;
 	struct bucket *b;
+	size_t msize;
 	void *p;
 
 	/* select bucket */
@@ -236,6 +249,7 @@ t_malloc_bucket(size_t size)
 		/* nothing */ ;
 	assert(shift >= BUCKET_MIN_SHIFT && shift <= BUCKET_MAX_SHIFT);
 	b = &buckets[shift];
+	msize = 1U << shift;
 
 	/* initialize bucket if necessary */
 	if (b->base == NULL) {
@@ -259,12 +273,16 @@ t_malloc_bucket(size_t size)
 	/* update the free block pointer */
 	if (b->free == b->unused) {
 		/* never been used before, increment free pointer */
-		b->free = b->unused = b->unused + (1U << shift);
+		b->free = b->unused = b->unused + msize;
 	} else {
 		/* previously used, disconnect from free list */
 		b->free = *(char **)p;
 		assert(b->free >= b->base && b->free < b->top);
 	}
+
+	/* fill the slop */
+	if (msize > size)
+		memset(PADD(p, size), BUCKET_FILL_FREE, msize - size);
 
 	/* done! */
 	++b->nalloc;
@@ -305,11 +323,13 @@ malloc(size_t size)
 		t_malloc_fail = 1;
 	}
 	p = t_malloc(size);
-	if (p == NULL && t_malloc_fatal)
-		abort();
-	memset(p, BUCKET_FILL_ALLOC, size);
-	/* XXX fill the slop with garbage */
 	UTRACE_MALLOC(size, p);
+	if (p == NULL) {
+		if (t_malloc_fatal)
+			abort();
+		return (NULL);
+	}
+	memset(p, BUCKET_FILL_ALLOC, size);
 	return (p);
 }
 
@@ -329,11 +349,13 @@ calloc(size_t n, size_t size)
 		t_malloc_fail = 1;
 	}
 	p = t_malloc(n * size);
-	if (p == NULL && t_malloc_fatal)
-		abort();
-	memset(p, 0, n * size);
-	/* XXX fill the slop with garbage */
 	UTRACE_MALLOC(size, p);
+	if (p == NULL) {
+		if (t_malloc_fatal)
+			abort();
+		return (NULL);
+	}
+	memset(p, 0, n * size);
 	return (p);
 }
 
@@ -387,17 +409,19 @@ found:
 	} else if (t_malloc_fail_after > 0 && --t_malloc_fail_after == 0) {
 		t_malloc_fail = 1;
 	}
-	if ((p = t_malloc(size)) == NULL) {
+	p = t_malloc(size);
+	UTRACE_REALLOC(o, size, p);
+	if (p == NULL) {
 		if (t_malloc_fatal)
 			abort();
 		return (NULL);
 	}
-	if (size > osize)
+	if (size > osize) {
 		memcpy(p, o, osize);
-	else
+		memset(p + osize, BUCKET_FILL_ALLOC, size - osize);
+	} else {
 		memcpy(p, o, size);
-	/* XXX fill the slop with garbage */
-	UTRACE_REALLOC(o, size, p);
+	}
 	free(o);
 	return (p);
 }
