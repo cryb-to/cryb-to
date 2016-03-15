@@ -91,7 +91,7 @@ T_ENC(le, 64)
 #define T_ENC_ADD(e, w)							\
 	t_add_test(t_##e##w##enc, 0, #e #w "enc");
 
-int
+static int
 t_prepare(int argc, char *argv[])
 {
 
@@ -112,7 +112,9 @@ t_prepare(int argc, char *argv[])
 	return (0);
 }
 
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }

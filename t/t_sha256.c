@@ -206,7 +206,7 @@ t_sha256_perf(char **desc, void *arg)
  * Boilerplate
  */
 
-int
+static int
 t_prepare(int argc, char *argv[])
 {
 	int i, n;
@@ -243,7 +243,9 @@ t_prepare(int argc, char *argv[])
 	return (0);
 }
 
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }

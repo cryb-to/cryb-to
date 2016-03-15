@@ -221,8 +221,9 @@ usage(void)
 	exit(1);
 }
 
-int
-main(int argc, char *argv[])
+void
+t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
+    int argc, char *argv[])
 {
 	unsigned int n, pass, fail;
 	size_t nt;
@@ -270,7 +271,8 @@ main(int argc, char *argv[])
 	argv += optind;
 
 	/* prepare the test plan */
-	t_prepare(argc, argv);
+	if (t_prepare != NULL)
+		t_prepare(argc, argv);
 	if (t_plan_len == 0)
 		errx(1, "no plan\n");
 
@@ -281,7 +283,8 @@ main(int argc, char *argv[])
 		t_run_test(t_plan[n], n + 1) ? ++pass : ++fail;
 
 	/* clean up as much as possible before we exit */
-	t_cleanup();
+	if (t_cleanup != NULL)
+		t_cleanup();
 	t_fcloseall();
 	for (n = 0; n < t_plan_len; ++n) {
 		free(t_plan[n]->desc);

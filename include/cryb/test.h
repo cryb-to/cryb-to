@@ -53,8 +53,10 @@ extern const char *t_progname;
 void t_add_test(t_func *, void *, const char *, ...);
 void t_add_tests(struct t_test *, int);
 
-int t_prepare(int, char **);
-void t_cleanup(void);
+typedef int (*t_prepare_func)(int, char **);
+typedef void (*t_cleanup_func)(void);
+void t_main(t_prepare_func, t_cleanup_func, int, char **)
+	CRYB_NORETURN;
 
 void t_verbose_hex(const uint8_t *, size_t);
 void t_verbose(const char *, ...)

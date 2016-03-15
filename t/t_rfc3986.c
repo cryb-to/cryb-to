@@ -323,10 +323,12 @@ t_rfc3986(char **desc CRYB_UNUSED, void *arg)
 	return (ret);
 }
 
-/*
- * Generate the test plan
+
+/***************************************************************************
+ * Boilerplate
  */
-int
+
+static int
 t_prepare(int argc, char *argv[])
 {
 	struct t_case *t;
@@ -354,10 +356,9 @@ t_prepare(int argc, char *argv[])
 	return (0);
 }
 
-/*
- * Cleanup
- */
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }

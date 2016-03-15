@@ -271,7 +271,7 @@ t_string_trunc(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
  * Boilerplate
  */
 
-int
+static int
 t_prepare(int argc, char *argv[])
 {
 	unsigned int i;
@@ -299,7 +299,9 @@ t_prepare(int argc, char *argv[])
 	return (0);
 }
 
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }

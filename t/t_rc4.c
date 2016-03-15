@@ -1987,7 +1987,7 @@ t_rc4(char **desc CRYB_UNUSED, void *arg)
  * Boilerplate
  */
 
-int
+static int
 t_prepare(int argc, char *argv[])
 {
 	unsigned int i, n;
@@ -2000,7 +2000,9 @@ t_prepare(int argc, char *argv[])
 	return (0);
 }
 
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }
