@@ -34,7 +34,7 @@
 # include "config.h"
 #endif
 
-#include "cryb/attributes.h"
-#include "cryb/coverage.h"
+#include <cryb/attributes.h>
+#include <cryb/coverage.h>
 
 #endif
