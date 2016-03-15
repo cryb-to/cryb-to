@@ -101,10 +101,10 @@ endif CRYB_RAND
 if CRYB_TEST
 cryb_HEADERS += \
 	\
+	coverage.h \
 	test.h
 endif CRYB_TEST
 
 noinst_HEADERS = \
-	coverage.h \
 	impl.h \
 	nocoverage.h
