@@ -30,6 +30,7 @@
 #ifndef CRYB_TEST_H_INCLUDED
 #define CRYB_TEST_H_INCLUDED
 
+#include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
