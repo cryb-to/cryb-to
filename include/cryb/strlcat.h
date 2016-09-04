@@ -30,6 +30,10 @@
 #ifndef CRYB_STRLCAT_H_INCLUDED
 #define CRYB_STRLCAT_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 size_t cryb_strlcat(char *, const char *, size_t);
 
 #if !HAVE_STRLCAT

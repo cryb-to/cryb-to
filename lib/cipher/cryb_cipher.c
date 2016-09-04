@@ -37,6 +37,15 @@
 #include <cryb/aes.h>
 #include <cryb/rc4.h>
 
+static const char *cryb_cipher_version_string = PACKAGE_VERSION;
+
+const char *
+cryb_cipher_version(void)
+{
+
+	return (cryb_cipher_version_string);
+}
+
 static const cipher_algorithm **cryb_cipher_algorithms;
 
 static void

@@ -30,6 +30,10 @@
 #ifndef CRYB_RFC3986_H_INCLUDED
 #define CRYB_RFC3986_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 /* estimate of output length for percent encoding / decoding */
 #define percent_enclen(l) (size_t)((l) * 3)
 #define percent_declen(l) (size_t)(l)

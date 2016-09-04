@@ -30,6 +30,10 @@
 #ifndef CRYB_ATTRIBUTES_H_INCLUDED
 #define CRYB_ATTRIBUTES_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #if defined(__GNUC__) || defined(__clang__)
 # define CRYB_PRINTF(fmt, arg) __attribute__((format(printf, fmt, arg)))
 # define CRYB_NORETURN __attribute__((noreturn))

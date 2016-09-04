@@ -3,12 +3,14 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libcryb-hash.la
 
 libcryb_hash_la_SOURCES = \
-	adler32.c \
-	fletcher16.c \
-	fletcher32.c \
-	fletcher64.c \
-	murmur3_32.c \
-	pearson.c
+	cryb_adler32.c \
+	cryb_fletcher16.c \
+	cryb_fletcher32.c \
+	cryb_fletcher64.c \
+	cryb_murmur3_32.c \
+	cryb_pearson.c \
+	\
+	cryb_hash.c
 
 dist_man3_MANS = \
 	cryb_fletcher.3 \

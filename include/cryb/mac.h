@@ -30,6 +30,12 @@
 #ifndef CRYB_MAC_H_INCLUDED
 #define CRYB_MAC_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/hmac.h>
+
+const char *cryb_mac_version(void);
 
 #endif

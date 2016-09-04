@@ -3,10 +3,17 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libcryb-cpe.la
 
 libcryb_cpe_la_SOURCES = \
-	cpe.c \
-	cpe_string.c \
-	cpe_uri.c \
-	cpe_wfn.c
+	cryb_cpe_clone.c \
+	cryb_cpe_copy_attr.c \
+	cryb_cpe_destroy.c \
+	cryb_cpe_new.c \
+	cryb_cpe_string.c \
+	cryb_cpe_upgrade22.c \
+	cryb_cpe_upgrade.c \
+	cryb_cpe_uri.c \
+	cryb_cpe_wfn.c \
+	\
+	cryb_cpe.c
 
 libcryb_cpe_la_LIBADD = \
 	$(top_builddir)/lib/core/libcryb-core.la

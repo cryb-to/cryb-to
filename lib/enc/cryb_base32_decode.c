@@ -36,9 +36,6 @@
 
 #include <cryb/rfc4648.h>
 
-static const char b32enc[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-
 static const char b32dec[256] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -73,64 +70,6 @@ static const char b32dec[256] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 };
-
-/*
- * Encode data in RFC 4648 base 32 representation.  The target buffer must
- * have room for base32_enclen(len) characters and a terminating NUL.
- */
-int
-base32_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
-{
-	uint64_t bits;
-
-	if (*olen <= base32_enclen(ilen)) {
-		*olen = base32_enclen(ilen) + 1;
-		errno = ENOSPC;
-		return (-1);
-	}
-	*olen = base32_enclen(ilen) + 1;
-	while (ilen >= 5) {
-		bits = 0;
-		bits |= (uint64_t)*in++ << 32;
-		bits |= (uint64_t)*in++ << 24;
-		bits |= (uint64_t)*in++ << 16;
-		bits |= (uint64_t)*in++ << 8;
-		bits |= (uint64_t)*in++;
-		*out++ = b32enc[bits >> 35 & 0x1f];
-		*out++ = b32enc[bits >> 30 & 0x1f];
-		*out++ = b32enc[bits >> 25 & 0x1f];
-		*out++ = b32enc[bits >> 20 & 0x1f];
-		*out++ = b32enc[bits >> 15 & 0x1f];
-		*out++ = b32enc[bits >> 10 & 0x1f];
-		*out++ = b32enc[bits >> 5 & 0x1f];
-		*out++ = b32enc[bits & 0x1f];
-		ilen -= 5;
-	}
-	if (ilen > 0) {
-		bits = 0;
-		switch (ilen) {
-		case 4:
-			bits |= (uint64_t)in[3] << 8;
-		case 3:
-			bits |= (uint64_t)in[2] << 16;
-		case 2:
-			bits |= (uint64_t)in[1] << 24;
-		case 1:
-			bits |= (uint64_t)in[0] << 32;
-		CRYB_NO_DEFAULT_CASE;
-		}
-		*out++ = b32enc[bits >> 35 & 0x1f];
-		*out++ = b32enc[bits >> 30 & 0x1f];
-		*out++ = ilen > 1 ? b32enc[bits >> 25 & 0x1f] : '=';
-		*out++ = ilen > 1 ? b32enc[bits >> 20 & 0x1f] : '=';
-		*out++ = ilen > 2 ? b32enc[bits >> 15 & 0x1f] : '=';
-		*out++ = ilen > 3 ? b32enc[bits >> 10 & 0x1f] : '=';
-		*out++ = ilen > 3 ? b32enc[bits >> 5 & 0x1f] : '=';
-		*out++ = '=';
-	}
-	*out++ = '\0';
-	return (0);
-}
 
 /*
  * Decode data in RFC 4648 base 32 representation, stopping at the

@@ -34,88 +34,68 @@
 
 #include <cryb/mpi.h>
 
+#include "cryb_mpi_impl.h"
+
 /*
- * Store the difference between the absolute values of A and B in X.
+ * Store the sum of the absolutes values of A and B in X.
  */
 int
-mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
+mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 {
-	cryb_mpi *L, *G;
 	unsigned int i;
-	uint32_t c, cn;
+	uint32_t c;
 
 	/*
-	 * Trivial cases: A and B are the same or equal or at least one of
-	 * them is zero.
+	 * Trivial cases: A and B are identical and / or both zero.
 	 */
-	if (A == B || mpi_eq_abs(A, B)) {
-		mpi_zero(X);
+	if (A->msb == 0 && B->msb == 0)
 		return (0);
+	if (A == B) {
+		if (X != A && mpi_copy(X, A) != 0)
+			return (-1);
+		return (mpi_lshift(X, 1));
 	}
-	if (A->msb == 0)
-		return (X == B ? 0 : mpi_copy(X, B));
-	if (B->msb == 0)
-		return (X == A ? 0 : mpi_copy(X, A));
 
-	/* we want to subtract the smaller number from the larger */
-	if (mpi_cmp_abs(A, B) < 0)
-		L = A, G = B;
-	else
-		L = B, G = A;
-
-	/* make sure X is large enough for the largest possible result */
-	if (mpi_grow(X, G->msb) != 0)
+	/*
+	 * Normalize our operands: if X is identical to either A or B, we
+	 * want it to be A.  Otherwise, copy A into X.  In either case,
+	 * make sure X is large enough for the largest possible result.
+	 */
+	if (X == B) {
+		B = A;
+		A = X;
+	}
+	if (mpi_grow(X, A->msb + 1) != 0 || mpi_grow(X, B->msb + 1) != 0)
 		return (-1);
+	if (X != A)
+		/* this cannot fail */
+		mpi_copy(X, A);
 
-	/* subtract L from G word by word until we run out of L */
-	for (c = i = 0; i < (L->msb + 31) / 32; ++i) {
-		cn = G->words[i] < c ||
-		    G->words[i] - c < L->words[i];
-		X->words[i] = G->words[i] - L->words[i] - c;
-		c = cn;
+	/*
+	 * From now on, we are adding B to X and A is irrelevant.
+	 */
+
+	/* add B into X word by word until we run out of B */
+	for (c = i = 0; i < (B->msb + 31) / 32; ++i) {
+		X->words[i] += c;
+		c = (X->words[i] < c);
+		X->words[i] += B->words[i];
+		c += (X->words[i] < B->words[i]);
 	}
 	/* keep propagating carry */
 	while (c) {
-		cn = (G->words[i] < c);
-		X->words[i] = G->words[i] - c;
-		c = cn;
+		X->words[i] += c;
+		c = (X->words[i] < c);
 		++i;
 	}
-	while (i > 0 && X->words[i] == 0)
+	if (X->words[i] == 0)
 		--i;
 	/* compute msb of msw */
-	/* XXX use flsl() */
+	/* XXX should use flsl() */
 	for (X->msb = 31; X->msb > 0; --X->msb)
 		if (X->words[i] & (1 << X->msb))
 			break;
 	/* add msw offset */
 	X->msb += i * 32 + 1;
-	return (0);
-}
-
-/*
- * Subtract one number from another.
- */
-int
-mpi_sub(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
-{
-
-	if (A->neg && B->neg) {
-		if (mpi_sub_abs(X, A, B) < 0)
-			return (-1);
-		X->neg = (mpi_cmp_abs(A, B) > 0);
-	} else if (A->neg) {
-		if (mpi_add_abs(X, A, B) < 0)
-			return (-1);
-		X->neg = 1;
-	} else if (B->neg) {
-		if (mpi_add_abs(X, A, B) < 0)
-			return (-1);
-		X->neg = 0;
-	} else {
-		if (mpi_sub_abs(X, A, B) < 0)
-			return (-1);
-		X->neg = (mpi_cmp_abs(A, B) < 0);
-	}
 	return (0);
 }

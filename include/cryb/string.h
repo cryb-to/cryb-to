@@ -30,6 +30,10 @@
 #ifndef CRYB_STRING_H_INCLUDED
 #define CRYB_STRING_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #define string_new		cryb_string_new
 #define string_len		cryb_string_len
 #define string_dup		cryb_string_dup

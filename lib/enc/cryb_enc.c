@@ -1,6 +1,5 @@
 /*-
- * Copyright (c) 2012 The University of Oslo
- * Copyright (c) 2012 Dag-Erling Smørgrav
+ * Copyright (c) 2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +27,18 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_TOTP_H_INCLUDED
-#define CRYB_TOTP_H_INCLUDED
+#include "cryb/impl.h"
 
-#endif
+#include <stdint.h>
+#include <unistd.h>
+
+#include <cryb/enc.h>
+
+static const char *cryb_enc_version_string = PACKAGE_VERSION;
+
+const char *
+cryb_enc_version(void)
+{
+
+	return (cryb_enc_version_string);
+}

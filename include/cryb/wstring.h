@@ -30,6 +30,10 @@
 #ifndef CRYB_WSTRING_H_INCLUDED
 #define CRYB_WSTRING_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #define wstring_new		cryb_wstring_new
 #define wstring_len		cryb_wstring_len
 #define wstring_dup		cryb_wstring_dup

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,9 +27,18 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_VERSION_H_INCLUDED
-#define CRYB_VERSION_H_INCLUDED
+#include "cryb/impl.h"
 
-#define CRYB_VERSION	20160321
+#include <stdint.h>
+#include <unistd.h>
 
-#endif
+#include <cryb/mac.h>
+
+static const char *cryb_mac_version_string = PACKAGE_VERSION;
+
+const char *
+cryb_mac_version(void)
+{
+
+	return (cryb_mac_version_string);
+}

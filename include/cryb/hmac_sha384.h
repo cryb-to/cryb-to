@@ -30,6 +30,10 @@
 #ifndef CRYB_HMAC_SHA384_H_INCLUDED
 #define CRYB_HMAC_SHA384_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/sha384.h>
 
 #define HMAC_SHA384_MAC_LEN		48

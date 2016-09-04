@@ -29,13 +29,37 @@
 
 #include "cryb/impl.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <unistd.h>
+#include <wchar.h>
 
-#include <cryb/string.h>
+#include <cryb/wstring.h>
+#include <cryb/cpe.h>
 
-#define char_t			char
+/*
+ * Upgrade a cpe 2.2 structure to the latest supported version.
+ */
+cpe_name *
+cpe_upgrade22(const cpe_name *cpe)
+{
+	cpe_name *ncpe;
 
-#include "_string.c"
+	if ((ncpe = cpe_new()) == NULL)
+		return (NULL);
+	/* copy existing attributes */
+	if (cpe_copy_attr(ncpe, cpe, 0, cpe22_nattr) < 0) {
+		cpe_destroy(ncpe);
+		return (NULL);
+	}
+	/* extended attributes? */
+	if (ncpe->attr[cpe22_edition][0] == L'~') {
+		/*
+		 * XXX pseudo-code:
+		 *
+		 * - Split into fields (return an error if there are more
+                 *   than four)
+		 * - Assign these to sw_edition, target_sw, target_hw and
+                 *   other, in that order.
+		 */
+	}
+	return (ncpe);
+}

@@ -30,6 +30,10 @@
 #ifndef CRYB_CTYPE_H_INCLUDED
 #define CRYB_CTYPE_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 /*
  * Evaluates to non-zero if the argument is a digit.
  */

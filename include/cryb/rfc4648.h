@@ -30,6 +30,10 @@
 #ifndef CRYB_RFC4648_H_INCLUDED
 #define CRYB_RFC4648_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 /* estimate of output length for base32 encoding / decoding */
 #define base32_enclen(l) (size_t)(((l + 4) / 5) * 8)
 #define base32_declen(l) (size_t)(((l + 7) / 8) * 5)

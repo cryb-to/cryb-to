@@ -30,6 +30,10 @@
 #ifndef CRYB_HMAC_SHA224_H_INCLUDED
 #define CRYB_HMAC_SHA224_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/sha224.h>
 
 #define HMAC_SHA224_MAC_LEN		28

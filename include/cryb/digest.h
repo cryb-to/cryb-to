@@ -31,6 +31,12 @@
 #ifndef CRYB_DIGEST_H_INCLUDED
 #define CRYB_DIGEST_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_digest_version(void);
+
 #define digest_ctx			cryb_digest_ctx
 #define digest_init_func		cryb_digest_init_func
 #define digest_update_func		cryb_digest_update_func

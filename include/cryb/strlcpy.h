@@ -30,6 +30,10 @@
 #ifndef CRYB_STRLCPY_H_INCLUDED
 #define CRYB_STRLCPY_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 size_t cryb_strlcpy(char *, const char *, size_t);
 
 #if !HAVE_STRLCPY

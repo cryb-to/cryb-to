@@ -30,6 +30,10 @@
 #ifndef CRYB_STRLCMP_H_INCLUDED
 #define CRYB_STRLCMP_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 int cryb_strlcmp(const char *, const char *, size_t);
 
 #if !HAVE_STRLCMP

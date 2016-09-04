@@ -31,6 +31,10 @@
 #ifndef CRYB_SHA1_H_INCLUDED
 #define CRYB_SHA1_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/digest.h>
 
 #define SHA1_BLOCK_LEN			64

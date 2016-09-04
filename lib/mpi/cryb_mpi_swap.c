@@ -30,75 +30,28 @@
 #include "cryb/impl.h"
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <cryb/endian.h>
 #include <cryb/mpi.h>
 
-/* n rounded up to nearest multiple of p */
-#define RUP(n, p) ((((n) + (p) - 1) / (p)) * (p))
+#include "cryb_mpi_impl.h"
 
 /*
- * Compare absolute values
+ * Swap the contents of X and Y
  */
-int
-mpi_cmp_abs(cryb_mpi *X, cryb_mpi *Y)
+void
+mpi_swap(cryb_mpi *X, cryb_mpi *Y)
 {
-	int i;
+	cryb_mpi T;
 
-	/* check width first  */
-	if (X->msb > Y->msb)
-		return (1);
-	if (X->msb < Y->msb)
-		return (-1);
-	/* no luck, compare word by word */
-	for (i = X->msb / 32; i >= 0; --i) {
-		if (X->words[i] > Y->words[i])
-			return (1);
-		if (X->words[i] < Y->words[i])
-			return (-1);
-	}
-	return (0);
-}
-
-/*
- * Compare signed values
- */
-int
-mpi_cmp(cryb_mpi *X, cryb_mpi *Y)
-{
-
-	if (X->neg) {
-		if (Y->neg)
-			return (-mpi_cmp_abs(X, Y));
-		else
-			return (-1);
-	} else {
-		if (Y->neg)
-			return (1);
-		else
-			return (mpi_cmp_abs(X, Y));
-	}
-}
-
-/*
- * Compare for equality
- */
-int
-mpi_eq_abs(cryb_mpi *A, cryb_mpi *B)
-{
-
-	return (A->msb == B->msb &&
-	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
-}
-
-/*
- * Compare for equality
- */
-int
-mpi_eq(cryb_mpi *A, cryb_mpi *B)
-{
-
-	return (A->neg == B->neg && A->msb == B->msb &&
-	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
+	memcpy(&T, X, sizeof T);
+	memcpy(X, Y, sizeof *X);
+	memcpy(Y, &T, sizeof *Y);
+	if (X->words == Y->swords)
+		X->words = X->swords;
+	if (Y->words == X->swords)
+		Y->words = Y->swords;
 }

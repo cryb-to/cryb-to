@@ -30,6 +30,10 @@
 #ifndef CRYB_MEMSET_S_H_INCLUDED
 #define CRYB_MEMSET_S_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 int cryb_memset_s(void *, size_t, int, size_t);
 
 #if !HAVE_MEMSET_S

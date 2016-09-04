@@ -31,6 +31,10 @@
 #ifndef CRYB_ALGORITHM_H_INCLUDED
 #define CRYB_ALGORITHM_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 typedef enum algorithm_type {
 	digest_algorithm,
 	mac_algorithm,

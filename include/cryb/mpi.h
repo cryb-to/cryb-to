@@ -30,6 +30,32 @@
 #ifndef CRYB_MPI_H_INCLUDED
 #define CRYB_MPI_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_mpi_version(void);
+
+#define mpi_add			cryb_mpi_add
+#define mpi_add_abs		cryb_mpi_add_abs
+#define mpi_cmp			cryb_mpi_cmp
+#define mpi_cmp_abs		cryb_mpi_cmp_abs
+#define mpi_copy		cryb_mpi_copy
+#define mpi_destroy		cryb_mpi_destroy
+#define mpi_eq			cryb_mpi_eq
+#define mpi_eq_abs		cryb_mpi_eq_abs
+#define mpi_grow		cryb_mpi_grow
+#define mpi_init		cryb_mpi_init
+#define mpi_load		cryb_mpi_load
+#define mpi_lshift		cryb_mpi_lshift
+#define mpi_negate		cryb_mpi_negate
+#define mpi_rshift		cryb_mpi_rshift
+#define mpi_set			cryb_mpi_set
+#define mpi_sub			cryb_mpi_sub
+#define mpi_sub_abs		cryb_mpi_sub_abs
+#define mpi_swap		cryb_mpi_swap
+#define mpi_zero		cryb_mpi_zero
+
 #define CRYB_MPI_SWORDS 16
 
 typedef struct cryb_mpi {
