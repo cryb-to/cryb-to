@@ -13,4 +13,4 @@ addons:
       name: cryb-to/cryb-to
     notification_email: des@des.no
     build_command: make
-    branch_pattern: master
+    branch_pattern: scan
