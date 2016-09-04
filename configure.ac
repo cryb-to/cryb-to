@@ -1,6 +1,6 @@
 AC_PREREQ([2.63])
 AC_INIT([cryb.to], [devel], [des@des.no], [cryb-to], [http://cryb.to/])
-AC_CONFIG_SRCDIR([include/cryb/to.h])
+AC_CONFIG_SRCDIR([include/cryb/core.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-xz])
 AM_CONFIG_HEADER([include/config.h])
@@ -83,9 +83,8 @@ AC_SUBST(RT_LIBS)
 AC_ARG_ENABLE([doc],
     AC_HELP_STRING([--disable-doc],
 	[do not build the documentation]),
-    [],
-    [with_doc=yes])
-AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" = x"yes"])
+    [with_doc=$enableval])
+AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" != x"no"])
 
 ############################################################################
 #

@@ -30,6 +30,10 @@
 #ifndef CRYB_AES_H_INCLUDED
 #define CRYB_AES_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/cipher.h>
 
 #define AES_BLOCK_LEN			16

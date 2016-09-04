@@ -30,6 +30,10 @@
 #ifndef CRYB_MD2_H_INCLUDED
 #define CRYB_MD2_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/digest.h>
 
 #define MD2_BLOCK_LEN			16

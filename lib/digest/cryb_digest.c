@@ -42,6 +42,15 @@
 #include <cryb/sha384.h>
 #include <cryb/sha512.h>
 
+static const char *cryb_digest_version_string = PACKAGE_VERSION;
+
+const char *
+cryb_digest_version(void)
+{
+
+	return (cryb_digest_version_string);
+}
+
 static const digest_algorithm **cryb_digest_algorithms;
 
 static void

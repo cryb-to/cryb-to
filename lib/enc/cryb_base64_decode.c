@@ -36,11 +36,6 @@
 
 #include <cryb/rfc4648.h>
 
-static const char b64enc[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "0123456789+/";
-
 static const char b64dec[256] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
@@ -75,50 +70,6 @@ static const char b64dec[256] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
 };
-
-/*
- * Encode data in RFC 4648 base 64 representation.  The target buffer must
- * have room for base64_enclen(len) characters and a terminating NUL.
- */
-int
-base64_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
-{
-	uint32_t bits;
-
-	if (*olen <= base64_enclen(ilen)) {
-		*olen = base64_enclen(ilen) + 1;
-		errno = ENOSPC;
-		return (-1);
-	}
-	*olen = base64_enclen(ilen) + 1;
-	while (ilen >= 3) {
-		bits = 0;
-		bits |= (uint32_t)*in++ << 16;
-		bits |= (uint32_t)*in++ << 8;
-		bits |= (uint32_t)*in++;
-		ilen -= 3;
-		*out++ = b64enc[bits >> 18 & 0x3f];
-		*out++ = b64enc[bits >> 12 & 0x3f];
-		*out++ = b64enc[bits >> 6 & 0x3f];
-		*out++ = b64enc[bits & 0x3f];
-	}
-	if (ilen > 0) {
-		bits = 0;
-		switch (ilen) {
-		case 2:
-			bits |= (uint32_t)in[1] << 8;
-		case 1:
-			bits |= (uint32_t)in[0] << 16;
-		CRYB_NO_DEFAULT_CASE;
-		}
-		*out++ = b64enc[bits >> 18 & 0x3f];
-		*out++ = b64enc[bits >> 12 & 0x3f];
-		*out++ = ilen > 1 ? b64enc[bits >> 6 & 0x3f] : '=';
-		*out++ = '=';
-	}
-	*out++ = '\0';
-	return (0);
-}
 
 /*
  * Decode data in RFC 4648 base 64 representation, stopping at the

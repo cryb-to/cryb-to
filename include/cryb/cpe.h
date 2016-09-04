@@ -30,6 +30,12 @@
 #ifndef CRYB_CPE_H_INCLUDED
 #define CRYB_CPE_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_cpe_version(void);
+
 #define cpe_name	cryb_cpe_name
 
 #define cpe22_ver	202
@@ -71,6 +77,19 @@ typedef struct cpe_name {
 	wchar_t	*attr[];
 } cpe_name;
 
+#define cpe_clone		cryb_cpe_clone
+#define cpe_copy_attr		cryb_cpe_copy_attr
+#define cpe_destroy		cryb_cpe_destroy
+#define cpe_new			cryb_cpe_new
+#define cpe_bind_to_fs		cryb_cpe_bind_to_fs
+#define cpe_unbind_fs		cryb_cpe_unbind_fs
+#define cpe_upgrade22		cryb_cpe_upgrade22
+#define cpe_upgrade		cryb_cpe_upgrade
+#define cpe_bind_to_uri		cryb_cpe_bind_to_uri
+#define cpe_unbind_uri		cryb_cpe_unbind_uri
+#define cpe_from_wfn		cryb_cpe_from_wfn
+#define cpe_to_wfn		cryb_cpe_to_wfn
+
 cpe_name *cpe_new(void);
 void cpe_destroy(cpe_name *);
 cpe_name *cpe_clone(const cpe_name *);
@@ -85,5 +104,9 @@ wstring *cpe_bind_to_uri(const cpe_name *);
 
 cpe_name *cpe_from_wfn(const wchar_t *);
 wchar_t *cpe_to_wfn(const cpe_name *);
+
+/* not part of public API */
+int cpe_copy_attr(cpe_name *, const cpe_name *, int, int);
+cpe_name *cpe_upgrade22(const cpe_name *);
 
 #endif

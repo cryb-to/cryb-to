@@ -30,10 +30,16 @@
 #ifndef CRYB_TEST_H_INCLUDED
 #define CRYB_TEST_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
+
+const char *cryb_test_version(void);
 
 /*
  * Structure describing a test.  Includes a pointer to the function that

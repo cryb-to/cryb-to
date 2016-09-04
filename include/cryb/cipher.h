@@ -30,6 +30,12 @@
 #ifndef CRYB_CIPHER_H_INCLUDED
 #define CRYB_CIPHER_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_cipher_version(void);
+
 #define cipher_ctx			cryb_cipher_ctx
 #define cipher_init_func		cryb_cipher_init_func
 #define cipher_update_func		cryb_cipher_update_func

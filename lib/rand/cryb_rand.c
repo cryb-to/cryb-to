@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2015 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,36 +29,16 @@
 
 #include "cryb/impl.h"
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 #include <cryb/rand.h>
 
-/*
- * Working placeholder until we come up with a proper API and start adding
- * more methods.
- */
-int
-rand_bytes(uint8_t *buf, size_t len)
-{
-	ssize_t rlen;
-	int fd, serrno;
+static const char *cryb_rand_version_string = PACKAGE_VERSION;
 
-	if ((fd = open("/dev/random", O_RDONLY)) < 0)
-		return (-1);
-	if ((rlen = read(fd, buf, len)) < 0) {
-		serrno = errno;
-		close(fd);
-		errno = serrno;
-		return (-1);
-	}
-	close(fd);
-	if (rlen != (ssize_t)len) {
-		errno = EIO;
-		return (-1);
-	}
-	return (0);
+const char *
+cryb_rand_version(void)
+{
+
+	return (cryb_rand_version_string);
 }

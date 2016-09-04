@@ -27,6 +27,10 @@
 #ifndef CRYB_SHA256_H_INCLUDED
 #define CRYB_SHA256_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/digest.h>
 
 #define SHA256_BLOCK_LEN		64

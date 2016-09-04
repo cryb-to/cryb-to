@@ -3,14 +3,16 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libcryb-oath.la
 
 libcryb_oath_la_SOURCES = \
-        oath_hotp.c \
-        oath_totp.c \
-        oath_key_alloc.c \
-        oath_key_create.c \
-        oath_key_dummy.c \
-        oath_key_from_uri.c \
-        oath_key_free.c \
-        oath_key.c
+	cryb_oath_hotp.c \
+	cryb_oath_totp.c \
+	cryb_oath_key_alloc.c \
+	cryb_oath_key_create.c \
+	cryb_oath_key_dummy.c \
+	cryb_oath_key_from_uri.c \
+	cryb_oath_key_free.c \
+	cryb_oath_key.c \
+	\
+	cryb_oath.c
 
 libcryb_oath_la_LIBADD = \
 	$(top_builddir)/lib/digest/libcryb-digest.la \

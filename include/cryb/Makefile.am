@@ -15,6 +15,7 @@ cryb_HEADERS += \
 	algorithm.h \
 	attributes.h \
 	bitwise.h \
+	core.h \
 	ctype.h \
 	endian.h \
 	memset_s.h \
@@ -22,7 +23,6 @@ cryb_HEADERS += \
 	strlcat.h \
 	strlcmp.h \
 	strlcpy.h \
-	version.h \
 	wstring.h \
 	\
 	to.h
@@ -84,10 +84,10 @@ endif CRYB_MPI
 
 if CRYB_OATH
 cryb_HEADERS += \
-	hotp.h \
 	oath_constants.h \
+	oath_hotp.h \
+	oath_totp.h \
 	oath_types.h \
-	totp.h \
 	\
 	oath.h
 endif CRYB_OATH

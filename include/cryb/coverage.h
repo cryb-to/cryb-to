@@ -30,6 +30,10 @@
 #ifndef CRYB_COVERAGE_H_INCLUDED
 #define CRYB_COVERAGE_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #if _BullseyeCoverage
 # define CRYB_COVERAGE		1
 # define CRYB_DISABLE_COVERAGE	_Pragma("BullseyeCoverage save off")

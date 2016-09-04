@@ -31,6 +31,10 @@
 #ifndef CRYB_MD5_H_INCLUDED
 #define CRYB_MD5_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/digest.h>
 
 #define MD5_BLOCK_LEN			64

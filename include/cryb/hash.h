@@ -30,16 +30,26 @@
 #ifndef CRYB_HASH_H_INCLUDED
 #define CRYB_HASH_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_hash_version(void);
+
+#define adler32_hash		cryb_adler32_hash
+#define fletcher16_hash		cryb_fletcher16_hash
+#define fletcher32_hash		cryb_fletcher32_hash
+#define fletcher64_hash		cryb_fletcher64_hash
+#define murmur3_32_hash		cryb_murmur3_32_hash
 #define pearson_hash		cryb_pearson_hash
 #define pearson_hash_str	cryb_pearson_hash_str
-#define murmur3_32_hash		cryb_murmur3_32_hash
 
 uint32_t adler32_hash(const void *, size_t);
 uint16_t fletcher16_hash(const void *, size_t);
 uint32_t fletcher32_hash(const void *, size_t);
 uint64_t fletcher64_hash(const void *, size_t);
+uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
 uint8_t pearson_hash(const void *, size_t);
 uint8_t pearson_hash_str(const char *);
-uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
 
 #endif

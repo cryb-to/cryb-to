@@ -38,11 +38,6 @@
 
 static const char hex[] = "0123456789ABCDEF";
 
-#define unhex(ch)							\
-	((ch >= '0' && ch <= '9') ? ch - '0' :				\
-	 (ch >= 'A' && ch <= 'F') ? 0xa + ch - 'A' :			\
-	 (ch >= 'a' && ch <= 'f') ? 0xa + ch - 'a' : 0)
-
 /*
  * Encodes a string in RFC 3986 percent-encoded representation.
  */
@@ -62,43 +57,6 @@ percent_encode(const char *in, size_t ilen, char *out, size_t *olen)
 				*out++ = hex[(uint8_t)*in >> 4];
 			if (++len < *olen && out != NULL)
 				*out++ = hex[(uint8_t)*in & 0xf];
-		}
-	}
-	if (*olen > 0 && out != NULL)
-		*out = '\0';
-	if (++len > *olen && out != NULL) {
-		/* overflow */
-		*olen = len;
-		errno = ENOSPC;
-		return (-1);
-	}
-	*olen = len;
-	return (0);
-}
-
-/*
- * Decodes a string in RFC 3986 percent-encoded representation.
- */
-int
-percent_decode(const char *in, size_t ilen, char *out, size_t *olen)
-{
-	size_t len;
-
-	for (len = 0; ilen > 0 && *in != '\0'; --ilen, ++in) {
-		if (*in != '%') {
-			if (++len < *olen && out != NULL)
-				*out++ = *in;
-		} else if (ilen >= 3 && is_xdigit(in[1]) && is_xdigit(in[2])) {
-			if (++len < *olen && out != NULL)
-				*out++ = unhex(in[1]) << 4 | unhex(in[2]);
-			in += 2;
-			ilen -= 2;
-		} else {
-			if (*olen > 0 && out != NULL)
-				*out = '\0';
-			*olen = ++len;
-			errno = EINVAL;
-			return (-1);
 		}
 	}
 	if (*olen > 0 && out != NULL)

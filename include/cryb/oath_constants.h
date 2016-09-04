@@ -30,6 +30,10 @@
 #ifndef OATH_CONSTANTS_H_INCLUDED
 #define OATH_CONSTANTS_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 /*
  * OATH modes
  */

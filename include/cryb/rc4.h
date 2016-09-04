@@ -30,6 +30,10 @@
 #ifndef CRYB_RC4_H_INCLUDED
 #define CRYB_RC4_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/cipher.h>
 
 #define rc4_digest			cryb_rc4_digest

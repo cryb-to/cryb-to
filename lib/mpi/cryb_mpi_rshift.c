@@ -1,4 +1,4 @@
-/*-
+/*
  * Copyright (c) 2014 Dag-Erling Smørgrav
  * All rights reserved.
  *
@@ -29,34 +29,48 @@
 
 #include "cryb/impl.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
-#include <wchar.h>
 
-#include <cryb/wstring.h>
+#include <cryb/mpi.h>
 
-#define char_t			wchar_t
-#define vsnprintf		vswprintf
+#include "cryb_mpi_impl.h"
 
-#define cryb_string		cryb_wstring
-#define string			wstring
+/*
+ * Right-shift X by c bytes
+ */
+int
+mpi_rshift(cryb_mpi *X, unsigned int c)
+{
+	unsigned int cl, i;
 
-#define string_new		wstring_new
-#define string_len		wstring_len
-#define string_expand		wstring_expand
-#define string_shrink		wstring_shrink
-#define string_dup		wstring_dup
-#define string_dup_cs		wstring_dup_wcs
-#define string_delete		wstring_delete
-#define string_trunc		wstring_trunc
-#define string_append_c		wstring_append_wc
-#define string_append_cs	wstring_append_wcs
-#define string_append_string	wstring_append_wstring
-#define string_printf		wstring_printf
-#define string_vprintf		wstring_vprintf
-#define string_compare		wstring_compare
-#define string_equal		wstring_equal
-
-#include "_string.c"
+	/* operands are zero */
+	if (c == 0 || X->msb == 0)
+		return (0);
+	/* shift wider than number, result is zero */
+	if (X->msb <= c) {
+		mpi_zero(X);
+		return (0);
+	}
+	/* preemptively adjust msb */
+	X->msb -= c;
+	/* try to move whole words first */
+	if (c >= 32) {
+		cl = c / 32;
+		c = c % 32;
+		memmove(X->words, X->words + cl,
+		    (X->size - cl) * sizeof *X->words);
+		memset(X->words + X->size - cl, 0, cl * sizeof *X->words);
+	}
+	/* done? */
+	if (c == 0)
+		return (0);
+	/* the rest has to be done the hard way */
+	for (i = 0; i < X->size - 1; ++i) {
+		X->words[i] >>= c;
+		X->words[i] |= X->words[i + 1] << (32 - c);
+	}
+	X->words[X->size - 1] >>= c;
+	/* done! */
+	return (0);
+}

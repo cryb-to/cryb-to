@@ -30,7 +30,13 @@
 #ifndef CRYB_ENC_H_INCLUDED
 #define CRYB_ENC_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/rfc3986.h>
 #include <cryb/rfc4648.h>
+
+const char *cryb_enc_version(void);
 
 #endif

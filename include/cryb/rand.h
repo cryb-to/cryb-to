@@ -30,6 +30,12 @@
 #ifndef CRYB_RAND_H_INCLUDED
 #define CRYB_RAND_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+const char *cryb_rand_version(void);
+
 #define rand_bytes cryb_rand_bytes
 int rand_bytes(uint8_t *, size_t);
 

@@ -30,6 +30,10 @@
 #ifndef CRYB_SHA512_H_INCLUDED
 #define CRYB_SHA512_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #include <cryb/digest.h>
 
 #define SHA512_BLOCK_LEN		128

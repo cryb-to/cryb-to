@@ -29,7 +29,6 @@
 
 #include "cryb/impl.h"
 
-#include <stdlib.h>
 #include <unistd.h>
 #include <wchar.h>
 
@@ -37,25 +36,11 @@
 #include <cryb/cpe.h>
 
 /*
- * Free all memory allocated to a cpe structure.
- */
-void
-cpe_destroy(cpe_name *cpe)
-{
-
-	if (cpe == NULL)
-		return;
-	for (int i = 0; i < cpe->nattr; ++i)
-		free(cpe->attr[i]);
-	free(cpe);
-}
-
-/*
  * Copy one or more attributes from a source cpe structure to a
  * destination cpe structure.  If an attribute in the source is NULL, the
  * corresponding attribute in the destination will be an empty string.
  */
-static int
+int
 cpe_copy_attr(cpe_name *dst, const cpe_name *src, int base, int nattr)
 {
 
@@ -73,86 +58,4 @@ cpe_copy_attr(cpe_name *dst, const cpe_name *src, int base, int nattr)
 			return (-1);
 	}
 	return (nattr);
-}
-
-/*
- * Duplicate a cpe structure.  Any attributes that are NULL in the source
- * will be empty strings in the destination.
- */
-cpe_name *
-cpe_clone(const cpe_name *cpe)
-{
-	cpe_name *ncpe;
-
-	ncpe = calloc(1, sizeof *ncpe +
-	    cpe->nattr * sizeof *ncpe->attr);
-	if (ncpe == NULL)
-		return (NULL);
-	if (cpe_copy_attr(ncpe, cpe, 0, 0) < 0) {
-		cpe_destroy(ncpe);
-		return (NULL);
-	}
-	return (ncpe);		
-}
-
-/*
- * Allocate a new cpe structure.
- */
-cpe_name *
-cpe_new(void)
-{
-	cpe_name *ncpe;
-
-	if ((ncpe = calloc(1, sizeof *ncpe)) == NULL)
-		return (NULL);
-	ncpe->ver = cpe23_ver;
-	ncpe->nattr = cpe23_nattr;
-	return (ncpe);
-}
-
-/*
- * Upgrade a cpe 2.2 structure to the latest supported version.
- */
-cpe_name *
-cpe_upgrade22(const cpe_name *cpe)
-{
-	cpe_name *ncpe;
-
-	if ((ncpe = cpe_new()) == NULL)
-		return (NULL);
-	/* copy existing attributes */
-	if (cpe_copy_attr(ncpe, cpe, 0, cpe22_nattr) < 0) {
-		cpe_destroy(ncpe);
-		return (NULL);
-	}
-	/* extended attributes? */
-	if (ncpe->attr[cpe22_edition][0] == L'~') {
-		/*
-		 * XXX pseudo-code:
-		 *
-		 * - Split into fields (return an error if there are more
-                 *   than four)
-		 * - Assign these to sw_edition, target_sw, target_hw and
-                 *   other, in that order.
-		 */
-	}
-	return (ncpe);
-}
-
-/*
- * Upgrade a cpe structure to the latest supported version.
- */
-cpe_name *
-cpe_upgrade(const cpe_name *cpe)
-{
-
-	switch (cpe->ver) {
-	case cpe23_ver:
-		/* already latest */
-		return (cpe_clone(cpe));
-	case cpe22_ver:
-		return (cpe_upgrade22(cpe));
-	default:
-		return (NULL);
-	}
 }

@@ -31,6 +31,10 @@
 #ifndef CRYB_BITWISE_H_INCLUDED
 #define CRYB_BITWISE_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #define CRYB_ROL_ROR(N)							\
 	static inline uint##N##_t rol##N(uint##N##_t i, int n)		\
 	{								\

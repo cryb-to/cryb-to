@@ -1,6 +1,5 @@
 /*-
- * Copyright (c) 2012 The University of Oslo
- * Copyright (c) 2012 Dag-Erling Smørgrav
+ * Copyright (c) 2014 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +27,28 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_HOTP_H_INCLUDED
-#define CRYB_HOTP_H_INCLUDED
+#include "cryb/impl.h"
 
-#endif
+#include <unistd.h>
+#include <wchar.h>
+
+#include <cryb/wstring.h>
+#include <cryb/cpe.h>
+
+/*
+ * Upgrade a cpe structure to the latest supported version.
+ */
+cpe_name *
+cpe_upgrade(const cpe_name *cpe)
+{
+
+	switch (cpe->ver) {
+	case cpe23_ver:
+		/* already latest */
+		return (cpe_clone(cpe));
+	case cpe22_ver:
+		return (cpe_upgrade22(cpe));
+	default:
+		return (NULL);
+	}
+}

@@ -30,6 +30,10 @@
 #ifndef CRYB_ENDIAN_H_INCLUDED
 #define CRYB_ENDIAN_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
 #if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
 #endif
