@@ -30,6 +30,7 @@
 #include "cryb/impl.h"
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <wchar.h>
 
 #include <cryb/wstring.h>
