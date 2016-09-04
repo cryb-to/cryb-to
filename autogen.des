@@ -5,20 +5,21 @@ has() {
 }
 
 # BullseyeCoverage needs to know exactly which compiler we're using
-if has clang clang++ ; then
+if has "${CC}" "${CXX}" ; then
+	echo "using CC=${CC}"
+elif has clang clang++ ; then
 	echo "using Clang"
 	export CC="${CC:-clang}"
-	export CPP="${CPP:-${CC} -E}"
 	export CXX="${CXX:-clang++}"
 elif has gcc g++ ; then
 	echo "using GCC"
 	export CC="${CC:-gcc}"
-	export CPP="${CPP:-gcc -E}"
 	export CXX="${CXX:-g++}"
 else
 	echo "WARNING: using default compiler," \
 	    "coverage analysis may not work"
 fi
+export CPP="${CPP:-${CC} -E}"
 
 set -e
 
