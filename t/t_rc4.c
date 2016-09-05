@@ -1967,7 +1967,8 @@ t_rc4(char **desc CRYB_UNUSED, void *arg)
 	struct t_case *t = arg;
 	rc4_ctx ctx;
 	uint8_t out[16];
-	unsigned int i, offset;
+	unsigned int i;
+	off_t offset;
 	int ret = 1;
 
 	rc4_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen);
