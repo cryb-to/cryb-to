@@ -20,6 +20,19 @@ AC_C_CONST
 AC_C_RESTRICT
 AC_C_VOLATILE
 AC_C_BIGENDIAN
+AC_TYPE_INT16_T
+AC_TYPE_INT32_T
+AC_TYPE_INT8_T
+AC_TYPE_INTMAX_T
+AC_TYPE_INTPTR_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT8_T
+AC_TYPE_UINTMAX_T
+AC_TYPE_UINTPTR_T
 
 # libtool
 LT_PREREQ([2.2.6])
@@ -34,10 +47,18 @@ AC_PROG_INSTALL
 #
 
 AC_CHECK_HEADERS([endian.h sys/endian.h])
+AX_GCC_BUILTIN([__builtin_bswap16])
+AX_GCC_BUILTIN([__builtin_bswap32])
+AX_GCC_BUILTIN([__builtin_bswap64])
 AC_CHECK_DECLS([
+    bswap16, bswap32, bswap64,
     be16enc, be16dec, le16enc, le16dec,
     be32enc, be32dec, le32enc, le32dec,
-    be64enc, be64dec, le64enc, le64dec
+    be64enc, be64dec, le64enc, le64dec,
+    htobe16, be16toh, htole16, le16toh,
+    htobe32, be32toh, htole32, le32toh,
+    htobe64, be64toh, htole64, le64toh,
+    nothing
 ], [], [], [[
 #if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
