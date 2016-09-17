@@ -68,6 +68,7 @@ AC_CHECK_DECLS([
 #endif
 ]])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
+AC_CHECK_FUNCS([wcslcat wcslcmp wcslcpy])
 
 # For tracing allocations in unit tests
 AC_CHECK_HEADERS([sys/uio.h sys/ktrace.h], [], [], [[
