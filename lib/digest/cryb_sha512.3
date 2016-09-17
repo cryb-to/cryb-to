@@ -28,42 +28,42 @@
 .\" SUCH DAMAGE.
 .\"
 .Dd September 17, 2016
-.Dt CRYB_SHA1 3
+.Dt CRYB_SHA512 3
 .Os
 .Sh NAME
-.Nm cryb_sha1_init ,
-.Nm cryb_sha1_update ,
-.Nm cryb_sha1_final ,
-.Nm cryb_sha1_complete
-.Nd Secure Hash Algorithm 1
+.Nm cryb_sha512_init ,
+.Nm cryb_sha512_update ,
+.Nm cryb_sha512_final ,
+.Nm cryb_sha512_complete
+.Nd Secure Hash Algorithm 2
 .Sh LIBRARY
 .Lb libcryb-digest
 .Sh SYNOPSIS
 .In stddef.h
 .In stdint.h
-.In cryb/sha1.h
+.In cryb/sha512.h
 .Ft void
-.Fn cryb_sha1_init "cryb_sha1_ctx *context"
+.Fn cryb_sha512_init "cryb_sha512_ctx *context"
 .Ft void
-.Fn cryb_sha1_update "cryb_sha1_ctx *context" "const void *data" "size_t len"
+.Fn cryb_sha512_update "cryb_sha512_ctx *context" "const void *data" "size_t len"
 .Ft void
-.Fn cryb_sha1_final "cryb_sha1_ctx *context" "uint8_t *digest"
+.Fn cryb_sha512_final "cryb_sha512_ctx *context" "uint8_t *digest"
 .Ft void
-.Fn cryb_sha1_complete "const void *data" "size_t len" "uint8_t *digest"
+.Fn cryb_sha512_complete "const void *data" "size_t len" "uint8_t *digest"
 .Sh DESCRIPTION
 The
-.Nm cryb_sha1
-family of functions implements the NIST SHA-1 message digest algorithm
-as described in FIPS 180-4.
+.Nm cryb_sha512
+family of functions implements the NIST SHA-512 message digest
+algorithm as described in FIPS 180-4.
 .Pp
 The
-.Fn cryb_sha1_init
+.Fn cryb_sha512_init
 function initializes the context structure pointed to by
 .Va context .
 It is the caller's responsibility to allocate this structure.
 .Pp
 The
-.Fn cryb_sha1_update
+.Fn cryb_sha512_update
 function hashes the next
 .Va len
 bytes of data pointed to by the
@@ -71,42 +71,39 @@ bytes of data pointed to by the
 pointer into the given hash context.
 .Pp
 The
-.Fn cryb_sha1_final
+.Fn cryb_sha512_final
 function finalizes the computation and writes the resulting message
 digest to the caller-provided buffer pointed to by
 .Va digest ,
 which must be at least
-.Dv SHA1_DIGEST_LEN
+.Dv SHA512_DIGEST_LEN
 bytes long.
 It is the caller's responsibility to dispose of the context structure
 after calling
-.Fn cryb_sha1_final .
+.Fn cryb_sha512_final .
 .Pp
 The
-.Fn cryb_sha1_complete
+.Fn cryb_sha512_complete
 function is a shortcut to calling
-.Fn cryb_sha1_init ,
-.Fn cryb_sha1_update
+.Fn cryb_sha512_init ,
+.Fn cryb_sha512_update
 and
-.Fn cryb_sha1_final
+.Fn cryb_sha512_final
 when the entire message is available up front in a single contiguous
 buffer.
 .Sh IMPLEMENTATION NOTES
 The
-.In cryb/sha1.h
+.In cryb/sha512.h
 header provides macros which allows these functions and the context
 type to be referred to without their
 .Dq Li cryb_
 prefix.
-.Pp
-The SHA-1 message digest algorithm has been proven to be vulnerable to
-collision attacks and should not be used for cryptographic purposes.
 .Sh SEE ALSO
 .Xr cryb_digest 3 ,
+.Xr cryb_sha1 3 ,
 .Xr cryb_sha224 3 ,
 .Xr cryb_sha256 3 ,
-.Xr cryb_sha384 3 ,
-.Xr cryb_sha512 3
+.Xr cryb_sha384 3
 .Sh REFERENCES
 .Rs
 .%Q National Institute of Standards and Technology
