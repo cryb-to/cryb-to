@@ -45,6 +45,7 @@
 
 #define string_new		wstring_new
 #define string_len		wstring_len
+#define string_buf		wstring_buf
 #define string_expand		wstring_expand
 #define string_shrink		wstring_shrink
 #define string_dup		wstring_dup
@@ -57,6 +58,8 @@
 #define string_printf		wstring_printf
 #define string_vprintf		wstring_vprintf
 #define string_compare		wstring_compare
+#define string_compare_cs	wstring_compare_wcs
 #define string_equal		wstring_equal
+#define string_equal_cs		wstring_equal_wcs
 
 #include "cryb_string_impl.c"
