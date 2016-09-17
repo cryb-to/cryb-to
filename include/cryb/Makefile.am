@@ -23,6 +23,9 @@ cryb_HEADERS += \
 	strlcat.h \
 	strlcmp.h \
 	strlcpy.h \
+	wcslcat.h \
+	wcslcmp.h \
+	wcslcpy.h \
 	wstring.h \
 	\
 	to.h
