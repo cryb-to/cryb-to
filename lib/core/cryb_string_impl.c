@@ -236,7 +236,8 @@ string_append_c(string *str, char_t ch)
 {
 	ssize_t ret;
 
-	if ((ret = string_expand(str, str->len + 1)) < 0)
+	if (L2S(str->len + 1) > str->size &&
+	    (ret = string_expand(str, str->len + 1)) < 0)
 		return (ret);
 	str->buf[str->len++] = ch;
 	str->buf[str->len] = 0;
@@ -252,7 +253,8 @@ string_append_cs(string *str, const char_t *cs, size_t len)
 	ssize_t ret;
 
 	while (*cs && len--) {
-		if ((ret = string_expand(str, str->len + 1)) < 0)
+		if (L2S(str->len + 1) > str->size &&
+		    (ret = string_expand(str, str->len + 1)) < 0)
 			return (ret);
 		str->buf[str->len++] = *cs++;
 		str->buf[str->len] = 0;
@@ -270,7 +272,8 @@ string_append_string(string *str, const string *other, size_t len)
 
 	if (len > other->len)
 		len = other->len;
-	if ((ret = string_expand(str, str->len + len)) < 0)
+	if (L2S(str->len + len) > str->size &&
+	    (ret = string_expand(str, str->len + len)) < 0)
 		return (ret);
 	memcpy(str->buf + str->len, other->buf, len * sizeof(char_t));
 	str->len += len;
@@ -315,7 +318,8 @@ string_vprintf(string *str, const char_t *fmt, va_list ap)
 		if (len < res)
 			break;
 		str->buf[str->len] = 0;
-		if ((ret = string_expand(str, str->len + len)) < 0)
+		if (L2S(str->len + len) > str->size &&
+		    (ret = string_expand(str, str->len + len)) < 0)
 			return (ret);
 	}
 	str->len += len;
