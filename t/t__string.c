@@ -155,6 +155,74 @@ t_string_append_string(char **desc CRYB_UNUSED, void *arg)
 
 
 /***************************************************************************
+ * Buffers and lengths
+ */
+
+static struct t_buf_case {
+	const char *desc;
+	const char_t *s;
+	size_t len;
+} t_buf_cases[] = {
+	{
+		.desc	 = "empty",
+		.s	 = CS(""),
+		.len	 = 0,
+	},
+	{
+		.desc	 = "one",
+		.s	 = CS("1"),
+		.len	 = 1,
+	},
+	{
+		.desc	 = "short",
+		.s	 = T_MAGIC_STR,
+		.len	 = T_MAGIC_LEN,
+	},
+	{
+		.desc	 = "long",
+		.s	 = T_LONG_MAGIC_STR,
+		.len	 = T_LONG_MAGIC_LEN,
+	},
+};
+
+static int
+t_string_buf(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_buf_case *t = arg;
+	const char_t *buf;
+	string *s;
+	int ret;
+
+	ret = 1;
+	s = string_dup_cs(t->s, t->len);
+	buf = string_buf(s);
+	ret &= t_compare_mem(t->s, buf, (t->len + 1) * sizeof(char_t));
+	string_append_cs(s, t->s, t->len);
+	buf = string_buf(s);
+	ret &= t_compare_mem(t->s, buf, t->len * sizeof(char_t)) &
+	    t_compare_mem(t->s, buf + t->len, (t->len + 1) * sizeof(char_t));
+	string_delete(s);
+	return (ret);
+}
+
+static int
+t_string_len(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_buf_case *t = arg;
+	string *s;
+	int ret;
+
+	ret = 1;
+	s = string_dup_cs(t->s, t->len);
+	ret = t_compare_i(t->len, string_len(s));
+	string_append_cs(s, t->s, t->len);
+	ret &= t_compare_i(t->len + t->len, string_len(s));
+	string_delete(s);
+	return (ret);
+}
+
+
+/***************************************************************************
  * Comparisons
  */
 
@@ -229,6 +297,19 @@ t_string_compare(char **desc CRYB_UNUSED, void *arg)
 }
 
 static int
+t_string_compare_cs(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_compare_case *t = arg;
+	string *s1;
+	int ret;
+
+	s1 = string_dup_cs(t->s1, SIZE_MAX);
+	ret = t_compare_i(t->cmp, string_compare_cs(s1, t->s2, SIZE_MAX));
+	string_delete(s1);
+	return (ret);
+}
+
+static int
 t_string_equal(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_compare_case *t = arg;
@@ -237,8 +318,21 @@ t_string_equal(char **desc CRYB_UNUSED, void *arg)
 
 	s1 = string_dup_cs(t->s1, SIZE_MAX);
 	s2 = string_dup_cs(t->s2, SIZE_MAX);
-	ret = t_compare_i(t->cmp != 0, string_equal(s1, s2) == 0);
+	ret = t_compare_i(!!t->cmp, string_equal(s1, s2) == 0);
 	string_delete(s2);
+	string_delete(s1);
+	return (ret);
+}
+
+static int
+t_string_equal_cs(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_compare_case *t = arg;
+	string *s1;
+	int ret = 1;
+
+	s1 = string_dup_cs(t->s1, SIZE_MAX);
+	ret = t_compare_i(!!t->cmp, string_equal_cs(s1, t->s2, SIZE_MAX) == 0);
 	string_delete(s1);
 	return (ret);
 }
@@ -288,13 +382,25 @@ t_prepare(int argc, char *argv[])
 	for (i = 0; i < sizeof t_append_cases / sizeof *t_append_cases; ++i)
 		t_add_test(t_string_append_string, &t_append_cases[i],
 		    "%s (%s)", "string_append_string", t_append_cases[i].desc);
+	for (i = 0; i < sizeof t_buf_cases / sizeof *t_buf_cases; ++i)
+		t_add_test(t_string_len, &t_buf_cases[i],
+		    "%s (%s)", "string_len", t_buf_cases[i].desc);
+	for (i = 0; i < sizeof t_buf_cases / sizeof *t_buf_cases; ++i)
+		t_add_test(t_string_buf, &t_buf_cases[i],
+		    "%s (%s)", "string_buf", t_buf_cases[i].desc);
 	// t_add_test(t_string_dup_cs, NULL, "string_dup_cs");
-	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
+	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i) {
 		t_add_test(t_string_compare, &t_compare_cases[i],
 		    "%s (%s)", "string_compare", t_compare_cases[i].desc);
-	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i)
+		t_add_test(t_string_compare_cs, &t_compare_cases[i],
+		    "%s (%s)", "string_compare_cs", t_compare_cases[i].desc);
+	}
+	for (i = 0; i < sizeof t_compare_cases / sizeof *t_compare_cases; ++i) {
 		t_add_test(t_string_equal, &t_compare_cases[i],
 		    "%s (%s)", "string_equal", t_compare_cases[i].desc);
+		t_add_test(t_string_equal_cs, &t_compare_cases[i],
+		    "%s (%s)", "string_equal_cs", t_compare_cases[i].desc);
+	}
 	t_add_test(t_string_trunc, NULL, "string_trunc");
 	return (0);
 }
