@@ -35,6 +35,8 @@ TESTS =
 
 # libcryb-cipher
 if CRYB_CIPHER
+TESTS += t_cipher
+t_cipher_LDADD = $(libt) $(libcipher)
 TESTS += t_aes t_rc4
 t_aes_LDADD = $(libt) $(libcipher)
 t_rc4_LDADD = $(libt) $(libcipher)
@@ -42,21 +44,25 @@ endif CRYB_CIPHER
 
 # libcryb-core
 if CRYB_CORE
+TESTS += t_core
+t_core_LDADD = $(libt) $(libcore)
 TESTS += t_ctype t_endian t_memset_s t_strlcat t_strlcmp t_strlcpy
-TESTS += t_string t_wstring
-EXTRA_DIST += t__string.c
 t_ctype_LDADD = $(libt) $(libcore)
 t_endian_LDADD = $(libt) $(libcore)
 t_memset_s_LDADD = $(libt) $(libcore)
 t_strlcat_LDADD = $(libt) $(libcore)
 t_strlcmp_LDADD = $(libt) $(libcore)
 t_strlcpy_LDADD = $(libt) $(libcore)
+TESTS += t_string t_wstring
+EXTRA_DIST += t__string.c
 t_string_LDADD = $(libt) $(libcore)
 t_wstring_LDADD = $(libt) $(libcore)
 endif CRYB_CORE
 
 # libcryb-enc
 if CRYB_ENC
+TESTS += t_enc
+t_enc_LDADD = $(libt) $(libenc)
 TESTS += t_rfc3986 t_rfc4648
 t_rfc3986_LDADD = $(libt) $(libenc)
 t_rfc4648_LDADD = $(libt) $(libenc)
@@ -64,6 +70,8 @@ endif CRYB_ENC
 
 # libcryb-digest
 if CRYB_DIGEST
+TESTS += t_digest
+t_digest_LDADD =  $(libt) $(libdigest)
 TESTS += t_md2 t_md4 t_md5
 t_md2_LDADD = $(libt) $(libdigest) $(RT_LIBS)
 t_md4_LDADD = $(libt) $(libdigest) $(RT_LIBS)
@@ -114,6 +122,8 @@ endif CRYB_DIGEST
 
 # libcryb-hash
 if CRYB_HASH
+TESTS += t_hash
+t_hash_LDADD = $(libt) $(libhash)
 TESTS += t_adler t_fletcher t_murmur3_32 t_pearson
 t_adler_LDADD = $(libt) $(libhash)
 t_fletcher_LDADD = $(libt) $(libhash)
@@ -123,6 +133,8 @@ endif CRYB_HASH
 
 # libcryb-mac
 if CRYB_MAC
+TESTS += t_mac
+t_mac_LDADD = $(libt) $(libmac)
 TESTS += t_hmac_sha1 t_hmac_sha224 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
 t_hmac_sha1_LDADD = $(libt) $(libmac)
 t_hmac_sha224_LDADD = $(libt) $(libmac)
