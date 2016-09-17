@@ -1,4 +1,5 @@
 .\"-
+.\" Copyright (c) 2015-2016 Universitetet i Oslo
 .\" Copyright (c) 2016 Dag-Erling Smørgrav
 .\" All rights reserved.
 .\"
@@ -27,66 +28,62 @@
 .\" SUCH DAMAGE.
 .\"
 .Dd September 17, 2016
-.Dt CRYB_HASH 3
+.Dt CRYB_PEARSON_HASH 3
 .Os
 .Sh NAME
-.Nm cryb_hash_version ,
-.Nm cryb_adler32_hash ,
-.Nm cryb_fletcher16_hash ,
-.Nm cryb_fletcher32_hash ,
-.Nm cryb_fletcher64_hash ,
 .Nm cryb_pearson_hash ,
 .Nm cryb_pearson_hash_str
-.Nd hash and checksum functions
+.Nd hash functions
 .Sh LIBRARY
 .Lb libcryb-hash
 .Sh SYNOPSIS
 .In stddef.h
 .In stdint.h
 .In cryb/hash.h
-.Ft const char *
-.Fn cryb_hash_version "void"
-.Ft uint32_t
-.Fn cryb_adler32_hash "const void *data" "size_t len"
-.Ft uint16_t
-.Fn fletcher16_hash "const void *data" "size_t len"
-.Ft uint32_t
-.Fn fletcher32_hash "const void *data" "size_t len"
-.Ft uint64_t
-.Fn fletcher64_hash "const void *data" "size_t len"
 .Ft uint8_t
 .Fn cryb_pearson_hash "const void *data" "size_t len"
 .Ft uint8_t
 .Fn cryb_pearson_hash_str "const char *str"
 .Sh DESCRIPTION
 The
-.Fn cryb_hash_version
-function returns a pointer to a string containing the specific version
-of the
-.Lb libcryb-hash
-library.
+.Fn cryb_pearson_hash
+function returns an 8-bit hash of the
+.Va len
+first bytes of the object pointed to by
+.Va data .
 .Pp
-For descriptions of the other functions in this library, see their
-respective manual pages.
-.Sh SEE ALSO
-.Xr cryb_adler32 3 ,
-.Xr cryb_fletcher 3 ,
-.Xr cryb_pearson 3
-.Sh AUTHORS
 The
-.Fn cryb_hash_version ,
-.Fn cryb_adler32_hash ,
-.Fn cryb_fletcher16 ,
-.Fn cryb_fletcher32
-and
-.Fn cryb_fletcher64
-functions and corresponding manual pages were written by
-.An Dag-Erling Sm\(/orgrav Aq Mt des@des.no .
-.Pp
+.Fn cryb_pearson_hash_str
+function returns an 8-bit hash of the NUL-terminated string pointed to
+by
+.Va str ,
+not including the terminating NUL.
+It is equivalent to calling
+.Li cryb_pearson_hash(str, strlen(str)) .
+.Sh IMPLEMENTATION NOTES
+The
+.In cryb/hash.h
+header provides macros which allows these functions to be referred to
+without their
+.Dq Li cryb_
+prefix.
+.Sh SEE ALSO
+.Xr cryb_hash 3
+.Sh STANDARDS
+.Rs
+.%A "Pearson, Peter K."
+.%D "June 1990"
+.%T "Fast Hashing of Variable-Length Text Strings"
+.%J "Communications of the ACM"
+.%V "33"
+.%N "6"
+.%P "677"
+.%O "doi:10.1145/78973.78978"
+.Re
+.Sh AUTHORS
 The
 .Fn cryb_pearson_hash
 and
 .Fn cryb_pearson_hash_str
-functions and corresponding manual pages were written for the
-University of Oslo by
+functions and this manual page were written for the University of Oslo by
 .An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .

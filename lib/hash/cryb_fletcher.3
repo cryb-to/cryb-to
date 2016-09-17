@@ -37,6 +37,7 @@
 .Sh LIBRARY
 .Lb libcryb-hash
 .Sh SYNOPSIS
+.In stddef.h
 .In stdint.h
 .In cryb/hash.h
 .Ft uint16_t
@@ -57,7 +58,7 @@ first bytes of the object pointed to by
 .Va data .
 .Pp
 Unlike the Pearson hash implemented by
-.Fn cryb_hash
+.Fn cryb_pearson_hash
 or cryptographic message digests such as the SHA family, these
 checksums are suitable for error detection.
 .Sh IMPLEMENTATION NOTES
@@ -72,7 +73,7 @@ caller should take care to either pad the input or truncate the
 argument before calling the checksum function.
 .Sh SEE ALSO
 .Xr cryb_hash 3
-.\".Sh REFERENCES
+.Sh STANDARDS
 .Rs
 .%A "Fletcher, John G."
 .%D "January 1982"
