@@ -1,11 +1,3 @@
-/.deps
-/.libs
-/*.la
-/*.lo
-/*.o
-/Makefile.in
-/Makefile
-/test.cov
 /*.log
 /*.trs
 /t_adler

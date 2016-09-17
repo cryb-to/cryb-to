@@ -1,5 +1,3 @@
-/Makefile
-/Makefile.in
 /aclocal.m4
 /autom4te.cache
 /compile
@@ -15,4 +13,11 @@
 /ltmain.sh
 /missing
 /mkpkgng
-/test.cov
+.deps
+.libs
+*.la
+*.lo
+*.o
+Makefile
+Makefile.in
+test.cov

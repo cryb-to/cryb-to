@@ -1,8 +1,0 @@
-/.deps
-/.libs
-/*.la
-/*.lo
-/*.o
-/Makefile.in
-/Makefile
-/test.cov
