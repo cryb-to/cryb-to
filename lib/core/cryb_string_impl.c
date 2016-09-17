@@ -79,6 +79,17 @@ string_len(const string *str)
 }
 
 /*
+ * Return a pointer to the current string buffer, valid only until the
+ * next operation that modifies the string
+ */
+const char_t *
+string_buf(const string *str)
+{
+
+	return (str->buf);
+}
+
+/*
  * Duplicate an existing string
  */
 string *
@@ -328,6 +339,17 @@ string_compare(const string *s1, const string *s2)
 	return (*p1 ? 1 : *p2 ? -1 : 0);
 }
 
+int
+string_compare_cs(const string *s1, const char_t *s2, size_t len)
+{
+	const char_t *p1, *p2;
+
+	for (p1 = s1->buf, p2 = s2; *p1 && *p2 && len--; ++p1, ++p2)
+		if (*p1 != *p2)
+			return (*p1 < *p2 ? -1 : 1);
+	return (*p1 ? 1 : *p2 ? -1 : 0);
+}
+
 /*
  * Compare two strings, returning true (non-zero) if they are equal and
  * false (zero) if they are not.
@@ -338,6 +360,21 @@ string_equal(const string *s1, const string *s2)
 	const char_t *p1, *p2;
 
 	for (p1 = s1->buf, p2 = s2->buf; *p1 && *p2; ++p1, ++p2)
+		if (*p1 != *p2)
+			return (0);
+	return (*p1 || *p2 ? 0 : 1);
+}
+
+/*
+ * Compare two strings, returning true (non-zero) if they are equal and
+ * false (zero) if they are not.
+ */
+int
+string_equal_cs(const string *s1, const char_t *s2, size_t len)
+{
+	const char_t *p1, *p2;
+
+	for (p1 = s1->buf, p2 = s2; *p1 && *p2 && len--; ++p1, ++p2)
 		if (*p1 != *p2)
 			return (0);
 	return (*p1 || *p2 ? 0 : 1);

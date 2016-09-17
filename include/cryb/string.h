@@ -36,6 +36,7 @@
 
 #define string_new		cryb_string_new
 #define string_len		cryb_string_len
+#define string_buf		cryb_string_buf
 #define string_dup		cryb_string_dup
 #define string_dup_cs		cryb_string_dup_cs
 #define string_delete		cryb_string_delete
@@ -48,12 +49,15 @@
 #define string_printf		cryb_string_printf
 #define string_vprintf		cryb_string_vprintf
 #define string_compare		cryb_string_compare
+#define string_compare_cs	cryb_string_compare_cs
 #define string_equal		cryb_string_equal
+#define string_equal_cs		cryb_string_equal_cs
 
 typedef struct cryb_string string;
 
 string	*string_new(void);
 size_t	 string_len(const string *);
+const char *string_buf(const string *);
 string	*string_dup(const string *);
 string	*string_dup_cs(const char *, size_t);
 void	 string_delete(string *);
@@ -68,6 +72,8 @@ ssize_t	 string_printf(string *, const char *, ...);
 ssize_t	 string_vprintf(string *, const char *, va_list);
 #endif
 int	 string_compare(const string *, const string *);
+int	 string_compare_cs(const string *, const char *, size_t);
 int	 string_equal(const string *, const string *);
+int	 string_equal_cs(const string *, const char *, size_t);
 
 #endif

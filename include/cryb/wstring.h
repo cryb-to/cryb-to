@@ -36,6 +36,7 @@
 
 #define wstring_new		cryb_wstring_new
 #define wstring_len		cryb_wstring_len
+#define wstring_buf		cryb_wstring_buf
 #define wstring_dup		cryb_wstring_dup
 #define wstring_dup_wcs		cryb_wstring_dup_wcs
 #define wstring_delete		cryb_wstring_delete
@@ -48,12 +49,15 @@
 #define wstring_printf		cryb_wstring_printf
 #define wstring_vprintf		cryb_wstring_vprintf
 #define wstring_compare		cryb_wstring_compare
+#define wstring_compare_wcs	cryb_wstring_compare_wcs
 #define wstring_equal		cryb_wstring_equal
+#define wstring_equal_wcs	cryb_wstring_equal_wcs
 
 typedef struct cryb_wstring wstring;
 
 wstring	*wstring_new(void);
 size_t	 wstring_len(const wstring *);
+const wchar_t *wstring_buf(const wstring *);
 wstring	*wstring_dup(const wstring *);
 wstring	*wstring_dup_wcs(const wchar_t *, size_t);
 void	 wstring_delete(wstring *);
@@ -68,6 +72,8 @@ ssize_t	 wstring_printf(wstring *, const wchar_t *, ...);
 ssize_t	 wstring_vprintf(wstring *, const wchar_t *, va_list);
 #endif
 int	 wstring_compare(const wstring *, const wstring *);
+int	 wstring_compare_wcs(const wstring *, const wchar_t *, size_t);
 int	 wstring_equal(const wstring *, const wstring *);
+int	 wstring_equal_wcs(const wstring *, const wchar_t *, size_t);
 
 #endif
