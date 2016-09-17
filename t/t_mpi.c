@@ -41,6 +41,13 @@
 
 #include <cryb/test.h>
 
+static int
+t_mpi_version(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+
+	return (t_compare_str(PACKAGE_VERSION, cryb_mpi_version()));
+}
+
 
 /***************************************************************************
  * Useful constants
@@ -1563,6 +1570,7 @@ t_prepare(int argc, char *argv[])
 
 	(void)argc;
 	(void)argv;
+	t_add_test(t_mpi_version, NULL, "version");
 
 	/* initialize constants used in multiple test cases */
 	assert(sizeof small_e == sizeof small_v);
