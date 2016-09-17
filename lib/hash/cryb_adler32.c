@@ -37,7 +37,7 @@
 #include <cryb/hash.h>
 
 /*
- * Simple implementation of the Adler-32 checksum described in RFC1905.
+ * Simple implementation of the Adler-32 checksum described in RFC 1950.
  */
 uint32_t
 adler32_hash(const void *data, size_t len)
