@@ -31,9 +31,8 @@
 
 #include <sys/types.h>
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 #undef HAVE_STRLCMP
 #include <cryb/strlcmp.h>

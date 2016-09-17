@@ -31,9 +31,8 @@
 
 #include <sys/types.h>
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
 /* test our own code, not the compiler's */
 #undef HAVE___BUILTIN_BSWAP16

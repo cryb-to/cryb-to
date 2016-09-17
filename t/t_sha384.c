@@ -189,7 +189,7 @@ t_sha384_short_updates(char **desc CRYB_UNUSED, void *arg)
 		sha384_update(&ctx, vector->msg + i, 5);
 	sha384_update(&ctx, vector->msg + i, len - i);
 	sha384_final(&ctx, digest);
-	return (memcmp(digest, vector->digest, SHA384_DIGEST_LEN) == 0);
+	return (t_compare_mem(digest, vector->digest, SHA384_DIGEST_LEN));
 }
 #endif
 
