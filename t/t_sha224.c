@@ -178,7 +178,7 @@ t_sha224_short_updates(char **desc CRYB_UNUSED, void *arg)
 		sha224_update(&ctx, vector->msg + i, 5);
 	sha224_update(&ctx, vector->msg + i, len - i);
 	sha224_final(&ctx, digest);
-	return (memcmp(digest, vector->digest, SHA224_DIGEST_LEN) == 0);
+	return (t_compare_mem(digest, vector->digest, SHA224_DIGEST_LEN));
 }
 #endif
 
