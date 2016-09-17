@@ -13,5 +13,8 @@ libcryb_hash_la_SOURCES = \
 	cryb_hash.c
 
 dist_man3_MANS = \
+	cryb_adler32.3 \
 	cryb_fletcher.3 \
+	cryb_pearson.3 \
+	\
 	cryb_hash.3
