@@ -50,7 +50,7 @@ struct t_file *
 t_fopen(const char *filename)
 {
 	struct t_file *tf;
-	int fd;
+	int fd, ret;
 
 	if ((tf = calloc(sizeof *tf, 1)) == NULL)
 		err(1, "%s(): calloc()", __func__);
@@ -58,9 +58,9 @@ t_fopen(const char *filename)
 		if ((tf->name = strdup(filename)) == NULL)
 			err(1, "%s(): strdup()", __func__);
 	} else {
-		asprintf(&tf->name, "%s.%lu.%p.tmp",
+		ret = asprintf(&tf->name, "%s.%lu.%p.tmp",
 		    t_progname, (unsigned long)getpid(), (void *)tf);
-		if (tf->name == NULL)
+		if (ret < 0 || tf->name == NULL)
 			err(1, "%s(): asprintf()", __func__);
 	}
 	if ((fd = open(tf->name, O_RDWR|O_CREAT|O_TRUNC, 0600)) < 0)
