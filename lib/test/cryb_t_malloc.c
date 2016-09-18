@@ -551,9 +551,9 @@ t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
 	}
 	nleaked += nmapalloc - nmapfree;
 	if (nleaked > 0)
-		asprintf(desc, "%lu allocation(s) leaked", nleaked);
+		(void)asprintf(desc, "%lu allocation(s) leaked", nleaked);
 	else
-		asprintf(desc, "%s", "no memory leaked");
+		(void)asprintf(desc, "%s", "no memory leaked");
 	return (nleaked == 0);
 }
 

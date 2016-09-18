@@ -114,7 +114,7 @@ t_aes_enc(char **desc CRYB_UNUSED, void *arg)
 	uint8_t out[AES_BLOCK_LEN];
 	aes_ctx ctx;
 
-	asprintf(desc, "%s (encrypt)", t->desc);
+	(void)asprintf(desc, "%s (encrypt)", t->desc);
 	aes_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen / 8);
 	aes_update(&ctx, t->ptext, AES_BLOCK_LEN, out);
 	aes_finish(&ctx);
@@ -128,7 +128,7 @@ t_aes_dec(char **desc CRYB_UNUSED, void *arg)
 	uint8_t out[AES_BLOCK_LEN];
 	aes_ctx ctx;
 
-	asprintf(desc, "%s (decrypt)", t->desc);
+	(void)asprintf(desc, "%s (decrypt)", t->desc);
 	aes_init(&ctx, CIPHER_MODE_DECRYPT, t->key, t->keylen / 8);
 	aes_update(&ctx, t->ctext, AES_BLOCK_LEN, out);
 	aes_finish(&ctx);
