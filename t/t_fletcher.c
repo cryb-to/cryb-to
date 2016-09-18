@@ -253,7 +253,7 @@ t_fletcher16(char **desc, void *arg)
 {
 	struct t_case *t = arg;
 
-	asprintf(desc, "(16-bit) %s", t->desc);
+	(void)asprintf(desc, "(16-bit) %s", t->desc);
 	return (t_compare_x16(t->sum16, fletcher16_hash(t->data, t->len)));
 }
 
@@ -262,7 +262,7 @@ t_fletcher32(char **desc, void *arg)
 {
 	struct t_case *t = arg;
 
-	asprintf(desc, "(32-bit) %s", t->desc);
+	(void)asprintf(desc, "(32-bit) %s", t->desc);
 	return (t_compare_x32(t->sum32, fletcher32_hash(t->data, t->len)));
 }
 
@@ -271,7 +271,7 @@ t_fletcher64(char **desc, void *arg)
 {
 	struct t_case *t = arg;
 
-	asprintf(desc, "(64-bit) %s", t->desc);
+	(void)asprintf(desc, "(64-bit) %s", t->desc);
 	return (t_compare_x64(t->sum64, fletcher64_hash(t->data, t->len)));
 }
 

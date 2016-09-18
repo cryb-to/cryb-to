@@ -193,7 +193,7 @@ t_sha1_perf(char **desc, void *arg)
 	clock_gettime(CLOCK_MONOTONIC, &te);
 	ns = te.tv_sec * 1000000000LU + te.tv_nsec;
 	ns -= ts.tv_sec * 1000000000LU + ts.tv_nsec;
-	asprintf(desc, "%zu bytes: %d iterations in %'lu ns",
+	(void)asprintf(desc, "%zu bytes: %d iterations in %'lu ns",
 	    msglen, T_PERF_ITERATIONS, ns);
 	return (1);
 }
