@@ -12,4 +12,5 @@ libcryb_mac_la_SOURCES = \
 	cryb_mac.c
 
 libcryb_mac_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la \
 	$(top_builddir)/lib/digest/libcryb-digest.la

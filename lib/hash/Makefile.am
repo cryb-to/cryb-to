@@ -18,3 +18,6 @@ dist_man3_MANS = \
 	cryb_pearson.3 \
 	\
 	cryb_hash.3
+
+libcryb_hash_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la

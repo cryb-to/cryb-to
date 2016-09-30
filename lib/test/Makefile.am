@@ -9,3 +9,6 @@ libcryb_test_la_SOURCES = \
 	cryb_t_malloc.c \
 	\
 	cryb_test.c
+
+libcryb_test_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la

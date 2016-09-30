@@ -20,3 +20,6 @@ dist_man3_MANS = \
 	cryb_sha256.3 \
 	cryb_sha384.3 \
 	cryb_sha512.3
+
+libcryb_digest_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la

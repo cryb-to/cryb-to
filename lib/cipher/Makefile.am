@@ -7,3 +7,6 @@ libcryb_cipher_la_SOURCES = \
 	cryb_rc4.c \
 	\
 	cryb_cipher.c
+
+libcryb_cipher_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la

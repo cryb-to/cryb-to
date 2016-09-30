@@ -14,3 +14,6 @@ libcryb_enc_la_SOURCES = \
 
 dist_man3_MANS = \
 	cryb_percent.3
+
+libcryb_enc_la_LIBADD = \
+	$(top_builddir)/lib/core/libcryb-core.la

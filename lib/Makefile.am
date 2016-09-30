@@ -1,12 +1,12 @@
 SUBDIRS =
 
-if CRYB_CIPHER
-SUBDIRS += cipher
-endif CRYB_CIPHER
-
 if CRYB_CORE
 SUBDIRS += core
 endif CRYB_CORE
+
+if CRYB_CIPHER
+SUBDIRS += cipher
+endif CRYB_CIPHER
 
 if CRYB_CPE
 SUBDIRS += cpe
