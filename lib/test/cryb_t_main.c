@@ -147,7 +147,9 @@ t_add_tests(struct t_test *t, int n)
  */
 static jmp_buf sigjmp;
 static int sigs[] = {
-	SIGABRT, SIGBUS, SIGSEGV, SIGSYS, SIGPIPE, SIGALRM, SIGTERM,
+	/* it is not safe to catch SIGABRT if raised by abort(3) */
+	/* SIGABRT, */
+	SIGBUS, SIGSEGV, SIGSYS, SIGPIPE, SIGALRM, SIGTERM,
 	0
 };
 
