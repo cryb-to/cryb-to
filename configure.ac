@@ -161,6 +161,15 @@ AC_ARG_ENABLE([cryb-cipher],
     [enable_cryb_cipher=$enable_all])
 AM_CONDITIONAL([CRYB_CIPHER], [test x"$enable_cryb_cipher" = x"yes"])
 
+# Core
+elements="$elements core"
+AC_ARG_ENABLE([cryb-core],
+    AC_HELP_STRING([--enable-cryb-core],
+	[build the core library]),
+    [enable_cryb_core=$enableval],
+    [enable_cryb_core=$enable_all])
+AM_CONDITIONAL([CRYB_CORE], [test x"$enable_cryb_core" = x"yes"])
+
 # CPE
 elements="$elements cpe"
 requires="$requires cpe:core"
@@ -170,15 +179,6 @@ AC_ARG_ENABLE([cryb-cpe],
     [enable_cryb_cpe=$enableval],
     [enable_cryb_cpe=$enable_all])
 AM_CONDITIONAL([CRYB_CPE], [test x"$enable_cryb_cpe" = x"yes"])
-
-# Core
-elements="$elements core"
-AC_ARG_ENABLE([cryb-core],
-    AC_HELP_STRING([--enable-cryb-core],
-	[build the core library]),
-    [enable_cryb_core=$enableval],
-    [enable_cryb_core=$enable_all])
-AM_CONDITIONAL([CRYB_CORE], [test x"$enable_cryb_core" = x"yes"])
 
 # Message digests
 elements="$elements digest"
