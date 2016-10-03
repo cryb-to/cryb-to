@@ -64,7 +64,7 @@ const char *
 oath_mode_name(enum oath_mode om)
 {
 
-	if (om >= 0 && om < om_max)
+	if (om < om_max)
 		return (oath_mode_names[om]);
 	return (NULL);
 }
