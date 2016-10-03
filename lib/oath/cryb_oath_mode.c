@@ -27,15 +27,13 @@
  * SUCH DAMAGE.
  */
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "cryb/impl.h"
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <strings.h>
 
-#include <security/oath.h>
+#include <cryb/oath.h>
 
 static const char *oath_mode_names[om_max] = {
 	[om_hotp] = "hotp",
@@ -43,13 +41,10 @@ static const char *oath_mode_names[om_max] = {
 };
 
 /*
- * OATH
- *
- * Converts a mode name to the corresponding enum value
+ * Returns the enum value that corresponds to an OATH mode name
  */
-
 enum oath_mode
-oath_mode(const char *str)
+oath_mode_value(const char *str)
 {
 	enum oath_mode om;
 
@@ -62,9 +57,14 @@ oath_mode(const char *str)
 	return (om_undef);
 }
 
-/**
- * The =oath_mode function returns the =enum oath_mode value that
- * corresponds to the specified string.
- *
- * AUTHOR UIO
+/*
+ * Returns the name of an OATH mode given its enum value
  */
+const char *
+oath_mode_name(enum oath_mode om)
+{
+
+	if (om >= 0 && om < om_max)
+		return (oath_mode_names[om]);
+	return (NULL);
+}

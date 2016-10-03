@@ -11,6 +11,7 @@ libcryb_oath_la_SOURCES = \
 	cryb_oath_key_from_uri.c \
 	cryb_oath_key_free.c \
 	cryb_oath_key_to_uri.c \
+	cryb_oath_mode.c \
 	\
 	cryb_oath.c
 
