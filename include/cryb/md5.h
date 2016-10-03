@@ -37,6 +37,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define MD5_BLOCK_LEN			64
 #define MD5_DIGEST_LEN			16
 
@@ -60,5 +62,7 @@ void md5_init(md5_ctx *);
 void md5_update(md5_ctx *, const void *, size_t);
 void md5_final(md5_ctx *, uint8_t *);
 void md5_complete(const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif

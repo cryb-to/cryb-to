@@ -36,6 +36,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define MD2_BLOCK_LEN			16
 #define MD2_DIGEST_LEN			16
 
@@ -58,10 +60,6 @@ typedef struct
     uint8_t buffer[16];		/*!< data block being processed */
     int left;			/*!< amount of data in buffer	*/
 } md2_ctx;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * \brief          MD2 context setup
@@ -96,8 +94,6 @@ void md2_final( md2_ctx *ctx, uint8_t *output );
  */
 void md2_complete( const void *input, int ilen, uint8_t *output );
 
-#ifdef __cplusplus
-}
-#endif
+CRYB_END
 
-#endif /* md2.h */
+#endif

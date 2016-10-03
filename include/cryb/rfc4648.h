@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 /* estimate of output length for base32 encoding / decoding */
 #define base32_enclen(l) (size_t)(((l + 4) / 5) * 8)
 #define base32_declen(l) (size_t)(((l + 7) / 8) * 5)
@@ -53,5 +55,7 @@ int base32_decode(const char *, size_t, uint8_t *, size_t *);
 #define base64_decode cryb_base64_decode
 int base64_encode(const uint8_t *, size_t, char *, size_t *);
 int base64_decode(const char *, size_t, uint8_t *, size_t *);
+
+CRYB_END
 
 #endif

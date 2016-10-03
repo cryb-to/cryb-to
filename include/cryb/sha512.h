@@ -36,6 +36,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define SHA512_BLOCK_LEN		128
 #define SHA512_DIGEST_LEN		64
 
@@ -58,10 +60,6 @@ typedef struct
     uint8_t buffer[128];	/*!< data block being processed */
 }
 sha512_ctx;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * \brief          SHA-512 context setup
@@ -96,8 +94,6 @@ void sha512_final( sha512_ctx *ctx, uint8_t *output );
  */
 void sha512_complete( const void *input, int ilen, uint8_t *output );
 
-#ifdef __cplusplus
-}
-#endif
+CRYB_END
 
 #endif

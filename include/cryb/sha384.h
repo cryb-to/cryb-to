@@ -36,6 +36,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define SHA384_BLOCK_LEN		128
 #define SHA384_DIGEST_LEN		48
 
@@ -58,10 +60,6 @@ typedef struct
     uint8_t buffer[128];	/*!< data block being processed */
 }
 sha384_ctx;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * \brief          SHA-384 context setup
@@ -96,8 +94,6 @@ void sha384_final( sha384_ctx *ctx, uint8_t *output );
  */
 void sha384_complete( const void *input, int ilen, uint8_t *output );
 
-#ifdef __cplusplus
-}
-#endif
+CRYB_END
 
 #endif

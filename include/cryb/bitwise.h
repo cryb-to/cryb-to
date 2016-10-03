@@ -35,6 +35,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 #define CRYB_ROL_ROR(N)							\
 	static inline uint##N##_t rol##N(uint##N##_t i, int n)		\
 	{								\
@@ -51,5 +53,7 @@ CRYB_ROL_ROR(32);
 CRYB_ROL_ROR(64);
 
 #undef CRYB_ROL_ROR
+
+CRYB_END
 
 #endif

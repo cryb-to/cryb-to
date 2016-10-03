@@ -36,6 +36,8 @@
 
 #include <cryb/sha512.h>
 
+CRYB_BEGIN
+
 #define HMAC_SHA512_MAC_LEN		64
 
 #define hmac_sha512_ctx			cryb_hmac_sha512_ctx
@@ -53,5 +55,7 @@ void hmac_sha512_init(hmac_sha512_ctx *, const void *, size_t);
 void hmac_sha512_update(hmac_sha512_ctx *, const void *, size_t);
 void hmac_sha512_final(hmac_sha512_ctx *, uint8_t *);
 void hmac_sha512_complete(const void *, size_t, const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif

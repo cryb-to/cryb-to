@@ -13,10 +13,10 @@ endif CRYB_CIPHER
 if CRYB_CORE
 cryb_HEADERS += \
 	algorithm.h \
-	attributes.h \
 	bitwise.h \
 	core.h \
 	ctype.h \
+	defs.h \
 	endian.h \
 	memset_s.h \
 	string.h \

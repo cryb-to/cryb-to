@@ -36,6 +36,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define MD4_BLOCK_LEN			64
 #define MD4_DIGEST_LEN			16
 
@@ -99,5 +101,7 @@ void md4_complete( const void *input, int ilen, uint8_t *output );
 #ifdef __cplusplus
 }
 #endif
+
+CRYB_END
 
 #endif

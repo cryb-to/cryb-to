@@ -38,6 +38,8 @@
 #include <cryb/oath_constants.h>
 #include <cryb/oath_types.h>
 
+CRYB_BEGIN
+
 #define oath_totp		cryb_oath_totp
 #define oath_totp_current	cryb_oath_totp_current
 #define oath_totp_match		cryb_oath_totp_match
@@ -45,5 +47,7 @@
 unsigned int oath_totp(const uint8_t *, size_t, unsigned int);
 unsigned int oath_totp_current(const struct oath_key *);
 int oath_totp_match(struct oath_key *, unsigned int, int);
+
+CRYB_END
 
 #endif

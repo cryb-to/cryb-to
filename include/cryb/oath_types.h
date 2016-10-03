@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 /*
  * OATH key and associated parameters
  */
@@ -61,5 +63,7 @@ struct oath_key {
 	size_t		 keylen; /* bytes */
 	uint8_t		 key[OATH_MAX_KEYLEN];
 };
+
+CRYB_END
 
 #endif

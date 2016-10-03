@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 size_t cryb_wcslcpy(wchar_t *, const wchar_t *, size_t);
 
 #if !HAVE_WCSLCPY
 #undef wcslcpy
 #define wcslcpy(arg, ...) cryb_wcslcpy(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

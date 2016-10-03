@@ -43,6 +43,8 @@
 #include <endian.h>
 #endif
 
+CRYB_BEGIN
+
 #if !HAVE_DECL_BSWAP16
 #define bswap16 cryb_bswap16
 #endif
@@ -389,5 +391,7 @@ cryb_le64toh(uint64_t u64)
 #endif
 	return (u64);
 }
+
+CRYB_END
 
 #endif

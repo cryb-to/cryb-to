@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 int cryb_strlcmp(const char *, const char *, size_t);
 
 #if !HAVE_STRLCMP
 #undef strlcmp
 #define strlcmp(...) cryb_strlcmp(__VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

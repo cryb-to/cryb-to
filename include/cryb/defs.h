@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2016 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,12 +27,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_ATTRIBUTES_H_INCLUDED
-#define CRYB_ATTRIBUTES_H_INCLUDED
-
-#ifndef CRYB_TO
-#include <cryb/to.h>
-#endif
+#ifndef CRYB_DEFS_H_INCLUDED
+#define CRYB_DEFS_H_INCLUDED
 
 #if defined(__GNUC__) || defined(__clang__)
 # define CRYB_PRINTF(fmt, arg) __attribute__((format(printf, fmt, arg)))
@@ -44,6 +40,14 @@
 # define CRYB_NORETURN
 # define CRYB_UNUSED
 # define CRYB_USED
+#endif
+
+#ifdef __cplusplus
+#define CRYB_BEGIN	extern "C" {
+#define CRYB_END	}
+#else
+#define CRYB_BEGIN
+#define CRYB_END
 #endif
 
 #endif

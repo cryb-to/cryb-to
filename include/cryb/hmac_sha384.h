@@ -36,6 +36,8 @@
 
 #include <cryb/sha384.h>
 
+CRYB_BEGIN
+
 #define HMAC_SHA384_MAC_LEN		48
 
 #define hmac_sha384_ctx			cryb_hmac_sha384_ctx
@@ -53,5 +55,7 @@ void hmac_sha384_init(hmac_sha384_ctx *, const void *, size_t);
 void hmac_sha384_update(hmac_sha384_ctx *, const void *, size_t);
 void hmac_sha384_final(hmac_sha384_ctx *, uint8_t *);
 void hmac_sha384_complete(const void *, size_t, const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif

@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 int cryb_wcslcmp(const wchar_t *, const wchar_t *, size_t);
 
 #if !HAVE_WCSLCMP
 #undef wcslcmp
 #define wcslcmp(...) cryb_wcslcmp(__VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

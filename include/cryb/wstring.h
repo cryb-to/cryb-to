@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 #define wstring_new		cryb_wstring_new
 #define wstring_len		cryb_wstring_len
 #define wstring_buf		cryb_wstring_buf
@@ -75,5 +77,7 @@ int	 wstring_compare(const wstring *, const wstring *);
 int	 wstring_compare_wcs(const wstring *, const wchar_t *, size_t);
 int	 wstring_equal(const wstring *, const wstring *);
 int	 wstring_equal_wcs(const wstring *, const wchar_t *, size_t);
+
+CRYB_END
 
 #endif

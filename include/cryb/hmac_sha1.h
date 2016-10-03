@@ -36,6 +36,8 @@
 
 #include <cryb/sha1.h>
 
+CRYB_BEGIN
+
 #define HMAC_SHA1_MAC_LEN		20
 
 #define hmac_sha1_ctx			cryb_hmac_sha1_ctx
@@ -53,5 +55,7 @@ void hmac_sha1_init(hmac_sha1_ctx *, const void *, size_t);
 void hmac_sha1_update(hmac_sha1_ctx *, const void *, size_t);
 void hmac_sha1_final(hmac_sha1_ctx *, uint8_t *);
 void hmac_sha1_complete(const void *, size_t, const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif

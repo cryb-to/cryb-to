@@ -36,6 +36,8 @@
 
 #include <cryb/sha224.h>
 
+CRYB_BEGIN
+
 #define HMAC_SHA224_MAC_LEN		28
 
 #define hmac_sha224_ctx			cryb_hmac_sha224_ctx
@@ -53,5 +55,7 @@ void hmac_sha224_init(hmac_sha224_ctx *, const void *, size_t);
 void hmac_sha224_update(hmac_sha224_ctx *, const void *, size_t);
 void hmac_sha224_final(hmac_sha224_ctx *, uint8_t *);
 void hmac_sha224_complete(const void *, size_t, const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif

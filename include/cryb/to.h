@@ -32,4 +32,6 @@
 
 #define CRYB_TO	20160918
 
+#include <cryb/defs.h>
+
 #endif

@@ -34,6 +34,10 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 const char *cryb_core_version(void);
+
+CRYB_END
 
 #endif

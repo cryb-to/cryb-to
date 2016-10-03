@@ -36,6 +36,8 @@
 
 #include <cryb/cipher.h>
 
+CRYB_BEGIN
+
 #define AES_BLOCK_LEN			16
 
 #define aes_digest			cryb_aes_digest
@@ -58,5 +60,7 @@ typedef struct {
 void aes_init(aes_ctx *, cipher_mode, const uint8_t *, size_t);
 void aes_update(aes_ctx *, const void *, size_t, void *);
 void aes_finish(aes_ctx *);
+
+CRYB_END
 
 #endif

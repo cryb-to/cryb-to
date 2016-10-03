@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 /* estimate of output length for percent encoding / decoding */
 #define percent_enclen(l) (size_t)((l) * 3)
 #define percent_declen(l) (size_t)(l)
@@ -42,5 +44,7 @@
 #define percent_decode cryb_percent_decode
 int percent_encode(const char *, size_t, char *, size_t *);
 int percent_decode(const char *, size_t, char *, size_t *);
+
+CRYB_END
 
 #endif

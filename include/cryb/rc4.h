@@ -36,6 +36,8 @@
 
 #include <cryb/cipher.h>
 
+CRYB_BEGIN
+
 #define rc4_digest			cryb_rc4_digest
 #define rc4_ctx				cryb_rc4_ctx
 #define rc4_init			cryb_rc4_init
@@ -51,5 +53,7 @@ typedef struct {
 void rc4_init(rc4_ctx *, cipher_mode, const uint8_t *, size_t);
 void rc4_update(rc4_ctx *, const void *, size_t, void *);
 void rc4_finish(rc4_ctx *);
+
+CRYB_END
 
 #endif

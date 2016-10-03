@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 /*
  * OATH modes
  */
@@ -83,5 +85,7 @@ enum oath_hash {
  * Label to use for dummy keys
  */
 #define OATH_DUMMY_LABEL	"oath-dummy@openpam.org"
+
+CRYB_END
 
 #endif

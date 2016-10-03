@@ -35,6 +35,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 typedef enum algorithm_type {
 	digest_algorithm,
 	mac_algorithm,
@@ -44,5 +46,7 @@ typedef struct algorithm {
 	algorithm_type type;
 	const char *name;
 } algorithm;
+
+CRYB_END
 
 #endif

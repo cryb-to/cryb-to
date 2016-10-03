@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 const char *cryb_mpi_version(void);
 
 #define mpi_add			cryb_mpi_add
@@ -88,5 +90,7 @@ int mpi_cmp_abs(cryb_mpi *, cryb_mpi *);
 int mpi_cmp(cryb_mpi *, cryb_mpi *);
 int mpi_eq_abs(cryb_mpi *, cryb_mpi *);
 int mpi_eq(cryb_mpi *, cryb_mpi *);
+
+CRYB_END
 
 #endif

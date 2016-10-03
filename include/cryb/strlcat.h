@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 size_t cryb_strlcat(char *, const char *, size_t);
 
 #if !HAVE_STRLCAT
 #undef strlcat
 #define strlcat(arg, ...) cryb_strlcat(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

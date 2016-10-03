@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 #define string_new		cryb_string_new
 #define string_len		cryb_string_len
 #define string_buf		cryb_string_buf
@@ -75,5 +77,7 @@ int	 string_compare(const string *, const string *);
 int	 string_compare_cs(const string *, const char *, size_t);
 int	 string_equal(const string *, const string *);
 int	 string_equal_cs(const string *, const char *, size_t);
+
+CRYB_END
 
 #endif

@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 size_t cryb_wcslcat(wchar_t *, const wchar_t *, size_t);
 
 #if !HAVE_WCSLCAT
 #undef wcslcat
 #define wcslcat(arg, ...) cryb_wcslcat(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

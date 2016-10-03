@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 const char *cryb_cipher_version(void);
 
 #define cipher_ctx			cryb_cipher_ctx
@@ -72,5 +74,7 @@ const cipher_algorithm *get_cipher_algorithm(const char *);
 	(alg)->update((ctx), (in), (len), (out))
 #define cipher_finish(alg, ctx)						\
 	(alg)->finish((ctx))
+
+CRYB_END
 
 #endif

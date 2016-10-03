@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 const char *cryb_cpe_version(void);
 
 #define cpe_name	cryb_cpe_name
@@ -108,5 +110,7 @@ wchar_t *cpe_to_wfn(const cpe_name *);
 /* not part of public API */
 int cpe_copy_attr(cpe_name *, const cpe_name *, int, int);
 cpe_name *cpe_upgrade22(const cpe_name *);
+
+CRYB_END
 
 #endif

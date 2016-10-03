@@ -37,6 +37,10 @@
 #include <cryb/rfc3986.h>
 #include <cryb/rfc4648.h>
 
+CRYB_BEGIN
+
 const char *cryb_enc_version(void);
+
+CRYB_END
 
 #endif

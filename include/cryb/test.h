@@ -34,10 +34,11 @@
 #include <cryb/to.h>
 #endif
 
-#include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
+
+CRYB_BEGIN
 
 const char *cryb_test_version(void);
 
@@ -140,5 +141,7 @@ size_t t_malloc_snapshot(void *, size_t);
 void t_malloc_printstats(FILE *);
 #endif
 extern struct t_test t_memory_leak;
+
+CRYB_END
 
 #endif

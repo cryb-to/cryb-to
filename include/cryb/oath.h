@@ -40,6 +40,8 @@
 #include <cryb/oath_hotp.h>
 #include <cryb/oath_totp.h>
 
+CRYB_BEGIN
+
 const char *cryb_oath_version(void);
 
 #define oath_key_alloc		cryb_oath_key_alloc
@@ -63,5 +65,7 @@ struct oath_key *oath_key_dummy(enum oath_mode, enum oath_hash, unsigned int);
 
 const char *oath_mode_name(enum oath_mode);
 enum oath_mode oath_mode_value(const char *);
+
+CRYB_END
 
 #endif

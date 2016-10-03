@@ -34,6 +34,8 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 const char *cryb_hash_version(void);
 
 #define adler32_hash		cryb_adler32_hash
@@ -51,5 +53,7 @@ uint64_t fletcher64_hash(const void *, size_t);
 uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
 uint8_t pearson_hash(const void *, size_t);
 uint8_t pearson_hash_str(const char *);
+
+CRYB_END
 
 #endif

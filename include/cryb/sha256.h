@@ -33,6 +33,8 @@
 
 #include <cryb/digest.h>
 
+CRYB_BEGIN
+
 #define SHA256_BLOCK_LEN		64
 #define SHA256_DIGEST_LEN		32
 
@@ -88,5 +90,7 @@ void sha256_complete(const void *, size_t, uint8_t *);
  */
 void pbkdf2_sha256(const uint8_t *, size_t, const uint8_t *, size_t,
     uint64_t, uint8_t *, size_t);
+
+CRYB_END
 
 #endif

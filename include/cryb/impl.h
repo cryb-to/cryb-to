@@ -31,14 +31,13 @@
 #define CRYB_IMPL_H_INCLUDED
 
 #if HAVE_CONFIG_H
-# include "config.h"
+#include "config.h"
 #endif
 
 #ifndef CRYB_TO
 #include <cryb/to.h>
 #endif
 
-#include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 #endif

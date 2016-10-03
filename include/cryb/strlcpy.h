@@ -34,11 +34,15 @@
 #include <cryb/to.h>
 #endif
 
+CRYB_BEGIN
+
 size_t cryb_strlcpy(char *, const char *, size_t);
 
 #if !HAVE_STRLCPY
 #undef strlcpy
 #define strlcpy(arg, ...) cryb_strlcpy(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

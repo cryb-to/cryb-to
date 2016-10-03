@@ -36,6 +36,10 @@
 
 #include <cryb/hmac.h>
 
+CRYB_BEGIN
+
 const char *cryb_mac_version(void);
+
+CRYB_END
 
 #endif
