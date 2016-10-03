@@ -154,7 +154,7 @@ t_compare_num(x32,	uint32_t,		"0x%" PRIx32);
 t_compare_num(i64,	int64_t,		"%" PRId64);
 t_compare_num(u64,	uint64_t,		"%" PRIu64);
 t_compare_num(x64,	uint64_t,		"0x%" PRIx64);
-t_compare_num(ptr,	void *,			"%p");
+t_compare_num(ptr,	const void *,		"%p");
 
 #undef t_compare_num
 
