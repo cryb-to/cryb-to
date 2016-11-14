@@ -525,7 +525,7 @@ t_malloc_printstats(FILE *f)
 	for (shift = BUCKET_MIN_SHIFT; shift <= BUCKET_MAX_SHIFT; ++shift) {
 		b = &buckets[shift];
 		if (b->nalloc > 0)
-			fprintf(f, " 1^%-3u %9lu %9lu %9lu\n",
+			fprintf(f, " 2^%-3u %9lu %9lu %9lu\n",
 			    shift, b->nalloc, b->nfree,
 			    b->nalloc - b->nfree);
 	}
