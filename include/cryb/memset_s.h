@@ -30,7 +30,7 @@
 #ifndef CRYB_MEMSET_S_H_INCLUDED
 #define CRYB_MEMSET_S_H_INCLUDED
 
-#ifndef CRYB_TO_H_INCLUDED
+#ifndef CRYB_TO
 #include <cryb/to.h>
 #endif
 
@@ -42,5 +42,7 @@ int cryb_memset_s(void *, size_t, int, size_t);
 #undef memset_s
 #define memset_s(arg, ...) cryb_memset_s(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif
