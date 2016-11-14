@@ -14,7 +14,6 @@ if CRYB_CORE
 cryb_HEADERS += \
 	algorithm.h \
 	assert.h \
-	attributes.h \
 	bitwise.h \
 	core.h \
 	ctype.h \

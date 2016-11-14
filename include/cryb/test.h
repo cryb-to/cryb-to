@@ -38,7 +38,6 @@
 #define CRYB_TEST_HAVE_STDIO 1
 #endif
 
-#include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
