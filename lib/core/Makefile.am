@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libcryb-core.la
 
 libcryb_core_la_SOURCES = \
-	cryb_core.c \
+	cryb_assert.c \
 	cryb_memset_s.c \
 	cryb_string.c \
 	cryb_strlcat.c \
@@ -12,7 +12,9 @@ libcryb_core_la_SOURCES = \
 	cryb_wcslcat.c \
 	cryb_wcslcmp.c \
 	cryb_wcslcpy.c \
-	cryb_wstring.c
+	cryb_wstring.c \
+	\
+	cryb_core.c
 
 EXTRA_DIST = cryb_string_impl.c
 

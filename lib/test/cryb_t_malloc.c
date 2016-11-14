@@ -49,13 +49,13 @@
 #endif
 #endif
 
-#include <assert.h>
 #include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/test.h>
 
 /*

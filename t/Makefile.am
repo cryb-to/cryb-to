@@ -46,6 +46,8 @@ endif CRYB_CIPHER
 if CRYB_CORE
 TESTS += t_core
 t_core_LDADD = $(libt) $(libcore)
+TESTS += t_assert
+t_assert_LDADD = $(libt) $(libcore)
 TESTS += t_ctype t_endian t_memset_s t_strlcat t_strlcmp t_strlcpy
 t_ctype_LDADD = $(libt) $(libcore)
 t_endian_LDADD = $(libt) $(libcore)
