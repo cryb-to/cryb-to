@@ -31,7 +31,6 @@
 
 #include <sys/types.h>
 
-#include <assert.h>
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
@@ -190,9 +189,9 @@ t_mpi_grow_ok(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_set(&x, 1);
-	assert(x.words[0] == 1 && x.msb == 1);
+	t_assert(x.words[0] == 1 && x.msb == 1);
 	ret &= t_compare_i(0, mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1));
-	assert(x.words[0] == 1 && x.msb == 1);
+	t_assert(x.words[0] == 1 && x.msb == 1);
 	ret &= t_mpi_grown(&x);
 	mpi_destroy(&x);
 	return (ret);
@@ -259,9 +258,9 @@ t_mpi_destroy_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
 	cryb_mpi x = CRYB_MPI_ZERO;
 
-	assert(sizeof large_v >= sizeof x.swords);
+	t_assert(sizeof large_v >= sizeof x.swords);
 	mpi_load(&x, large_v, sizeof x.swords);
-	assert(x.words == x.swords);
+	t_assert(x.words == x.swords);
 	mpi_destroy(&x);
 	return (t_mpi_is_zero(&x));
 }
@@ -274,9 +273,9 @@ t_mpi_destroy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
 	cryb_mpi x = CRYB_MPI_ZERO;
 
-	assert(sizeof large_v > sizeof x.swords);
+	t_assert(sizeof large_v > sizeof x.swords);
 	mpi_load(&x, large_v, sizeof large_v);
-	assert(x.words != x.swords);
+	t_assert(x.words != x.swords);
 	mpi_destroy(&x);
 	return (t_mpi_is_zero(&x));
 }
@@ -332,7 +331,7 @@ t_mpi_negate_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_zero(&x);
-	assert(x.words[0] == 0 && x.msb == 0 && x.neg == 0);
+	t_assert(x.words[0] == 0 && x.msb == 0 && x.neg == 0);
 	mpi_negate(&x);
 	ret &= t_mpi_is_zero(&x);
 	mpi_destroy(&x);
@@ -350,7 +349,7 @@ t_mpi_negate_nonzero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&x, -0x19700101);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
-	assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
+	t_assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
 	mpi_negate(&x);
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
@@ -376,7 +375,7 @@ t_mpi_copy_same(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	/* how do you really test this?  oh well */
 	mpi_set(&x, -0x19700101);
-	assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
+	t_assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
 	mpi_copy(&x, &x);
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
@@ -413,7 +412,7 @@ t_mpi_copy_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi x = CRYB_MPI_ZERO, y = CRYB_MPI_ZERO;
 	int ret = 1;
 
-	assert(x.words == NULL && y.words == NULL);
+	t_assert(x.words == NULL && y.words == NULL);
 	ret &= t_compare_i(0, mpi_copy(&y, &x));
 	ret &= t_compare_mem(&z, &x, sizeof x);
 	ret &= t_mpi_not_grown(&y);
@@ -435,7 +434,7 @@ t_mpi_copy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&x, -0x19700101);
 	/* the original is larger than necessary */
 	mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1);
-	assert(x.words != x.swords && x.size > CRYB_MPI_SWORDS);
+	t_assert(x.words != x.swords && x.size > CRYB_MPI_SWORDS);
 	mpi_copy(&y, &x);
 	/* the copy is just large enough to fit the actual value */
 	ret &= t_mpi_not_grown(&y);
@@ -455,7 +454,7 @@ t_mpi_copy_long(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_load(&x, large_v, sizeof large_v);
-	assert(x.words != x.swords && x.size > CRYB_MPI_SWORDS &&
+	t_assert(x.words != x.swords && x.size > CRYB_MPI_SWORDS &&
 	    memcmp(x.words, large_e, sizeof large_e) == 0);
 	mpi_copy(&y, &x);
 	ret &= t_mpi_grown(&y);
@@ -475,7 +474,7 @@ t_mpi_copy_long_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_load(&x, large_v, sizeof large_v);
-	assert(t_mpi_grown(&x));
+	t_assert(t_mpi_grown(&x));
 	++t_malloc_fail;
 	ret &= t_compare_i(-1, mpi_copy(&y, &x));
 	--t_malloc_fail;
@@ -496,10 +495,10 @@ t_mpi_swap_static(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_set(&x, -0x19700101);
-	assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
+	t_assert(x.words[0] == 0x19700101 && x.msb == 29 && x.neg == 1);
 	mpi_copy(&x0, &x);
 	mpi_set(&y, 0x20140901);
-	assert(y.words[0] == 0x20140901 && y.msb == 30 && y.neg == 0);
+	t_assert(y.words[0] == 0x20140901 && y.msb == 30 && y.neg == 0);
 	mpi_copy(&y0, &y);
 	mpi_swap(&x, &y);
 	ret &= t_compare_mpi(&x0, &y);
@@ -524,11 +523,11 @@ t_mpi_swap_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&x, -0x19700101);
 	mpi_copy(&x0, &x);
 	mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1);
-	assert(t_mpi_grown(&x) && t_compare_mpi(&x0, &x));
+	t_assert(t_mpi_grown(&x) && t_compare_mpi(&x0, &x));
 	mpi_set(&y, 0x20140901);
 	mpi_copy(&y0, &y);
 	mpi_grow(&y, CRYB_MPI_SWORDS * 32 + 1);
-	assert(t_mpi_grown(&y) && t_compare_mpi(&y0, &y));
+	t_assert(t_mpi_grown(&y) && t_compare_mpi(&y0, &y));
 	mpi_swap(&x, &y);
 	ret &= t_compare_mpi(&x0, &y);
 	ret &= t_compare_mpi(&y0, &x);
@@ -629,8 +628,8 @@ t_mpi_exact_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
-	assert(sizeof small_e == sizeof small_v);
-	assert(sizeof small_v == sizeof x.swords);
+	t_assert(sizeof small_e == sizeof small_v);
+	t_assert(sizeof small_v == sizeof x.swords);
 	mpi_load(&x, small_v, sizeof x.swords);
 	ret &= t_compare_ptr(x.swords, x.words);
 	ret &= t_compare_mem(small_e, x.words, sizeof x.swords);
@@ -648,8 +647,8 @@ t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
-	assert(sizeof large_e == sizeof large_v);
-	assert(sizeof large_v > sizeof x.swords);
+	t_assert(sizeof large_e == sizeof large_v);
+	t_assert(sizeof large_v > sizeof x.swords);
 	mpi_load(&x, large_v, sizeof large_v);
 	/* XXX we need inequality predicates */
 	if (x.words == x.swords) {
@@ -677,8 +676,8 @@ t_mpi_large_load_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi x = CRYB_MPI_ZERO, y;
 	int ret = 1;
 
-	assert(sizeof large_e == sizeof large_v);
-	assert(sizeof large_v > sizeof x.swords);
+	t_assert(sizeof large_e == sizeof large_v);
+	t_assert(sizeof large_v > sizeof x.swords);
 	mpi_init(&x);
 	y = x;
 	++t_malloc_fail;
@@ -866,7 +865,7 @@ t_mpi_large_lsh(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_load(&x, small_v, sizeof small_v);
-	assert(t_mpi_not_grown(&x));
+	t_assert(t_mpi_not_grown(&x));
 	ret &= t_compare_i(0, mpi_lshift(&x, 32));
 	/* XXX we need inequality predicates */
 	if (x.words == x.swords) {
@@ -890,7 +889,7 @@ t_mpi_large_lsh_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_load(&x, small_v, sizeof small_v);
-	assert(t_mpi_not_grown(&x));
+	t_assert(t_mpi_not_grown(&x));
 	y = x;
 	++t_malloc_fail;
 	ret &= t_compare_i(-1, mpi_lshift(&x, 32));
@@ -1573,15 +1572,15 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_version, NULL, "version");
 
 	/* initialize constants used in multiple test cases */
-	assert(sizeof small_e == sizeof small_v);
-	assert(sizeof small_e == sizeof z.swords);
+	t_assert(sizeof small_e == sizeof small_v);
+	t_assert(sizeof small_e == sizeof z.swords);
 	for (i = 0; i < SMALL_V_SIZE; ++i)
 		small_v[i] = ~i;
 	for (i = 0; i < SMALL_E_SIZE; ++i)
 		small_e[SMALL_E_SIZE - 1 - i] = be32dec(small_v + i * 4);
 
-	assert(sizeof large_e == sizeof large_v);
-	assert(sizeof large_e > sizeof z.swords);
+	t_assert(sizeof large_e == sizeof large_v);
+	t_assert(sizeof large_e > sizeof z.swords);
 	for (i = 0; i < LARGE_V_SIZE; ++i)
 		large_v[i] = ~i;
 	for (i = 0; i < LARGE_E_SIZE; ++i)
@@ -1665,7 +1664,7 @@ static void
 t_cleanup(void)
 {
 
-	assert(memcmp(&z, t_zero, sizeof z) == 0);
+	t_assert(memcmp(&z, t_zero, sizeof z) == 0);
 }
 
 int

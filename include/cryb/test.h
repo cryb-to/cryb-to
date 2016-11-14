@@ -34,6 +34,11 @@
 #include <cryb/to.h>
 #endif
 
+#ifdef _IONBF /* proxy for <stdio.h> */
+#define CRYB_TEST_HAVE_STDIO 1
+#endif
+
+#include <cryb/attributes.h>
 #include <cryb/coverage.h>
 
 CRYB_DISABLE_COVERAGE
@@ -137,11 +142,27 @@ extern int t_malloc_fail;
 extern int t_malloc_fail_after;
 extern int t_malloc_fatal;
 size_t t_malloc_snapshot(void *, size_t);
-#ifdef _IONBF /* proxy for <stdio.h> */
+#if CRYB_TEST_HAVE_STDIO
 void t_malloc_printstats(FILE *);
 #endif
 extern struct t_test t_memory_leak;
 
+/*
+ * Soft version of assert() for use in test cases:
+ *   - Will always evaluate the expression exactly once
+ *   - Raises SIGABRT but does not call abort()
+ *   - Has no other side effects than the fprintf()
+ *   - Test framework will catch and report the test as failed
+ */
+void t_assertion_failed(const char *, const char *, unsigned int,
+    const char *, ...) CRYB_NORETURN;
+#define t_assert(exp)							\
+	do {								\
+		if (!(exp))						\
+			t_assertion_failed(__func__, __FILE__,		\
+			    __LINE__, "%s", #exp);			\
+	} while (0)
+			
 CRYB_END
 
 #endif

@@ -83,6 +83,25 @@ t_verbose(const char *fmt, ...)
 }
 
 /*
+ * Assertion failed - test cannot proceed
+ */
+void
+t_assertion_failed(const char *func, const char *file, unsigned int line,
+    const char *fmt, ...)
+{
+	va_list ap;
+
+	fprintf(stderr, "assertion failed in %s() on %s:%u\n",
+	    func, file, line);
+	va_start(ap, fmt);
+	vfprintf(stderr, fmt, ap);
+	va_end(ap);
+	fprintf(stderr, "\n");
+	raise(SIGABRT);
+	_exit(1);
+}
+
+/*
  * Test plan
  */
 static struct t_test **t_plan;
