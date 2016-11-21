@@ -32,13 +32,13 @@ if CRYB_MPI
 SUBDIRS += mpi
 endif CRYB_MPI
 
-if CRYB_OATH
-SUBDIRS += oath
-endif CRYB_OATH
-
 if CRYB_RAND
 SUBDIRS += rand
 endif CRYB_RAND
+
+if CRYB_OATH
+SUBDIRS += oath
+endif CRYB_OATH
 
 if CRYB_TEST
 SUBDIRS += test

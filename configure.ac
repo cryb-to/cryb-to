@@ -236,7 +236,7 @@ AM_CONDITIONAL([CRYB_MPI], [test x"$enable_cryb_digest" = x"yes"])
 
 # OATH
 elements="$elements oath"
-requires="$requires oath:core oath:digest oath:mac oath:enc"
+requires="$requires oath:core oath:digest oath:enc oath:mac oath:rand"
 AC_ARG_ENABLE([cryb-oath],
     AC_HELP_STRING([--enable-cryb-oath],
 	[build the OATH library]),
