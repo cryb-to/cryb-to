@@ -169,6 +169,18 @@ TESTS += t_mpi
 t_mpi_LDADD = $(libt) $(libmpi)
 endif CRYB_MPI
 
+# libcryb-oath
+if CRYB_OATH
+TESTS += t_oath
+t_oath_LDADD = $(libt) $(liboath) $(librand)
+endif CRYB_OATH
+
+# libcryb-rand
+if CRYB_RAND
+TESTS += t_rand
+t_rand_LDADD = $(libt) $(librand)
+endif CRYB_RAND
+
 check_PROGRAMS = $(TESTS)
 
 endif CRYB_TEST

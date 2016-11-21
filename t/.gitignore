@@ -30,7 +30,9 @@
 /t_memset_s
 /t_mpi
 /t_murmur3_32
+/t_oath
 /t_pearson
+/t_rand
 /t_rc4
 /t_rfc3986
 /t_rfc4648
