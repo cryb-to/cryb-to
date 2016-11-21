@@ -61,15 +61,6 @@ t_string_LDADD = $(libt) $(libcore)
 t_wstring_LDADD = $(libt) $(libcore)
 endif CRYB_CORE
 
-# libcryb-enc
-if CRYB_ENC
-TESTS += t_enc
-t_enc_LDADD = $(libt) $(libenc)
-TESTS += t_rfc3986 t_rfc4648
-t_rfc3986_LDADD = $(libt) $(libenc)
-t_rfc4648_LDADD = $(libt) $(libenc)
-endif CRYB_ENC
-
 # libcryb-digest
 if CRYB_DIGEST
 TESTS += t_digest
@@ -121,6 +112,15 @@ t_sha512_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_sha512_openssl_LDADD = $(libt) $(OPENSSL_LDADD) $(RT_LIBS)
 endif OPENSSL_TESTS
 endif CRYB_DIGEST
+
+# libcryb-enc
+if CRYB_ENC
+TESTS += t_enc
+t_enc_LDADD = $(libt) $(libenc)
+TESTS += t_rfc3986 t_rfc4648
+t_rfc3986_LDADD = $(libt) $(libenc)
+t_rfc4648_LDADD = $(libt) $(libenc)
+endif CRYB_ENC
 
 # libcryb-hash
 if CRYB_HASH
