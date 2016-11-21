@@ -196,7 +196,7 @@ AM_CONDITIONAL([CRYB_DIGEST], [test x"$enable_cryb_digest" = x"yes"])
 
 # Encodings
 elements="$elements enc"
-requires="$requires env:core"
+requires="$requires enc:core"
 AC_ARG_ENABLE([cryb-enc],
     AC_HELP_STRING([--enable-cryb-enc],
 	[build the encoding library]),
