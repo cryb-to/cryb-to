@@ -18,7 +18,9 @@
 .libs
 *.la
 *.lo
+*.log
 *.o
+*.trs
 Makefile
 Makefile.in
 test.cov
