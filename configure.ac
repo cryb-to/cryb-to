@@ -12,9 +12,10 @@ AM_CONFIG_HEADER([include/config.h])
 
 # C compiler and features
 AC_LANG(C)
-AC_PROG_CC
+AC_PROG_CC([clang gcc cc])
 AC_PROG_CC_STDC
 AC_PROG_CPP
+AC_PROG_CXX([clang++ g++ c++])
 AC_GNU_SOURCE
 AC_C_CONST
 AC_C_RESTRICT

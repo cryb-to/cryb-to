@@ -4,6 +4,7 @@
 /t_cipher
 /t_core
 /t_ctype
+/t_cxx
 /t_digest
 /t_enc
 /t_endian

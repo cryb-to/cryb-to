@@ -33,6 +33,48 @@ endif RSAREF_TESTS
 # tests
 TESTS =
 
+# c++ header test
+TESTS += t_cxx
+t_cxx_SOURCES = t_cxx.cc
+t_cxx_CPPFLAGS = $(AM_CPPFLAGS)
+t_cxx_LDADD =
+if CRYB_CIPHER
+t_cxx_CPPFLAGS += -DWITH_CRYB_CIPHER
+t_cxx_LDADD += $(libcipher)
+endif CRYB_CIPHER
+if CRYB_CORE
+t_cxx_CPPFLAGS += -DWITH_CRYB_CORE
+t_cxx_LDADD += $(libcore)
+endif CRYB_CORE
+if CRYB_DIGEST
+t_cxx_CPPFLAGS += -DWITH_CRYB_CORE
+t_cxx_LDADD += $(libdigest)
+endif CRYB_DIGEST
+if CRYB_ENC
+t_cxx_CPPFLAGS += -DWITH_CRYB_ENC
+t_cxx_LDADD += $(libenc)
+endif CRYB_ENC
+if CRYB_HASH
+t_cxx_CPPFLAGS += -DWITH_CRYB_HASH
+t_cxx_LDADD += $(libhash)
+endif CRYB_HASH
+if CRYB_MAC
+t_cxx_CPPFLAGS += -DWITH_CRYB_MAC
+t_cxx_LDADD += $(libmac)
+endif CRYB_MAC
+if CRYB_MPI
+t_cxx_CPPFLAGS += -DWITH_CRYB_MPI
+t_cxx_LDADD += $(libmpi)
+endif CRYB_MPI
+if CRYB_OATH
+t_cxx_CPPFLAGS += -DWITH_CRYB_OATH
+t_cxx_LDADD += $(liboath)
+endif CRYB_OATH
+if CRYB_RAND
+t_cxx_CPPFLAGS += -DWITH_CRYB_RAND
+t_cxx_LDADD += $(librand)
+endif CRYB_RAND
+
 # libcryb-cipher
 if CRYB_CIPHER
 TESTS += t_cipher
