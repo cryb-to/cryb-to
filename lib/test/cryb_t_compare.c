@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2012-2014 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,13 +69,48 @@ t_is_not_null(const void *ptr)
 }
 
 /*
+ * Compare two pointers, and print a verbose message if they differ.
+ */
+int
+t_compare_ptr(const void *expected, const void *received)
+{
+
+	if (expected == NULL && received != NULL) {
+		t_verbose("expected null pointer\n");
+		t_verbose("received %p\n", received);
+		return (0);
+	} else if (received == NULL) {
+		t_verbose("expected %p\n", expected);
+		t_verbose("received null pointer\n");
+		return (0);
+	} else if (expected != received) {
+		t_verbose("expected %p\n", expected);
+		t_verbose("received %p\n", received);
+		return (0);
+	}
+	return (1);
+}
+
+/*
  * Compare two buffers, and print a verbose message if they differ.
  */
 int
 t_compare_mem(const void *expected, const void *received, size_t len)
 {
 
-	if (memcmp(expected, received, len) != 0) {
+	if (expected == NULL && received != NULL) {
+		t_verbose("expected null pointer\n");
+		t_verbose("received ");
+		t_verbose_hex(received, len);
+		t_verbose("\n");
+		return (0);
+	} else if (received == NULL) {
+		t_verbose("expected ");
+		t_verbose_hex(expected, len);
+		t_verbose("\n");
+		t_verbose("received null pointer\n");
+		return (0);
+	} else if (memcmp(expected, received, len) != 0) {
 		t_verbose("expected ");
 		t_verbose_hex(expected, len);
 		t_verbose("\n");
@@ -94,7 +129,15 @@ int
 t_compare_str(const char *expected, const char *received)
 {
 
-	if (strcmp(expected, received) != 0) {
+	if (expected == NULL && received != NULL) {
+		t_verbose("expected null pointer\n");
+		t_verbose("received \"%s\"\n", received);
+		return (0);
+	} else if (expected != NULL && received == NULL) {
+		t_verbose("expected \"%s\"\n", expected);
+		t_verbose("received null pointer\n");
+		return (0);
+	} else if (strcmp(expected, received) != 0) {
 		t_verbose("expected %s\n", expected);
 		t_verbose("received %s\n", received);
 		return (0);
@@ -110,7 +153,15 @@ int
 t_compare_strn(const char *expected, const char *received, size_t len)
 {
 
-	if (strncmp(expected, received, len) != 0) {
+	if (expected == NULL && received != NULL) {
+		t_verbose("expected null pointer\n");
+		t_verbose("received \"%.*s\"\n", (int)len, received);
+		return (0);
+	} else if (expected != NULL && received == NULL) {
+		t_verbose("expected \"%.*s\"\n", (int)len, expected);
+		t_verbose("received null pointer\n");
+		return (0);
+	} else if (strncmp(expected, received, len) != 0) {
 		t_verbose("expected %.*s\n", (int)len, expected);
 		t_verbose("received %.*s\n", (int)len, received);
 		return (0);
@@ -154,7 +205,6 @@ t_compare_num(x32,	uint32_t,		"0x%" PRIx32);
 t_compare_num(i64,	int64_t,		"%" PRId64);
 t_compare_num(u64,	uint64_t,		"%" PRIu64);
 t_compare_num(x64,	uint64_t,		"0x%" PRIx64);
-t_compare_num(ptr,	const void *,		"%p");
 
 #undef t_compare_num
 
