@@ -30,7 +30,7 @@
 #ifndef CRYB_TO_H_INCLUDED
 #define CRYB_TO_H_INCLUDED
 
-#define CRYB_TO	20170207
+#define CRYB_TO	20170219
 
 #include <cryb/defs.h>
 
