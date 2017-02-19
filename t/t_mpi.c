@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ static uint32_t large_e[LARGE_E_SIZE];
  * Verify that an MPI has never grown.
  */
 static int
-t_mpi_not_grown(cryb_mpi *x)
+t_mpi_not_grown(const cryb_mpi *x)
 {
 	int ret = 1;
 
@@ -106,7 +106,7 @@ t_mpi_grown(cryb_mpi *x)
  * Verify that an MPI is zero.
  */
 static int
-t_mpi_is_zero(cryb_mpi *x)
+t_mpi_is_zero(const cryb_mpi *x)
 {
 	int ret = 1;
 
@@ -118,10 +118,23 @@ t_mpi_is_zero(cryb_mpi *x)
 }
 
 /*
+ * Print an MPI in semi-human-readable form
+ */
+static void
+t_verbose_mpi(const cryb_mpi *x)
+{
+
+	t_verbose("%c", x->neg ? '-' : '+');
+	t_verbose("%08x", x->msb == 0 ? 0 : x->words[0]);
+	for (unsigned int i = 1; i < (x->msb + 31) / 32; ++i)
+		t_verbose(" %08x", x->words[i]);
+}
+
+/*
  * Verify that an MPI has the expected value
  */
 static int
-t_compare_mpi(cryb_mpi *e, cryb_mpi *x)
+t_compare_mpi(const cryb_mpi *e, const cryb_mpi *x)
 {
 	int ret = 1;
 
@@ -129,9 +142,20 @@ t_compare_mpi(cryb_mpi *e, cryb_mpi *x)
 		return (1);
 	if (e == NULL || x == NULL)
 		return (0);
-	ret &= t_compare_u(e->msb, x->msb);
-	ret &= t_compare_i(e->neg, x->neg);
-	ret &= t_compare_mem(e->words, x->words, (e->msb + 7) / 8);
+	if (x->words == NULL) {
+		t_verbose("uninitialized MPI\n");
+		return (0);
+	}
+	if (e->neg != x->neg || e->msb != x->msb ||
+	    memcmp(e->words, x->words, (e->msb + 7) / 8) != 0) {
+		t_verbose("expected ");
+		t_verbose_mpi(e);
+		t_verbose("\n");
+		t_verbose("received ");
+		t_verbose_mpi(x);
+		t_verbose("\n");
+		ret = 0;
+	}
 	return (ret);
 }
 
