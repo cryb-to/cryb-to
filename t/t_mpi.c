@@ -1015,48 +1015,75 @@ static struct t_add_case {
 	const char *desc;
 	uint8_t a[16];
 	size_t amsb;
+	int aneg:1;
 	uint8_t b[16];
 	size_t bmsb;
+	int bneg:1;
 	uint8_t e[16];
 	size_t emsb;
+	int eneg:1;
 } t_add_cases[] = {
 	{
 		"0 + 0 == 0",
-		{                                                       }, 0,
-		{                                                       }, 0,
-		{                                                       }, 0,
+		{                                                       },  0, 0,
+		{                                                       },  0, 0,
+		{                                                       },  0, 0,
 	},
 	{
 		"0 + 1 == 1",
-		{                                                       }, 0,
-		{                                                 0x01, }, 1,
-		{                                                 0x01, }, 1,
+		{                                                       },  0, 0,
+		{                                                 0x01, },  1, 0,
+		{                                                 0x01, },  1, 0,
 	},
 	{
 		"1 + 0 == 1",
-		{                                                 0x01, }, 1,
-		{                                                       }, 0,
-		{                                                 0x01, }, 1,
+		{                                                 0x01, },  1, 0,
+		{                                                       },  0, 0,
+		{                                                 0x01, },  1, 0,
 	},
 	{
 		"2 + 2 == 4",
-		{                                                 0x02, }, 2,
-		{                                                 0x02, }, 2,
-		{                                                 0x04, }, 3,
+		{                                                 0x02, },  2, 0,
+		{                                                 0x02, },  2, 0,
+		{                                                 0x04, },  3, 0,
+	},
+	{
+		"|0x20140901| + |0x19700101| == 0x39840a02",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 0,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 0,
+		{                               0x39, 0x84, 0x0a, 0x02, }, 30, 0,
+	},
+	{
+		"|-0x20140901| + |0x19700101| == 0x39840a02",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 1,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 0,
+		{                               0x39, 0x84, 0x0a, 0x02, }, 30, 0,
+	},
+	{
+		"|0x20140901| + |-0x19700101| == 0x39840a02",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 0,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 1,
+		{                               0x39, 0x84, 0x0a, 0x02, }, 30, 0,
+	},
+	{
+		"|-0x20140901| + |-0x19700101| == 0x39840a02",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 1,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 1,
+		{                               0x39, 0x84, 0x0a, 0x02, }, 30, 0,
 	},
 	{
 		"simple carry, "
 		"0xffffffff + 0x01 == 0x0100000000",
-		{                               0xff, 0xff, 0xff, 0xff, }, 32,
-		{                                                 0x01, }, 1,
-		{                         0x01, 0x00, 0x00, 0x00, 0x00, }, 33,
+		{                               0xff, 0xff, 0xff, 0xff, }, 32, 0,
+		{                                                 0x01, },  1, 0,
+		{                         0x01, 0x00, 0x00, 0x00, 0x00, }, 33, 0,
 	},
 	{
 		"complex carry, "
 		"0xffffffffffffffff + 0x0100000001 == 0x010000000100000000",
-		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64,
-		{                         0x01, 0x00, 0x00, 0x00, 0x01, }, 33,
-		{ 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, }, 65,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64, 0,
+		{                         0x01, 0x00, 0x00, 0x00, 0x01, }, 33, 0,
+		{ 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, }, 65, 0,
 	},
 };
 
@@ -1069,8 +1096,11 @@ t_mpi_add_tc(char **desc CRYB_UNUSED, void *arg)
 	int ret = 1;
 
 	mpi_load(&a, tc->a, (tc->amsb + 7) / 8);
+	a.neg = tc->aneg;
 	mpi_load(&b, tc->b, (tc->bmsb + 7) / 8);
+	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
+	e.neg = tc->eneg;
 	ret &= t_compare_i(0, mpi_add_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
@@ -1298,80 +1328,113 @@ static struct t_sub_case {
 	const char *desc;
 	uint8_t a[16];
 	size_t amsb;
+	int aneg:1;
 	uint8_t b[16];
 	size_t bmsb;
+	int bneg:1;
 	uint8_t e[16];
 	size_t emsb;
+	int eneg:1;
 } t_sub_cases[] = {
 	{
 		"0 - 0 == 0",
-		{                                                       }, 0,
-		{                                                       }, 0,
-		{                                                       }, 0,
+		{                                                       },  0, 0,
+		{                                                       },  0, 0,
+		{                                                       },  0, 0,
 	},
 	{
 		"0 - 1 == 1",
-		{                                                       }, 0,
-		{                                                 0x01, }, 1,
-		{                                                 0x01, }, 1,
+		{                                                       },  0, 0,
+		{                                                 0x01, },  1, 0,
+		{                                                 0x01, },  1, 0,
 	},
 	{
 		"1 - 0 == 1",
-		{                                                 0x01, }, 1,
-		{                                                       }, 0,
-		{                                                 0x01, }, 1,
+		{                                                 0x01, },  1, 0,
+		{                                                       },  0, 0,
+		{                                                 0x01, },  1, 0,
+	},
+	{
+		"1 - 1 == 0",
+		{                                                 0x01, },  1, 0,
+		{                                                 0x01, },  1, 0,
+		{                                                       },  0, 0,
 	},
 	{
 		"4 - 2 == 2",
-		{                                                 0x04, }, 3,
-		{                                                 0x02, }, 2,
-		{                                                 0x02, }, 2,
+		{                                                 0x04, },  3, 0,
+		{                                                 0x02, },  2, 0,
+		{                                                 0x02, },  2, 0,
 	},
 	{
 		"2 - 4 == 2",
-		{                                                 0x02, }, 2,
-		{                                                 0x04, }, 3,
-		{                                                 0x02, }, 2,
+		{                                                 0x02, },  2, 0,
+		{                                                 0x04, },  3, 0,
+		{                                                 0x02, },  2, 0,
+	},
+	{
+		"| |0x20140901| - |0x19700101| | == 0x6a40800",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 0,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 0,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
+	},
+	{
+		"| |-0x20140901| - |0x19700101| | == 0x6a40800",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 1,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 0,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
+	},
+	{
+		"| |0x20140901| - |-0x19700101| | == 0x6a40800",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 0,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 1,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
+	},
+	{
+		"| |-0x20140901| - |-0x19700101| | == 0x6a40800",
+		{                               0x20, 0x14, 0x09, 0x01, }, 30, 1,
+		{                               0x19, 0x70, 0x01, 0x01, }, 29, 1,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
 	},
 	{
 		"0x120140901 - 0x119700101 == 0x6a40800",
-		{                         0x01, 0x20, 0x14, 0x09, 0x01, }, 33,
-		{                         0x01, 0x19, 0x70, 0x01, 0x01, }, 33,
-		{                               0x06, 0xa4, 0x08, 0x00, }, 27,
+		{                         0x01, 0x20, 0x14, 0x09, 0x01, }, 33, 0,
+		{                         0x01, 0x19, 0x70, 0x01, 0x01, }, 33, 0,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
 	},
 	{
 		"0x119700101 - 0x120140901 == 0x6a40800",
-		{                         0x01, 0x19, 0x70, 0x01, 0x01, }, 33,
-		{                         0x01, 0x20, 0x14, 0x09, 0x01, }, 33,
-		{                               0x06, 0xa4, 0x08, 0x00, }, 27,
+		{                         0x01, 0x19, 0x70, 0x01, 0x01, }, 33, 0,
+		{                         0x01, 0x20, 0x14, 0x09, 0x01, }, 33, 0,
+		{                               0x06, 0xa4, 0x08, 0x00, }, 27, 0,
 	},
 	{
 		"simple carry, "
 		"0x1000000000 - 0xfffffffff == 0x01",
-		{                         0x10, 0x00, 0x00, 0x00, 0x00, }, 37,
-		{                         0x0f, 0xff, 0xff, 0xff, 0xff, }, 36,
-		{                                                 0x01, }, 1,
+		{                         0x10, 0x00, 0x00, 0x00, 0x00, }, 37, 0,
+		{                         0x0f, 0xff, 0xff, 0xff, 0xff, }, 36, 0,
+		{                                                 0x01, },  1, 0,
 	},
 	{
 		"simple carry, "
 		"0x1000000000 - 0x01 == 0xfffffffff",
-		{                         0x10, 0x00, 0x00, 0x00, 0x00, }, 37,
-		{                                                 0x01, }, 1,
-		{                         0x0f, 0xff, 0xff, 0xff, 0xff, }, 36,
+		{                         0x10, 0x00, 0x00, 0x00, 0x00, }, 37, 0,
+		{                                                 0x01, },  1, 0,
+		{                         0x0f, 0xff, 0xff, 0xff, 0xff, }, 36, 0,
 	},
 	{
 		"complex carry, "
 		"0x010000000000000000 - 0xffffffffffffffff == 0x01",
-		{ 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, }, 65,
-		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64,
-		{                                                 0x01, }, 1,
+		{ 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, }, 65, 0,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64, 0,
+		{                                                 0x01, },  1, 0,
 	},
 	{
 		"complex carry, "
 		"0x010000000000000000 - 0x01 == 0xffffffffffffffff",
-		{ 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, }, 65,
-		{                                                 0x01, }, 1,
-		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64,
+		{ 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, }, 65, 0,
+		{                                                 0x01, },  1, 0,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64, 0,
 	},
 };
 
@@ -1384,8 +1447,11 @@ t_mpi_sub_tc(char **desc CRYB_UNUSED, void *arg)
 	int ret = 1;
 
 	mpi_load(&a, tc->a, (tc->amsb + 7) / 8);
+	a.neg = tc->aneg;
 	mpi_load(&b, tc->b, (tc->bmsb + 7) / 8);
+	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
+	e.neg = tc->eneg;
 	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
@@ -1581,6 +1647,29 @@ t_mpi_sub_b_from_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	return (ret);
 }
 
+/*
+ * Target is negative
+ */
+static int
+t_mpi_sub_neg_target(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x20140901);
+	mpi_set(&b, 0x19700101);
+	mpi_set(&e, 0x20140901 - 0x19700101);
+	mpi_set(&x, -1);
+	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_compare_mpi(&e, &x);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
+	return (ret);
+}
+
 
 /***************************************************************************
  * Boilerplate
@@ -1680,6 +1769,7 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_sub_a_from_a, NULL, "a = a - a");
 	t_add_test(t_mpi_sub_b_from_zero, NULL, "b = 0 - b");
 	t_add_test(t_mpi_sub_zero_from_a, NULL, "a = a - z");
+	t_add_test(t_mpi_sub_neg_target, NULL, "x = a - b (x initially < 0)");
 
 	return (0);
 }
