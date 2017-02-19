@@ -349,7 +349,7 @@ calloc(size_t n, size_t size)
 		t_malloc_fail = 1;
 	}
 	p = t_malloc(n * size);
-	UTRACE_MALLOC(size, p);
+	UTRACE_MALLOC(n * size, p);
 	if (p == NULL) {
 		if (t_malloc_fatal)
 			abort();
