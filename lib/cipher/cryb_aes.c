@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 2006-2007 Christophe Devine
- * Copyright (c) 2015 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2016 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
