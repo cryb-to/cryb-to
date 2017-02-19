@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,15 +46,18 @@ mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 	uint32_t c;
 
 	/*
-	 * Trivial cases: A and B are identical and / or both zero.
+	 * Trivial cases: A and B are the same or equal or at least one of
+	 * them is zero.
 	 */
-	if (A->msb == 0 && B->msb == 0)
-		return (0);
-	if (A == B) {
-		if (X != A && mpi_copy(X, A) != 0)
+	if (A == B || mpi_eq_abs(A, B)) {
+		if (X != A && X != B && mpi_copy(X, A) != 0)
 			return (-1);
 		return (mpi_lshift(X, 1));
 	}
+	if (A->msb == 0)
+		return (X == B ? 0 : mpi_copy(X, B));
+	if (B->msb == 0)
+		return (X == A ? 0 : mpi_copy(X, A));
 
 	/*
 	 * Normalize our operands: if X is identical to either A or B, we
@@ -97,5 +100,6 @@ mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 			break;
 	/* add msw offset */
 	X->msb += i * 32 + 1;
+	X->neg = 0;
 	return (0);
 }

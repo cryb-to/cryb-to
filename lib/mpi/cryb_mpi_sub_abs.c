@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -92,5 +92,6 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 			break;
 	/* add msw offset */
 	X->msb += i * 32 + 1;
+	X->neg = 0;
 	return (0);
 }
