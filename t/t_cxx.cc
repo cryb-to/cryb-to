@@ -35,7 +35,9 @@
 #include <iostream>
 #include <vector>
 
-#include <cryb/to.h>
+#include <cryb/coverage.h>
+
+CRYB_DISABLE_COVERAGE;
 
 class test {
 public:
