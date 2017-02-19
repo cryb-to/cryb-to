@@ -295,7 +295,7 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	if (t_prepare != NULL)
 		t_prepare(argc, argv);
 	if (t_plan_len == 0)
-		errx(1, "no plan\n");
+		errx(1, "no plan");
 
 	/* run the tests */
 	nt = leaktest ? t_plan_len + 1 : t_plan_len;
