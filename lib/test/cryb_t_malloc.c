@@ -464,7 +464,7 @@ free(void *p)
 			if (m == mappings)
 				mappings = m->next;
 			/* fall through and free metadata */
-			p = m;
+			UTRACE_FREE(p = m);
 			++nmapfree;
 			break;
 		}
