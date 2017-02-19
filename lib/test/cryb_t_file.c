@@ -29,7 +29,6 @@
 
 #include "cryb/impl.h"
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -53,20 +52,20 @@ t_fopen(const char *filename)
 	int fd, ret;
 
 	if ((tf = calloc(sizeof *tf, 1)) == NULL)
-		err(1, "%s(): calloc()", __func__);
+		t_syserr(1, "%s(): calloc()", __func__);
 	if (filename) {
 		if ((tf->name = strdup(filename)) == NULL)
-			err(1, "%s(): strdup()", __func__);
+			t_syserr(1, "%s(): strdup()", __func__);
 	} else {
 		ret = asprintf(&tf->name, "%s.%lu.%p.tmp",
 		    t_progname, (unsigned long)getpid(), (void *)tf);
 		if (ret < 0 || tf->name == NULL)
-			err(1, "%s(): asprintf()", __func__);
+			t_syserr(1, "%s(): asprintf()", __func__);
 	}
 	if ((fd = open(tf->name, O_RDWR|O_CREAT|O_TRUNC, 0600)) < 0)
-		err(1, "%s(): %s", __func__, tf->name);
+		t_syserr(1, "%s(): %s", __func__, tf->name);
 	if ((tf->file = fdopen(fd, "r+")) == NULL)
-		err(1, "%s(): fdopen()", __func__);
+		t_syserr(1, "%s(): fdopen()", __func__);
 	if ((tf->next = tflist) != NULL)
 		tf->next->prev = tf;
 	tflist = tf;
@@ -86,7 +85,7 @@ t_fprintf(struct t_file *tf, const char *fmt, ...)
 	len = vfprintf(tf->file, fmt, ap);
 	va_end(ap);
 	if (ferror(tf->file))
-		err(1, "%s(): vfprintf()", __func__);
+		t_syserr(1, "%s(): vfprintf()", __func__);
 	return (len);
 }
 
@@ -100,7 +99,7 @@ t_frewind(struct t_file *tf)
 	errno = 0;
 	rewind(tf->file);
 	if (errno != 0)
-		err(1, "%s(): rewind()", __func__);
+		t_syserr(1, "%s(): rewind()", __func__);
 }
 
 /*
@@ -138,7 +137,7 @@ t_fclose(struct t_file *tf)
 		tf->next->prev = tf->prev;
 	fclose(tf->file);
 	if (unlink(tf->name) < 0)
-		warn("%s(): unlink()", __func__);
+		t_syswarn("%s(): unlink()", __func__);
 	free(tf->name);
 	free(tf);
 }

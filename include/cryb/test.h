@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2012-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,6 +74,15 @@ void t_main(t_prepare_func, t_cleanup_func, int, char **)
 void t_printv_hex(const uint8_t *, size_t);
 void t_printv(const char *, ...)
 	CRYB_PRINTF(1, 2);
+
+void t_warn(const char *, ...)
+	CRYB_PRINTF(1, 2);
+void t_syswarn(const char *, ...)
+	CRYB_PRINTF(1, 2);
+void t_err(int, const char *, ...)
+	CRYB_PRINTF(2, 3) CRYB_NORETURN;
+void t_syserr(int, const char *, ...)
+	CRYB_PRINTF(2, 3) CRYB_NORETURN;
 
 #if CRYB_TEST_HAVE_STDIO
 /*

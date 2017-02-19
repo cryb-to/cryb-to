@@ -29,7 +29,6 @@
 
 #include "cryb/impl.h"
 
-#include <err.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -69,11 +68,11 @@ t_printv_hex(const uint8_t *buf, size_t len)
 
 /*
  * If verbose flag is set, print a message
- */
+  */
 void
 t_printv(const char *fmt, ...)
 {
-	va_list ap;
+        va_list ap;
 
 	if (t_verbose) {
 		va_start(ap, fmt);
@@ -122,7 +121,7 @@ t_grow(int n)
 	while (t_plan_len + n >= t_plan_size)
 		t_plan_size *= 2;
 	if ((p = realloc(t_plan, t_plan_size * sizeof *p)) == NULL)
-		err(1, "realloc()");
+		t_syserr(1, "realloc()");
 	t_plan = p;
 }
 
@@ -136,11 +135,11 @@ t_add_test(t_func *func, void *arg, const char *fmt, ...)
 	va_list ap;
 
 	if ((t = malloc(sizeof *t)) == NULL)
-		err(1, "malloc()");
+		t_syserr(1, "malloc()");
 	t->func = func;
 	va_start(ap, fmt);
 	if (vasprintf(&t->desc, fmt, ap) < 0)
-		err(1, "vasprintf()");
+		t_err(1, "vasprintf()");
 	va_end(ap);
 	t->arg = arg;
 	t_grow(1);
@@ -200,12 +199,12 @@ t_run_test(struct t_test *t, int n)
 	if ((signo = setjmp(sigjmp)) == 0)
 		ret = (*t->func)(&desc, t->arg);
 	if (t_malloc_fail != 0) {
-		t_printv("WARNING: test case left t_malloc_fail = %d\n",
+		t_warn("test case left t_malloc_fail = %d\n",
 		    t_malloc_fail);
 		t_malloc_fail = 0;
 	}
 	if (t_malloc_fail_after != 0) {
-		t_printv("WARNING: test case left t_malloc_fail_after = %d\n",
+		t_warn("test case left t_malloc_fail_after = %d\n",
 		    t_malloc_fail_after);
 		t_malloc_fail_after = 0;
 	}
@@ -227,7 +226,7 @@ t_run_test(struct t_test *t, int n)
 			snaplen = sizeof snap2;
 		t_compare_mem(snap1, snap2, snaplen);
 		if (memcmp(snap1, snap2, snaplen) != 0)
-			t_printv("WARNING: allocator state changed\n");
+			t_warn("allocator state changed\n");
 	}
 	return (ret);
 }
@@ -299,7 +298,7 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	if (t_prepare != NULL)
 		t_prepare(argc, argv);
 	if (t_plan_len == 0)
-		errx(1, "no plan");
+		t_err(1, "no plan");
 
 	/* run the tests */
 	nt = leaktest ? t_plan_len + 1 : t_plan_len;
