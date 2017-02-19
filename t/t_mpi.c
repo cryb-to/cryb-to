@@ -1080,10 +1080,10 @@ static struct t_add_case {
 	},
 	{
 		"complex carry, "
-		"0xffffffffffffffff + 0x0100000001 == 0x010000000100000000",
-		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, }, 64, 0,
-		{                         0x01, 0x00, 0x00, 0x00, 0x01, }, 33, 0,
-		{ 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, }, 65, 0,
+		"0x0100000000ffffffff + 0x01 == 0x010000000100000000",
+		{ 0x01, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, }, 64, 0,
+		{                                                 0x01, },  1, 0,
+		{ 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, }, 64, 0,
 	},
 };
 
@@ -1133,16 +1133,41 @@ t_mpi_add(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 }
 
 /*
- * As above, but allocation will fail
+ * As above, but first allocation will fail
  */
 static int
-t_mpi_add_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+t_mpi_add_fail1(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 {
 	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	cryb_mpi x = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&a, large_v, sizeof large_v);
+	mpi_set(&b, 0x19700101);
+	mpi_set(&x, 0x20140901);
+	mpi_set(&e, 0x20140901);
+	++t_malloc_fail;
+	ret &= t_compare_i(-1, mpi_add_abs(&x, &a, &b));
+	--t_malloc_fail;
+	ret &= t_compare_mpi(&e, &x);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * As above, but second allocation will fail
+ */
+static int
+t_mpi_add_fail2(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x19700101);
 	mpi_load(&b, large_v, sizeof large_v);
 	mpi_set(&x, 0x20140901);
 	mpi_set(&e, 0x20140901);
@@ -1200,6 +1225,26 @@ t_mpi_add_b_to_a_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 }
 
 /*
+ * Target is the first operand and both operands are equal
+ */
+static int
+t_mpi_add_b_to_a_equal(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x19700101);
+	mpi_set(&b, 0x19700101);
+	mpi_set(&e, 0x19700101 + 0x19700101);
+	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &b));
+	ret &= t_compare_mpi(&e, &a);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	return (ret);
+}
+
+/*
  * Target is the second operand
  */
 static int
@@ -1234,6 +1279,26 @@ t_mpi_add_a_to_b_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	++t_malloc_fail;
 	ret &= t_compare_i(-1, mpi_add_abs(&b, &a, &b));
 	--t_malloc_fail;
+	ret &= t_compare_mpi(&e, &b);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	return (ret);
+}
+
+/*
+ * Target is the second operand and both operands are equal
+ */
+static int
+t_mpi_add_a_to_b_equal(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x19700101);
+	mpi_set(&b, 0x19700101);
+	mpi_set(&e, 0x19700101 + 0x19700101);
+	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -1316,6 +1381,46 @@ t_mpi_add_a_and_a_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
+	return (ret);
+}
+
+/*
+ * Target is the first operand, second operand is zero
+ */
+static int
+t_mpi_add_zero_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, 0x19700101);
+	mpi_zero(&b);
+	mpi_copy(&e, &a);
+	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &b));
+	ret &= t_compare_mpi(&e, &a);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
+	return (ret);
+}
+
+/*
+ * Target is the second operand, first operand is zero
+ */
+static int
+t_mpi_add_zero_to_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_zero(&a);
+	mpi_set(&b, 0x20140901);
+	mpi_copy(&e, &b);
+	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &b));
+	ret &= t_compare_mpi(&e, &b);
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	mpi_destroy(&e);
 	return (ret);
 }
 
@@ -1518,8 +1623,8 @@ t_mpi_sub_b_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
 	int ret = 1;
 
-	mpi_set(&a, 0x19700101);
-	mpi_set(&b, 0x20140901);
+	mpi_set(&a, 0x20140901);
+	mpi_set(&b, 0x19700101);
 	mpi_set(&e, 0x20140901 - 0x19700101);
 	ret &= t_compare_i(0, mpi_sub_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
@@ -1747,15 +1852,20 @@ t_prepare(int argc, char *argv[])
 	for (i = 0; i < sizeof t_add_cases / sizeof t_add_cases[0]; ++i)
 		t_add_test(t_mpi_add_tc, &t_add_cases[i], t_add_cases[i].desc);
 	t_add_test(t_mpi_add, NULL, "x = a + b");
-	t_add_test(t_mpi_add_fail, NULL, "x = a + b (failure)");
+	t_add_test(t_mpi_add_fail1, NULL, "x = a + b (failure 1)");
+	t_add_test(t_mpi_add_fail2, NULL, "x = a + b (failure 2)");
 	t_add_test(t_mpi_add_b_to_a, NULL, "a = a + b");
 	t_add_test(t_mpi_add_b_to_a_fail, NULL, "a = a + b (failure)");
+	t_add_test(t_mpi_add_b_to_a_equal, NULL, "a = a + b (a == b)");
 	t_add_test(t_mpi_add_a_to_b, NULL, "b = a + b");
 	t_add_test(t_mpi_add_a_to_b_fail, NULL, "b = a + b (failure)");
+	t_add_test(t_mpi_add_a_to_b_equal, NULL, "b = a + b (a == b)");
 	t_add_test(t_mpi_add_a_to_a, NULL, "a = a + a");
 	t_add_test(t_mpi_add_a_to_a_fail, NULL, "a = a + a (failure)");
 	t_add_test(t_mpi_add_a_and_a, NULL, "b = a + a");
 	t_add_test(t_mpi_add_a_and_a_fail, NULL, "b = a + a (failure)");
+	t_add_test(t_mpi_add_zero_to_a, NULL, "a = a + 0");
+	t_add_test(t_mpi_add_zero_to_b, NULL, "b = 0 + b");
 
 	/* subtraction */
 	for (i = 0; i < sizeof t_sub_cases / sizeof t_sub_cases[0]; ++i)
