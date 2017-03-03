@@ -10,5 +10,6 @@ EXTRA_DIST = \
 	README \
 	RELNOTES \
 	autogen.sh \
+	m4/ax_gcc_builtin.m4 \
 	tools/coverage.sh.in \
 	tools/setprops.sh
