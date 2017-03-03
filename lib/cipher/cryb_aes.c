@@ -321,7 +321,7 @@ CRYB_DISABLE_COVERAGE
 		return;
 CRYB_RESTORE_COVERAGE
 	}
-	ctx->rk = RK = ctx->buf;
+	RK = ctx->rk;
 	for (i = 0; i < (keysize >> 2); i++)
 		RK[i] = le32dec(key + (i << 2));
 	switch (ctx->nr) {
@@ -406,7 +406,7 @@ CRYB_DISABLE_COVERAGE
 		return;
 CRYB_RESTORE_COVERAGE
 	}
-	ctx->rk = RK = ctx->buf;
+	RK = ctx->rk;
 	aes_setkey_enc(&cty, key, keysize);
 	SK = cty.rk + cty.nr * 4;
 	*RK++ = *SK++;

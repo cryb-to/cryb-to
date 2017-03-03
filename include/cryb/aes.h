@@ -40,7 +40,6 @@ CRYB_BEGIN
 
 #define AES_BLOCK_LEN			16
 
-#define aes_digest			cryb_aes_digest
 #define aes_ctx				cryb_aes_ctx
 #define aes_init			cryb_aes_init
 #define aes_update			cryb_aes_update
@@ -51,10 +50,9 @@ extern cipher_algorithm aes192_cipher;
 extern cipher_algorithm aes256_cipher;
 
 typedef struct {
-	int mode;
-	int nr;
-	uint32_t *rk;
-	uint32_t buf[68];
+	int	 mode;
+	int	 nr;
+	uint32_t rk[68];
 } aes_ctx;
 
 void aes_init(aes_ctx *, cipher_mode, const uint8_t *, size_t);
