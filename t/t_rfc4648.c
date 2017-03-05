@@ -171,8 +171,14 @@ static struct t_case t_cases[] = {
 	T_ENCDEC("\0\0\0",	"AAAAA===",		"AAAA"),
 
 	/* sloppy padding */
-	T_DECODE("f",		"MY=",			"Zg="),
-	T_DECODE("f",		"MY",			"Zg"),
+	T_DECODE_N(32,		"MY=====",		"f"),
+	T_DECODE_N(32,		"MY====",		"f"),
+	T_DECODE_N(32,		"MY===",		"f"),
+	T_DECODE_N(32,		"MY==",			"f"),
+	T_DECODE_N(32,		"MY=",			"f"),
+	T_DECODE_N(32,		"MY",			"f"),
+	T_DECODE_N(64,		"Zg=",			"f"),
+	T_DECODE_N(64,		"Zg",			"f"),
 
 	/* whitespace */
 	/*	 plain		base32			base64 */
