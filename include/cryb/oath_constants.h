@@ -84,7 +84,7 @@ enum oath_hash {
 /*
  * Label to use for dummy keys
  */
-#define OATH_DUMMY_LABEL	"oath-dummy@openpam.org"
+#define OATH_DUMMY_LABEL	"oath-dummy@cryb.to"
 
 CRYB_END
 
