@@ -1,5 +1,5 @@
 AC_PREREQ([2.63])
-AC_INIT([cryb.to], [devel], [des@des.no], [cryb-to], [http://cryb.to/])
+AC_INIT([cryb.to], [0.20170307], [des@des.no], [cryb-to], [http://cryb.to/])
 AC_CONFIG_SRCDIR([include/cryb/core.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-xz])
