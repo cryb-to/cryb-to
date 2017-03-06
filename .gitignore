@@ -20,6 +20,7 @@
 *.lo
 *.log
 *.o
+*.pc
 *.trs
 Makefile
 Makefile.in

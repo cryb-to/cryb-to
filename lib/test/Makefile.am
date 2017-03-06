@@ -12,3 +12,5 @@ libcryb_test_la_SOURCES = \
 
 libcryb_test_la_LIBADD = \
 	$(top_builddir)/lib/core/libcryb-core.la
+
+pkgconfig_DATA = cryb-test.pc

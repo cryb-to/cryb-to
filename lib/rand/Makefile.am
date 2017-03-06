@@ -9,3 +9,5 @@ libcryb_rand_la_SOURCES = \
 
 libcryb_rand_la_LIBADD = \
 	$(top_builddir)/lib/core/libcryb-core.la
+
+pkgconfig_DATA = cryb-rand.pc

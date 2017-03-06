@@ -21,3 +21,5 @@ EXTRA_DIST = cryb_string_impl.c
 dist_man3_MANS = \
 	cryb_strlcat.3 \
 	cryb_strlcpy.3
+
+pkgconfig_DATA = cryb-core.pc

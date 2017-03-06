@@ -23,3 +23,5 @@ dist_man3_MANS = \
 
 libcryb_digest_la_LIBADD = \
 	$(top_builddir)/lib/core/libcryb-core.la
+
+pkgconfig_DATA = cryb-digest.pc

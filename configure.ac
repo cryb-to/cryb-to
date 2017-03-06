@@ -39,6 +39,10 @@ AC_TYPE_UINTPTR_T
 LT_PREREQ([2.2.6])
 LT_INIT()
 
+# pkg-config
+PKG_PROG_PKG_CONFIG
+PKG_INSTALLDIR
+
 # other programs
 AC_PROG_INSTALL
 
@@ -217,7 +221,7 @@ AM_CONDITIONAL([CRYB_HASH], [test x"$enable_cryb_hash" = x"yes"])
 
 # Message authentication codes
 elements="$elements mac"
-requires="$requires mac:core"
+requires="$requires mac:core mac:digest"
 AC_ARG_ENABLE([cryb-mac],
     AC_HELP_STRING([--enable-cryb-mac],
 	[build the message authentication code library]),
@@ -291,17 +295,28 @@ AC_CONFIG_FILES([
     include/cryb/Makefile
     lib/Makefile
     lib/cipher/Makefile
+    lib/cipher/cryb-cipher.pc
     lib/core/Makefile
+    lib/core/cryb-core.pc
     lib/cpe/Makefile
+    lib/cpe/cryb-cpe.pc
     lib/digest/Makefile
+    lib/digest/cryb-digest.pc
     lib/enc/Makefile
+    lib/enc/cryb-enc.pc
     lib/hash/Makefile
+    lib/hash/cryb-hash.pc
     lib/mac/Makefile
+    lib/mac/cryb-mac.pc
     lib/mpi/Makefile
+    lib/mpi/cryb-mpi.pc
     lib/oath/Makefile
+    lib/oath/cryb-oath.pc
     lib/rand/Makefile
+    lib/rand/cryb-rand.pc
     lib/rsaref/Makefile
     lib/test/Makefile
+    lib/test/cryb-test.pc
     t/Makefile
 ])
 AC_CONFIG_FILES([mkpkgng], [chmod +x mkpkgng])

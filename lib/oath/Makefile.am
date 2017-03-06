@@ -21,3 +21,5 @@ libcryb_oath_la_LIBADD = \
 	$(top_builddir)/lib/mac/libcryb-mac.la \
 	$(top_builddir)/lib/rand/libcryb-rand.la \
 	$(top_builddir)/lib/core/libcryb-core.la
+
+pkgconfig_DATA = cryb-oath.pc
