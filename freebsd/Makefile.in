@@ -1,0 +1,37 @@
+# $FreeBSD: portlint$
+
+PORTNAME=	@PACKAGE_TARNAME@
+PORTVERSION=	@PACKAGE_VERSION@
+CATEGORIES=	security devel
+MASTER_SITES=	#
+DISTFILES=	#
+
+MAINTAINER=	@PACKAGE_BUGREPORT@
+COMMENT=	Collection of cryptographic and security-related libraries
+
+LICENSE=	BSD3CLAUSE
+
+USE_LDCONFIG=	yes
+USES=		gmake libtool pkgconfig
+
+NO_WRKSUBDIR=	yes
+
+DESCR=		${WRKDIR}/pkg-descr
+
+do-extract:
+	(${CAT} @top_srcdir@/README && ${ECHO} && \
+	    ${ECHO} "WWW: @PACKAGE_URL@") >${DESCR}
+
+do-build:
+	(cd @top_srcdir@ && \
+	    ${GMAKE} all)
+
+do-install:
+	(cd @top_srcdir@ && \
+	    ${GMAKE} install-strip DESTDIR=${STAGEDIR} PREFIX=${PREFIX})
+
+post-stage:
+	(cd ${STAGEDIR} && \
+	    find -s . -type f -or -type l | cut -c 2-) >>${TMPPLIST}
+
+.include <bsd.port.mk>
