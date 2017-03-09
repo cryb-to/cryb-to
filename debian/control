@@ -1,0 +1,20 @@
+Source: cryb-to
+Section: unknown
+Priority: optional
+Maintainer: Dag-Erling Smørgrav <des@des.no>
+Build-Depends: debhelper (>= 9), autotools-dev
+Standards-Version: 3.9.5
+Homepage: https://github.com/cryb-to/cryb-to
+
+Package: cryb-to
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Collection of cryptographic and security-related libraries
+ The aim of the Cryb.to project is to provide a collection of correct,
+ well-written, well-tested and well-documented implementations of both
+ low-level cryptographic primitives and higher-level security-related
+ interfaces under a permissive license.
+ .
+ The Cryb libraries are the first and primary product of the Cryb.to
+ project.  They include low-level cryptographic primitives and support
+ code such as safe string handling and containers.
