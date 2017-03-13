@@ -30,6 +30,9 @@
 /t_md5_openssl
 /t_memset_s
 /t_mpi
+/t_mpi_addsub
+/t_mpi_compar
+/t_mpi_muldiv
 /t_murmur3_32
 /t_oath
 /t_pearson
