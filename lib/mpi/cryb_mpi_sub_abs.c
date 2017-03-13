@@ -54,10 +54,18 @@ mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
 		mpi_zero(X);
 		return (0);
 	}
-	if (A->msb == 0)
-		return (X == B ? 0 : mpi_copy(X, B));
-	if (B->msb == 0)
-		return (X == A ? 0 : mpi_copy(X, A));
+	if (A->msb == 0) {
+		if (X != B && mpi_copy(X, B) != 0)
+			return (-1);
+		X->neg = 0;
+		return (0);
+	}
+	if (B->msb == 0) {
+		if (X != A && mpi_copy(X, A) != 0)
+			return (-1);
+		X->neg = 0;
+		return (0);
+	}
 
 	/* we want to subtract the smaller number from the larger */
 	if (mpi_cmp_abs(A, B) < 0)
