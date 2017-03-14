@@ -95,7 +95,7 @@ t_strlcpy(char **desc CRYB_UNUSED, void *arg)
 	memset(buf, T_CANARY, sizeof buf);
 	sz = strlcpy(buf, t->in, T_BUFSIZE);
 	if (buf[T_BUFSIZE] != T_CANARY) {
-		t_verbose("buffer overflow\n");
+		t_printv("buffer overflow\n");
 		return (0);
 	}
 	return (t_compare_sz(t->sz, sz) & t_compare_str(t->out, buf));

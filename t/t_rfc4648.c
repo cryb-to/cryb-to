@@ -282,22 +282,22 @@ t_rfc4648(char **desc CRYB_UNUSED, void *arg)
 	len = t->blen ? t->blen : sizeof buf;
 	ret = t->func(t->in, t->ilen, buf, &len);
 	if (ret != t->ret) {
-		t_verbose("expected return code %d, got %d\n",
+		t_printv("expected return code %d, got %d\n",
 		    t->ret, ret);
 		return (0);
 	}
 	if (t->out && len != t->olen) {
-		t_verbose("expected output length %zu, got %zu\n",
+		t_printv("expected output length %zu, got %zu\n",
 		    t->olen, len);
 		return (0);
 	}
 	if (t->ret != 0 && errno != t->err) {
-		t_verbose("expected errno %d, got %d\n",
+		t_printv("expected errno %d, got %d\n",
 		    t->err, errno);
 		return (0);
 	}
 	if (t->ret == 0 && t->out && strncmp(buf, t->out, len) != 0) {
-		t_verbose("expected '%.*s' got '%.*s'\n",
+		t_printv("expected '%.*s' got '%.*s'\n",
 		    (int)t->olen, t->out, (int)len, buf);
 		return (0);
 	}

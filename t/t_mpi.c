@@ -92,11 +92,11 @@ t_mpi_grown(cryb_mpi *x)
 
 	/* XXX we need inequality predicates */
 	if (x->words == x->swords) {
-		t_verbose("value was expected to change");
+		t_printv("value was expected to change");
 		ret &= 0;
 	}
 	if (x->size == CRYB_MPI_SWORDS) {
-		t_verbose("value was expected to change");
+		t_printv("value was expected to change");
 		ret &= 0;
 	}
 	return (ret);
@@ -121,13 +121,13 @@ t_mpi_is_zero(const cryb_mpi *x)
  * Print an MPI in semi-human-readable form
  */
 static void
-t_verbose_mpi(const cryb_mpi *x)
+t_printv_mpi(const cryb_mpi *x)
 {
 
-	t_verbose("%c", x->neg ? '-' : '+');
-	t_verbose("%08x", x->msb == 0 ? 0 : x->words[0]);
+	t_printv("%c", x->neg ? '-' : '+');
+	t_printv("%08x", x->msb == 0 ? 0 : x->words[0]);
 	for (unsigned int i = 1; i < (x->msb + 31) / 32; ++i)
-		t_verbose(" %08x", x->words[i]);
+		t_printv(" %08x", x->words[i]);
 }
 
 /*
@@ -143,17 +143,17 @@ t_compare_mpi(const cryb_mpi *e, const cryb_mpi *x)
 	if (e == NULL || x == NULL)
 		return (0);
 	if (x->words == NULL) {
-		t_verbose("uninitialized MPI\n");
+		t_printv("uninitialized MPI\n");
 		return (0);
 	}
 	if (e->neg != x->neg || e->msb != x->msb ||
 	    memcmp(e->words, x->words, (e->msb + 7) / 8) != 0) {
-		t_verbose("expected ");
-		t_verbose_mpi(e);
-		t_verbose("\n");
-		t_verbose("received ");
-		t_verbose_mpi(x);
-		t_verbose("\n");
+		t_printv("expected ");
+		t_printv_mpi(e);
+		t_printv("\n");
+		t_printv("received ");
+		t_printv_mpi(x);
+		t_printv("\n");
 		ret = 0;
 	}
 	return (ret);
@@ -254,7 +254,7 @@ t_mpi_grow_twice(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_i(0, mpi_grow(&x, CRYB_MPI_SWORDS * 32 * 2 + 1));
 	/* XXX we need inequality predicates */
 	if (x.words == p) {
-		t_verbose("pointer was expected to change\n");
+		t_printv("pointer was expected to change\n");
 		ret &= 0;
 	}
 	ret &= t_mpi_grown(&x);
@@ -676,12 +676,12 @@ t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_load(&x, large_v, sizeof large_v);
 	/* XXX we need inequality predicates */
 	if (x.words == x.swords) {
-		t_verbose("reallocation failed to occur\n");
+		t_printv("reallocation failed to occur\n");
 		ret &= 0;
 	}
 	/* XXX we need inequality predicates */
 	if (x.size < LARGE_E_SIZE) {
-		t_verbose("expected at least %zu, received %zu\n",
+		t_printv("expected at least %zu, received %zu\n",
 		    LARGE_E_SIZE, x.size);
 		ret &= 0;
 	}
@@ -893,7 +893,7 @@ t_mpi_large_lsh(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_compare_i(0, mpi_lshift(&x, 32));
 	/* XXX we need inequality predicates */
 	if (x.words == x.swords) {
-		t_verbose("reallocation failed to occur\n");
+		t_printv("reallocation failed to occur\n");
 		return (0);
 	}
 	ret &= t_compare_mem(t_zero, x.words, sizeof x.words[0]);

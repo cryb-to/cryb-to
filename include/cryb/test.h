@@ -60,6 +60,7 @@ struct t_test {
 };
 
 extern const char *t_progname;
+extern int t_verbose;
 
 void t_add_test(t_func *, void *, const char *, ...);
 void t_add_tests(struct t_test *, int);
@@ -69,8 +70,8 @@ typedef void (*t_cleanup_func)(void);
 void t_main(t_prepare_func, t_cleanup_func, int, char **)
 	CRYB_NORETURN;
 
-void t_verbose_hex(const uint8_t *, size_t);
-void t_verbose(const char *, ...)
+void t_printv_hex(const uint8_t *, size_t);
+void t_printv(const char *, ...)
 	CRYB_PRINTF(1, 2);
 
 #ifdef _IONBF /* proxy for <stdio.h> */

@@ -46,7 +46,7 @@
 const char *t_progname;
 
 /* verbose flag */
-static int verbose;
+int t_verbose;
 
 /* whether to check for leaks */
 static int leaktest;
@@ -55,10 +55,10 @@ static int leaktest;
  * If verbose flag is set, print an array of bytes in hex
  */
 void
-t_verbose_hex(const uint8_t *buf, size_t len)
+t_printv_hex(const uint8_t *buf, size_t len)
 {
 
-	if (verbose) {
+	if (t_verbose) {
 		while (len--) {
 			fprintf(stderr, "%02x", *buf++);
 			if (len > 0 && len % 4 == 0)
@@ -71,11 +71,11 @@ t_verbose_hex(const uint8_t *buf, size_t len)
  * If verbose flag is set, print a message
  */
 void
-t_verbose(const char *fmt, ...)
+t_printv(const char *fmt, ...)
 {
 	va_list ap;
 
-	if (verbose) {
+	if (t_verbose) {
 		va_start(ap, fmt);
 		vfprintf(stderr, fmt, ap);
 		va_end(ap);
@@ -190,7 +190,7 @@ t_run_test(struct t_test *t, int n)
 	char *desc;
 	int i, ret, signo;
 
-	if (leaktest && verbose)
+	if (leaktest && t_verbose)
 		t_malloc_snapshot(snap1, sizeof snap1);
 	for (i = 0; sigs[i] > 0; ++i)
 		signal(sigs[i], t_handle_signal);
@@ -199,12 +199,12 @@ t_run_test(struct t_test *t, int n)
 	if ((signo = setjmp(sigjmp)) == 0)
 		ret = (*t->func)(&desc, t->arg);
 	if (t_malloc_fail != 0) {
-		t_verbose("WARNING: test case left t_malloc_fail = %d\n",
+		t_printv("WARNING: test case left t_malloc_fail = %d\n",
 		    t_malloc_fail);
 		t_malloc_fail = 0;
 	}
 	if (t_malloc_fail_after != 0) {
-		t_verbose("WARNING: test case left t_malloc_fail_after = %d\n",
+		t_printv("WARNING: test case left t_malloc_fail_after = %d\n",
 		    t_malloc_fail_after);
 		t_malloc_fail_after = 0;
 	}
@@ -220,13 +220,13 @@ t_run_test(struct t_test *t, int n)
 		free(desc);
 	for (i = 0; sigs[i] > 0; ++i)
 		signal(sigs[i], SIG_DFL);
-	if (leaktest && verbose) {
+	if (leaktest && t_verbose) {
 		snaplen = t_malloc_snapshot(snap2, sizeof snap2);
 		if (snaplen > sizeof snap2)
 			snaplen = sizeof snap2;
 		t_compare_mem(snap1, snap2, snaplen);
 		if (memcmp(snap1, snap2, snaplen) != 0)
-			t_verbose("WARNING: allocator state changed\n");
+			t_printv("WARNING: allocator state changed\n");
 	}
 	return (ret);
 }
@@ -282,7 +282,7 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 			leaktest = 1;
 			break;
 		case 'v':
-			verbose = 1;
+			t_verbose = 1;
 			break;
 		default:
 			usage();
@@ -314,10 +314,10 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	free(t_plan);
 	setvbuf(stdout, NULL, _IONBF, 0);
 	if (leaktest) {
-		if (verbose)
+		if (t_verbose)
 			t_malloc_printstats(stderr);
 		t_run_test(&t_memory_leak, nt) ? ++pass : ++fail;
 	}
-	t_verbose("%d out of %zd tests passed\n", pass, nt);
+	t_printv("%d out of %zd tests passed\n", pass, nt);
 	exit(fail > 0 ? 1 : 0);
 }

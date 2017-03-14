@@ -63,7 +63,7 @@ t_assert_child(void)
 #if defined(HAVE_SETRLIMIT) && defined(RLIMIT_CORE)
 	/* prevent core dump */
 	if (setrlimit(RLIMIT_CORE, &crl) != 0)
-		t_verbose("failed to disable core dump\n");
+		t_printv("failed to disable core dump\n");
 #endif
 	/* suppress assertion message */
 	fclose(stderr);
@@ -83,15 +83,15 @@ t_assert_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	}
 	t_assert(waitpid(pid, &status, 0) == pid);
 	if (!WIFSIGNALED(status)) {
-		t_verbose("expected child to raise a signal\n");
+		t_printv("expected child to raise a signal\n");
 		return (0);
 	}
 #ifdef WCOREDUMP
 	if (WCOREDUMP(status))
-		t_verbose("warning: child dumped core\n");
+		t_printv("warning: child dumped core\n");
 #endif
 	if ((signo = WTERMSIG(status)) != SIGABRT) {
-		t_verbose("expected child to raise signal %d (SIGABRT), "
+		t_printv("expected child to raise signal %d (SIGABRT), "
 		    "got signal %d\n", SIGABRT, signo);
 		return (0);
 	}

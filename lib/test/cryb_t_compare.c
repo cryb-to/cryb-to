@@ -48,7 +48,7 @@ t_is_null(const void *ptr)
 {
 
 	if (ptr != NULL) {
-		t_verbose("expected null pointer, got non-null pointer\n");
+		t_printv("expected null pointer, got non-null pointer\n");
 		return (0);
 	}
 	return (1);
@@ -62,7 +62,7 @@ t_is_not_null(const void *ptr)
 {
 
 	if (ptr == NULL) {
-		t_verbose("expected non-null pointer, got null pointer\n");
+		t_printv("expected non-null pointer, got null pointer\n");
 		return (0);
 	}
 	return (1);
@@ -76,16 +76,16 @@ t_compare_ptr(const void *expected, const void *received)
 {
 
 	if (expected == NULL && received != NULL) {
-		t_verbose("expected null pointer\n");
-		t_verbose("received %p\n", received);
+		t_printv("expected null pointer\n");
+		t_printv("received %p\n", received);
 		return (0);
 	} else if (received == NULL) {
-		t_verbose("expected %p\n", expected);
-		t_verbose("received null pointer\n");
+		t_printv("expected %p\n", expected);
+		t_printv("received null pointer\n");
 		return (0);
 	} else if (expected != received) {
-		t_verbose("expected %p\n", expected);
-		t_verbose("received %p\n", received);
+		t_printv("expected %p\n", expected);
+		t_printv("received %p\n", received);
 		return (0);
 	}
 	return (1);
@@ -99,24 +99,24 @@ t_compare_mem(const void *expected, const void *received, size_t len)
 {
 
 	if (expected == NULL && received != NULL) {
-		t_verbose("expected null pointer\n");
-		t_verbose("received ");
-		t_verbose_hex(received, len);
-		t_verbose("\n");
+		t_printv("expected null pointer\n");
+		t_printv("received ");
+		t_printv_hex(received, len);
+		t_printv("\n");
 		return (0);
 	} else if (received == NULL) {
-		t_verbose("expected ");
-		t_verbose_hex(expected, len);
-		t_verbose("\n");
-		t_verbose("received null pointer\n");
+		t_printv("expected ");
+		t_printv_hex(expected, len);
+		t_printv("\n");
+		t_printv("received null pointer\n");
 		return (0);
 	} else if (memcmp(expected, received, len) != 0) {
-		t_verbose("expected ");
-		t_verbose_hex(expected, len);
-		t_verbose("\n");
-		t_verbose("received ");
-		t_verbose_hex(received, len);
-		t_verbose("\n");
+		t_printv("expected ");
+		t_printv_hex(expected, len);
+		t_printv("\n");
+		t_printv("received ");
+		t_printv_hex(received, len);
+		t_printv("\n");
 		return (0);
 	}
 	return (1);
@@ -130,16 +130,16 @@ t_compare_str(const char *expected, const char *received)
 {
 
 	if (expected == NULL && received != NULL) {
-		t_verbose("expected null pointer\n");
-		t_verbose("received \"%s\"\n", received);
+		t_printv("expected null pointer\n");
+		t_printv("received \"%s\"\n", received);
 		return (0);
 	} else if (expected != NULL && received == NULL) {
-		t_verbose("expected \"%s\"\n", expected);
-		t_verbose("received null pointer\n");
+		t_printv("expected \"%s\"\n", expected);
+		t_printv("received null pointer\n");
 		return (0);
 	} else if (strcmp(expected, received) != 0) {
-		t_verbose("expected %s\n", expected);
-		t_verbose("received %s\n", received);
+		t_printv("expected %s\n", expected);
+		t_printv("received %s\n", received);
 		return (0);
 	}
 	return (1);
@@ -154,16 +154,16 @@ t_compare_strn(const char *expected, const char *received, size_t len)
 {
 
 	if (expected == NULL && received != NULL) {
-		t_verbose("expected null pointer\n");
-		t_verbose("received \"%.*s\"\n", (int)len, received);
+		t_printv("expected null pointer\n");
+		t_printv("received \"%.*s\"\n", (int)len, received);
 		return (0);
 	} else if (expected != NULL && received == NULL) {
-		t_verbose("expected \"%.*s\"\n", (int)len, expected);
-		t_verbose("received null pointer\n");
+		t_printv("expected \"%.*s\"\n", (int)len, expected);
+		t_printv("received null pointer\n");
 		return (0);
 	} else if (strncmp(expected, received, len) != 0) {
-		t_verbose("expected %.*s\n", (int)len, expected);
-		t_verbose("received %.*s\n", (int)len, received);
+		t_printv("expected %.*s\n", (int)len, expected);
+		t_printv("received %.*s\n", (int)len, received);
 		return (0);
 	}
 	return (1);
@@ -178,8 +178,8 @@ t_compare_##n(t expected, t received)					\
 {									\
 									\
 	if (received != expected) {					\
-		t_verbose("expected " pf "\n", expected);		\
-		t_verbose("received " pf "\n", received);		\
+		t_printv("expected " pf "\n", expected);		\
+		t_printv("received " pf "\n", received);		\
 		return (0);						\
 	}								\
 	return (1);							\
