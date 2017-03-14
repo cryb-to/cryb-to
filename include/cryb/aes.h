@@ -40,6 +40,7 @@ CRYB_BEGIN
 
 #define AES_BLOCK_LEN			16
 
+#define aes_cipher			cryb_aes_cipher
 #define aes_ctx				cryb_aes_ctx
 #define aes_init			cryb_aes_init
 #define aes_update			cryb_aes_update
