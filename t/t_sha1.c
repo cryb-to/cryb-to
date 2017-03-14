@@ -213,7 +213,7 @@ t_prepare(int argc, char *argv[])
 	n = sizeof t_sha1_vectors / sizeof t_sha1_vectors[0];
 	for (i = 0; i < n; ++i)
 		t_add_test(t_sha1_vector, &t_sha1_vectors[i],
-		    t_sha1_vectors[i].desc);
+		    "%s", t_sha1_vectors[i].desc);
 #if !defined(WITH_OPENSSL) && !defined(WITH_RSAREF)
 	/*
 	 * Run test vector 5 (md5 test vector 7, which is 80 characters

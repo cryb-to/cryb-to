@@ -1831,26 +1831,31 @@ t_prepare(int argc, char *argv[])
 
 	/* load / store */
 	for (i = 0; i < sizeof t_load_cases / sizeof t_load_cases[0]; ++i)
-		t_add_test(t_mpi_load, &t_load_cases[i], t_load_cases[i].desc);
+		t_add_test(t_mpi_load, &t_load_cases[i], "%s",
+		    t_load_cases[i].desc);
 	t_add_test(t_mpi_exact_load, NULL, "exact load");
 	t_add_test(t_mpi_large_load, NULL, "large load");
 	t_add_test(t_mpi_large_load_fail, NULL, "large load (failure)");
 
 	/* comparison */
 	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
-		t_add_test(t_mpi_cmp, &t_cmp_cases[i], t_cmp_cases[i].desc);
+		t_add_test(t_mpi_cmp, &t_cmp_cases[i], "%s",
+		    t_cmp_cases[i].desc);
 
 	/* left / right shift */
 	for (i = 0; i < sizeof t_lsh_cases / sizeof t_lsh_cases[0]; ++i)
-		t_add_test(t_mpi_lsh, &t_lsh_cases[i], t_lsh_cases[i].desc);
+		t_add_test(t_mpi_lsh, &t_lsh_cases[i], "%s",
+		    t_lsh_cases[i].desc);
 	t_add_test(t_mpi_large_lsh, NULL, "large left shift");
 	t_add_test(t_mpi_large_lsh_fail, NULL, "large left shift (failure)");
 	for (i = 0; i < sizeof t_rsh_cases / sizeof t_rsh_cases[0]; ++i)
-		t_add_test(t_mpi_rsh, &t_rsh_cases[i], t_rsh_cases[i].desc);
+		t_add_test(t_mpi_rsh, &t_rsh_cases[i], "%s",
+		    t_rsh_cases[i].desc);
 
 	/* addition */
 	for (i = 0; i < sizeof t_add_cases / sizeof t_add_cases[0]; ++i)
-		t_add_test(t_mpi_add_tc, &t_add_cases[i], t_add_cases[i].desc);
+		t_add_test(t_mpi_add_tc, &t_add_cases[i], "%s",
+		    t_add_cases[i].desc);
 	t_add_test(t_mpi_add, NULL, "x = a + b");
 	t_add_test(t_mpi_add_fail1, NULL, "x = a + b (failure 1)");
 	t_add_test(t_mpi_add_fail2, NULL, "x = a + b (failure 2)");
@@ -1869,7 +1874,8 @@ t_prepare(int argc, char *argv[])
 
 	/* subtraction */
 	for (i = 0; i < sizeof t_sub_cases / sizeof t_sub_cases[0]; ++i)
-		t_add_test(t_mpi_sub_tc, &t_sub_cases[i], t_sub_cases[i].desc);
+		t_add_test(t_mpi_sub_tc, &t_sub_cases[i], "%s",
+		    t_sub_cases[i].desc);
 	t_add_test(t_mpi_sub, NULL, "x = a - b");
 	t_add_test(t_mpi_sub_fail, NULL, "x = a - b (failure)");
 	t_add_test(t_mpi_sub_b_from_a, NULL, "a = a - b");

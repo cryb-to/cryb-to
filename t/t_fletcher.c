@@ -298,13 +298,16 @@ t_prepare(int argc, char *argv[])
 	n = sizeof t_cases / sizeof t_cases[0];
 	for (i = 0; i < n; ++i)
 		if (t_cases[i].sum16 != 0xffffU)
-			t_add_test(t_fletcher16, &t_cases[i], t_cases[i].desc);
+			t_add_test(t_fletcher16, &t_cases[i], "%s",
+			    t_cases[i].desc);
 	for (i = 0; i < n; ++i)
 		if (t_cases[i].sum32 != 0xffffffffLU)
-			t_add_test(t_fletcher32, &t_cases[i], t_cases[i].desc);
+			t_add_test(t_fletcher32, &t_cases[i], "%s",
+			    t_cases[i].desc);
 	for (i = 0; i < n; ++i)
 		if (t_cases[i].sum64 != 0xffffffffffffffffLLU)
-			t_add_test(t_fletcher64, &t_cases[i], t_cases[i].desc);
+			t_add_test(t_fletcher64, &t_cases[i], "%s",
+			    t_cases[i].desc);
 	return (0);
 }
 

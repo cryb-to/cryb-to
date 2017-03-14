@@ -318,7 +318,7 @@ t_prepare(int argc, char *argv[])
 	(void)argv;
 	n = sizeof t_cases / sizeof t_cases[0];
 	for (i = 0; i < n; ++i)
-		t_add_test(t_rfc4648, &t_cases[i], t_cases[i].desc);
+		t_add_test(t_rfc4648, &t_cases[i], "%s", t_cases[i].desc);
 	return (0);
 }
 

@@ -174,7 +174,7 @@ t_prepare(int argc, char *argv[])
 	n = sizeof t_hmac_sha256_vectors / sizeof t_hmac_sha256_vectors[0];
 	for (i = 0; i < n; ++i)
 		t_add_test(t_hmac_sha256_vector, &t_hmac_sha256_vectors[i],
-		    t_hmac_sha256_vectors[i].desc);
+		    "%s", t_hmac_sha256_vectors[i].desc);
 	return (0);
 }
 

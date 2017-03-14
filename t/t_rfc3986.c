@@ -339,7 +339,7 @@ t_prepare(int argc, char *argv[])
 	for (i = 0; i < n; ++i) {
 		t = &t_cases[i];
 		if (t->desc) {
-			t_add_test(t_rfc3986, t, t->desc);
+			t_add_test(t_rfc3986, t, "%s", t->desc);
 		} else if (t->ret == 0) {
 			t_add_test(t_rfc3986, t,
 			    "%s \"%s\" -> \"%s\"",

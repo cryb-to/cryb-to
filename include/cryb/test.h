@@ -62,7 +62,8 @@ struct t_test {
 extern const char *t_progname;
 extern int t_verbose;
 
-void t_add_test(t_func *, void *, const char *, ...);
+void t_add_test(t_func *, void *, const char *, ...)
+	CRYB_PRINTF(3, 4);
 void t_add_tests(struct t_test *, int);
 
 typedef int (*t_prepare_func)(int, char **);
