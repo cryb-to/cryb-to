@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@
 
 CRYB_BEGIN
 
-#define rc4_digest			cryb_rc4_digest
+#define rc4_cipher			cryb_rc4_cipher
 #define rc4_ctx				cryb_rc4_ctx
 #define rc4_init			cryb_rc4_init
 #define rc4_update			cryb_rc4_update
