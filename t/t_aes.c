@@ -108,7 +108,7 @@ static struct t_case t_cases[] = {
  * Test functions
  */
 static int
-t_aes_enc(char **desc CRYB_UNUSED, void *arg)
+t_aes_enc(char **desc, void *arg)
 {
 	struct t_case *t = arg;
 	uint8_t out[AES_BLOCK_LEN];
@@ -122,7 +122,7 @@ t_aes_enc(char **desc CRYB_UNUSED, void *arg)
 }
 
 static int
-t_aes_dec(char **desc CRYB_UNUSED, void *arg)
+t_aes_dec(char **desc, void *arg)
 {
 	struct t_case *t = arg;
 	uint8_t out[AES_BLOCK_LEN];
