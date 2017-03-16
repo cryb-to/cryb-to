@@ -43,7 +43,9 @@ CRYB_BEGIN
 #define aes_cipher			cryb_aes_cipher
 #define aes_ctx				cryb_aes_ctx
 #define aes_init			cryb_aes_init
-#define aes_update			cryb_aes_update
+#define aes_keystream			cryb_aes_keystream
+#define aes_encrypt			cryb_aes_encrypt
+#define aes_decrypt			cryb_aes_decrypt
 #define aes_finish			cryb_aes_finish
 
 extern cipher_algorithm aes128_cipher;
@@ -56,8 +58,10 @@ typedef struct {
 	uint32_t rk[68];
 } aes_ctx;
 
-void aes_init(aes_ctx *, cipher_mode, const uint8_t *, size_t);
-void aes_update(aes_ctx *, const void *, size_t, void *);
+void aes_init(aes_ctx *, cipher_mode mode, const uint8_t *, size_t);
+size_t aes_keystream(aes_ctx *, uint8_t *, size_t);
+size_t aes_encrypt(aes_ctx *, const void *, uint8_t *, size_t);
+size_t aes_decrypt(aes_ctx *, const uint8_t *, void *, size_t);
 void aes_finish(aes_ctx *);
 
 CRYB_END

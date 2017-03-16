@@ -597,6 +597,30 @@ aes_update(aes_ctx *ctx, const void *in, size_t len, void *out)
 		aes_enc(ctx, in, out);
 }
 
+size_t
+aes_encrypt(aes_ctx *ctx, const void *vpt, uint8_t *ct, size_t len)
+{
+	const uint8_t *pt = vpt;
+	unsigned int i;
+
+	len -= len % AES_BLOCK_LEN;
+	for (i = 0; i < len; i += AES_BLOCK_LEN)
+		aes_enc(ctx, pt + i, ct + i);
+	return (len);
+}
+
+size_t
+aes_decrypt(aes_ctx *ctx, const uint8_t *ct, void *vpt, size_t len)
+{
+	uint8_t *pt = vpt;
+	unsigned int i;
+
+	len -= len % AES_BLOCK_LEN;
+	for (i = 0; i < len; i += AES_BLOCK_LEN)
+		aes_dec(ctx, ct + i, pt + i);
+	return (len);
+}
+
 void
 aes_finish(aes_ctx *ctx)
 {
@@ -610,7 +634,8 @@ cipher_algorithm aes128_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 128 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };
 
@@ -620,7 +645,8 @@ cipher_algorithm aes192_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 192 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };
 
@@ -630,6 +656,7 @@ cipher_algorithm aes256_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 256 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };
