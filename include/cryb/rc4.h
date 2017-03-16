@@ -41,7 +41,9 @@ CRYB_BEGIN
 #define rc4_cipher			cryb_rc4_cipher
 #define rc4_ctx				cryb_rc4_ctx
 #define rc4_init			cryb_rc4_init
-#define rc4_update			cryb_rc4_update
+#define rc4_keystream			cryb_rc4_keystream
+#define rc4_encrypt			cryb_rc4_encrypt
+#define rc4_decrypt			cryb_rc4_decrypt
 #define rc4_finish			cryb_rc4_finish
 
 extern cipher_algorithm rc4_cipher;
@@ -50,8 +52,10 @@ typedef struct {
 	uint8_t s[256], i, j;
 } rc4_ctx;
 
-void rc4_init(rc4_ctx *, cipher_mode, const uint8_t *, size_t);
-void rc4_update(rc4_ctx *, const void *, size_t, void *);
+void rc4_init(rc4_ctx *, cipher_mode mode, const uint8_t *, size_t);
+size_t rc4_keystream(rc4_ctx *, uint8_t *, size_t);
+size_t rc4_encrypt(rc4_ctx *, const void *, uint8_t *, size_t);
+size_t rc4_decrypt(rc4_ctx *, const uint8_t *, void *, size_t);
 void rc4_finish(rc4_ctx *);
 
 CRYB_END

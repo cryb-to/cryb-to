@@ -1975,7 +1975,7 @@ t_rc4(char **desc CRYB_UNUSED, void *arg)
 	rc4_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen);
 	for (i = offset = 0; i < 18; ++i) {
 		do {
-			rc4_update(&ctx, t_zero, 16, out);
+			rc4_encrypt(&ctx, t_zero, out, 16);
 			offset += 16;
 		} while (offset <= t->out[i].offset);
 		ret &= t_compare_mem(t->out[i].bytes, out, 16);

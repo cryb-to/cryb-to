@@ -113,12 +113,16 @@ t_aes_enc(char **desc, void *arg)
 	struct t_case *t = arg;
 	uint8_t out[AES_BLOCK_LEN];
 	aes_ctx ctx;
+	size_t len;
+	int ret;
 
 	(void)asprintf(desc, "%s (encrypt)", t->desc);
 	aes_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen / 8);
-	aes_update(&ctx, t->ptext, AES_BLOCK_LEN, out);
+	len = aes_encrypt(&ctx, t->ptext, out, AES_BLOCK_LEN);
 	aes_finish(&ctx);
-	return (t_compare_mem(t->ctext, out, AES_BLOCK_LEN));
+	ret = t_compare_sz(AES_BLOCK_LEN, len) &
+	    t_compare_mem(t->ctext, out, AES_BLOCK_LEN);
+	return (ret);
 }
 
 static int
@@ -127,12 +131,16 @@ t_aes_dec(char **desc, void *arg)
 	struct t_case *t = arg;
 	uint8_t out[AES_BLOCK_LEN];
 	aes_ctx ctx;
+	size_t len;
+	int ret;
 
 	(void)asprintf(desc, "%s (decrypt)", t->desc);
 	aes_init(&ctx, CIPHER_MODE_DECRYPT, t->key, t->keylen / 8);
-	aes_update(&ctx, t->ctext, AES_BLOCK_LEN, out);
+	len = aes_decrypt(&ctx, t->ctext, out, AES_BLOCK_LEN);
 	aes_finish(&ctx);
-	return (t_compare_mem(t->ptext, out, AES_BLOCK_LEN));
+	ret = t_compare_sz(AES_BLOCK_LEN, len) &
+	    t_compare_mem(t->ptext, out, AES_BLOCK_LEN);
+	return (ret);
 }
 
 

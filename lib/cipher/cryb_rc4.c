@@ -34,6 +34,7 @@
 
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
+#include <cryb/memset_s.h>
 
 #include <cryb/rc4.h>
 
@@ -55,12 +56,30 @@ rc4_init(rc4_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 	}
 }
 
-void
-rc4_update(rc4_ctx *ctx, const void *in, size_t len, void *out)
+size_t
+rc4_keystream(rc4_ctx *ctx, uint8_t *ks, size_t len)
 {
-	const uint8_t *is = in;
-	uint8_t t, k, *os = out;
 	unsigned int i;
+	uint8_t t;
+
+	for (i = 0; i < len; ++i) {
+		ctx->i = ctx->i + 1;
+		ctx->j = ctx->j + ctx->s[ctx->i];
+		t = ctx->s[ctx->i];
+		ctx->s[ctx->i] = ctx->s[ctx->j];
+		ctx->s[ctx->j] = t;
+		t = ctx->s[ctx->i] + ctx->s[ctx->j];
+		*ks++ = ctx->s[t];
+	}
+	return (len);
+}
+	
+size_t
+rc4_encrypt(rc4_ctx *ctx, const void *vpt, uint8_t *ct, size_t len)
+{
+	const uint8_t *pt = vpt;
+	unsigned int i;
+	uint8_t t, k;
 
 	for (i = 0; i < len; ++i) {
 		ctx->i = ctx->i + 1;
@@ -70,15 +89,23 @@ rc4_update(rc4_ctx *ctx, const void *in, size_t len, void *out)
 		ctx->s[ctx->j] = t;
 		t = ctx->s[ctx->i] + ctx->s[ctx->j];
 		k = ctx->s[t];
-		*os++ = *is++ ^ k;
+		*ct++ = *pt++ ^ k;
 	}
+	return (len);
+}
+
+size_t
+rc4_decrypt(rc4_ctx *ctx, const uint8_t *in, void *out, size_t len)
+{
+
+	return (rc4_encrypt(ctx, in, out, len));
 }
 
 void
 rc4_finish(rc4_ctx *ctx)
 {
 
-	memset(ctx, 0, sizeof *ctx);
+	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
 
 cipher_algorithm rc4_cipher = {
@@ -87,6 +114,8 @@ cipher_algorithm rc4_cipher = {
 	.blocklen		 = 1,
 	.keylen			 = 0,
 	.init			 = (cipher_init_func)rc4_init,
-	.update			 = (cipher_update_func)rc4_update,
+	.keystream		 = (cipher_keystream_func)rc4_keystream,
+	.encrypt		 = (cipher_encrypt_func)rc4_encrypt,
+	.decrypt		 = (cipher_decrypt_func)rc4_decrypt,
 	.finish			 = (cipher_finish_func)rc4_finish,
 };
