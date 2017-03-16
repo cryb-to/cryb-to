@@ -95,10 +95,10 @@ rc4_encrypt(rc4_ctx *ctx, const void *vpt, uint8_t *ct, size_t len)
 }
 
 size_t
-rc4_decrypt(rc4_ctx *ctx, const uint8_t *in, void *out, size_t len)
+rc4_decrypt(rc4_ctx *ctx, const uint8_t *ct, void *vpt, size_t len)
 {
 
-	return (rc4_encrypt(ctx, in, out, len));
+	return (rc4_encrypt(ctx, ct, vpt, len));
 }
 
 void
