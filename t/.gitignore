@@ -1,6 +1,7 @@
 /t_adler
 /t_aes
 /t_assert
+/t_chacha
 /t_cipher
 /t_core
 /t_ctype
