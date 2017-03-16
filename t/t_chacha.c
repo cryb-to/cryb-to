@@ -2062,7 +2062,7 @@ t_chacha_keystream(char **desc, void *arg)
 	    t->desc, t->keylen * 8, t->rounds);
 	chacha_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen);
 	chacha_reset(&ctx, t->iv, t->rounds);
-	ret &= t_compare_mem((void *)t->state, (void *)ctx.state, 64);
+	ret &= t_compare_mem(t->state, ctx.state, 64);
 	len = chacha_keystream(&ctx, out, sizeof out);
 	chacha_finish(&ctx);
 	ret &= t_compare_sz(sizeof out, len) &
