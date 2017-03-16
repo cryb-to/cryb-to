@@ -585,18 +585,6 @@ aes_init(aes_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 		aes_setkey_enc(ctx, key, keylen);
 }
 
-
-void
-aes_update(aes_ctx *ctx, const void *in, size_t len, void *out)
-{
-
-	(void)len;
-	if (ctx->mode == CIPHER_MODE_DECRYPT)
-		aes_dec(ctx, in, out);
-	else
-		aes_enc(ctx, in, out);
-}
-
 size_t
 aes_encrypt(aes_ctx *ctx, const void *vpt, uint8_t *ct, size_t len)
 {

@@ -49,6 +49,7 @@ struct t_case {
 /***************************************************************************
  * Test cases
  */
+
 static struct t_case t_cases[] = {
 	/* FIPS-197 test vectors */
 	{
@@ -107,6 +108,7 @@ static struct t_case t_cases[] = {
 /***************************************************************************
  * Test functions
  */
+
 static int
 t_aes_enc(char **desc, void *arg)
 {

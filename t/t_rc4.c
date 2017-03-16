@@ -51,6 +51,7 @@ struct t_case {
 /***************************************************************************
  * Test cases
  */
+
 static struct t_case t_cases[] = {
 	/* test vectors from RFC 6229 */
 	{
@@ -1962,6 +1963,7 @@ static struct t_case t_cases[] = {
 /***************************************************************************
  * Test functions
  */
+
 static int
 t_rc4(char **desc CRYB_UNUSED, void *arg)
 {
