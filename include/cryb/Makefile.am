@@ -5,6 +5,7 @@ cryb_HEADERS =
 if CRYB_CIPHER
 cryb_HEADERS += \
 	aes.h \
+	chacha.h \
 	rc4.h \
 	\
 	cipher.h
