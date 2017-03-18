@@ -7,6 +7,7 @@ cryb_HEADERS += \
 	aes.h \
 	chacha.h \
 	rc4.h \
+	salsa.h \
 	\
 	cipher.h
 endif CRYB_CIPHER
