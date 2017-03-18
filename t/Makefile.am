@@ -79,9 +79,10 @@ endif CRYB_RAND
 if CRYB_CIPHER
 TESTS += t_cipher
 t_cipher_LDADD = $(libt) $(libcipher)
-TESTS += t_aes t_chacha t_rc4 t_salsa
+TESTS += t_aes t_chacha t_des t_rc4 t_salsa
 t_aes_LDADD = $(libt) $(libcipher)
 t_chacha_LDADD = $(libt) $(libcipher)
+t_des_LDADD = $(libt) $(libcipher)
 t_rc4_LDADD = $(libt) $(libcipher)
 t_salsa_LDADD = $(libt) $(libcipher)
 endif CRYB_CIPHER

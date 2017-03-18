@@ -6,6 +6,7 @@
 /t_core
 /t_ctype
 /t_cxx
+/t_des
 /t_digest
 /t_enc
 /t_endian
