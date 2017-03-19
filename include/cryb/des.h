@@ -40,7 +40,10 @@ CRYB_BEGIN
 
 #define DES_BLOCK_LEN			8
 
-#define des_cipher			cryb_des_cipher
+#define des_cipher			cryb_des56_cipher
+#define des56_cipher			cryb_des56_cipher
+#define des112_cipher			cryb_des112_cipher
+#define des268_cipher			cryb_des168_cipher
 #define des_ctx				cryb_des_ctx
 #define des_init			cryb_des_init
 #define des_keystream			cryb_des_keystream
@@ -51,7 +54,9 @@ CRYB_BEGIN
 extern cipher_algorithm des_cipher;
 
 typedef struct {
-	uint32_t sk[32];
+	uint32_t sk1[32];
+	uint32_t sk2[32];
+	uint32_t sk3[32];
 } des_ctx;
 
 void des_init(des_ctx *, cipher_mode mode, const uint8_t *, size_t);

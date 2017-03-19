@@ -264,7 +264,7 @@ static const uint32_t rhs[16] = {
 	} while (0)
 
 static void
-des_setkey(uint32_t sk[32], const uint8_t key[8])
+des_setkey(cipher_mode mode, uint32_t sk[32], const uint8_t key[8])
 {
 	uint32_t x, y, t;
 	unsigned int i;
@@ -295,7 +295,7 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 			x = (x <<  2 | x >> 26) & 0x0FFFFFFF;
 			y = (y <<  2 | y >> 26) & 0x0FFFFFFF;
 		}
-		*sk++ =
+		sk[i * 2] =
 		    (x <<  4 & 0x24000000) | (x << 28 & 0x10000000) |
 		    (x << 14 & 0x08000000) | (x << 18 & 0x02080000) |
 		    (x <<  6 & 0x01000000) | (x <<  9 & 0x00200000) |
@@ -307,7 +307,7 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 		    (y >>  5 & 0x00000020) | (y >> 10 & 0x00000010) |
 		    (y >>  3 & 0x00000008) | (y >> 18 & 0x00000004) |
 		    (y >> 26 & 0x00000002) | (y >> 24 & 0x00000001);
-		*sk++ =
+		sk[i * 2 + 1] =
 		    (x << 15 & 0x20000000) | (x << 17 & 0x10000000) |
 		    (x << 10 & 0x08000000) | (x << 22 & 0x04000000) |
 		    (x >>  2 & 0x02000000) | (x <<  1 & 0x01000000) |
@@ -320,6 +320,12 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 		    (y >>  7 & 0x00000020) | (y >>  3 & 0x00000011) |
 		    (y <<  2 & 0x00000004) | (y >> 21 & 0x00000002);
 	}
+	if (mode == CIPHER_MODE_DECRYPT) {
+		for (i = 0; i < 16; i += 2) {
+			SWAP(sk[i + 0], sk[30 - i]);
+			SWAP(sk[i + 1], sk[31 - i]);
+		}
+	}
 }
 
 /*
@@ -331,10 +337,25 @@ des_crypt_ecb(des_ctx *ctx, const uint8_t input[8], uint8_t output[8])
 	uint32_t x, y, t, *sk;
 	unsigned int i;
 
-	sk = ctx->sk;
-
 	x = be32dec(input + 0);
 	y = be32dec(input + 4);
+	sk = ctx->sk1;
+	DES_IP(x, y);
+	for (i = 0; i < 8; ++i) {
+		DES_ROUND(y, x);
+		DES_ROUND(x, y);
+	}
+	DES_FP(y, x);
+	SWAP(x, y);
+	sk = ctx->sk2;
+	DES_IP(x, y);
+	for (i = 0; i < 8; ++i) {
+		DES_ROUND(y, x);
+		DES_ROUND(x, y);
+	}
+	DES_FP(y, x);
+	SWAP(x, y);
+	sk = ctx->sk3;
 	DES_IP(x, y);
 	for (i = 0; i < 8; ++i) {
 		DES_ROUND(y, x);
@@ -348,15 +369,29 @@ des_crypt_ecb(des_ctx *ctx, const uint8_t input[8], uint8_t output[8])
 void
 des_init(des_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
-	unsigned int i;
+	cipher_mode m1, m2, m3;
 
-	(void)keylen;
-	des_setkey(ctx->sk, key);
 	if (mode == CIPHER_MODE_DECRYPT) {
-		for (i = 0; i < 16; i += 2) {
-			SWAP(ctx->sk[i + 0], ctx->sk[30 - i]);
-			SWAP(ctx->sk[i + 1], ctx->sk[31 - i]);
-		}
+		m1 = m3 = CIPHER_MODE_DECRYPT;
+		m2 = CIPHER_MODE_ENCRYPT;
+	} else {
+		m1 = m3 = CIPHER_MODE_ENCRYPT;
+		m2 = CIPHER_MODE_DECRYPT;
+	}
+	des_setkey(m1, ctx->sk1, key);
+	switch (keylen) {
+	case 24:
+		des_setkey(m2, ctx->sk2, key + 8);
+		des_setkey(m3, ctx->sk3, key + 16);
+		break;
+	case 16:
+		des_setkey(m2, ctx->sk2, key + 8);
+		des_setkey(m3, ctx->sk3, key);
+		break;
+	case 8:
+		des_setkey(m2, ctx->sk2, key);
+		des_setkey(m3, ctx->sk3, key);
+		break;
 	}
 }
 
@@ -397,11 +432,33 @@ des_finish(des_ctx *ctx)
 	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
 
-cipher_algorithm des_cipher = {
+cipher_algorithm des56_cipher = {
 	.name			 = "des",
 	.contextlen		 = sizeof(des_ctx),
 	.blocklen		 = DES_BLOCK_LEN,
 	.keylen			 = DES_BLOCK_LEN,
+	.init			 = (cipher_init_func)des_init,
+	.encrypt		 = (cipher_encrypt_func)des_encrypt,
+	.decrypt		 = (cipher_decrypt_func)des_decrypt,
+	.finish			 = (cipher_finish_func)des_finish,
+};
+
+cipher_algorithm des112_cipher = {
+	.name			 = "2des",
+	.contextlen		 = sizeof(des_ctx),
+	.blocklen		 = DES_BLOCK_LEN,
+	.keylen			 = DES_BLOCK_LEN * 2,
+	.init			 = (cipher_init_func)des_init,
+	.encrypt		 = (cipher_encrypt_func)des_encrypt,
+	.decrypt		 = (cipher_decrypt_func)des_decrypt,
+	.finish			 = (cipher_finish_func)des_finish,
+};
+
+cipher_algorithm des168_cipher = {
+	.name			 = "3des",
+	.contextlen		 = sizeof(des_ctx),
+	.blocklen		 = DES_BLOCK_LEN,
+	.keylen			 = DES_BLOCK_LEN * 3,
 	.init			 = (cipher_init_func)des_init,
 	.encrypt		 = (cipher_encrypt_func)des_encrypt,
 	.decrypt		 = (cipher_decrypt_func)des_decrypt,
