@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
 #include <cryb/memset_s.h>
@@ -371,6 +372,8 @@ des_init(des_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
 	cipher_mode m1, m2, m3;
 
+	assert(mode == CIPHER_MODE_ENCRYPT || mode == CIPHER_MODE_DECRYPT);
+	assert(keylen == 8 || keylen == 16 || keylen == 24);
 	if (mode == CIPHER_MODE_DECRYPT) {
 		m1 = m3 = CIPHER_MODE_DECRYPT;
 		m2 = CIPHER_MODE_ENCRYPT;

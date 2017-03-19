@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
 
@@ -577,6 +578,8 @@ void
 aes_init(aes_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
 
+	assert(mode == CIPHER_MODE_ENCRYPT || mode == CIPHER_MODE_DECRYPT);
+	assert(keylen == 16 || keylen == 24 || keylen == 32);
 	memset(ctx, 0, sizeof *ctx);
 	ctx->mode = mode;
 	if (ctx->mode == CIPHER_MODE_DECRYPT)
