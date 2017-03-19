@@ -48,47 +48,92 @@ CRYB_BEGIN
 #if !HAVE_DECL_BSWAP16
 #define bswap16 cryb_bswap16
 #endif
+#if !HAVE_DECL_BSWAP16V
+#define bswap16v cryb_bswap16v
+#endif
 #if !HAVE_DECL_BSWAP32
 #define bswap32 cryb_bswap32
+#endif
+#if !HAVE_DECL_BSWAP32V
+#define bswap32v cryb_bswap32v
 #endif
 #if !HAVE_DECL_BSWAP64
 #define bswap64 cryb_bswap64
 #endif
+#if !HAVE_DECL_BSWAP64V
+#define bswap64v cryb_bswap64v
+#endif
 #if !HAVE_DECL_BE16ENC
 #define be16enc cryb_be16enc
+#endif
+#if !HAVE_DECL_BE16ENCV
+#define be16encv cryb_be16encv
 #endif
 #if !HAVE_DECL_BE16DEC
 #define be16dec cryb_be16dec
 #endif
+#if !HAVE_DECL_BE16DECV
+#define be16decv cryb_be16decv
+#endif
 #if !HAVE_DECL_BE32ENC
 #define be32enc cryb_be32enc
+#endif
+#if !HAVE_DECL_BE32ENCV
+#define be32encv cryb_be32encv
 #endif
 #if !HAVE_DECL_BE32DEC
 #define be32dec cryb_be32dec
 #endif
+#if !HAVE_DECL_BE32DECV
+#define be32decv cryb_be32decv
+#endif
 #if !HAVE_DECL_BE64ENC
 #define be64enc cryb_be64enc
+#endif
+#if !HAVE_DECL_BE64ENCV
+#define be64encv cryb_be64encv
 #endif
 #if !HAVE_DECL_BE64DEC
 #define be64dec cryb_be64dec
 #endif
+#if !HAVE_DECL_BE64DECV
+#define be64decv cryb_be64decv
+#endif
 #if !HAVE_DECL_LE16ENC
 #define le16enc cryb_le16enc
+#endif
+#if !HAVE_DECL_LE16ENCV
+#define le16encv cryb_le16encv
 #endif
 #if !HAVE_DECL_LE16DEC
 #define le16dec cryb_le16dec
 #endif
+#if !HAVE_DECL_LE16DECV
+#define le16decv cryb_le16decv
+#endif
 #if !HAVE_DECL_LE32ENC
 #define le32enc cryb_le32enc
+#endif
+#if !HAVE_DECL_LE32ENCV
+#define le32encv cryb_le32encv
 #endif
 #if !HAVE_DECL_LE32DEC
 #define le32dec cryb_le32dec
 #endif
+#if !HAVE_DECL_LE32DECV
+#define le32decv cryb_le32decv
+#endif
 #if !HAVE_DECL_LE64ENC
 #define le64enc cryb_le64enc
 #endif
+#if !HAVE_DECL_LE64ENCV
+#define le64encv cryb_le64encv
+#endif
 #if !HAVE_DECL_LE64DEC
 #define le64dec cryb_le64dec
+#endif
+#if !HAVE_DECL_LE64DECV
+#define le64decv cryb_le64decv
 #endif
 #if !HAVE_DECL_HTOBE16
 #define htobe16 cryb_htobe16
@@ -138,6 +183,13 @@ cryb_bswap16(uint16_t u16)
 #endif
 }
 
+static inline void
+cryb_bswap16v(uint16_t *u16, size_t n)
+{
+	for (; n--; u16++)
+		*u16 = cryb_bswap16(*u16);
+}
+
 static inline uint32_t
 cryb_bswap32(uint32_t u32)
 {
@@ -149,6 +201,13 @@ cryb_bswap32(uint32_t u32)
 	    ((u32 & 0x00ff0000LU) >> 16) << 8 |
 	    ((u32 & 0xff000000LU) >> 24) << 0);
 #endif
+}
+
+static inline void
+cryb_bswap32v(uint32_t *u32, size_t n)
+{
+	for (; n--; u32++)
+		*u32 = cryb_bswap32(*u32);
 }
 
 static inline uint64_t
@@ -169,10 +228,24 @@ cryb_bswap64(uint64_t u64)
 }
 
 static inline void
+cryb_bswap64v(uint64_t *u64, size_t n)
+{
+	for (; n--; u64++)
+		*u64 = cryb_bswap64(*u64);
+}
+
+static inline void
 cryb_be16enc(void *p, uint16_t u16)
 {
 	((uint8_t *)p)[1] = u16 & 0xff;
 	((uint8_t *)p)[0] = (u16 >> 8) & 0xff;
+}
+
+static inline void
+cryb_be16encv(void *p, const uint16_t *u16, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u16, u16++)
+		cryb_be16enc(u8, *u16);
 }
 
 static inline uint16_t
@@ -180,6 +253,13 @@ cryb_be16dec(const void *p)
 {
 	return ((uint16_t)((const uint8_t *)p)[1] |
 	    (uint16_t)((const uint8_t *)p)[0] << 8);
+}
+
+static inline void
+cryb_be16decv(uint16_t *u16, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u16, u16++)
+		*u16 = cryb_be16dec(u8);
 }
 
 static inline void
@@ -191,6 +271,13 @@ cryb_be32enc(void *p, uint32_t u32)
 	((uint8_t *)p)[0] = (u32 >> 24) & 0xff;
 }
 
+static inline void
+cryb_be32encv(void *p, const uint32_t *u32, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u32, u32++)
+		cryb_be32enc(u8, *u32);
+}
+
 static inline uint32_t
 cryb_be32dec(const void *p)
 {
@@ -198,6 +285,13 @@ cryb_be32dec(const void *p)
 	    (uint32_t)((const uint8_t *)p)[2] << 8 |
 	    (uint32_t)((const uint8_t *)p)[1] << 16 |
 	    (uint32_t)((const uint8_t *)p)[0] << 24);
+}
+
+static inline void
+cryb_be32decv(uint32_t *u32, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u32, u32++)
+		*u32 = cryb_be32dec(u8);
 }
 
 static inline void
@@ -211,6 +305,13 @@ cryb_be64enc(void *p, uint64_t u64)
 	((uint8_t *)p)[2] = (u64 >> 40) & 0xff;
 	((uint8_t *)p)[1] = (u64 >> 48) & 0xff;
 	((uint8_t *)p)[0] = (u64 >> 56) & 0xff;
+}
+
+static inline void
+cryb_be64encv(void *p, const uint64_t *u64, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u64, u64++)
+		cryb_be64enc(u8, *u64);
 }
 
 static inline uint64_t
@@ -227,10 +328,24 @@ cryb_be64dec(const void *p)
 }
 
 static inline void
+cryb_be64decv(uint64_t *u64, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u64, u64++)
+		*u64 = cryb_be64dec(u8);
+}
+
+static inline void
 cryb_le16enc(void *p, uint16_t u16)
 {
 	((uint8_t *)p)[0] = u16 & 0xff;
 	((uint8_t *)p)[1] = (u16 >> 8) & 0xff;
+}
+
+static inline void
+cryb_le16encv(void *p, const uint16_t *u16, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u16, u16++)
+		cryb_le16enc(u8, *u16);
 }
 
 static inline uint16_t
@@ -238,6 +353,13 @@ cryb_le16dec(const void *p)
 {
 	return ((uint16_t)((const uint8_t *)p)[0] |
 	    (uint16_t)((const uint8_t *)p)[1] << 8);
+}
+
+static inline void
+cryb_le16decv(uint16_t *u16, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u16, u16++)
+		*u16 = cryb_le16dec(u8);
 }
 
 static inline void
@@ -249,6 +371,13 @@ cryb_le32enc(void *p, uint32_t u32)
 	((uint8_t *)p)[3] = (u32 >> 24) & 0xff;
 }
 
+static inline void
+cryb_le32encv(void *p, const uint32_t *u32, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u32, u32++)
+		cryb_le32enc(u8, *u32);
+}
+
 static inline uint32_t
 cryb_le32dec(const void *p)
 {
@@ -256,6 +385,13 @@ cryb_le32dec(const void *p)
 	    (uint32_t)((const uint8_t *)p)[1] << 8 |
 	    (uint32_t)((const uint8_t *)p)[2] << 16 |
 	    (uint32_t)((const uint8_t *)p)[3] << 24);
+}
+
+static inline void
+cryb_le32decv(uint32_t *u32, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u32, u32++)
+		*u32 = cryb_le32dec(u8);
 }
 
 static inline void
@@ -271,6 +407,13 @@ cryb_le64enc(void *p, uint64_t u64)
 	((uint8_t *)p)[7] = (u64 >> 56) & 0xff;
 }
 
+static inline void
+cryb_le64encv(void *p, const uint64_t *u64, size_t n)
+{
+	for (uint8_t *u8 = p; n--; u8 += sizeof *u64, u64++)
+		cryb_le64enc(u8, *u64);
+}
+
 static inline uint64_t
 cryb_le64dec(const void *p)
 {
@@ -282,6 +425,13 @@ cryb_le64dec(const void *p)
 	    (uint64_t)((const uint8_t *)p)[5] << 40 |
 	    (uint64_t)((const uint8_t *)p)[6] << 48 |
 	    (uint64_t)((const uint8_t *)p)[7] << 56);
+}
+
+static inline void
+cryb_le64decv(uint64_t *u64, const void *p, size_t n)
+{
+	for (const uint8_t *u8 = p; n--; u8 += sizeof *u64, u64++)
+		*u64 = cryb_le64dec(u8);
 }
 
 static inline uint16_t
