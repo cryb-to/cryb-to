@@ -46,7 +46,6 @@ CRYB_BEGIN
 #define des268_cipher			cryb_des168_cipher
 #define des_ctx				cryb_des_ctx
 #define des_init			cryb_des_init
-#define des_keystream			cryb_des_keystream
 #define des_encrypt			cryb_des_encrypt
 #define des_decrypt			cryb_des_decrypt
 #define des_finish			cryb_des_finish
