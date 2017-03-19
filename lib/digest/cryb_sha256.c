@@ -1,5 +1,6 @@
 /*-
  * Copyright (c) 2005-2013 Colin Percival
+ * Copyright (c) 2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +11,9 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote
+ *    products derived from this software without specific prior written
+ *    permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -29,44 +33,19 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/bitwise.h>
 #include <cryb/endian.h>
+#include <cryb/memset_s.h>
+
 #include <cryb/sha256.h>
-
-/*
- * Encode a length len/4 vector of (uint32_t) into a length len vector of
- * (uint8_t) in big-endian form.  Assumes len is a multiple of 4.
- */
-static void
-be32enc_vect(uint8_t *dst, const uint32_t *src, size_t len)
-{
-	size_t i;
-
-	for (i = 0; i < len / 4; i++)
-		be32enc(dst + i * 4, src[i]);
-}
-
-/*
- * Decode a big-endian length len vector of (uint8_t) into a length
- * len/4 vector of (uint32_t).  Assumes len is a multiple of 4.
- */
-static void
-be32dec_vect(uint32_t *dst, const uint8_t *src, size_t len)
-{
-	size_t i;
-
-	for (i = 0; i < len / 4; i++)
-		dst[i] = be32dec(src + i * 4);
-}
 
 /* Elementary functions used by SHA256 */
 #define Ch(x, y, z)	((x & (y ^ z)) ^ z)
 #define Maj(x, y, z)	((x & (y | z)) | (y & z))
-#define SHR(x, n)	(x >> n)
-#define ROTR(x, n)	((x >> n) | (x << (32 - n)))
-#define S0(x)		(ROTR(x, 2) ^ ROTR(x, 13) ^ ROTR(x, 22))
-#define S1(x)		(ROTR(x, 6) ^ ROTR(x, 11) ^ ROTR(x, 25))
-#define s0(x)		(ROTR(x, 7) ^ ROTR(x, 18) ^ SHR(x, 3))
-#define s1(x)		(ROTR(x, 17) ^ ROTR(x, 19) ^ SHR(x, 10))
+#define S0(x)		(ror32(x,  2) ^ ror32(x, 13) ^ ror32(x, 22))
+#define S1(x)		(ror32(x,  6) ^ ror32(x, 11) ^ ror32(x, 25))
+#define s0(x)		(ror32(x,  7) ^ ror32(x, 18) ^ (x >>  3))
+#define s1(x)		(ror32(x, 17) ^ ror32(x, 19) ^ (x >> 10))
 
 /* SHA256 round function */
 #define RND(a, b, c, d, e, f, g, h, k)			\
@@ -96,7 +75,7 @@ sha256_Transform(uint32_t * state, const uint8_t block[64])
 	int i;
 
 	/* 1. Prepare message schedule W. */
-	be32dec_vect(W, block, 64);
+	be32decv(W, block, 16);
 	for (i = 16; i < 64; i++)
 		W[i] = s1(W[i - 2]) + W[i - 7] + s0(W[i - 15]) + W[i - 16];
 
@@ -104,16 +83,16 @@ sha256_Transform(uint32_t * state, const uint8_t block[64])
 	memcpy(S, state, 32);
 
 	/* 3. Mix. */
-	RNDr(S, W, 0, 0x428a2f98);
-	RNDr(S, W, 1, 0x71374491);
-	RNDr(S, W, 2, 0xb5c0fbcf);
-	RNDr(S, W, 3, 0xe9b5dba5);
-	RNDr(S, W, 4, 0x3956c25b);
-	RNDr(S, W, 5, 0x59f111f1);
-	RNDr(S, W, 6, 0x923f82a4);
-	RNDr(S, W, 7, 0xab1c5ed5);
-	RNDr(S, W, 8, 0xd807aa98);
-	RNDr(S, W, 9, 0x12835b01);
+	RNDr(S, W,  0, 0x428a2f98);
+	RNDr(S, W,  1, 0x71374491);
+	RNDr(S, W,  2, 0xb5c0fbcf);
+	RNDr(S, W,  3, 0xe9b5dba5);
+	RNDr(S, W,  4, 0x3956c25b);
+	RNDr(S, W,  5, 0x59f111f1);
+	RNDr(S, W,  6, 0x923f82a4);
+	RNDr(S, W,  7, 0xab1c5ed5);
+	RNDr(S, W,  8, 0xd807aa98);
+	RNDr(S, W,  9, 0x12835b01);
 	RNDr(S, W, 10, 0x243185be);
 	RNDr(S, W, 11, 0x550c7dc3);
 	RNDr(S, W, 12, 0x72be5d74);
@@ -172,18 +151,17 @@ sha256_Transform(uint32_t * state, const uint8_t block[64])
 	/* 4. Mix local working variables into global state. */
 	for (i = 0; i < 8; i++)
 		state[i] += S[i];
-
-	/* Clean the stack. */
-	memset(W, 0, 256);
-	memset(S, 0, 32);
-	t0 = t1 = 0;
 }
 
 static uint8_t PAD[64] = {
-	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
 /* Add padding and terminating bit-count. */
@@ -286,10 +264,10 @@ sha256_final(sha256_ctx * ctx, uint8_t *digest)
 	sha256_pad(ctx);
 
 	/* Write the hash. */
-	be32enc_vect(digest, ctx->state, SHA256_DIGEST_LEN);
+	be32encv(digest, ctx->state, SHA256_DIGEST_LEN / 4);
 
 	/* Clear the context state. */
-	memset(ctx, 0, sizeof(*ctx));
+	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
 
 /**
@@ -297,7 +275,7 @@ sha256_final(sha256_ctx * ctx, uint8_t *digest)
  * Compute the SHA256 hash of ${len} bytes from $in} and write it to ${digest}.
  */
 void
-sha256_complete(const void * in, size_t len, uint8_t *digest)
+sha256_complete(const void *in, size_t len, uint8_t *digest)
 {
 	sha256_ctx ctx;
 
@@ -305,65 +283,6 @@ sha256_complete(const void * in, size_t len, uint8_t *digest)
 	sha256_update(&ctx, in, len);
 	sha256_final(&ctx, digest);
 }
-
-#if 0
-/**
- * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
- * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
- * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
- */
-void
-pbkdf2_sha256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
-    size_t saltlen, uint64_t c, uint8_t * buf, size_t dkLen)
-{
-	hmac_sha256_ctx PShctx, hctx;
-	size_t i;
-	uint8_t ivec[4];
-	uint8_t U[SHA256_DIGEST_LEN];
-	uint8_t T[SHA256_DIGEST_LEN];
-	uint64_t j;
-	unsigned int k;
-	size_t clen;
-
-	/* Compute HMAC state after processing P and S. */
-	hmac_sha256_init(&PShctx, passwd, passwdlen);
-	hmac_sha256_update(&PShctx, salt, saltlen);
-
-	/* Iterate through the blocks. */
-	for (i = 0; i * 32 < dkLen; i++) {
-		/* Generate INT(i + 1). */
-		be32enc(ivec, (uint32_t)(i + 1));
-
-		/* Compute U_1 = PRF(P, S || INT(i)). */
-		memcpy(&hctx, &PShctx, sizeof(hmac_sha256_ctx));
-		hmac_sha256_update(&hctx, ivec, 4);
-		hmac_sha256_final(&hctx, U);
-
-		/* T_i = U_1 ... */
-		memcpy(T, U, sizeof T);
-
-		for (j = 2; j <= c; j++) {
-			/* Compute U_j. */
-			hmac_sha256_init(&hctx, passwd, passwdlen);
-			hmac_sha256_update(&hctx, U, 32);
-			hmac_sha256_final(&hctx, U);
-
-			/* ... xor U_j ... */
-			for (k = 0; k < sizeof T; k++)
-				T[k] ^= U[k];
-		}
-
-		/* Copy as many bytes as necessary into buf. */
-		clen = dkLen - i * 32;
-		if (clen > 32)
-			clen = 32;
-		memcpy(&buf[i * 32], T, clen);
-	}
-
-	/* Clean PShctx, since we never called _final on it. */
-	memset(&PShctx, 0, sizeof(hmac_sha256_ctx));
-}
-#endif
 
 digest_algorithm sha256_digest = {
 	.name			 = "sha256",

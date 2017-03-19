@@ -35,30 +35,36 @@
 
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
+#include <cryb/memset_s.h>
+
 #include <cryb/md5.h>
+
+/*
+ * MD5 - RFC 1321
+ */
 
 /* initial state */
 static const uint32_t md5_h[4] = {
-	0x67452301U, 0xefcdab89U, 0x98badcfeU, 0x10325476U,
+	0x67452301UL, 0xefcdab89UL, 0x98badcfeUL, 0x10325476UL,
 };
 
 static const uint32_t md5_k[64] = {
-	0xd76aa478U, 0xe8c7b756U, 0x242070dbU, 0xc1bdceeeU,
-	0xf57c0fafU, 0x4787c62aU, 0xa8304613U, 0xfd469501U,
-	0x698098d8U, 0x8b44f7afU, 0xffff5bb1U, 0x895cd7beU,
-	0x6b901122U, 0xfd987193U, 0xa679438eU, 0x49b40821U,
-	0xf61e2562U, 0xc040b340U, 0x265e5a51U, 0xe9b6c7aaU,
-	0xd62f105dU, 0x02441453U, 0xd8a1e681U, 0xe7d3fbc8U,
-	0x21e1cde6U, 0xc33707d6U, 0xf4d50d87U, 0x455a14edU,
-	0xa9e3e905U, 0xfcefa3f8U, 0x676f02d9U, 0x8d2a4c8aU,
-	0xfffa3942U, 0x8771f681U, 0x6d9d6122U, 0xfde5380cU,
-	0xa4beea44U, 0x4bdecfa9U, 0xf6bb4b60U, 0xbebfbc70U,
-	0x289b7ec6U, 0xeaa127faU, 0xd4ef3085U, 0x04881d05U,
-	0xd9d4d039U, 0xe6db99e5U, 0x1fa27cf8U, 0xc4ac5665U,
-	0xf4292244U, 0x432aff97U, 0xab9423a7U, 0xfc93a039U,
-	0x655b59c3U, 0x8f0ccc92U, 0xffeff47dU, 0x85845dd1U,
-	0x6fa87e4fU, 0xfe2ce6e0U, 0xa3014314U, 0x4e0811a1U,
-	0xf7537e82U, 0xbd3af235U, 0x2ad7d2bbU, 0xeb86d391U,
+	0xd76aa478UL, 0xe8c7b756UL, 0x242070dbUL, 0xc1bdceeeUL,
+	0xf57c0fafUL, 0x4787c62aUL, 0xa8304613UL, 0xfd469501UL,
+	0x698098d8UL, 0x8b44f7afUL, 0xffff5bb1UL, 0x895cd7beUL,
+	0x6b901122UL, 0xfd987193UL, 0xa679438eUL, 0x49b40821UL,
+	0xf61e2562UL, 0xc040b340UL, 0x265e5a51UL, 0xe9b6c7aaUL,
+	0xd62f105dUL, 0x02441453UL, 0xd8a1e681UL, 0xe7d3fbc8UL,
+	0x21e1cde6UL, 0xc33707d6UL, 0xf4d50d87UL, 0x455a14edUL,
+	0xa9e3e905UL, 0xfcefa3f8UL, 0x676f02d9UL, 0x8d2a4c8aUL,
+	0xfffa3942UL, 0x8771f681UL, 0x6d9d6122UL, 0xfde5380cUL,
+	0xa4beea44UL, 0x4bdecfa9UL, 0xf6bb4b60UL, 0xbebfbc70UL,
+	0x289b7ec6UL, 0xeaa127faUL, 0xd4ef3085UL, 0x04881d05UL,
+	0xd9d4d039UL, 0xe6db99e5UL, 0x1fa27cf8UL, 0xc4ac5665UL,
+	0xf4292244UL, 0x432aff97UL, 0xab9423a7UL, 0xfc93a039UL,
+	0x655b59c3UL, 0x8f0ccc92UL, 0xffeff47dUL, 0x85845dd1UL,
+	0x6fa87e4fUL, 0xfe2ce6e0UL, 0xa3014314UL, 0x4e0811a1UL,
+	0xf7537e82UL, 0xbd3af235UL, 0x2ad7d2bbUL, 0xeb86d391UL,
 };
 
 void
@@ -66,7 +72,7 @@ md5_init(md5_ctx *ctx)
 {
 
 	memset(ctx, 0, sizeof *ctx);
-	memcpy(ctx->h, md5_h, sizeof ctx->h);
+	memcpy(ctx->state, md5_h, sizeof ctx->state);
 }
 
 #define md5_f(i, a, b, c, d, x, s) do {					\
@@ -98,13 +104,11 @@ md5_compute(md5_ctx *ctx, const uint8_t *block)
 {
 	uint32_t w[16], a, b, c, d;
 
-	memcpy(w, block, 64);
-	for (int i = 0; i < 16; ++i)
-		w[i] = le32toh(w[i]);
-	a = ctx->h[0];
-	b = ctx->h[1];
-	c = ctx->h[2];
-	d = ctx->h[3];
+	le32decv(w, block, 16);
+	a = ctx->state[0];
+	b = ctx->state[1];
+	c = ctx->state[2];
+	d = ctx->state[3];
 
 	md5_f( 0, a, b, c, d, w,  7);
 	md5_f( 1, d, a, b, c, w, 12);
@@ -174,10 +178,10 @@ md5_compute(md5_ctx *ctx, const uint8_t *block)
 	md5_i(62, c, d, a, b, w, 15);
 	md5_i(63, b, c, d, a, w, 21);
 
-	ctx->h[0] += a;
-	ctx->h[1] += b;
-	ctx->h[2] += c;
-	ctx->h[3] += d;
+	ctx->state[0] += a;
+	ctx->state[1] += b;
+	ctx->state[2] += c;
+	ctx->state[3] += d;
 }
 
 void
@@ -195,7 +199,6 @@ md5_update(md5_ctx *ctx, const void *buf, size_t len)
 			if (ctx->blocklen == sizeof ctx->block) {
 				md5_compute(ctx, ctx->block);
 				ctx->blocklen = 0;
-				memset(ctx->block, 0, sizeof ctx->block);
 			}
 		} else {
 			copylen = sizeof ctx->block;
@@ -212,19 +215,17 @@ md5_final(md5_ctx *ctx, uint8_t *digest)
 {
 
 	ctx->block[ctx->blocklen++] = 0x80;
+	memset(ctx->block + ctx->blocklen, 0,
+	    sizeof ctx->block - ctx->blocklen);
 	if (ctx->blocklen > 56) {
 		md5_compute(ctx, ctx->block);
 		ctx->blocklen = 0;
 		memset(ctx->block, 0, sizeof ctx->block);
 	}
-	le32enc(ctx->block + 56, ctx->bitlen & 0xffffffffUL);
-	le32enc(ctx->block + 60, ctx->bitlen >> 32);
+	le64enc(ctx->block + 56, ctx->bitlen);
 	md5_compute(ctx, ctx->block);
-	le32enc(digest, ctx->h[0]);
-	le32enc(digest + 4, ctx->h[1]);
-	le32enc(digest + 8, ctx->h[2]);
-	le32enc(digest + 12, ctx->h[3]);
-	memset(ctx, 0, sizeof *ctx);
+	le32encv(digest, ctx->state, 4);
+	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
 
 void

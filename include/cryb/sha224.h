@@ -1,5 +1,6 @@
 /*-
  * Copyright (c) 2005-2013 Colin Percival
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +11,9 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote
+ *    products derived from this software without specific prior written
+ *    permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,10 +42,6 @@ CRYB_BEGIN
 #define SHA224_BLOCK_LEN		64
 #define SHA224_DIGEST_LEN		28
 
-/*
- * Use #defines in order to avoid namespace collisions with anyone else's
- * SHA224 code (e.g., the code in OpenSSL).
- */
 #define sha224_digest			cryb_sha224_digest
 #define sha224_ctx			cryb_sha224_ctx
 #define sha224_init			cryb_sha224_init
@@ -51,45 +51,16 @@ CRYB_BEGIN
 
 extern digest_algorithm sha224_digest;
 
-/* Context structure for SHA224 operations. */
 typedef struct {
-	uint32_t state[8];
-	uint64_t count;
-	uint8_t buf[64];
+	uint32_t	 state[8];
+	uint64_t	 count;
+	uint8_t		 buf[64];
 } sha224_ctx;
 
-/**
- * sha224_init(ctx):
- * Initialize the SHA224 context ${ctx}.
- */
 void sha224_init(sha224_ctx *);
-
-/**
- * sha224_update(ctx, in, len):
- * Input ${len} bytes from ${in} into the SHA224 context ${ctx}.
- */
 void sha224_update(sha224_ctx *, const void *, size_t);
-
-/**
- * sha224_final(ctx, digest):
- * Output the SHA224 hash of the data input to the context ${ctx} into the
- * buffer ${digest}.
- */
 void sha224_final(sha224_ctx *, uint8_t *);
-
-/**
- * sha224_complete(in, len, digest):
- * Compute the SHA224 hash of ${len} bytes from $in} and write it to ${digest}.
- */
 void sha224_complete(const void *, size_t, uint8_t *);
-
-/**
- * PBKDF2_SHA224(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
- * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA224 as the PRF, and
- * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
- */
-void pbkdf2_sha224(const uint8_t *, size_t, const uint8_t *, size_t,
-    uint64_t, uint8_t *, size_t);
 
 CRYB_END
 
