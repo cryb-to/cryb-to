@@ -57,9 +57,13 @@ AX_GCC_BUILTIN([__builtin_bswap32])
 AX_GCC_BUILTIN([__builtin_bswap64])
 AC_CHECK_DECLS([
     bswap16, bswap32, bswap64,
+    bswap16v, bswap32v, bswap64v,
     be16enc, be16dec, le16enc, le16dec,
+    be16encv, be16decv, le16encv, le16decv,
     be32enc, be32dec, le32enc, le32dec,
+    be32encv, be32decv, le32encv, le32decv,
     be64enc, be64dec, le64enc, le64dec,
+    be64encv, be64decv, le64encv, le64decv,
     htobe16, be16toh, htole16, le16toh,
     htobe32, be32toh, htole32, le32toh,
     htobe64, be64toh, htole64, le64toh,
