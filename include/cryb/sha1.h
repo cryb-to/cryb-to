@@ -52,10 +52,10 @@ CRYB_BEGIN
 extern digest_algorithm sha1_digest;
 
 typedef struct {
-	uint8_t block[64];
-	uint32_t blocklen;
-	uint32_t h[5];
-	uint64_t bitlen;
+	uint8_t		 block[64];
+	unsigned int	 blocklen;
+	uint32_t	 h[5];
+	uint64_t	 bitlen;
 } sha1_ctx;
 
 void sha1_init(sha1_ctx *);

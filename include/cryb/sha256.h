@@ -1,5 +1,6 @@
 /*-
  * Copyright (c) 2005-2013 Colin Percival
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,6 +11,9 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
+ * 3. The name of the author may not be used to endorse or promote
+ *    products derived from this software without specific prior written
+ *    permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -38,10 +42,6 @@ CRYB_BEGIN
 #define SHA256_BLOCK_LEN		64
 #define SHA256_DIGEST_LEN		32
 
-/*
- * Use #defines in order to avoid namespace collisions with anyone else's
- * SHA256 code (e.g., the code in OpenSSL).
- */
 #define sha256_digest			cryb_sha256_digest
 #define sha256_ctx			cryb_sha256_ctx
 #define sha256_init			cryb_sha256_init
@@ -51,45 +51,16 @@ CRYB_BEGIN
 
 extern digest_algorithm sha256_digest;
 
-/* Context structure for SHA256 operations. */
 typedef struct {
-	uint32_t state[8];
-	uint64_t count;
-	uint8_t buf[64];
+	uint32_t	 state[8];
+	uint64_t	 count;
+	uint8_t		 buf[64];
 } sha256_ctx;
 
-/**
- * sha256_init(ctx):
- * Initialize the SHA256 context ${ctx}.
- */
 void sha256_init(sha256_ctx *);
-
-/**
- * sha256_update(ctx, in, len):
- * Input ${len} bytes from ${in} into the SHA256 context ${ctx}.
- */
 void sha256_update(sha256_ctx *, const void *, size_t);
-
-/**
- * sha256_final(ctx, digest):
- * Output the SHA256 hash of the data input to the context ${ctx} into the
- * buffer ${digest}.
- */
 void sha256_final(sha256_ctx *, uint8_t *);
-
-/**
- * sha256_complete(in, len, digest):
- * Compute the SHA256 hash of ${len} bytes from $in} and write it to ${digest}.
- */
 void sha256_complete(const void *, size_t, uint8_t *);
-
-/**
- * PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, c, buf, dkLen):
- * Compute PBKDF2(passwd, salt, c, dkLen) using HMAC-SHA256 as the PRF, and
- * write the output to buf.  The value dkLen must be at most 32 * (2^32 - 1).
- */
-void pbkdf2_sha256(const uint8_t *, size_t, const uint8_t *, size_t,
-    uint64_t, uint8_t *, size_t);
 
 CRYB_END
 

@@ -35,6 +35,8 @@
 
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
+#include <cryb/memset_s.h>
+
 #include <cryb/sha1.h>
 
 static uint32_t sha1_h[5] = {
@@ -70,11 +72,10 @@ static void
 sha1_compute(sha1_ctx *ctx, const uint8_t *block)
 {
 	uint32_t w[80], a, b, c, d, e;
+	unsigned int i;
 
-	memcpy(w, block, 64);
-	for (int i = 0; i < 16; ++i)
-		w[i] = be32toh(w[i]);
-	for (int i = 16; i < 80; ++i) {
+	be32decv(w, block, 16);
+	for (i = 16; i < 80; ++i) {
 		w[i] = w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16];
 		w[i] = rol32(w[i], 1);
 	}
@@ -190,7 +191,6 @@ sha1_update(sha1_ctx *ctx, const void *buf, size_t len)
 			if (ctx->blocklen == sizeof ctx->block) {
 				sha1_compute(ctx, ctx->block);
 				ctx->blocklen = 0;
-				memset(ctx->block, 0, sizeof ctx->block);
 			}
 		} else {
 			copylen = sizeof ctx->block;
@@ -205,24 +205,19 @@ sha1_update(sha1_ctx *ctx, const void *buf, size_t len)
 void
 sha1_final(sha1_ctx *ctx, uint8_t *digest)
 {
-	uint32_t hi, lo;
 
 	ctx->block[ctx->blocklen++] = 0x80;
+	memset(ctx->block + ctx->blocklen, 0,
+	    sizeof ctx->block - ctx->blocklen);
 	if (ctx->blocklen > 56) {
 		sha1_compute(ctx, ctx->block);
 		ctx->blocklen = 0;
 		memset(ctx->block, 0, sizeof ctx->block);
 	}
-	hi = htobe32(ctx->bitlen >> 32);
-	lo = htobe32(ctx->bitlen & 0xffffffffUL);
-	memcpy(ctx->block + 56, &hi, 4);
-	memcpy(ctx->block + 60, &lo, 4);
-	ctx->blocklen = 64;
+	be64enc(ctx->block + 56, ctx->bitlen);
 	sha1_compute(ctx, ctx->block);
-	for (int i = 0; i < 5; ++i)
-		ctx->h[i] = htobe32(ctx->h[i]);
-	memcpy(digest, ctx->h, 20);
-	memset(ctx, 0, sizeof *ctx);
+	be32encv(digest, ctx->h, 5);
+	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
 
 void

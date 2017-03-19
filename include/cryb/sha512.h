@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2007 Christophe Devine
+ * Copyright (c) 2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,49 +51,17 @@ CRYB_BEGIN
 
 extern digest_algorithm sha512_digest;
 
-/**
- * \brief          SHA-512 context structure
- */
-typedef struct
-{
-    uint64_t total[2];		/*!< number of bytes processed  */
-    uint64_t state[8];		/*!< intermediate digest state  */
-    uint8_t buffer[128];	/*!< data block being processed */
-}
-sha512_ctx;
+typedef struct {
+	uint8_t		 block[128];
+	unsigned int	 blocklen;
+	uint64_t	 h[8];
+	uint64_t	 bitlen[2];
+} sha512_ctx;
 
-/**
- * \brief          SHA-512 context setup
- *
- * \param ctx      context to be initialized
- */
-void sha512_init( sha512_ctx *ctx );
-
-/**
- * \brief          SHA-512 process buffer
- *
- * \param ctx      SHA-512 context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void sha512_update( sha512_ctx *ctx, const void *input, int ilen );
-
-/**
- * \brief          SHA-512 final digest
- *
- * \param ctx      SHA-512 context
- * \param output   SHA-384/512 checksum result
- */
-void sha512_final( sha512_ctx *ctx, uint8_t *output );
-
-/**
- * \brief          Output = SHA-512( input buffer )
- *
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   SHA-384/512 checksum result
- */
-void sha512_complete( const void *input, int ilen, uint8_t *output );
+void sha512_init(sha512_ctx *);
+void sha512_update(sha512_ctx *, const void *, size_t);
+void sha512_final(sha512_ctx *, uint8_t *);
+void sha512_complete(const void *, size_t, uint8_t *);
 
 CRYB_END
 

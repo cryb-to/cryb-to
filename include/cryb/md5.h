@@ -54,8 +54,8 @@ extern digest_algorithm md5_digest;
 typedef struct {
 	uint8_t		 block[64];
 	size_t		 blocklen;
+	uint32_t	 state[4];
 	uint64_t	 bitlen;
-	uint32_t	 h[4];
 } md5_ctx;
 
 void md5_init(md5_ctx *);
