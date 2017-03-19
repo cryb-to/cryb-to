@@ -51,7 +51,7 @@ struct t_case {
 
 static struct t_case t_cases[] = {
 	{
-		.desc	 = "NIST SP 800-20 A.1  0",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   0",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -63,7 +63,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  1",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   1",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -75,7 +75,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  2",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   2",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -87,7 +87,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  3",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   3",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -99,7 +99,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  4",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   4",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -111,7 +111,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  5",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   5",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -123,7 +123,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  6",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   6",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -135,7 +135,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  7",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   7",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -147,7 +147,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  8",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   8",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -159,7 +159,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1  9",
+		.desc	 = "NIST CAVS 11.1 TECBvartext   9",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -171,7 +171,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 10",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  10",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -183,7 +183,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 11",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  11",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -195,7 +195,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 12",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  12",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -207,7 +207,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 13",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  13",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -219,7 +219,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 14",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  14",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -231,7 +231,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 15",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  15",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -243,7 +243,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 16",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  16",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -255,7 +255,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 17",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  17",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -267,7 +267,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 18",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  18",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -279,7 +279,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 19",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  19",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -291,7 +291,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 20",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  20",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -303,7 +303,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 21",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  21",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -315,7 +315,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 22",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  22",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -327,7 +327,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 23",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  23",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -339,7 +339,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 24",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  24",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -351,7 +351,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 25",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  25",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -363,7 +363,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 26",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  26",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -375,7 +375,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 27",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  27",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -387,7 +387,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 28",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  28",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -399,7 +399,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 29",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  29",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -411,7 +411,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 30",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  30",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -423,7 +423,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 31",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  31",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -435,7 +435,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 32",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  32",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -447,7 +447,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 33",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  33",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -459,7 +459,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 34",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  34",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -471,7 +471,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 35",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  35",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -483,7 +483,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 36",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  36",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -495,7 +495,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 37",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  37",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -507,7 +507,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 38",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  38",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -519,7 +519,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 39",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  39",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -531,7 +531,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 40",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  40",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -543,7 +543,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 41",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  41",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -555,7 +555,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 42",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  42",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -567,7 +567,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 43",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  43",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -579,7 +579,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 44",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  44",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -591,7 +591,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 45",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  45",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -603,7 +603,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 46",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  46",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -615,7 +615,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 47",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  47",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -627,7 +627,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 48",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  48",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -639,7 +639,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 49",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  49",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -651,7 +651,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 50",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  50",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -663,7 +663,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 51",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  51",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -675,7 +675,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 52",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  52",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -687,7 +687,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 53",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  53",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -699,7 +699,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 54",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  54",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -711,7 +711,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 55",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  55",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -723,7 +723,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 56",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  56",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -735,7 +735,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 57",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  57",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -747,7 +747,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 58",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  58",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -759,7 +759,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 59",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  59",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -771,7 +771,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 60",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  60",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -783,7 +783,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 61",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  61",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -795,7 +795,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 62",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  62",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -807,7 +807,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.1 63",
+		.desc	 = "NIST CAVS 11.1 TECBvartext  63",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -819,7 +819,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  0",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   0",
 		.key	 = {
 			0x80, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -831,7 +831,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  1",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   1",
 		.key	 = {
 			0x40, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -843,7 +843,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  2",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   2",
 		.key	 = {
 			0x20, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -855,7 +855,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  3",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   3",
 		.key	 = {
 			0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -867,7 +867,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  4",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   4",
 		.key	 = {
 			0x08, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -879,7 +879,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  5",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   5",
 		.key	 = {
 			0x04, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -891,7 +891,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  6",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   6",
 		.key	 = {
 			0x02, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -903,7 +903,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  7",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   7",
 		.key	 = {
 			0x01, 0x80, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -915,7 +915,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  8",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   8",
 		.key	 = {
 			0x01, 0x40, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -927,7 +927,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2  9",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey   9",
 		.key	 = {
 			0x01, 0x20, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -939,7 +939,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 10",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  10",
 		.key	 = {
 			0x01, 0x10, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -951,7 +951,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 11",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  11",
 		.key	 = {
 			0x01, 0x08, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -963,7 +963,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 12",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  12",
 		.key	 = {
 			0x01, 0x04, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -975,7 +975,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 13",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  13",
 		.key	 = {
 			0x01, 0x02, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -987,7 +987,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 14",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  14",
 		.key	 = {
 			0x01, 0x01, 0x80, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -999,7 +999,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 15",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  15",
 		.key	 = {
 			0x01, 0x01, 0x40, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1011,7 +1011,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 16",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  16",
 		.key	 = {
 			0x01, 0x01, 0x20, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1023,7 +1023,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 17",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  17",
 		.key	 = {
 			0x01, 0x01, 0x10, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1035,7 +1035,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 18",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  18",
 		.key	 = {
 			0x01, 0x01, 0x08, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1047,7 +1047,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 19",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  19",
 		.key	 = {
 			0x01, 0x01, 0x04, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1059,7 +1059,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 20",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  20",
 		.key	 = {
 			0x01, 0x01, 0x02, 0x01, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1071,7 +1071,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 21",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  21",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x80, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1083,7 +1083,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 22",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  22",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x40, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1095,7 +1095,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 23",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  23",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x20, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1107,7 +1107,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 24",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  24",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x10, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1119,7 +1119,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 25",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  25",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x08, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1131,7 +1131,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 26",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  26",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x04, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1143,7 +1143,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 27",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  27",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x02, 0x01, 0x01, 0x01, 0x01,
 		},
@@ -1155,7 +1155,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 28",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  28",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x80, 0x01, 0x01, 0x01,
 		},
@@ -1167,7 +1167,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 29",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  29",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x40, 0x01, 0x01, 0x01,
 		},
@@ -1179,7 +1179,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 30",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  30",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x20, 0x01, 0x01, 0x01,
 		},
@@ -1191,7 +1191,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 31",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  31",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x10, 0x01, 0x01, 0x01,
 		},
@@ -1203,7 +1203,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 32",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  32",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x08, 0x01, 0x01, 0x01,
 		},
@@ -1215,7 +1215,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 33",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  33",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x04, 0x01, 0x01, 0x01,
 		},
@@ -1227,7 +1227,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 34",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  34",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x02, 0x01, 0x01, 0x01,
 		},
@@ -1239,7 +1239,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 35",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  35",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x80, 0x01, 0x01,
 		},
@@ -1251,7 +1251,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 36",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  36",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x40, 0x01, 0x01,
 		},
@@ -1263,7 +1263,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 37",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  37",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x20, 0x01, 0x01,
 		},
@@ -1275,7 +1275,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 38",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  38",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x10, 0x01, 0x01,
 		},
@@ -1287,7 +1287,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 39",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  39",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x08, 0x01, 0x01,
 		},
@@ -1299,7 +1299,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 40",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  40",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x04, 0x01, 0x01,
 		},
@@ -1311,7 +1311,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 41",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  41",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x01, 0x01,
 		},
@@ -1323,7 +1323,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 42",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  42",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x80, 0x01,
 		},
@@ -1335,7 +1335,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 43",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  43",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x40, 0x01,
 		},
@@ -1347,7 +1347,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 44",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  44",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x20, 0x01,
 		},
@@ -1359,7 +1359,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 45",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  45",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x10, 0x01,
 		},
@@ -1371,7 +1371,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 46",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  46",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x08, 0x01,
 		},
@@ -1383,7 +1383,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 47",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  47",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x04, 0x01,
 		},
@@ -1395,7 +1395,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 48",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  48",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x01,
 		},
@@ -1407,7 +1407,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 49",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  49",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x80,
 		},
@@ -1419,7 +1419,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 50",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  50",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x40,
 		},
@@ -1431,7 +1431,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 51",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  51",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x20,
 		},
@@ -1443,7 +1443,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 52",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  52",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x10,
 		},
@@ -1455,7 +1455,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 53",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  53",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x08,
 		},
@@ -1467,7 +1467,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 54",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  54",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x04,
 		},
@@ -1479,7 +1479,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.2 55",
+		.desc	 = "NIST CAVS 11.1 TECBvarkey  55",
 		.key	 = {
 			0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02,
 		},
@@ -1491,7 +1491,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  0",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   0",
 		.key	 = {
 			0x10, 0x46, 0x91, 0x34, 0x89, 0x98, 0x01, 0x31,
 		},
@@ -1503,7 +1503,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  1",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   1",
 		.key	 = {
 			0x10, 0x07, 0x10, 0x34, 0x89, 0x98, 0x80, 0x20,
 		},
@@ -1515,7 +1515,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  2",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   2",
 		.key	 = {
 			0x10, 0x07, 0x10, 0x34, 0xc8, 0x98, 0x01, 0x20,
 		},
@@ -1527,7 +1527,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  3",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   3",
 		.key	 = {
 			0x10, 0x46, 0x10, 0x34, 0x89, 0x98, 0x80, 0x20,
 		},
@@ -1539,7 +1539,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  4",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   4",
 		.key	 = {
 			0x10, 0x86, 0x91, 0x15, 0x19, 0x19, 0x01, 0x01,
 		},
@@ -1551,7 +1551,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  5",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   5",
 		.key	 = {
 			0x10, 0x86, 0x91, 0x15, 0x19, 0x58, 0x01, 0x01,
 		},
@@ -1563,7 +1563,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  6",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   6",
 		.key	 = {
 			0x51, 0x07, 0xb0, 0x15, 0x19, 0x58, 0x01, 0x01,
 		},
@@ -1575,7 +1575,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  7",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   7",
 		.key	 = {
 			0x10, 0x07, 0xb0, 0x15, 0x19, 0x19, 0x01, 0x01,
 		},
@@ -1587,7 +1587,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  8",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   8",
 		.key	 = {
 			0x31, 0x07, 0x91, 0x54, 0x98, 0x08, 0x01, 0x01,
 		},
@@ -1599,7 +1599,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3  9",
+		.desc	 = "NIST CAVS 11.1 TECBpermop   9",
 		.key	 = {
 			0x31, 0x07, 0x91, 0x94, 0x98, 0x08, 0x01, 0x01,
 		},
@@ -1611,7 +1611,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 10",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  10",
 		.key	 = {
 			0x10, 0x07, 0x91, 0x15, 0xb9, 0x08, 0x01, 0x40,
 		},
@@ -1623,7 +1623,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 11",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  11",
 		.key	 = {
 			0x31, 0x07, 0x91, 0x15, 0x98, 0x08, 0x01, 0x40,
 		},
@@ -1635,7 +1635,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 12",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  12",
 		.key	 = {
 			0x10, 0x07, 0xd0, 0x15, 0x89, 0x98, 0x01, 0x01,
 		},
@@ -1647,7 +1647,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 13",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  13",
 		.key	 = {
 			0x91, 0x07, 0x91, 0x15, 0x89, 0x98, 0x01, 0x01,
 		},
@@ -1659,7 +1659,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 14",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  14",
 		.key	 = {
 			0x91, 0x07, 0xd0, 0x15, 0x89, 0x19, 0x01, 0x01,
 		},
@@ -1671,7 +1671,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 15",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  15",
 		.key	 = {
 			0x10, 0x07, 0xd0, 0x15, 0x98, 0x98, 0x01, 0x20,
 		},
@@ -1683,7 +1683,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 16",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  16",
 		.key	 = {
 			0x10, 0x07, 0x94, 0x04, 0x98, 0x19, 0x01, 0x01,
 		},
@@ -1695,7 +1695,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 17",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  17",
 		.key	 = {
 			0x01, 0x07, 0x91, 0x04, 0x91, 0x19, 0x04, 0x01,
 		},
@@ -1707,7 +1707,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 18",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  18",
 		.key	 = {
 			0x01, 0x07, 0x91, 0x04, 0x91, 0x19, 0x01, 0x01,
 		},
@@ -1719,7 +1719,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 19",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  19",
 		.key	 = {
 			0x01, 0x07, 0x94, 0x04, 0x91, 0x19, 0x04, 0x01,
 		},
@@ -1731,7 +1731,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 20",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  20",
 		.key	 = {
 			0x19, 0x07, 0x92, 0x10, 0x98, 0x1a, 0x01, 0x01,
 		},
@@ -1743,7 +1743,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 21",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  21",
 		.key	 = {
 			0x10, 0x07, 0x91, 0x19, 0x98, 0x19, 0x08, 0x01,
 		},
@@ -1755,7 +1755,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 22",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  22",
 		.key	 = {
 			0x10, 0x07, 0x91, 0x19, 0x98, 0x1a, 0x08, 0x01,
 		},
@@ -1767,7 +1767,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 23",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  23",
 		.key	 = {
 			0x10, 0x07, 0x92, 0x10, 0x98, 0x19, 0x01, 0x01,
 		},
@@ -1779,7 +1779,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 24",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  24",
 		.key	 = {
 			0x10, 0x07, 0x91, 0x15, 0x98, 0x19, 0x01, 0x0b,
 		},
@@ -1791,7 +1791,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 25",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  25",
 		.key	 = {
 			0x10, 0x04, 0x80, 0x15, 0x98, 0x19, 0x01, 0x01,
 		},
@@ -1803,7 +1803,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 26",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  26",
 		.key	 = {
 			0x10, 0x04, 0x80, 0x15, 0x98, 0x19, 0x01, 0x02,
 		},
@@ -1815,7 +1815,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 27",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  27",
 		.key	 = {
 			0x10, 0x04, 0x80, 0x15, 0x98, 0x19, 0x01, 0x08,
 		},
@@ -1827,7 +1827,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 28",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  28",
 		.key	 = {
 			0x10, 0x02, 0x91, 0x15, 0x98, 0x10, 0x01, 0x04,
 		},
@@ -1839,7 +1839,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 29",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  29",
 		.key	 = {
 			0x10, 0x02, 0x91, 0x15, 0x98, 0x19, 0x01, 0x04,
 		},
@@ -1851,7 +1851,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 30",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  30",
 		.key	 = {
 			0x10, 0x02, 0x91, 0x15, 0x98, 0x10, 0x02, 0x01,
 		},
@@ -1863,7 +1863,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.3 31",
+		.desc	 = "NIST CAVS 11.1 TECBpermop  31",
 		.key	 = {
 			0x10, 0x02, 0x91, 0x16, 0x98, 0x10, 0x01, 0x01,
 		},
@@ -1875,7 +1875,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  0",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   0",
 		.key	 = {
 			0x7c, 0xa1, 0x10, 0x45, 0x4a, 0x1a, 0x6e, 0x57,
 		},
@@ -1887,7 +1887,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  1",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   1",
 		.key	 = {
 			0x01, 0x31, 0xd9, 0x61, 0x9d, 0xc1, 0x37, 0x6e,
 		},
@@ -1899,7 +1899,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  2",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   2",
 		.key	 = {
 			0x07, 0xa1, 0x13, 0x3e, 0x4a, 0x0b, 0x26, 0x86,
 		},
@@ -1911,7 +1911,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  3",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   3",
 		.key	 = {
 			0x38, 0x49, 0x67, 0x4c, 0x26, 0x02, 0x31, 0x9e,
 		},
@@ -1923,7 +1923,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  4",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   4",
 		.key	 = {
 			0x04, 0xb9, 0x15, 0xba, 0x43, 0xfe, 0xb5, 0xb6,
 		},
@@ -1935,7 +1935,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  5",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   5",
 		.key	 = {
 			0x01, 0x13, 0xb9, 0x70, 0xfd, 0x34, 0xf2, 0xce,
 		},
@@ -1947,7 +1947,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  6",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   6",
 		.key	 = {
 			0x01, 0x70, 0xf1, 0x75, 0x46, 0x8f, 0xb5, 0xe6,
 		},
@@ -1959,7 +1959,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  7",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   7",
 		.key	 = {
 			0x43, 0x29, 0x7f, 0xad, 0x38, 0xe3, 0x73, 0xfe,
 		},
@@ -1971,7 +1971,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  8",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   8",
 		.key	 = {
 			0x07, 0xa7, 0x13, 0x70, 0x45, 0xda, 0x2a, 0x16,
 		},
@@ -1983,7 +1983,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4  9",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab   9",
 		.key	 = {
 			0x04, 0x68, 0x91, 0x04, 0xc2, 0xfd, 0x3b, 0x2f,
 		},
@@ -1995,7 +1995,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 10",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  10",
 		.key	 = {
 			0x37, 0xd0, 0x6b, 0xb5, 0x16, 0xcb, 0x75, 0x46,
 		},
@@ -2007,7 +2007,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 11",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  11",
 		.key	 = {
 			0x1f, 0x08, 0x26, 0x0d, 0x1a, 0xc2, 0x46, 0x5e,
 		},
@@ -2019,7 +2019,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 12",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  12",
 		.key	 = {
 			0x58, 0x40, 0x23, 0x64, 0x1a, 0xba, 0x61, 0x76,
 		},
@@ -2031,7 +2031,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 13",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  13",
 		.key	 = {
 			0x02, 0x58, 0x16, 0x16, 0x46, 0x29, 0xb0, 0x07,
 		},
@@ -2043,7 +2043,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 14",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  14",
 		.key	 = {
 			0x49, 0x79, 0x3e, 0xbc, 0x79, 0xb3, 0x25, 0x8f,
 		},
@@ -2055,7 +2055,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 15",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  15",
 		.key	 = {
 			0x4f, 0xb0, 0x5e, 0x15, 0x15, 0xab, 0x73, 0xa7,
 		},
@@ -2067,7 +2067,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 16",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  16",
 		.key	 = {
 			0x49, 0xe9, 0x5d, 0x6d, 0x4c, 0xa2, 0x29, 0xbf,
 		},
@@ -2079,7 +2079,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 17",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  17",
 		.key	 = {
 			0x01, 0x83, 0x10, 0xdc, 0x40, 0x9b, 0x26, 0xd6,
 		},
@@ -2091,7 +2091,7 @@ static struct t_case t_cases[] = {
 		},
 	},
 	{
-		.desc	 = "NIST SP 800-20 A.4 18",
+		.desc	 = "NIST CAVS 11.1 TECBsubtab  18",
 		.key	 = {
 			0x1c, 0x58, 0x7f, 0x1c, 0x13, 0x92, 0x4f, 0xef,
 		},
