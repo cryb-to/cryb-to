@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
 #include <cryb/memset_s.h>
@@ -56,10 +57,12 @@ static const char magic256[] = "expand 32-byte k";
  * set to 20, the most commonly used value.
  */
 void
-salsa_init(salsa_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
+salsa_init(salsa_ctx *ctx, cipher_mode mode CRYB_UNUSED,
+    const uint8_t *key, size_t keylen)
 {
 
-	(void)mode;
+	assert(mode == CIPHER_MODE_ENCRYPT || mode == CIPHER_MODE_DECRYPT);
+	assert(keylen == 16 || keylen == 32);
 	memset(ctx, 0, sizeof *ctx);
 	if (keylen == 32) {
 		/* magic */

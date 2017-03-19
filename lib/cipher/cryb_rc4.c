@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
 #include <cryb/memset_s.h>
@@ -39,12 +40,14 @@
 #include <cryb/rc4.h>
 
 void
-rc4_init(rc4_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
+rc4_init(rc4_ctx *ctx, cipher_mode mode CRYB_UNUSED,
+    const uint8_t *key, size_t keylen)
 {
 	unsigned int i, j;
 	uint8_t t;
 
-	(void)mode;
+	assert(mode == CIPHER_MODE_ENCRYPT || mode == CIPHER_MODE_DECRYPT);
+	assert(keylen > 0);
 	memset(ctx, 0, sizeof *ctx);
 	for (i = 0; i < 256; ++i)
 		ctx->s[i] = i;
