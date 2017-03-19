@@ -214,7 +214,7 @@ static const uint32_t rhs[16] = {
 /*
  * Initial Permutation macro
  */
-#define DES_IP(x,y) \
+#define DES_IP(x, y) \
 	do {								\
 		t = (x >>  4 ^ y) & 0x0f0f0f0f; y ^= t; x ^= t <<  4;	\
 		t = (x >> 16 ^ y) & 0x0000ffff; y ^= t; x ^= t << 16;	\
@@ -228,7 +228,7 @@ static const uint32_t rhs[16] = {
 /*
  * Final Permutation macro
  */
-#define DES_FP(x,y) \
+#define DES_FP(x, y) \
 	do {								\
 		x = ror32(x, 1) & 0xffffffff;				\
 		t = (x ^ y) & 0xaaaaaaaa; x ^= t; y ^= t;		\
@@ -242,17 +242,17 @@ static const uint32_t rhs[16] = {
 /*
  * DES round macro
  */
-#define DES_ROUND(x,y)							\
+#define DES_ROUND(x, y)							\
 	do {								\
 		t = *sk++ ^ x;						\
 		y ^=							\
-		    sb8[t       & 0x3f] ^				\
+		    sb8[t >>  0 & 0x3f] ^				\
 		    sb6[t >>  8 & 0x3f] ^				\
 		    sb4[t >> 16 & 0x3f] ^				\
 		    sb2[t >> 24 & 0x3f];				\
 		t = *sk++ ^ ror32(x, 4);				\
 		y ^=							\
-		    sb7[t       & 0x3f] ^				\
+		    sb7[t >>  0 & 0x3f] ^				\
 		    sb5[t >>  8 & 0x3f] ^				\
 		    sb3[t >> 16 & 0x3f] ^				\
 		    sb1[t >> 24 & 0x3f];				\
@@ -273,14 +273,14 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 	y = be32dec(key + 4);
 
 	/* permuted choice 1 */
-	t = (y >>  4 ^ x) & 0x0f0f0f0f;  x ^= t; y ^= t <<  4;
-	t = (y       ^ x) & 0x10101010;  x ^= t; y ^= t      ;
-	x = lhs[x       & 0xf] << 3 | lhs[x >>  8 & 0xf] << 2 |
-	    lhs[x >> 16 & 0xf] << 1 | lhs[x >> 24 & 0xf]      |
+	t = (y >>  4 ^ x) & 0x0f0f0f0f; x ^= t; y ^= t <<  4;
+	t = (y >>  0 ^ x) & 0x10101010; x ^= t; y ^= t <<  0;
+	x = lhs[x >>  0 & 0xf] << 3 | lhs[x >>	8 & 0xf] << 2 |
+	    lhs[x >> 16 & 0xf] << 1 | lhs[x >> 24 & 0xf] << 0 |
 	    lhs[x >>  5 & 0xf] << 7 | lhs[x >> 13 & 0xf] << 6 |
 	    lhs[x >> 21 & 0xf] << 5 | lhs[x >> 29 & 0xf] << 4;
-	y = rhs[y >>  1 & 0xf] << 3 | rhs[y >>  9 & 0xf] << 2 |
-	    rhs[y >> 17 & 0xf] << 1 | rhs[y >> 25 & 0xf]      |
+	y = rhs[y >>  1 & 0xf] << 3 | rhs[y >>	9 & 0xf] << 2 |
+	    rhs[y >> 17 & 0xf] << 1 | rhs[y >> 25 & 0xf] << 0 |
 	    rhs[y >>  4 & 0xf] << 7 | rhs[y >> 12 & 0xf] << 6 |
 	    rhs[y >> 20 & 0xf] << 5 | rhs[y >> 28 & 0xf] << 4;
 	x &= 0x0FFFFFFF;
@@ -303,7 +303,7 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 		    (x <<  2 & 0x00020000) | (x >> 10 & 0x00010000) |
 		    (y >> 13 & 0x00002000) | (y >>  4 & 0x00001000) |
 		    (y <<  6 & 0x00000800) | (y >>  1 & 0x00000400) |
-		    (y >> 14 & 0x00000200) | (y       & 0x00000100) |
+		    (y >> 14 & 0x00000200) | (y >>  0 & 0x00000100) |
 		    (y >>  5 & 0x00000020) | (y >> 10 & 0x00000010) |
 		    (y >>  3 & 0x00000008) | (y >> 18 & 0x00000004) |
 		    (y >> 26 & 0x00000002) | (y >> 24 & 0x00000001);
@@ -316,7 +316,7 @@ des_setkey(uint32_t sk[32], const uint8_t key[8])
 		    (x << 15 & 0x00020000) | (x >>  4 & 0x00010000) |
 		    (y >>  2 & 0x00002000) | (y <<  8 & 0x00001000) |
 		    (y >> 14 & 0x00000808) | (y >>  9 & 0x00000400) |
-		    (y       & 0x00000200) | (y <<  7 & 0x00000100) |
+		    (y >>  0 & 0x00000200) | (y <<  7 & 0x00000100) |
 		    (y >>  7 & 0x00000020) | (y >>  3 & 0x00000011) |
 		    (y <<  2 & 0x00000004) | (y >> 21 & 0x00000002);
 	}
@@ -354,7 +354,7 @@ des_init(des_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 	des_setkey(ctx->sk, key);
 	if (mode == CIPHER_MODE_DECRYPT) {
 		for (i = 0; i < 16; i += 2) {
-			SWAP(ctx->sk[i    ], ctx->sk[30 - i]);
+			SWAP(ctx->sk[i + 0], ctx->sk[30 - i]);
 			SWAP(ctx->sk[i + 1], ctx->sk[31 - i]);
 		}
 	}
