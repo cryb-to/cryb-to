@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,14 +43,16 @@ CRYB_BEGIN
 #define des_cipher			cryb_des56_cipher
 #define des56_cipher			cryb_des56_cipher
 #define des112_cipher			cryb_des112_cipher
-#define des268_cipher			cryb_des168_cipher
+#define des168_cipher			cryb_des168_cipher
 #define des_ctx				cryb_des_ctx
 #define des_init			cryb_des_init
 #define des_encrypt			cryb_des_encrypt
 #define des_decrypt			cryb_des_decrypt
 #define des_finish			cryb_des_finish
 
-extern cipher_algorithm des_cipher;
+extern cipher_algorithm des56_cipher;
+extern cipher_algorithm des112_cipher;
+extern cipher_algorithm des168_cipher;
 
 typedef struct {
 	uint32_t sk1[32];
