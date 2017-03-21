@@ -52,7 +52,6 @@ extern cipher_algorithm aes192_cipher;
 extern cipher_algorithm aes256_cipher;
 
 typedef struct {
-	int	 mode;
 	int	 nr;
 	uint32_t rk[68];
 } aes_ctx;
