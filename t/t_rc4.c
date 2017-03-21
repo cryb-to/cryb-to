@@ -51,6 +51,7 @@ struct t_case {
 /***************************************************************************
  * Test cases
  */
+
 static struct t_case t_cases[] = {
 	/* test vectors from RFC 6229 */
 	{
@@ -1962,6 +1963,7 @@ static struct t_case t_cases[] = {
 /***************************************************************************
  * Test functions
  */
+
 static int
 t_rc4(char **desc CRYB_UNUSED, void *arg)
 {
@@ -1975,7 +1977,7 @@ t_rc4(char **desc CRYB_UNUSED, void *arg)
 	rc4_init(&ctx, CIPHER_MODE_ENCRYPT, t->key, t->keylen);
 	for (i = offset = 0; i < 18; ++i) {
 		do {
-			rc4_update(&ctx, t_zero, 16, out);
+			rc4_keystream(&ctx, out, 16);
 			offset += 16;
 		} while (offset <= t->out[i].offset);
 		ret &= t_compare_mem(t->out[i].bytes, out, 16);

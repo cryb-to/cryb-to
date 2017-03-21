@@ -33,6 +33,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/assert.h>
 #include <cryb/bitwise.h>
 #include <cryb/endian.h>
 
@@ -577,24 +578,37 @@ void
 aes_init(aes_ctx *ctx, cipher_mode mode, const uint8_t *key, size_t keylen)
 {
 
+	assert(mode == CIPHER_MODE_ENCRYPT || mode == CIPHER_MODE_DECRYPT);
+	assert(keylen == 16 || keylen == 24 || keylen == 32);
 	memset(ctx, 0, sizeof *ctx);
-	ctx->mode = mode;
-	if (ctx->mode == CIPHER_MODE_DECRYPT)
+	if (mode == CIPHER_MODE_DECRYPT)
 		aes_setkey_dec(ctx, key, keylen);
 	else
 		aes_setkey_enc(ctx, key, keylen);
 }
 
-
-void
-aes_update(aes_ctx *ctx, const void *in, size_t len, void *out)
+size_t
+aes_encrypt(aes_ctx *ctx, const void *vpt, uint8_t *ct, size_t len)
 {
+	const uint8_t *pt = vpt;
+	unsigned int i;
 
-	(void)len;
-	if (ctx->mode == CIPHER_MODE_DECRYPT)
-		aes_dec(ctx, in, out);
-	else
-		aes_enc(ctx, in, out);
+	len -= len % AES_BLOCK_LEN;
+	for (i = 0; i < len; i += AES_BLOCK_LEN)
+		aes_enc(ctx, pt + i, ct + i);
+	return (len);
+}
+
+size_t
+aes_decrypt(aes_ctx *ctx, const uint8_t *ct, void *vpt, size_t len)
+{
+	uint8_t *pt = vpt;
+	unsigned int i;
+
+	len -= len % AES_BLOCK_LEN;
+	for (i = 0; i < len; i += AES_BLOCK_LEN)
+		aes_dec(ctx, ct + i, pt + i);
+	return (len);
 }
 
 void
@@ -610,7 +624,8 @@ cipher_algorithm aes128_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 128 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };
 
@@ -620,7 +635,8 @@ cipher_algorithm aes192_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 192 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };
 
@@ -630,6 +646,7 @@ cipher_algorithm aes256_cipher = {
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 256 / 8,
 	.init			 = (cipher_init_func)aes_init,
-	.update			 = (cipher_update_func)aes_update,
+	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
 	.finish			 = (cipher_finish_func)aes_finish,
 };

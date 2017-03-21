@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_AES_H_INCLUDED
-#define CRYB_AES_H_INCLUDED
+#ifndef CRYB_SALSA_H_INCLUDED
+#define CRYB_SALSA_H_INCLUDED
 
 #ifndef CRYB_TO
 #include <cryb/to.h>
@@ -38,28 +38,28 @@
 
 CRYB_BEGIN
 
-#define AES_BLOCK_LEN			16
+#define salsa_cipher			cryb_salsa_cipher
+#define salsa_ctx			cryb_salsa_ctx
+#define salsa_init			cryb_salsa_init
+#define salsa_reset			cryb_salsa_reset
+#define salsa_keystream			cryb_salsa_keystream
+#define salsa_encrypt			cryb_salsa_encrypt
+#define salsa_decrypt			cryb_salsa_decrypt
+#define salsa_finish			cryb_salsa_finish
 
-#define aes_cipher			cryb_aes_cipher
-#define aes_ctx				cryb_aes_ctx
-#define aes_init			cryb_aes_init
-#define aes_encrypt			cryb_aes_encrypt
-#define aes_decrypt			cryb_aes_decrypt
-#define aes_finish			cryb_aes_finish
-
-extern cipher_algorithm aes128_cipher;
-extern cipher_algorithm aes192_cipher;
-extern cipher_algorithm aes256_cipher;
+extern cipher_algorithm salsa_cipher;
 
 typedef struct {
-	int	 nr;
-	uint32_t rk[68];
-} aes_ctx;
+	uint32_t state[16];
+	unsigned int rounds;
+} salsa_ctx;
 
-void aes_init(aes_ctx *, cipher_mode mode, const uint8_t *, size_t);
-size_t aes_encrypt(aes_ctx *, const void *, uint8_t *, size_t);
-size_t aes_decrypt(aes_ctx *, const uint8_t *, void *, size_t);
-void aes_finish(aes_ctx *);
+void salsa_init(salsa_ctx *, cipher_mode, const uint8_t *, size_t);
+void salsa_reset(salsa_ctx *, const uint8_t *, unsigned int);
+size_t salsa_keystream(salsa_ctx *, uint8_t *, size_t);
+size_t salsa_encrypt(salsa_ctx *, const void *, uint8_t *, size_t);
+size_t salsa_decrypt(salsa_ctx *, const uint8_t *, void *, size_t);
+void salsa_finish(salsa_ctx *);
 
 CRYB_END
 

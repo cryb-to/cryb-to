@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_AES_H_INCLUDED
-#define CRYB_AES_H_INCLUDED
+#ifndef CRYB_DES_H_INCLUDED
+#define CRYB_DES_H_INCLUDED
 
 #ifndef CRYB_TO
 #include <cryb/to.h>
@@ -38,28 +38,32 @@
 
 CRYB_BEGIN
 
-#define AES_BLOCK_LEN			16
+#define DES_BLOCK_LEN			8
 
-#define aes_cipher			cryb_aes_cipher
-#define aes_ctx				cryb_aes_ctx
-#define aes_init			cryb_aes_init
-#define aes_encrypt			cryb_aes_encrypt
-#define aes_decrypt			cryb_aes_decrypt
-#define aes_finish			cryb_aes_finish
+#define des_cipher			cryb_des56_cipher
+#define des56_cipher			cryb_des56_cipher
+#define des112_cipher			cryb_des112_cipher
+#define des168_cipher			cryb_des168_cipher
+#define des_ctx				cryb_des_ctx
+#define des_init			cryb_des_init
+#define des_encrypt			cryb_des_encrypt
+#define des_decrypt			cryb_des_decrypt
+#define des_finish			cryb_des_finish
 
-extern cipher_algorithm aes128_cipher;
-extern cipher_algorithm aes192_cipher;
-extern cipher_algorithm aes256_cipher;
+extern cipher_algorithm des56_cipher;
+extern cipher_algorithm des112_cipher;
+extern cipher_algorithm des168_cipher;
 
 typedef struct {
-	int	 nr;
-	uint32_t rk[68];
-} aes_ctx;
+	uint32_t sk1[32];
+	uint32_t sk2[32];
+	uint32_t sk3[32];
+} des_ctx;
 
-void aes_init(aes_ctx *, cipher_mode mode, const uint8_t *, size_t);
-size_t aes_encrypt(aes_ctx *, const void *, uint8_t *, size_t);
-size_t aes_decrypt(aes_ctx *, const uint8_t *, void *, size_t);
-void aes_finish(aes_ctx *);
+void des_init(des_ctx *, cipher_mode mode, const uint8_t *, size_t);
+size_t des_encrypt(des_ctx *, const void *, uint8_t *, size_t);
+size_t des_decrypt(des_ctx *, const uint8_t *, void *, size_t);
+void des_finish(des_ctx *);
 
 CRYB_END
 

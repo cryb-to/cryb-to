@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_AES_H_INCLUDED
-#define CRYB_AES_H_INCLUDED
+#ifndef CRYB_CHACHA_H_INCLUDED
+#define CRYB_CHACHA_H_INCLUDED
 
 #ifndef CRYB_TO
 #include <cryb/to.h>
@@ -38,28 +38,28 @@
 
 CRYB_BEGIN
 
-#define AES_BLOCK_LEN			16
+#define chacha_cipher			cryb_chacha_cipher
+#define chacha_ctx			cryb_chacha_ctx
+#define chacha_init			cryb_chacha_init
+#define chacha_reset			cryb_chacha_reset
+#define chacha_keystream		cryb_chacha_keystream
+#define chacha_encrypt			cryb_chacha_encrypt
+#define chacha_decrypt			cryb_chacha_decrypt
+#define chacha_finish			cryb_chacha_finish
 
-#define aes_cipher			cryb_aes_cipher
-#define aes_ctx				cryb_aes_ctx
-#define aes_init			cryb_aes_init
-#define aes_encrypt			cryb_aes_encrypt
-#define aes_decrypt			cryb_aes_decrypt
-#define aes_finish			cryb_aes_finish
-
-extern cipher_algorithm aes128_cipher;
-extern cipher_algorithm aes192_cipher;
-extern cipher_algorithm aes256_cipher;
+extern cipher_algorithm chacha_cipher;
 
 typedef struct {
-	int	 nr;
-	uint32_t rk[68];
-} aes_ctx;
+	uint32_t state[16];
+	unsigned int rounds;
+} chacha_ctx;
 
-void aes_init(aes_ctx *, cipher_mode mode, const uint8_t *, size_t);
-size_t aes_encrypt(aes_ctx *, const void *, uint8_t *, size_t);
-size_t aes_decrypt(aes_ctx *, const uint8_t *, void *, size_t);
-void aes_finish(aes_ctx *);
+void chacha_init(chacha_ctx *, cipher_mode, const uint8_t *, size_t);
+void chacha_reset(chacha_ctx *, const uint8_t *, unsigned int);
+size_t chacha_keystream(chacha_ctx *, uint8_t *, size_t);
+size_t chacha_encrypt(chacha_ctx *, const void *, uint8_t *, size_t);
+size_t chacha_decrypt(chacha_ctx *, const uint8_t *, void *, size_t);
+void chacha_finish(chacha_ctx *);
 
 CRYB_END
 

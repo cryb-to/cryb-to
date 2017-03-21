@@ -40,7 +40,9 @@ const char *cryb_cipher_version(void);
 
 #define cipher_ctx			cryb_cipher_ctx
 #define cipher_init_func		cryb_cipher_init_func
-#define cipher_update_func		cryb_cipher_update_func
+#define cipher_keystream_func		cryb_cipher_keystream_func
+#define cipher_encrypt_func		cryb_cipher_encrypt_func
+#define cipher_decrypt_func		cryb_cipher_decrypt_func
 #define cipher_finish_func		cryb_cipher_finish_func
 #define cipher_algorithm		cryb_cipher_algorithm
 
@@ -51,7 +53,9 @@ typedef enum {
 
 typedef void cipher_ctx;
 typedef void (*cipher_init_func)(cipher_ctx *, cipher_mode, const uint8_t *, size_t);
-typedef void (*cipher_update_func)(cipher_ctx *, const void *, size_t, void *);
+typedef void (*cipher_keystream_func)(cipher_ctx *, uint8_t *, size_t);
+typedef void (*cipher_encrypt_func)(cipher_ctx *, const void *, uint8_t *, size_t);
+typedef void (*cipher_decrypt_func)(cipher_ctx *, const uint8_t *, void *, size_t);
 typedef void (*cipher_finish_func)(cipher_ctx *);
 
 typedef struct {
@@ -59,9 +63,11 @@ typedef struct {
 	size_t			 contextlen;	/* size of context structure */
 	size_t			 blocklen;	/* block length */
 	size_t			 keylen;	/* key length */
-	cipher_init_func	 init;		/* initialization method */
-	cipher_update_func	 update;	/* {enc,dec}ryption method */
-	cipher_finish_func	 finish;	/* finalization method */
+	cipher_init_func	 init;		/* initialize */
+	cipher_keystream_func	 keystream;	/* generate keystream */
+	cipher_encrypt_func	 encrypt;	/* encrypt */
+	cipher_decrypt_func	 decrypt;	/* decrypt */
+	cipher_finish_func	 finish;	/* finalize */
 } cipher_algorithm;
 
 #define get_cipher_algorithm		cryb_get_cipher_algorithm
@@ -70,8 +76,12 @@ const cipher_algorithm *get_cipher_algorithm(const char *);
 
 #define cipher_init(alg, ctx, mode, key, keylen)			\
 	(alg)->init((ctx), (mode), (key), (keylen))
-#define cipher_update(alg, ctx, in, len, out)				\
-	(alg)->update((ctx), (in), (len), (out))
+#define cipher_keystream(alg, ctx, out, len)				\
+	(alg)->keystream((ctx), (out), (len))
+#define cipher_encrypt(alg, ctx, in, out, len)				\
+	(alg)->encrypt((ctx), (in), (out), (len))
+#define cipher_decrypt(alg, ctx, in, out, len)				\
+	(alg)->decrypt((ctx), (in), (out), (len))
 #define cipher_finish(alg, ctx)						\
 	(alg)->finish((ctx))
 
