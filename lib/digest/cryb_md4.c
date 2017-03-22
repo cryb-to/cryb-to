@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2007 Christophe Devine
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,217 +26,169 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-/*
- *  The MD4 algorithm was designed by Ron Rivest in 1990.
- *
- *  http://www.ietf.org/rfc/rfc1186.txt
- *  http://www.ietf.org/rfc/rfc1320.txt
- */
 
 #include "cryb/impl.h"
 
 #include <stdint.h>
 #include <string.h>
 
+#include <cryb/bitwise.h>
 #include <cryb/endian.h>
+#include <cryb/memset_s.h>
+
 #include <cryb/md4.h>
 
 /*
- * MD4 context setup
+ * MD4 - RFC 1320
  */
-void md4_init( md4_ctx *ctx )
-{
-    ctx->total = 0;
 
-    ctx->state[0] = 0x67452301;
-    ctx->state[1] = 0xEFCDAB89;
-    ctx->state[2] = 0x98BADCFE;
-    ctx->state[3] = 0x10325476;
-}
-
-static void md4_process( md4_ctx *ctx, const uint8_t *data )
-{
-    uint32_t X[16], A, B, C, D;
-
-    X[ 0] = le32dec(data +  0);
-    X[ 1] = le32dec(data +  4);
-    X[ 2] = le32dec(data +  8);
-    X[ 3] = le32dec(data + 12);
-    X[ 4] = le32dec(data + 16);
-    X[ 5] = le32dec(data + 20);
-    X[ 6] = le32dec(data + 24);
-    X[ 7] = le32dec(data + 28);
-    X[ 8] = le32dec(data + 32);
-    X[ 9] = le32dec(data + 36);
-    X[10] = le32dec(data + 40);
-    X[11] = le32dec(data + 44);
-    X[12] = le32dec(data + 48);
-    X[13] = le32dec(data + 52);
-    X[14] = le32dec(data + 56);
-    X[15] = le32dec(data + 60);
-
-#define S(x,n) ((x << n) | ((x & 0xFFFFFFFF) >> (32 - n)))
-
-    A = ctx->state[0];
-    B = ctx->state[1];
-    C = ctx->state[2];
-    D = ctx->state[3];
-
-#define F(x, y, z) ((x & y) | ((~x) & z))
-#define P(a,b,c,d,x,s) { a += F(b,c,d) + x; a = S(a,s); }
-
-    P( A, B, C, D, X[ 0],  3 );
-    P( D, A, B, C, X[ 1],  7 );
-    P( C, D, A, B, X[ 2], 11 );
-    P( B, C, D, A, X[ 3], 19 );
-    P( A, B, C, D, X[ 4],  3 );
-    P( D, A, B, C, X[ 5],  7 );
-    P( C, D, A, B, X[ 6], 11 );
-    P( B, C, D, A, X[ 7], 19 );
-    P( A, B, C, D, X[ 8],  3 );
-    P( D, A, B, C, X[ 9],  7 );
-    P( C, D, A, B, X[10], 11 );
-    P( B, C, D, A, X[11], 19 );
-    P( A, B, C, D, X[12],  3 );
-    P( D, A, B, C, X[13],  7 );
-    P( C, D, A, B, X[14], 11 );
-    P( B, C, D, A, X[15], 19 );
-
-#undef P
-#undef F
-
-#define F(x,y,z) ((x & y) | (x & z) | (y & z))
-#define P(a,b,c,d,x,s) { a += F(b,c,d) + x + 0x5A827999; a = S(a,s); }
-
-    P( A, B, C, D, X[ 0],  3 );
-    P( D, A, B, C, X[ 4],  5 );
-    P( C, D, A, B, X[ 8],  9 );
-    P( B, C, D, A, X[12], 13 );
-    P( A, B, C, D, X[ 1],  3 );
-    P( D, A, B, C, X[ 5],  5 );
-    P( C, D, A, B, X[ 9],  9 );
-    P( B, C, D, A, X[13], 13 );
-    P( A, B, C, D, X[ 2],  3 );
-    P( D, A, B, C, X[ 6],  5 );
-    P( C, D, A, B, X[10],  9 );
-    P( B, C, D, A, X[14], 13 );
-    P( A, B, C, D, X[ 3],  3 );
-    P( D, A, B, C, X[ 7],  5 );
-    P( C, D, A, B, X[11],  9 );
-    P( B, C, D, A, X[15], 13 );
-
-#undef P
-#undef F
-
-#define F(x,y,z) (x ^ y ^ z)
-#define P(a,b,c,d,x,s) { a += F(b,c,d) + x + 0x6ED9EBA1; a = S(a,s); }
-
-    P( A, B, C, D, X[ 0],  3 );
-    P( D, A, B, C, X[ 8],  9 );
-    P( C, D, A, B, X[ 4], 11 );
-    P( B, C, D, A, X[12], 15 );
-    P( A, B, C, D, X[ 2],  3 );
-    P( D, A, B, C, X[10],  9 );
-    P( C, D, A, B, X[ 6], 11 );
-    P( B, C, D, A, X[14], 15 );
-    P( A, B, C, D, X[ 1],  3 );
-    P( D, A, B, C, X[ 9],  9 );
-    P( C, D, A, B, X[ 5], 11 );
-    P( B, C, D, A, X[13], 15 );
-    P( A, B, C, D, X[ 3],  3 );
-    P( D, A, B, C, X[11],  9 );
-    P( C, D, A, B, X[ 7], 11 );
-    P( B, C, D, A, X[15], 15 );
-
-#undef F
-#undef P
-
-    ctx->state[0] += A;
-    ctx->state[1] += B;
-    ctx->state[2] += C;
-    ctx->state[3] += D;
-}
-
-/*
- * MD4 process buffer
- */
-void md4_update( md4_ctx *ctx, const void *input, int ilen )
-{
-    int fill;
-    uint32_t left;
-
-    if( ilen <= 0 )
-        return;
-
-    left = ctx->total & 0x3F;
-    fill = 64 - left;
-
-    ctx->total += ilen;
-
-    if( left && ilen >= fill )
-    {
-        memcpy( (ctx->buffer + left), input, fill );
-        md4_process( ctx, ctx->buffer );
-        input += fill;
-        ilen  -= fill;
-        left = 0;
-    }
-
-    while( ilen >= 64 )
-    {
-        md4_process( ctx, input );
-        input += 64;
-        ilen  -= 64;
-    }
-
-    if( ilen > 0 )
-    {
-        memcpy( (ctx->buffer + left), input, ilen );
-    }
-}
-
-static const uint8_t md4_padding[64] =
-{
- 0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+/* initial state */
+static const uint32_t md4_h[4] = {
+	0x67452301UL, 0xefcdab89UL, 0x98badcfeUL, 0x10325476UL,
 };
 
-/*
- * MD4 final digest
- */
-void md4_final( md4_ctx *ctx, uint8_t *output )
+void
+md4_init(md4_ctx *ctx)
 {
-    uint32_t last, padn;
-    uint8_t msglen[8];
 
-    le64enc(msglen, ctx->total << 3);
-
-    last = ctx->total & 0x3F;
-    padn = ( last < 56 ) ? ( 56 - last ) : ( 120 - last );
-
-    md4_update( ctx, md4_padding, padn );
-    md4_update( ctx, msglen, 8 );
-
-    le32enc(output +  0,  ctx->state[0]);
-    le32enc(output +  4,  ctx->state[1]);
-    le32enc(output +  8,  ctx->state[2]);
-    le32enc(output + 12,  ctx->state[3]);
+	memset(ctx, 0, sizeof *ctx);
+	memcpy(ctx->state, md4_h, sizeof ctx->state);
 }
 
-/*
- * output = MD4( input buffer )
- */
-void md4_complete( const void *input, int ilen, uint8_t *output )
+static void
+md4_compute(md4_ctx *ctx, const uint8_t *data)
 {
-    md4_ctx ctx;
+	uint32_t X[16];
+	uint32_t A, B, C, D;
 
-    md4_init( &ctx );
-    md4_update( &ctx, input, ilen );
-    md4_final( &ctx, output );
+	le32decv(X, data, 16);
 
-    memset( &ctx, 0, sizeof( md4_ctx ) );
+	A = ctx->state[0];
+	B = ctx->state[1];
+	C = ctx->state[2];
+	D = ctx->state[3];
+
+#define F(x, y, z)	((x & y) | (~x & z))
+#define md4_round1(a, b, c, d, k, s)					\
+	a = rol32(a + F(b, c, d) + X[k], s)
+
+#define G(x, y, z)	((x & y) | (x & z) | (y & z))
+#define md4_round2(a, b, c, d, k, s)					\
+	a = rol32(a + G(b, c, d) + X[k] + 0x5a827999, s)
+
+#define H(x, y, z)	(x ^ y ^ z)
+#define md4_round3(a, b, c, d, k, s)					\
+	a = rol32(a + H(b,c,d) + X[k] + 0x6ed9eba1, s)
+
+	md4_round1(A, B, C, D,  0,  3);
+	md4_round1(D, A, B, C,  1,  7);
+	md4_round1(C, D, A, B,  2, 11);
+	md4_round1(B, C, D, A,  3, 19);
+	md4_round1(A, B, C, D,  4,  3);
+	md4_round1(D, A, B, C,  5,  7);
+	md4_round1(C, D, A, B,  6, 11);
+	md4_round1(B, C, D, A,  7, 19);
+	md4_round1(A, B, C, D,  8,  3);
+	md4_round1(D, A, B, C,  9,  7);
+	md4_round1(C, D, A, B, 10, 11);
+	md4_round1(B, C, D, A, 11, 19);
+	md4_round1(A, B, C, D, 12,  3);
+	md4_round1(D, A, B, C, 13,  7);
+	md4_round1(C, D, A, B, 14, 11);
+	md4_round1(B, C, D, A, 15, 19);
+
+	md4_round2(A, B, C, D,  0,  3);
+	md4_round2(D, A, B, C,  4,  5);
+	md4_round2(C, D, A, B,  8,  9);
+	md4_round2(B, C, D, A, 12, 13);
+	md4_round2(A, B, C, D,  1,  3);
+	md4_round2(D, A, B, C,  5,  5);
+	md4_round2(C, D, A, B,  9,  9);
+	md4_round2(B, C, D, A, 13, 13);
+	md4_round2(A, B, C, D,  2,  3);
+	md4_round2(D, A, B, C,  6,  5);
+	md4_round2(C, D, A, B, 10,  9);
+	md4_round2(B, C, D, A, 14, 13);
+	md4_round2(A, B, C, D,  3,  3);
+	md4_round2(D, A, B, C,  7,  5);
+	md4_round2(C, D, A, B, 11,  9);
+	md4_round2(B, C, D, A, 15, 13);
+
+	md4_round3(A, B, C, D,  0,  3);
+	md4_round3(D, A, B, C,  8,  9);
+	md4_round3(C, D, A, B,  4, 11);
+	md4_round3(B, C, D, A, 12, 15);
+	md4_round3(A, B, C, D,  2,  3);
+	md4_round3(D, A, B, C, 10,  9);
+	md4_round3(C, D, A, B,  6, 11);
+	md4_round3(B, C, D, A, 14, 15);
+	md4_round3(A, B, C, D,  1,  3);
+	md4_round3(D, A, B, C,  9,  9);
+	md4_round3(C, D, A, B,  5, 11);
+	md4_round3(B, C, D, A, 13, 15);
+	md4_round3(A, B, C, D,  3,  3);
+	md4_round3(D, A, B, C, 11,  9);
+	md4_round3(C, D, A, B,  7, 11);
+	md4_round3(B, C, D, A, 15, 15);
+
+	ctx->state[0] += A;
+	ctx->state[1] += B;
+	ctx->state[2] += C;
+	ctx->state[3] += D;
+}
+
+void
+md4_update(md4_ctx *ctx, const void *buf, size_t len)
+{
+	size_t copylen;
+
+	while (len) {
+		if (ctx->blocklen > 0 || len < sizeof ctx->block) {
+			copylen = sizeof ctx->block - ctx->blocklen;
+			if (copylen > len)
+				copylen = len;
+			memcpy(ctx->block + ctx->blocklen, buf, copylen);
+			ctx->blocklen += copylen;
+			if (ctx->blocklen == sizeof ctx->block) {
+				md4_compute(ctx, ctx->block);
+				ctx->blocklen = 0;
+			}
+		} else {
+			copylen = sizeof ctx->block;
+			md4_compute(ctx, buf);
+		}
+		ctx->bitlen += copylen * 8;
+		buf += copylen;
+		len -= copylen;
+	}
+}
+
+void
+md4_final(md4_ctx *ctx, uint8_t *digest)
+{
+
+	ctx->block[ctx->blocklen++] = 0x80;
+	memset(ctx->block + ctx->blocklen, 0,
+	    sizeof ctx->block - ctx->blocklen);
+	if (ctx->blocklen > 56) {
+		md4_compute(ctx, ctx->block);
+		ctx->blocklen = 0;
+		memset(ctx->block, 0, sizeof ctx->block);
+	}
+	le64enc(ctx->block + 56, ctx->bitlen);
+	md4_compute(ctx, ctx->block);
+	le32encv(digest, ctx->state, 4);
+	memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
+}
+
+void
+md4_complete(const void *buf, size_t len, uint8_t *digest)
+{
+	md4_ctx ctx;
+
+	md4_init(&ctx);
+	md4_update(&ctx, buf, len);
+	md4_final(&ctx, digest);
 }
 
 digest_algorithm md4_digest = {

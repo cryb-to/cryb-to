@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2007 Christophe Devine
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,57 +50,17 @@ CRYB_BEGIN
 
 extern digest_algorithm md4_digest;
 
-/**
- * \brief          MD4 context structure
- */
-typedef struct
-{
-    uint64_t total;		/*!< number of bytes processed  */
-    uint32_t state[4];		/*!< intermediate digest state  */
-    uint8_t buffer[64];		/*!< data block being processed */
-}
-md4_ctx;
+typedef struct {
+	uint8_t		 block[64];
+	size_t		 blocklen;
+	uint32_t	 state[4];
+	uint64_t	 bitlen;
+} md4_ctx;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/**
- * \brief          MD4 context setup
- *
- * \param ctx      context to be initialized
- */
-void md4_init( md4_ctx *ctx );
-
-/**
- * \brief          MD4 process buffer
- *
- * \param ctx      MD4 context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void md4_update( md4_ctx *ctx, const void *input, int ilen );
-
-/**
- * \brief          MD4 final digest
- *
- * \param ctx      MD4 context
- * \param output   MD4 checksum result
- */
-void md4_final( md4_ctx *ctx, uint8_t *output );
-
-/**
- * \brief          Output = MD4( input buffer )
- *
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   MD4 checksum result
- */
-void md4_complete( const void *input, int ilen, uint8_t *output );
-
-#ifdef __cplusplus
-}
-#endif
+void md4_init(md4_ctx *);
+void md4_update(md4_ctx *, const void *, size_t);
+void md4_final(md4_ctx *, uint8_t *);
+void md4_complete(const void *, size_t, uint8_t *);
 
 CRYB_END
 

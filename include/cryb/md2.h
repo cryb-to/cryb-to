@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2007 Christophe Devine
+ * Copyright (c) 2014-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,49 +50,17 @@ CRYB_BEGIN
 
 extern digest_algorithm md2_digest;
 
-/**
- * \brief          MD2 context structure
- */
-typedef struct
-{
-    uint8_t cksum[16];		/*!< checksum of the data block */
-    uint8_t state[48];		/*!< intermediate digest state	*/
-    uint8_t buffer[16];		/*!< data block being processed */
-    int left;			/*!< amount of data in buffer	*/
+typedef struct {
+	uint8_t		 state[48];
+	uint8_t		 cksum[16];
+	uint8_t		 block[16];
+	unsigned int	 blocklen;
 } md2_ctx;
 
-/**
- * \brief          MD2 context setup
- *
- * \param ctx      context to be initialized
- */
-void md2_init( md2_ctx *ctx );
-
-/**
- * \brief          MD2 process buffer
- *
- * \param ctx      MD2 context
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- */
-void md2_update( md2_ctx *ctx, const void *input, int ilen );
-
-/**
- * \brief          MD2 final digest
- *
- * \param ctx      MD2 context
- * \param output   MD2 checksum result
- */
-void md2_final( md2_ctx *ctx, uint8_t *output );
-
-/**
- * \brief          Output = MD2( input buffer )
- *
- * \param input    buffer holding the  data
- * \param ilen     length of the input data
- * \param output   MD2 checksum result
- */
-void md2_complete( const void *input, int ilen, uint8_t *output );
+void md2_init(md2_ctx *);
+void md2_update(md2_ctx *, const void *, size_t);
+void md2_final(md2_ctx *, uint8_t *);
+void md2_complete(const void *, size_t, uint8_t *);
 
 CRYB_END
 
