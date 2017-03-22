@@ -1,5 +1,4 @@
 /*-
- * Copyright (c) 2013 Joachim Strömbergson
  * Copyright (c) 2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
