@@ -32,6 +32,6 @@ do-install:
 
 post-stage:
 	(cd ${STAGEDIR} && \
-	    find -s . -type f -or -type l | cut -c 2-) >>${TMPPLIST}
+	    ${FIND} -s . -type f -or -type l | cut -c 2-) >>${TMPPLIST}
 
 .include <bsd.port.mk>
