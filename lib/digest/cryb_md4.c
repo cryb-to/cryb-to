@@ -68,11 +68,11 @@ md4_compute(md4_ctx *ctx, const uint8_t *data)
 	C = ctx->state[2];
 	D = ctx->state[3];
 
-#define F(x, y, z)	(x & y | ~x & z)
+#define F(x, y, z)	((x & y) | (~x & z))
 #define md4_round1(a, b, c, d, k, s)					\
 	a = rol32(a + F(b, c, d) + X[k], s)
 
-#define G(x, y, z)	(x & y | x & z | y & z)
+#define G(x, y, z)	((x & y) | (x & z) | (y & z))
 #define md4_round2(a, b, c, d, k, s)					\
 	a = rol32(a + G(b, c, d) + X[k] + 0x5a827999, s)
 
