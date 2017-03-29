@@ -14,7 +14,9 @@ libcryb_mpi_la_SOURCES = \
 	cryb_mpi_grow.c \
 	cryb_mpi_init.c \
 	cryb_mpi_load.c \
+	cryb_mpi_lsb.c \
 	cryb_mpi_lshift.c \
+	cryb_mpi_msb.c \
 	cryb_mpi_negate.c \
 	cryb_mpi_rshift.c \
 	cryb_mpi_set.c \
