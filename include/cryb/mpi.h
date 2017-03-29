@@ -49,7 +49,9 @@ const char *cryb_mpi_version(void);
 #define mpi_grow		cryb_mpi_grow
 #define mpi_init		cryb_mpi_init
 #define mpi_load		cryb_mpi_load
+#define mpi_lsb			cryb_mpi_lsb
 #define mpi_lshift		cryb_mpi_lshift
+#define mpi_msb			cryb_mpi_msb
 #define mpi_negate		cryb_mpi_negate
 #define mpi_rshift		cryb_mpi_rshift
 #define mpi_set			cryb_mpi_set
@@ -80,6 +82,8 @@ int mpi_copy(cryb_mpi *, const cryb_mpi *);
 void mpi_swap(cryb_mpi *, cryb_mpi *);
 int mpi_load(cryb_mpi *, const uint8_t *, size_t);
 int mpi_set(cryb_mpi *, int32_t);
+unsigned int mpi_lsb(const cryb_mpi *);
+unsigned int mpi_msb(const cryb_mpi *);
 int mpi_lshift(cryb_mpi *, unsigned int);
 int mpi_rshift(cryb_mpi *, unsigned int);
 int mpi_add_abs(cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
