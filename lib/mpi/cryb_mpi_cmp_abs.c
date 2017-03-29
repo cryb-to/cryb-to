@@ -41,7 +41,7 @@
  * Compare absolute values
  */
 int
-mpi_cmp_abs(cryb_mpi *X, cryb_mpi *Y)
+mpi_cmp_abs(const cryb_mpi *X, const cryb_mpi *Y)
 {
 	int i;
 

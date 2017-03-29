@@ -40,7 +40,7 @@
  * Store the sum of the absolutes values of A and B in X.
  */
 int
-mpi_add_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
+mpi_add_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 {
 	unsigned int i;
 	uint32_t c;

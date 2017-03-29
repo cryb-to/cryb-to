@@ -40,7 +40,7 @@
  * Subtract one number from another.
  */
 int
-mpi_sub(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
+mpi_sub(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 {
 
 	if (A->neg && B->neg) {
