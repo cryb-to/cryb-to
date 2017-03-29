@@ -42,10 +42,22 @@ const char *cryb_mpi_version(void);
 #define mpi_add_abs		cryb_mpi_add_abs
 #define mpi_cmp			cryb_mpi_cmp
 #define mpi_cmp_abs		cryb_mpi_cmp_abs
+#define mpi_cmp_abs_u32		cryb_mpi_cmp_abs_u32
+#define mpi_cmp_abs_u64		cryb_mpi_cmp_abs_u64
+#define mpi_cmp_i32		cryb_mpi_cmp_i32
+#define mpi_cmp_i64		cryb_mpi_cmp_i64
+#define mpi_cmp_u32		cryb_mpi_cmp_u32
+#define mpi_cmp_u64		cryb_mpi_cmp_u64
 #define mpi_copy		cryb_mpi_copy
 #define mpi_destroy		cryb_mpi_destroy
 #define mpi_eq			cryb_mpi_eq
 #define mpi_eq_abs		cryb_mpi_eq_abs
+#define mpi_eq_abs_u32		cryb_mpi_eq_abs_u32
+#define mpi_eq_abs_u64		cryb_mpi_eq_abs_u64
+#define mpi_eq_i32		cryb_mpi_eq_i32
+#define mpi_eq_i64		cryb_mpi_eq_i64
+#define mpi_eq_u32		cryb_mpi_eq_u32
+#define mpi_eq_u64		cryb_mpi_eq_u64
 #define mpi_grow		cryb_mpi_grow
 #define mpi_init		cryb_mpi_init
 #define mpi_load		cryb_mpi_load
@@ -92,8 +104,20 @@ int mpi_sub_abs(cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
 int mpi_sub(cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
 int mpi_cmp_abs(const cryb_mpi *, const cryb_mpi *);
 int mpi_cmp(const cryb_mpi *, const cryb_mpi *);
+int mpi_cmp_abs_u64(const cryb_mpi *, uint64_t);
+int mpi_cmp_u64(const cryb_mpi *, uint64_t);
+int mpi_cmp_i64(const cryb_mpi *, int64_t);
+int mpi_cmp_abs_u32(const cryb_mpi *, uint32_t);
+int mpi_cmp_u32(const cryb_mpi *, uint32_t);
+int mpi_cmp_i32(const cryb_mpi *, int32_t);
 int mpi_eq_abs(const cryb_mpi *, const cryb_mpi *);
 int mpi_eq(const cryb_mpi *, const cryb_mpi *);
+int mpi_eq_abs_u64(const cryb_mpi *, uint64_t);
+int mpi_eq_u64(const cryb_mpi *, uint64_t);
+int mpi_eq_i64(const cryb_mpi *, int64_t);
+int mpi_eq_abs_u32(const cryb_mpi *, uint32_t);
+int mpi_eq_u32(const cryb_mpi *, uint32_t);
+int mpi_eq_i32(const cryb_mpi *, int32_t);
 
 CRYB_END
 

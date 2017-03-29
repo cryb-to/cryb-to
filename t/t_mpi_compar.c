@@ -49,7 +49,8 @@
 
 static struct t_cmp_case {
 	const char *desc;
-	int a, b, cmp;
+	int32_t a, b;
+	int cmp;
 } t_cmp_cases[] = {
 	{ "-3 == -3",	-3,	-3,	 0 },
 	{ "-3 < -2",	-3,	-2,	-1 },
@@ -126,6 +127,50 @@ t_mpi_cmp(char **desc CRYB_UNUSED, void *arg)
 	return (ret);
 }
 
+static int
+t_mpi_eq(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_cmp_case *tc = arg;
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, tc->a);
+	mpi_set(&b, tc->b);
+	ret &= t_compare_i(tc->cmp == 0, mpi_eq(&a, &b));
+	mpi_destroy(&a);
+	mpi_destroy(&b);
+	return (ret);
+}
+
+/*
+ * Compare an MPI with an integer
+ */
+static int
+t_mpi_cmp_i32(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_cmp_case *tc = arg;
+	cryb_mpi a = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, tc->a);
+	ret &= t_compare_i(tc->cmp, mpi_cmp_i32(&a, tc->b));
+	mpi_destroy(&a);
+	return (ret);
+}
+
+static int
+t_mpi_eq_i32(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_cmp_case *tc = arg;
+	cryb_mpi a = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, tc->a);
+	ret &= t_compare_i(tc->cmp == 0, mpi_eq_i32(&a, tc->b));
+	mpi_destroy(&a);
+	return (ret);
+}
+
 
 /***************************************************************************
  * Boilerplate
@@ -144,7 +189,16 @@ t_prepare(int argc, char *argv[])
 	/* comparison */
 	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
 		t_add_test(t_mpi_cmp, &t_cmp_cases[i],
-		    "%s", t_cmp_cases[i].desc);
+		    "mpi cmp mpi (%s)", t_cmp_cases[i].desc);
+	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
+		t_add_test(t_mpi_eq, &t_cmp_cases[i],
+		    "mpi eq mpi (%s)", t_cmp_cases[i].desc);
+	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
+		t_add_test(t_mpi_cmp_i32, &t_cmp_cases[i],
+		    "mpi cmp i32 (%s)", t_cmp_cases[i].desc);
+	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
+		t_add_test(t_mpi_eq_i32, &t_cmp_cases[i],
+		    "mpi eq i32 (%s)", t_cmp_cases[i].desc);
 
 	return (0);
 }
