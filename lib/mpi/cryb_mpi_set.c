@@ -29,10 +29,8 @@
 
 #include "cryb/impl.h"
 
+#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include <cryb/endian.h>
 #include <cryb/mpi.h>
