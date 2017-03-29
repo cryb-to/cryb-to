@@ -196,6 +196,156 @@ t_mpi_destroy_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 
 /***************************************************************************
+ * Load / store
+ */
+
+static struct t_load_case {
+	const char *desc;
+	uint8_t v[16];
+	size_t vlen;
+	uint32_t e[4];
+	unsigned int msb;
+} t_load_cases[] = {
+	{
+		"load nothing",
+		{ }, 0,
+		{ 0x00000000, }, 0,
+	},
+	{
+		"load 0x00",
+		{ 0x00, }, 1,
+		{ 0x00000000, }, 0,
+	},
+	{
+		"load 0x01",
+		{ 0x01, }, 1,
+		{ 0x00000001, }, 1,
+	},
+	{
+		"load 0x0102",
+		{ 0x01, 0x02, }, 2,
+		{ 0x00000102, }, 9,
+	},
+	{
+		"load 0x010203",
+		{ 0x01, 0x02, 0x03, }, 3,
+		{ 0x00010203, }, 17,
+	},
+	{
+		"load 0x01020304",
+		{ 0x01, 0x02, 0x03, 0x04, }, 4,
+		{ 0x01020304, }, 25,
+	},
+	{
+		"load 0x0102030405",
+		{ 0x01, 0x02, 0x03, 0x04, 0x05, }, 5,
+		{ 0x02030405, 0x00000001, }, 33,
+	},
+	{
+		"load 0x010203040506",
+		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, }, 6,
+		{ 0x03040506, 0x00000102, }, 41,
+	},
+	{
+		"load 0x01020304050607",
+		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, }, 7,
+		{ 0x04050607, 0x00010203, }, 49,
+	},
+	{
+		"load 0x0102030405060708",
+		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, }, 8,
+		{ 0x05060708, 0x01020304, }, 57,
+	},
+};
+
+/*
+ * Load a string of bytes, verify result.
+ */
+static int
+t_mpi_load(char **desc CRYB_UNUSED, void *arg)
+{
+	struct t_load_case *tc = arg;
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_load(&x, tc->v, tc->vlen);
+	ret &= t_compare_mem(tc->e, x.words, sizeof tc->e);
+	ret &= t_compare_u(tc->msb, x.msb);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * As above, but with a number that exactly fills the static buffer.
+ */
+static int
+t_mpi_exact_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	t_assert(sizeof small_e == sizeof small_v);
+	t_assert(sizeof small_v == sizeof x.swords);
+	mpi_load(&x, small_v, sizeof x.swords);
+	ret &= t_compare_ptr(x.swords, x.words);
+	ret &= t_compare_mem(small_e, x.words, sizeof x.swords);
+	ret &= t_compare_u(SMALL_V_SIZE * 8, x.msb);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * As above, but with a large number to force reallocation.
+ */
+static int
+t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi x = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	t_assert(sizeof large_e == sizeof large_v);
+	t_assert(sizeof large_v > sizeof x.swords);
+	mpi_load(&x, large_v, sizeof large_v);
+	/* XXX we need inequality predicates */
+	if (x.words == x.swords) {
+		t_printv("reallocation failed to occur\n");
+		ret &= 0;
+	}
+	/* XXX we need inequality predicates */
+	if (x.size < LARGE_E_SIZE) {
+		t_printv("expected at least %zu, received %zu\n",
+		    LARGE_E_SIZE, x.size);
+		ret &= 0;
+	}
+	ret &= t_compare_mem(large_e, x.words, sizeof large_e);
+	ret &= t_compare_u(LARGE_V_SIZE * 8, x.msb);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+/*
+ * As above, but allocation fails.
+ */
+static int
+t_mpi_large_load_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi x = CRYB_MPI_ZERO, y;
+	int ret = 1;
+
+	t_assert(sizeof large_e == sizeof large_v);
+	t_assert(sizeof large_v > sizeof x.swords);
+	mpi_init(&x);
+	y = x;
+	++t_malloc_fail;
+	ret &= t_compare_i(-1, mpi_load(&x, large_v, sizeof large_v));
+	--t_malloc_fail;
+	ret &= t_compare_mem(&y, &x, sizeof x);
+	mpi_destroy(&x);
+	return (ret);
+}
+
+
+/***************************************************************************
  * Assignment, negation, copying, swapping
  */
 
@@ -454,156 +604,6 @@ t_mpi_swap_grown(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 
 /***************************************************************************
- * Load / store
- */
-
-static struct t_load_case {
-	const char *desc;
-	uint8_t v[16];
-	size_t vlen;
-	uint32_t e[4];
-	unsigned int msb;
-} t_load_cases[] = {
-	{
-		"load nothing",
-		{ }, 0,
-		{ 0x00000000, }, 0,
-	},
-	{
-		"load 0x00",
-		{ 0x00, }, 1,
-		{ 0x00000000, }, 0,
-	},
-	{
-		"load 0x01",
-		{ 0x01, }, 1,
-		{ 0x00000001, }, 1,
-	},
-	{
-		"load 0x0102",
-		{ 0x01, 0x02, }, 2,
-		{ 0x00000102, }, 9,
-	},
-	{
-		"load 0x010203",
-		{ 0x01, 0x02, 0x03, }, 3,
-		{ 0x00010203, }, 17,
-	},
-	{
-		"load 0x01020304",
-		{ 0x01, 0x02, 0x03, 0x04, }, 4,
-		{ 0x01020304, }, 25,
-	},
-	{
-		"load 0x0102030405",
-		{ 0x01, 0x02, 0x03, 0x04, 0x05, }, 5,
-		{ 0x02030405, 0x00000001, }, 33,
-	},
-	{
-		"load 0x010203040506",
-		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, }, 6,
-		{ 0x03040506, 0x00000102, }, 41,
-	},
-	{
-		"load 0x01020304050607",
-		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, }, 7,
-		{ 0x04050607, 0x00010203, }, 49,
-	},
-	{
-		"load 0x0102030405060708",
-		{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, }, 8,
-		{ 0x05060708, 0x01020304, }, 57,
-	},
-};
-
-/*
- * Load a string of bytes, verify result.
- */
-static int
-t_mpi_load(char **desc CRYB_UNUSED, void *arg)
-{
-	struct t_load_case *tc = arg;
-	cryb_mpi x = CRYB_MPI_ZERO;
-	int ret = 1;
-
-	mpi_load(&x, tc->v, tc->vlen);
-	ret &= t_compare_mem(tc->e, x.words, sizeof tc->e);
-	ret &= t_compare_u(tc->msb, x.msb);
-	mpi_destroy(&x);
-	return (ret);
-}
-
-/*
- * As above, but with a number that exactly fills the static buffer.
- */
-static int
-t_mpi_exact_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
-{
-	cryb_mpi x = CRYB_MPI_ZERO;
-	int ret = 1;
-
-	t_assert(sizeof small_e == sizeof small_v);
-	t_assert(sizeof small_v == sizeof x.swords);
-	mpi_load(&x, small_v, sizeof x.swords);
-	ret &= t_compare_ptr(x.swords, x.words);
-	ret &= t_compare_mem(small_e, x.words, sizeof x.swords);
-	ret &= t_compare_u(SMALL_V_SIZE * 8, x.msb);
-	mpi_destroy(&x);
-	return (ret);
-}
-
-/*
- * As above, but with a large number to force reallocation.
- */
-static int
-t_mpi_large_load(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
-{
-	cryb_mpi x = CRYB_MPI_ZERO;
-	int ret = 1;
-
-	t_assert(sizeof large_e == sizeof large_v);
-	t_assert(sizeof large_v > sizeof x.swords);
-	mpi_load(&x, large_v, sizeof large_v);
-	/* XXX we need inequality predicates */
-	if (x.words == x.swords) {
-		t_printv("reallocation failed to occur\n");
-		ret &= 0;
-	}
-	/* XXX we need inequality predicates */
-	if (x.size < LARGE_E_SIZE) {
-		t_printv("expected at least %zu, received %zu\n",
-		    LARGE_E_SIZE, x.size);
-		ret &= 0;
-	}
-	ret &= t_compare_mem(large_e, x.words, sizeof large_e);
-	ret &= t_compare_u(LARGE_V_SIZE * 8, x.msb);
-	mpi_destroy(&x);
-	return (ret);
-}
-
-/*
- * As above, but allocation fails.
- */
-static int
-t_mpi_large_load_fail(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
-{
-	cryb_mpi x = CRYB_MPI_ZERO, y;
-	int ret = 1;
-
-	t_assert(sizeof large_e == sizeof large_v);
-	t_assert(sizeof large_v > sizeof x.swords);
-	mpi_init(&x);
-	y = x;
-	++t_malloc_fail;
-	ret &= t_compare_i(-1, mpi_load(&x, large_v, sizeof large_v));
-	--t_malloc_fail;
-	ret &= t_compare_mem(&y, &x, sizeof x);
-	mpi_destroy(&x);
-	return (ret);
-}
-
-
-/***************************************************************************
  * Left / right shift
  */
 
@@ -840,6 +840,14 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_destroy_static, NULL, "destroy static");
 	t_add_test(t_mpi_destroy_grown, NULL, "destroy grown");
 
+	/* load / store */
+	for (i = 0; i < sizeof t_load_cases / sizeof t_load_cases[0]; ++i)
+		t_add_test(t_mpi_load, &t_load_cases[i], "%s",
+		    t_load_cases[i].desc);
+	t_add_test(t_mpi_exact_load, NULL, "exact load");
+	t_add_test(t_mpi_large_load, NULL, "large load");
+	t_add_test(t_mpi_large_load_fail, NULL, "large load (failure)");
+
 	/* assignment, copying, negation, swapping */
 	t_add_test(t_mpi_set_positive, NULL, "set to positive value");
 	t_add_test(t_mpi_set_negative, NULL, "set to negative value");
@@ -853,14 +861,6 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_mpi_copy_long_fail, NULL, "copy (long) (failure)");
 	t_add_test(t_mpi_swap_static, NULL, "swap (static)");
 	t_add_test(t_mpi_swap_grown, NULL, "swap (grown)");
-
-	/* load / store */
-	for (i = 0; i < sizeof t_load_cases / sizeof t_load_cases[0]; ++i)
-		t_add_test(t_mpi_load, &t_load_cases[i], "%s",
-		    t_load_cases[i].desc);
-	t_add_test(t_mpi_exact_load, NULL, "exact load");
-	t_add_test(t_mpi_large_load, NULL, "large load");
-	t_add_test(t_mpi_large_load_fail, NULL, "large load (failure)");
 
 	/* left / right shift */
 	for (i = 0; i < sizeof t_lsh_cases / sizeof t_lsh_cases[0]; ++i)
