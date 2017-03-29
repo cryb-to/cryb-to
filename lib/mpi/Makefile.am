@@ -7,10 +7,14 @@ libcryb_mpi_la_SOURCES = \
 	cryb_mpi_add_abs.c \
 	cryb_mpi_cmp.c \
 	cryb_mpi_cmp_abs.c \
+	cryb_mpi_cmp_i32.c \
+	cryb_mpi_cmp_i64.c \
 	cryb_mpi_copy.c \
 	cryb_mpi_destroy.c \
 	cryb_mpi_eq.c \
 	cryb_mpi_eq_abs.c \
+	cryb_mpi_eq_i32.c \
+	cryb_mpi_eq_i64.c \
 	cryb_mpi_grow.c \
 	cryb_mpi_init.c \
 	cryb_mpi_load.c \
