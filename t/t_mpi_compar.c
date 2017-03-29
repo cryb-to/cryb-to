@@ -143,6 +143,33 @@ t_mpi_eq(char **desc CRYB_UNUSED, void *arg)
 }
 
 /*
+ * Compare an MPI with itself
+ */
+static int
+t_mpi_cmp_ident(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, CRYB_TO);
+	ret &= t_compare_i(0, mpi_cmp(&a, &a));
+	mpi_destroy(&a);
+	return (ret);
+}
+
+static int
+t_mpi_eq_ident(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
+{
+	cryb_mpi a = CRYB_MPI_ZERO;
+	int ret = 1;
+
+	mpi_set(&a, CRYB_TO);
+	ret &= t_compare_i(1, mpi_eq(&a, &a));
+	mpi_destroy(&a);
+	return (ret);
+}
+
+/*
  * Compare an MPI with an integer
  */
 static int
@@ -187,9 +214,11 @@ t_prepare(int argc, char *argv[])
 	t_mpi_prepare();
 
 	/* comparison */
+	t_add_test(t_mpi_cmp_ident, NULL, "mpi cmp mpi (identity)");
 	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
 		t_add_test(t_mpi_cmp, &t_cmp_cases[i],
 		    "mpi cmp mpi (%s)", t_cmp_cases[i].desc);
+	t_add_test(t_mpi_eq_ident, NULL, "mpi eq mpi (identity)");
 	for (i = 0; i < sizeof t_cmp_cases / sizeof t_cmp_cases[0]; ++i)
 		t_add_test(t_mpi_eq, &t_cmp_cases[i],
 		    "mpi eq mpi (%s)", t_cmp_cases[i].desc);

@@ -43,6 +43,9 @@ int
 mpi_eq_abs(const cryb_mpi *A, const cryb_mpi *B)
 {
 
-	return (A->msb == B->msb &&
-	    memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
+	if (A == B)
+		return (1);
+	if (A->msb != B->msb)
+		return (0);
+	return (memcmp(A->words, B->words, (A->msb + 31) / 32) == 0);
 }

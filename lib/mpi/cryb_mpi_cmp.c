@@ -43,15 +43,10 @@ int
 mpi_cmp(const cryb_mpi *X, const cryb_mpi *Y)
 {
 
-	if (X->neg) {
-		if (Y->neg)
-			return (-mpi_cmp_abs(X, Y));
-		else
-			return (-1);
-	} else {
-		if (Y->neg)
-			return (1);
-		else
-			return (mpi_cmp_abs(X, Y));
-	}
+	if (X == Y)
+		return (0);
+	else if (X->neg)
+		return (Y->neg ? -mpi_cmp_abs(X, Y) : -1);
+	else
+		return (Y->neg ? 1 : mpi_cmp_abs(X, Y));
 }
