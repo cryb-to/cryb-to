@@ -41,7 +41,7 @@
  * Compare signed values for equality
  */
 int
-mpi_eq(cryb_mpi *A, cryb_mpi *B)
+mpi_eq(const cryb_mpi *A, const cryb_mpi *B)
 {
 
 	return (A->neg == B->neg && A->msb == B->msb &&

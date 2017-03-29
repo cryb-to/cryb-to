@@ -40,9 +40,9 @@
  * Store the difference between the absolute values of A and B in X.
  */
 int
-mpi_sub_abs(cryb_mpi *X, cryb_mpi *A, cryb_mpi *B)
+mpi_sub_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 {
-	cryb_mpi *L, *G;
+	const cryb_mpi *L, *G;
 	unsigned int i;
 	uint32_t c, cn;
 

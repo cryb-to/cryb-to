@@ -41,7 +41,7 @@
  * Compare absolute values for equality
  */
 int
-mpi_eq_abs(cryb_mpi *A, cryb_mpi *B)
+mpi_eq_abs(const cryb_mpi *A, const cryb_mpi *B)
 {
 
 	return (A->msb == B->msb &&

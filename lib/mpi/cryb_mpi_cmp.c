@@ -41,7 +41,7 @@
  * Compare signed values
  */
 int
-mpi_cmp(cryb_mpi *X, cryb_mpi *Y)
+mpi_cmp(const cryb_mpi *X, const cryb_mpi *Y)
 {
 
 	if (X->neg) {
