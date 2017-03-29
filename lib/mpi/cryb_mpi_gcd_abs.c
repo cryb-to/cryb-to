@@ -31,7 +31,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include <cryb/assert.h>
 #include <cryb/endian.h>
@@ -70,10 +69,6 @@ mpi_gcd_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 	/* Stein's algorithm is destructive, so we operate on copies */
 	if (mpi_copy(&TA, A) != 0 || mpi_copy(&TB, B) != 0)
 		goto fail;
-	fprintf(stderr, "%04x %08x %08x | %04x %08x %08x\n",
-	    TA.words[2], TA.words[1], TA.words[0],
-	    TB.words[2], TB.words[1], TB.words[0]);
-	fprintf(stderr, "-----------------------|-----------------------\n");
 
 	/* reduce each operand to its greatest odd denominator */
 	/* neither operand is zero, and mpi_rshift() cannot fail */
@@ -95,18 +90,11 @@ mpi_gcd_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 		/* mpi_rshift() cannot fail */
 		assert((TA.words[0] & 1) == 0);
 		(void)mpi_rshift(&TA, 1);
-		fprintf(stderr, "%04x %08x %08x | %04x %08x %08x\n",
-		    TA.words[2], TA.words[1], TA.words[0],
-		    TB.words[2], TB.words[1], TB.words[0]);
 	}
 	/* undo the initial reduction to greatest odd denominator */
 	if (mpi_copy(X, &TB) != 0 ||
 	    mpi_lshift(X, ashift) != 0)
 		goto fail;
-	fprintf(stderr, "-----------------------|-----------------------\n");
-	fprintf(stderr, "%04x %08x %08x | %04x %08x %08x\n",
-	    TA.words[2], TA.words[1], TA.words[0],
-	    TB.words[2], TB.words[1], TB.words[0]);
 	X->neg = 0;
 	return (0);
 fail:
