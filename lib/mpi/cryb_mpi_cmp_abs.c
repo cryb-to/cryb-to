@@ -44,7 +44,9 @@ mpi_cmp_abs(const cryb_mpi *X, const cryb_mpi *Y)
 {
 	int i;
 
-	/* check width first  */
+	/* check trivial cases first  */
+	if (X == Y)
+		return (0);
 	if (X->msb > Y->msb)
 		return (1);
 	if (X->msb < Y->msb)
