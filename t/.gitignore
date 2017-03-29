@@ -32,6 +32,7 @@
 /t_mpi
 /t_mpi_addsub
 /t_mpi_compar
+/t_mpi_gcd
 /t_mpi_muldiv
 /t_murmur3_32
 /t_oath

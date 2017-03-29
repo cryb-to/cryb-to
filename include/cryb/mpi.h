@@ -58,6 +58,7 @@ const char *cryb_mpi_version(void);
 #define mpi_eq_i64		cryb_mpi_eq_i64
 #define mpi_eq_u32		cryb_mpi_eq_u32
 #define mpi_eq_u64		cryb_mpi_eq_u64
+#define mpi_gcd_abs		cryb_mpi_gcd_abs
 #define mpi_grow		cryb_mpi_grow
 #define mpi_init		cryb_mpi_init
 #define mpi_load		cryb_mpi_load
@@ -118,6 +119,7 @@ int mpi_eq_i64(const cryb_mpi *, int64_t);
 int mpi_eq_abs_u32(const cryb_mpi *, uint32_t);
 int mpi_eq_u32(const cryb_mpi *, uint32_t);
 int mpi_eq_i32(const cryb_mpi *, int32_t);
+int mpi_gcd_abs(cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
 
 CRYB_END
 
