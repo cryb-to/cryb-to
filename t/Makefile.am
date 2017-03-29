@@ -210,10 +210,11 @@ endif CRYB_MAC
 
 # libcryb-mpi
 if CRYB_MPI
-TESTS += t_mpi t_mpi_addsub t_mpi_compar t_mpi_muldiv
+TESTS += t_mpi t_mpi_addsub t_mpi_compar t_mpi_gcd t_mpi_muldiv
 t_mpi_LDADD = $(libt) $(libmpi)
 t_mpi_addsub_LDADD = $(libt) $(libmpi)
 t_mpi_compar_LDADD = $(libt) $(libmpi)
+t_mpi_gcd_LDADD = $(libt) $(libmpi)
 t_mpi_muldiv_LDADD = $(libt) $(libmpi)
 noinst_HEADER = t_mpi.h
 endif CRYB_MPI

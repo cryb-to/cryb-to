@@ -76,6 +76,7 @@ static int t_mpi_not_grown(const cryb_mpi *) CRYB_UNUSED;
 static int t_mpi_grown(const cryb_mpi *) CRYB_UNUSED;
 static int t_mpi_is_zero(const cryb_mpi *) CRYB_UNUSED;
 static int t_compare_mpi(const cryb_mpi *, const cryb_mpi *) CRYB_UNUSED;
+static int t_compare_mpi_u32(uint32_t, const cryb_mpi *) CRYB_UNUSED;
 
 /*
  * Verify that an MPI has never grown.
@@ -146,6 +147,30 @@ t_compare_mpi(const cryb_mpi *e, const cryb_mpi *x)
 		t_printv("expected ");
 		t_printv_mpi(e);
 		t_printv("\n");
+		t_printv("received ");
+		t_printv_mpi(x);
+		t_printv("\n");
+		ret = 0;
+	}
+	return (ret);
+}
+
+/*
+ * Verify that an MPI has the expected value
+ */
+static int
+t_compare_mpi_u32(uint32_t e, const cryb_mpi *x)
+{
+	int ret = 1;
+
+	if (x == NULL)
+		return (0);
+	if (x->words == NULL) {
+		t_printv("uninitialized MPI\n");
+		return (0);
+	}
+	if (x->neg || x->msb > 32 || x->words[0] != e) {
+		t_printv("expected +%08x\n", e);
 		t_printv("received ");
 		t_printv_mpi(x);
 		t_printv("\n");
