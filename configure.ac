@@ -21,19 +21,6 @@ AC_C_CONST
 AC_C_RESTRICT
 AC_C_VOLATILE
 AC_C_BIGENDIAN
-AC_TYPE_INT16_T
-AC_TYPE_INT32_T
-AC_TYPE_INT8_T
-AC_TYPE_INTMAX_T
-AC_TYPE_INTPTR_T
-AC_TYPE_OFF_T
-AC_TYPE_SIZE_T
-AC_TYPE_SSIZE_T
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT8_T
-AC_TYPE_UINTMAX_T
-AC_TYPE_UINTPTR_T
 
 # libtool
 LT_PREREQ([2.2.6])
@@ -48,13 +35,44 @@ AC_PROG_INSTALL
 
 ############################################################################
 #
+# Types
+#
+AC_TYPE_INT16_T
+AC_TYPE_INT32_T
+AC_TYPE_INT8_T
+AC_TYPE_INTMAX_T
+AC_TYPE_INTPTR_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
+AC_TYPE_UINT16_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT8_T
+AC_TYPE_UINTMAX_T
+AC_TYPE_UINTPTR_T
+
+############################################################################
+#
 # Headers and functions
 #
 
-AC_CHECK_HEADERS([endian.h sys/endian.h])
+AC_CHECK_HEADERS([endian.h sys/endian.h strings.h])
 AX_GCC_BUILTIN([__builtin_bswap16])
 AX_GCC_BUILTIN([__builtin_bswap32])
 AX_GCC_BUILTIN([__builtin_bswap64])
+AX_GCC_BUILTIN([__builtin_clz])
+AX_GCC_BUILTIN([__builtin_clzl])
+AX_GCC_BUILTIN([__builtin_clzll])
+AX_GCC_BUILTIN([__builtin_ctz])
+AX_GCC_BUILTIN([__builtin_ctzl])
+AX_GCC_BUILTIN([__builtin_ctzll])
+AX_GCC_BUILTIN([__builtin_ffs])
+AX_GCC_BUILTIN([__builtin_ffsl])
+AX_GCC_BUILTIN([__builtin_ffsll])
+# No compiler we know of has these
+#AX_GCC_BUILTIN([__builtin_fls])
+#AX_GCC_BUILTIN([__builtin_flsl])
+#AX_GCC_BUILTIN([__builtin_flsll])
 AC_CHECK_DECLS([
     bswap16, bswap32, bswap64,
     bswap16v, bswap32v, bswap64v,
@@ -74,6 +92,11 @@ AC_CHECK_DECLS([
 #endif
 #if HAVE_ENDIAN_H
 #include <endian.h>
+#endif
+]])
+AC_CHECK_FUNCS([ffs ffsl ffsll fls flsl flsll], [], [], [[
+#if HAVE_STRINGS_H
+#include <strings.h>
 #endif
 ]])
 AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
