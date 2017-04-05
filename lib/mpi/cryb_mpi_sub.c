@@ -37,7 +37,7 @@
 #include "cryb_mpi_impl.h"
 
 /*
- * Subtract one number from another.
+ * Store the difference of A and B in X.
  */
 int
 mpi_sub(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
