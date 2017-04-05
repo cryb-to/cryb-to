@@ -31,7 +31,9 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <strings.h>
 
+#include <cryb/bitwise.h>
 #include <cryb/endian.h>
 #include <cryb/mpi.h>
 
@@ -70,13 +72,6 @@ mpi_load(cryb_mpi *X, const uint8_t *a, size_t len)
 		--i;
 	CRYB_NO_DEFAULT_CASE;
 	}
-	/* i now points to the msw */
-	/* compute msb of msw */
-	/* XXX use flsl() */
-	for (X->msb = 31; X->msb > 0; --X->msb)
-		if (X->words[i] & (1 << X->msb))
-			break;
-	/* add msw offset */
-	X->msb += i * 32 + 1;
+	X->msb = i * 32 + flsl(X->words[i]);
 	return (0);
 }

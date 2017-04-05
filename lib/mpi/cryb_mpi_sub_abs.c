@@ -31,7 +31,9 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <strings.h>
 
+#include <cryb/bitwise.h>
 #include <cryb/mpi.h>
 
 #include "cryb_mpi_impl.h"
@@ -92,15 +94,9 @@ mpi_sub_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 		c = cn;
 		++i;
 	}
-	while (i > 0 && X->words[i] == 0)
+	while (X->words[i] == 0)
 		--i;
-	/* compute msb of msw */
-	/* XXX use flsl() */
-	for (X->msb = 31; X->msb > 0; --X->msb)
-		if (X->words[i] & (1 << X->msb))
-			break;
-	/* add msw offset */
-	X->msb += i * 32 + 1;
+	X->msb = i * 32 + flsl(X->words[i]);
 	X->neg = 0;
 	return (0);
 }

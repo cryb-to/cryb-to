@@ -54,6 +54,109 @@ CRYB_ROL_ROR(64);
 
 #undef CRYB_ROL_ROR
 
+#if !HAVE_FFS
+#define ffs	cryb_ffs
+#endif
+#if !HAVE_FFSL
+#define ffsl	cryb_ffsl
+#endif
+#if !HAVE_FFSLL
+#define ffsll	cryb_ffsll
+#endif
+#if !HAVE_FLS
+#define fls	cryb_fls
+#endif
+#if !HAVE_FLSL
+#define flsl	cryb_flsl
+#endif
+#if !HAVE_FLSLL
+#define flsll	cryb_flsll
+#endif
+
+static inline int cryb_ffs(int n) {
+#if HAVE___BUILTIN_FFS
+	return (__builtin_ffs(n));
+#elif HAVE___BUILTIN_CTZ
+	return (n ? __builtin_ctz(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
+static inline int cryb_ffsl(long int n) {
+#if HAVE___BUILTIN_FFSL
+	return (__builtin_ffsl(n));
+#elif HAVE___BUILTIN_CLZ
+	return (n ? __builtin_ctz(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
+static inline int cryb_ffsll(long long int n) {
+#if HAVE___BUILTIN_FFSLL
+	return (__builtin_ffsll(n));
+#elif HAVE___BUILTIN_CLZ
+	return (n ? __builtin_ctz(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
+static inline int cryb_fls(int n) {
+#if HAVE___BUILTIN_FLS
+	return (__builtin_fls(n));
+#elif HAVE___BUILTIN_CLZ
+	return (n ? (8 * sizeof n) - __builtin_clz(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
+static inline int cryb_flsl(long int n) {
+#if HAVE___BUILTIN_FLSL
+	return (__builtin_flsl(n));
+#elif HAVE___BUILTIN_CLZ
+	return (n ? (8 * sizeof n) - __builtin_clzl(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
+static inline int cryb_flsll(long long int n) {
+#if HAVE___BUILTIN_FLSLL
+	return (__builtin_flsll(n));
+#elif HAVE___BUILTIN_CLZ
+	return (n ? (8 * sizeof n) - __builtin_clzll(n) : 0);
+#else
+	int i = 8 * sizeof n - 1;
+	for (i > 0)
+		if (n & (1 << --i))
+			break;
+	return (i);
+#endif
+}
+
 CRYB_END
 
 #endif
