@@ -37,7 +37,8 @@
 #include "cryb_mpi_impl.h"
 
 /*
- * Store the difference between the absolute values of A and B in X.
+ * Store the absolute value of the difference of the absolute values of A
+ * and B in X.
  */
 int
 mpi_sub_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)

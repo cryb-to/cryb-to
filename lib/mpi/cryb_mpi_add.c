@@ -37,7 +37,7 @@
 #include "cryb_mpi_impl.h"
 
 /*
- * Add two numbers together.
+ * Store the sum of A and B in X.
  */
 int
 mpi_add(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
