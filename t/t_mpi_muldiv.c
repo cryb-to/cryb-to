@@ -60,10 +60,52 @@ static struct t_mul_case {
 	int eneg:1;
 } t_mul_cases[] = {
 	{
+		"0 * 0 == 0",
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+	},
+	{
+		"0 * 1 == 0",
+		{                                                      },  0, 0,
+		{                                                 0x01 },  1, 0,
+		{                                                      },  0, 0,
+	},
+	{
+		"1 * 0 == 0",
+		{                                                 0x01 },  1, 0,
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+	},
+	{
 		"1 * 1 == 1",
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
+	},
+	{
+		"(2^32 + 1) * (2^32 + 1) == 2^64 + 2^33 + 1",
+		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
+		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
+		{ 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01 }, 65, 0,
+	},
+	{
+		"(2^32 + 1) * (2^32 - 1) == 2^64 - 1",
+		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
+		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, 63, 0,
+	},
+	{
+		"(2^32 - 1) * (2^32 + 1) == 2^64 - 1",
+		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
+		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
+		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, 63, 0,
+	},
+	{
+		"(2^32 - 1) * (2^32 - 1) == 2^64 - 2^33 + 1",
+		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
+		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
+		{       0xff, 0xff, 0xff, 0xfe, 0x00, 0x00, 0x00, 0x01 }, 64, 0,
 	},
 };
 
@@ -81,11 +123,7 @@ t_mpi_mul_tc(char **desc CRYB_UNUSED, void *arg)
 	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
 	e.neg = tc->eneg;
-#if 0
 	ret &= t_compare_i(0, mpi_mul_abs(&x, &a, &b));
-#else
-	mpi_load(&x, tc->e, (tc->emsb + 7) / 8);
-#endif
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
