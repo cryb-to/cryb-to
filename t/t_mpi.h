@@ -62,9 +62,9 @@ t_printv_mpi(const cryb_mpi *x)
 {
 
 	t_printv("%c", x->neg ? '-' : '+');
-	t_printv("%08x", x->msb == 0 ? 0 : x->words[0]);
-	for (unsigned int i = 1; i < (x->msb + 31) / 32; ++i)
-		t_printv(" %08x", x->words[i]);
+	for (unsigned int i = (x->msb + 31) / 32; i > 0; --i)
+		t_printv(" %08x", x->words[i - 1]);
+	t_printv(" | %8i", x->msb);
 }
 
 
