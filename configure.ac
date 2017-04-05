@@ -241,7 +241,7 @@ AC_ARG_ENABLE([cryb-mpi],
 	[build the multiple-precision math library]),
     [enable_cryb_mpi=$enableval],
     [enable_cryb_mpi=$enable_all])
-AM_CONDITIONAL([CRYB_MPI], [test x"$enable_cryb_digest" = x"yes"])
+AM_CONDITIONAL([CRYB_MPI], [test x"$enable_cryb_mpi" = x"yes"])
 
 # OATH
 elements="$elements oath"
