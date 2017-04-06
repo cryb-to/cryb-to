@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 2012 The University of Oslo
- * Copyright (c) 2012-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,11 +40,11 @@ CRYB_BEGIN
 #define CRYB_ROL_ROR(N)							\
 	static inline uint##N##_t rol##N(uint##N##_t i, int n)		\
 	{								\
-		return (i << n | i >> (N - n));				\
+		return (i << (n & (N - 1)) | i >> (-n & (N - 1)));	\
 	}								\
 	static inline uint##N##_t ror##N(uint##N##_t i, int n)		\
 	{								\
-		return (i << (N - n) | i >> n);				\
+		return (i << (-n & (N - 1)) | i >> (n & (N - 1)));	\
 	}
 
 CRYB_ROL_ROR(8);
