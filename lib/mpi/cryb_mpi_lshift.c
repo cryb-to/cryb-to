@@ -37,7 +37,7 @@
 #include "cryb_mpi_impl.h"
 
 /*
- * Left-shift X by c bytes
+ * Left-shift X in place by c bits.
  */
 int
 mpi_lshift(cryb_mpi *X, unsigned int c)
