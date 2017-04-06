@@ -145,42 +145,70 @@ static struct t_div_case {
 	uint8_t b[16];
 	size_t bmsb;
 	int bneg:1;
-	uint8_t e[16];
-	size_t emsb;
-	int eneg:1;
+	uint8_t q[16];
+	size_t qmsb;
+	int qneg:1;
+	uint8_t r[16];
+	size_t rmsb;
+	int rneg:1;
 } t_div_cases[] = {
+	{
+		"0 / 1 == 0",
+		{                                                      },  0, 0,
+		{                                                 0x01 },  1, 0,
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+	},
 	{
 		"1 / 1 == 1",
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
+		{                                                      },  0, 0,
 	},
+	{
+		"4 / 2 == 2",
+		{                                                 0x04 },  3, 0,
+		{                                                 0x02 },  2, 0,
+		{                                                 0x02 },  2, 0,
+		{                                                      },  0, 0,
+	},
+	{
+		"257 / 127 == 2 rem 3",
+		{                                           0x01, 0x01 },  9, 0,
+		{                                                 0x7f },  7, 0,
+		{                                                 0x02 },  2, 0,
+		{                                                 0x03 },  2, 0,
+	},
+	/* XXX needs lots more tests! */
 };
 
 static int
 t_mpi_div_tc(char **desc CRYB_UNUSED, void *arg)
 {
 	struct t_div_case *tc = arg;
-	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO, e = CRYB_MPI_ZERO;
-	cryb_mpi x = CRYB_MPI_ZERO;
+	cryb_mpi a = CRYB_MPI_ZERO, b = CRYB_MPI_ZERO;
+	cryb_mpi q = CRYB_MPI_ZERO, r = CRYB_MPI_ZERO;
+	cryb_mpi eq = CRYB_MPI_ZERO, er = CRYB_MPI_ZERO;
 	int ret = 1;
 
 	mpi_load(&a, tc->a, (tc->amsb + 7) / 8);
 	a.neg = tc->aneg;
 	mpi_load(&b, tc->b, (tc->bmsb + 7) / 8);
 	b.neg = tc->bneg;
-	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
-	e.neg = tc->eneg;
-#if 0
-	ret &= t_compare_i(0, mpi_div_abs(&x, &a, &b));
-#else
-	mpi_load(&x, tc->e, (tc->emsb + 7) / 8);
-#endif
-	ret &= t_compare_mpi(&e, &x);
+	mpi_load(&eq, tc->q, (tc->qmsb + 7) / 8);
+	eq.neg = tc->qneg;
+	mpi_load(&er, tc->r, (tc->rmsb + 7) / 8);
+	er.neg = tc->rneg;
+	ret &= t_compare_i(0, mpi_div_abs(&q, &r, &a, &b));
+	ret &= t_compare_mpi(&eq, &q);
+	ret &= t_compare_mpi(&er, &r);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
-	mpi_destroy(&e);
-	mpi_destroy(&x);
+	mpi_destroy(&q);
+	mpi_destroy(&r);
+	mpi_destroy(&eq);
+	mpi_destroy(&er);
 	return (ret);
 }
 

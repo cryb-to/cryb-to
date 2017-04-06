@@ -13,6 +13,8 @@ libcryb_mpi_la_SOURCES = \
 	cryb_mpi_dec.c \
 	cryb_mpi_dec_abs.c \
 	cryb_mpi_destroy.c \
+	cryb_mpi_div.c \
+	cryb_mpi_div_abs.c \
 	cryb_mpi_eq.c \
 	cryb_mpi_eq_abs.c \
 	cryb_mpi_eq_i32.c \
