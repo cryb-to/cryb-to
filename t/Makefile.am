@@ -1,6 +1,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include
 
 EXTRA_DIST =
+noinst_HEADERS =
 
 if CRYB_TEST
 
@@ -216,7 +217,7 @@ t_mpi_addsub_LDADD = $(libt) $(libmpi)
 t_mpi_compar_LDADD = $(libt) $(libmpi)
 t_mpi_gcd_LDADD = $(libt) $(libmpi)
 t_mpi_muldiv_LDADD = $(libt) $(libmpi)
-noinst_HEADER = t_mpi.h
+noinst_HEADERS += t_mpi.h
 endif CRYB_MPI
 
 # libcryb-oath
