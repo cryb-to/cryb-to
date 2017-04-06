@@ -52,6 +52,8 @@ const char *cryb_mpi_version(void);
 #define mpi_dec			cryb_mpi_dec
 #define mpi_dec_abs		cryb_mpi_dec_abs
 #define mpi_destroy		cryb_mpi_destroy
+#define mpi_div			cryb_mpi_div
+#define mpi_div_abs		cryb_mpi_div_abs
 #define mpi_eq			cryb_mpi_eq
 #define mpi_eq_abs		cryb_mpi_eq_abs
 #define mpi_eq_abs_u32		cryb_mpi_eq_abs_u32
@@ -106,6 +108,8 @@ int mpi_copy(cryb_mpi *, const cryb_mpi *);
 int mpi_dec(cryb_mpi *);
 int mpi_dec_abs(cryb_mpi *);
 void mpi_destroy(cryb_mpi *);
+int mpi_div(cryb_mpi *, cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
+int mpi_div_abs(cryb_mpi *, cryb_mpi *, const cryb_mpi *, const cryb_mpi *);
 int mpi_eq(const cryb_mpi *, const cryb_mpi *);
 int mpi_eq_abs(const cryb_mpi *, const cryb_mpi *);
 int mpi_eq_abs_u32(const cryb_mpi *, uint32_t);
