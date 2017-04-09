@@ -49,6 +49,7 @@
 
 static struct t_mul_case {
 	const char *desc;
+	int err;
 	uint8_t a[16];
 	size_t amsb;
 	int aneg:1;
@@ -60,49 +61,49 @@ static struct t_mul_case {
 	int eneg:1;
 } t_mul_cases[] = {
 	{
-		"0 * 0 == 0",
+		"0 * 0 == 0",                                              0,
 		{                                                      },  0, 0,
 		{                                                      },  0, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"0 * 1 == 0",
+		"0 * 1 == 0",                                              0,
 		{                                                      },  0, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"1 * 0 == 0",
+		"1 * 0 == 0",                                              0,
 		{                                                 0x01 },  1, 0,
 		{                                                      },  0, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"1 * 1 == 1",
+		"1 * 1 == 1",                                              0,
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                 0x01 },  1, 0,
 	},
 	{
-		"(2^32 + 1) * (2^32 + 1) == 2^64 + 2^33 + 1",
+		"(2^32 + 1) * (2^32 + 1) == 2^64 + 2^33 + 1",              0,
 		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
 		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
 		{ 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01 }, 65, 0,
 	},
 	{
-		"(2^32 + 1) * (2^32 - 1) == 2^64 - 1",
+		"(2^32 + 1) * (2^32 - 1) == 2^64 - 1",                     0,
 		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
 		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
 		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, 63, 0,
 	},
 	{
-		"(2^32 - 1) * (2^32 + 1) == 2^64 - 1",
+		"(2^32 - 1) * (2^32 + 1) == 2^64 - 1",                     0,
 		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
 		{                         0x01, 0x00, 0x00, 0x00, 0x01 }, 33, 0,
 		{       0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, 63, 0,
 	},
 	{
-		"(2^32 - 1) * (2^32 - 1) == 2^64 - 2^33 + 1",
+		"(2^32 - 1) * (2^32 - 1) == 2^64 - 2^33 + 1",              0,
 		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
 		{                               0xff, 0xff, 0xff, 0xff }, 32, 0,
 		{       0xff, 0xff, 0xff, 0xfe, 0x00, 0x00, 0x00, 0x01 }, 64, 0,
@@ -139,6 +140,7 @@ t_mpi_mul_tc(char **desc CRYB_UNUSED, void *arg)
 
 static struct t_div_case {
 	const char *desc;
+	int err;
 	uint8_t a[16];
 	size_t amsb;
 	int aneg:1;
@@ -153,28 +155,56 @@ static struct t_div_case {
 	int rneg:1;
 } t_div_cases[] = {
 	{
-		"0 / 1 == 0",
+		/* divide something by zero */
+		"1 / 0 == ERROR",                                         -1,
+		{                                                 0x01 },  1, 0,
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+		{                                                      },  0, 0,
+	},
+	{
+		/* divide zero by something */
+		"0 / 1 == 0",                                              0,
 		{                                                      },  0, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                      },  0, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"1 / 1 == 1",
+		/* divide something by one */
+		"3 / 1 == 3",                                              0,
+		{                                                 0x03 },  2, 0,
 		{                                                 0x01 },  1, 0,
-		{                                                 0x01 },  1, 0,
+		{                                                 0x03 },  2, 0,
+		{                                                      },  0, 0,
+	},
+	{
+		/* divide something by itself */
+		"3 / 3 == 1",                                              0,
+		{                                                 0x03 },  2, 0,
+		{                                                 0x03 },  2, 0,
 		{                                                 0x01 },  1, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"4 / 2 == 2",
-		{                                                 0x04 },  3, 0,
+		/* divide something by something larger */
+		"127 / 254 == 0 rem 127",                                     0,
+		{                                                 0x7f },  7, 0,
+		{                                                 0xfe },  8, 0,
+		{                                                      },  0, 0,
+		{                                                 0x7f },  7, 0,
+	},
+	{
+		/* no remainder */
+		"254 / 127 = 2",                                           0,
+		{                                                 0xfe },  8, 0,
+		{                                                 0x7f },  7, 0,
 		{                                                 0x02 },  2, 0,
-		{                                                 0x02 },  2, 0,
 		{                                                      },  0, 0,
 	},
 	{
-		"257 / 127 == 2 rem 3",
+		/* remainder */
+		"257 / 127 == 2 rem 3",                                    0,
 		{                                           0x01, 0x01 },  9, 0,
 		{                                                 0x7f },  7, 0,
 		{                                                 0x02 },  2, 0,
@@ -200,9 +230,11 @@ t_mpi_div_tc(char **desc CRYB_UNUSED, void *arg)
 	eq.neg = tc->qneg;
 	mpi_load(&er, tc->r, (tc->rmsb + 7) / 8);
 	er.neg = tc->rneg;
-	ret &= t_compare_i(0, mpi_div_abs(&q, &r, &a, &b));
-	ret &= t_compare_mpi(&eq, &q);
-	ret &= t_compare_mpi(&er, &r);
+	ret &= t_compare_i(tc->err, mpi_div_abs(&q, &r, &a, &b));
+	if (tc->err == 0) {
+		ret &= t_compare_mpi(&eq, &q);
+		ret &= t_compare_mpi(&er, &r);
+	}
 	mpi_destroy(&a);
 	mpi_destroy(&b);
 	mpi_destroy(&q);
