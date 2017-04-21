@@ -161,7 +161,7 @@ t_prepare(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
-#if WORD_BIGENDIAN
+#if WORDS_BIGENDIAN
 	h16 = be16;
 	h32 = be32;
 	h64 = be64;
