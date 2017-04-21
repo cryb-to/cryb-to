@@ -38,6 +38,7 @@
 #include <cryb/md4.h>
 #include <cryb/md5.h>
 #include <cryb/sha1.h>
+#include <cryb/sha224.h>
 #include <cryb/sha256.h>
 #include <cryb/sha384.h>
 #include <cryb/sha512.h>
@@ -61,6 +62,7 @@ init_digest_algorithms(void)
 		&md4_digest,
 		&md5_digest,
 		&sha1_digest,
+		&sha224_digest,
 		&sha256_digest,
 		&sha384_digest,
 		&sha512_digest,

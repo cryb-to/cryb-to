@@ -189,3 +189,15 @@ chacha_finish(chacha_ctx *ctx)
 
 	(void)memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
+
+cipher_algorithm chacha_cipher = {
+	.name			 = "chacha",
+	.contextlen		 = sizeof(chacha_ctx),
+	.blocklen		 = 64,
+	.keylen			 = 32,
+	.init			 = (cipher_init_func)chacha_init,
+	.keystream		 = (cipher_keystream_func)chacha_keystream,
+	.encrypt		 = (cipher_encrypt_func)chacha_encrypt,
+	.decrypt		 = (cipher_decrypt_func)chacha_decrypt,
+	.finish			 = (cipher_finish_func)chacha_finish,
+};

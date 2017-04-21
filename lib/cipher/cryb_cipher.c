@@ -35,7 +35,10 @@
 
 #include <cryb/cipher.h>
 #include <cryb/aes.h>
+#include <cryb/chacha.h>
+#include <cryb/des.h>
 #include <cryb/rc4.h>
+#include <cryb/salsa.h>
 
 static const char *cryb_cipher_version_string = PACKAGE_VERSION;
 
@@ -55,7 +58,12 @@ init_cipher_algorithms(void)
 		&aes128_cipher,
 		&aes192_cipher,
 		&aes256_cipher,
+		&chacha_cipher,
+		&des56_cipher,
+		&des112_cipher,
+		&des168_cipher,
 		&rc4_cipher,
+		&salsa_cipher,
 		NULL
 	};
 	cryb_cipher_algorithms = algorithms;

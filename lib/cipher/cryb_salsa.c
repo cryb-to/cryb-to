@@ -189,3 +189,15 @@ salsa_finish(salsa_ctx *ctx)
 
 	(void)memset_s(ctx, 0, sizeof *ctx, sizeof *ctx);
 }
+
+cipher_algorithm salsa_cipher = {
+	.name			 = "salsa",
+	.contextlen		 = sizeof(salsa_ctx),
+	.blocklen		 = 64,
+	.keylen			 = 32,
+	.init			 = (cipher_init_func)salsa_init,
+	.keystream		 = (cipher_keystream_func)salsa_keystream,
+	.encrypt		 = (cipher_encrypt_func)salsa_encrypt,
+	.decrypt		 = (cipher_decrypt_func)salsa_decrypt,
+	.finish			 = (cipher_finish_func)salsa_finish,
+};
