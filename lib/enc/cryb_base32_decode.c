@@ -36,7 +36,7 @@
 
 #include <cryb/rfc4648.h>
 
-static const char b32dec[256] = {
+static const uint8_t b32dec[256] = {
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 	0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -87,8 +87,9 @@ static const char b32dec[256] = {
  * excess data, but returns the total amount.
  */
 int
-base32_decode(const char *in, size_t ilen, uint8_t *out, size_t *olen)
+base32_decode(const char *cin, size_t ilen, uint8_t *out, size_t *olen)
 {
+	const uint8_t *in = (const uint8_t *)cin;
 	size_t len;
 	int bits, shift, padding;
 
@@ -97,10 +98,10 @@ base32_decode(const char *in, size_t ilen, uint8_t *out, size_t *olen)
 		    (padding && *in == '=')) {
 			/* consume */
 			continue;
-		} else if (!padding && b32dec[(uint8_t)*in] >= 0) {
+		} else if (!padding && b32dec[*in] != 0xff) {
 			/* shift into accumulator */
 			shift += 5;
-			bits = bits << 5 | b32dec[(uint8_t)*in];
+			bits = bits << 5 | b32dec[*in];
 		} else if (!padding && *in == '=' &&
 		    (shift == 1 || shift == 2 || shift == 3 || shift == 4)) {
 			/* final byte */
