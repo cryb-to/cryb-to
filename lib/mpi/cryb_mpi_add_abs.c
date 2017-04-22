@@ -92,7 +92,7 @@ mpi_add_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 	 */
 
 	/* add B into X word by word until we run out of B */
-	for (c = i = 0; i < (B->msb + 31) / 32; ++i) {
+	for (c = i = 0; i < MPI_MSW(B); ++i) {
 		X->words[i] += c;
 		c = (X->words[i] < c);
 		X->words[i] += B->words[i];
