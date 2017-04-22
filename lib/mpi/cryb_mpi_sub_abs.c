@@ -81,7 +81,7 @@ mpi_sub_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 		return (-1);
 
 	/* subtract L from G word by word until we run out of L */
-	for (c = i = 0; i < (L->msb + 31) / 32; ++i) {
+	for (c = i = 0; i < MPI_MSW(L); ++i) {
 		cn = G->words[i] < c ||
 		    G->words[i] - c < L->words[i];
 		X->words[i] = G->words[i] - L->words[i] - c;

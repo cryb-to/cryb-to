@@ -30,6 +30,9 @@
 /* n rounded up to nearest multiple of p */
 #define RUP(n, p) ((((n) + (p) - 1) / (p)) * (p))
 
+/* one-based index of the most significant word of an mpi */
+#define MPI_MSW(n) (((n)->msb + 31) / 32)
+
 /*
  * Initialize an all-zeroes mpi.
  */

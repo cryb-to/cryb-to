@@ -72,8 +72,8 @@ mpi_mul_abs(cryb_mpi *X, const cryb_mpi *A, const cryb_mpi *B)
 	 */
 	P = (X == A || X == B) ? &T : X;
 	mpi_zero(P);
-	a = (A->msb + 31) / 32;
-	b = (B->msb + 31) / 32;
+	a = MPI_MSW(A);
+	b = MPI_MSW(B);
 	if (mpi_grow(P, (a + b) * 32) != 0)
 		return (-1);
 
