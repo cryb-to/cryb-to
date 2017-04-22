@@ -41,6 +41,7 @@
 /t_rc4
 /t_rfc3986
 /t_rfc4648
+/t_rolror
 /t_salsa
 /t_sha1
 /t_sha1_openssl
