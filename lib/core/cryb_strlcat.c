@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2011-2014 Dag-Erling Smørgrav
+ * Copyright (c) 2011-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,13 @@
 
 #include <cryb/strlcat.h>
 
-/* like strcat(3), but always NUL-terminates; returns strlen(src) */
+/*
+ * Like strcat(3), but always NUL-terminates.
+ *
+ * Returns strlen(dst) + strlen(src), regardless of how much was copied,
+ * if dst was properly terminated.  Returns size + strlen(src) otherwise.
+ */
+
 size_t
 cryb_strlcat(char *dst, const char *src, size_t size)
 {

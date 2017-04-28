@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2011-2014 Dag-Erling Smørgrav
+ * Copyright (c) 2011-2017 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,12 @@
 
 #include <cryb/strlcpy.h>
 
-/* like strcpy(3), but always NUL-terminates; returns strlen(src) */
+/*
+ * Like strcpy(3), but always NUL-terminates.
+ *
+ * Returns strlen(src), regardless of how much was copied.
+ */
+
 size_t
 cryb_strlcpy(char *dst, const char *src, size_t size)
 {
