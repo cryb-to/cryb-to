@@ -35,10 +35,11 @@
 #include <string.h>
 #include <unistd.h>
 
-#undef HAVE_STRLCPY
 #include <cryb/strlcpy.h>
 
 #include <cryb/test.h>
+
+typedef size_t (*strlcpy_f)(char *, const char *, size_t);
 
 #define T_MAGIC_STR	"squeamish ossifrage"
 #define T_MAGIC_LEN	(sizeof(T_MAGIC_STR) - 1)
@@ -86,20 +87,37 @@ static struct t_case t_cases[] = {
  * Test function
  */
 static int
-t_strlcpy(char **desc CRYB_UNUSED, void *arg)
+t_strlcpy(strlcpy_f func, const struct t_case *t)
 {
-	struct t_case *t = arg;
 	char buf[T_BUFSIZE + 1];
 	size_t sz;
 
 	memset(buf, T_CANARY, sizeof buf);
-	sz = strlcpy(buf, t->in, T_BUFSIZE);
+	sz = func(buf, t->in, T_BUFSIZE);
 	if (buf[T_BUFSIZE] != T_CANARY) {
 		t_printv("buffer overflow\n");
 		return (0);
 	}
 	return (t_compare_sz(t->sz, sz) & t_compare_str(t->out, buf));
 }
+
+static int
+t_cryb_strlcpy(char **desc CRYB_UNUSED, void *arg)
+{
+	const struct t_case *t = arg;
+
+	return (t_strlcpy(cryb_strlcpy, t));
+}
+
+#if HAVE_STRLCPY
+static int
+t_libc_strlcpy(char **desc CRYB_UNUSED, void *arg)
+{
+	const struct t_case *t = arg;
+
+	return (t_strlcpy(strlcpy, t));
+}
+#endif
 
 
 /***************************************************************************
@@ -115,7 +133,13 @@ t_prepare(int argc, char *argv[])
 	(void)argv;
 	n = sizeof t_cases / sizeof t_cases[0];
 	for (i = 0; i < n; ++i)
-		t_add_test(t_strlcpy, &t_cases[i], "%s", t_cases[i].desc);
+		t_add_test(t_cryb_strlcpy, &t_cases[i],
+		    "%s (cryb)", t_cases[i].desc);
+#if HAVE_STRLCPY
+	for (i = 0; i < n; ++i)
+		t_add_test(t_libc_strlcpy, &t_cases[i],
+		    "%s (libc)", t_cases[i].desc);
+#endif
 	return (0);
 }
 
