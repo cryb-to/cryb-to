@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(top_srcdir)/include
+AM_CPPFLAGS = 
 
 EXTRA_DIST =
 noinst_HEADERS =
@@ -19,14 +19,14 @@ libt = $(top_builddir)/lib/test/libcryb-test.la
 
 # Additional headers, flags and libraries for OpenSSL
 if OPENSSL_TESTS
-OPENSSL_INCLUDES = $(INCLUDES)
+OPENSSL_INCLUDES = 
 OPENSSL_CFLAGS = -DWITH_OPENSSL=1
 OPENSSL_LDADD = -lcrypto
 endif OPENSSL_TESTS
 
 # Additional headers, flags and libraries for RSAREF
 if RSAREF_TESTS
-RSAREF_INCLUDES = $(INCLUDES) -I$(top_srcdir)/lib/rsaref
+RSAREF_INCLUDES = -I$(top_srcdir)/lib/rsaref
 RSAREF_CFLAGS = -DWITH_RSAREF=1 -DPROTOTYPES=1
 RSAREF_LDADD = $(top_builddir)/lib/rsaref/librsaref.la
 endif RSAREF_TESTS
@@ -37,7 +37,7 @@ TESTS =
 # c++ header test
 TESTS += t_cxx
 t_cxx_SOURCES = t_cxx.cc
-t_cxx_CPPFLAGS =
+t_cxx_CPPFLAGS = $(AM_CPPFLAGS)
 t_cxx_LDADD =
 if CRYB_CIPHER
 t_cxx_CPPFLAGS += -DWITH_CRYB_CIPHER
