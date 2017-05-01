@@ -293,7 +293,7 @@ t_malloc_bucket(size_t size)
  * Core malloc() logic: select the correct backend based on the requested
  * allocation size and call it.
  */
-void *
+static void *
 t_malloc(size_t size)
 {
 
