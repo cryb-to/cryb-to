@@ -139,7 +139,8 @@ t_add_test(t_func *func, void *arg, const char *fmt, ...)
 		err(1, "malloc()");
 	t->func = func;
 	va_start(ap, fmt);
-	(void)vasprintf(&t->desc, fmt, ap);
+	if (vasprintf(&t->desc, fmt, ap) < 0)
+		err(1, "vasprintf()");
 	va_end(ap);
 	t->arg = arg;
 	t_grow(1);

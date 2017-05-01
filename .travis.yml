@@ -1,3 +1,5 @@
+dist: trusty
+
 language: c
 compiler:
  - clang
@@ -17,6 +19,7 @@ script:
 # Coverity Scan configuration
 env:
   global:
+   - CFLAGS="-Wno-unused-result"
    - secure: "mvZ7LO2lCFicTg+L3c4PvDeXtMR7ez2pfPYJ/BSYLknTx1yzz31p9k1lwFPnG86oBK4A5MxnlGj+LAfLBRR2ZxvVh5enQyjqSSFfGzG06bmSmfzbM+wkveTzFiKyAnWyzd0bFshsU0tuFXU4QH3jiO+/QO+ixybNyw2wgC+yBz0/OBmzIVKvoK7mqBl31givL6YsLPF5HdipMZK7KHYxp1Kjj36AF1QmsivMKalMjBGIh5PeJ8QY3R/GDdy+I2zEyAS1a6fFMcBbCQrjPl4eQJ/y6pl3EuvMfeSjRUPXvzEf9fiwZcuiw9KY0EDtYuIAyzaBUTHuW/tO359LbLYI4X2V3SgA5b58H0zDvavssRzAp/l/bYq70Q0n1Xz/aF1R01SDqG48BFMWWT3eb7eLIeZNapPLOWk07D801Wpt8XYbfEDZZ5FA5UK/o8DBAlIEDivFLkuG2+vv9wMwY0qkTQ8ZyBvfSRa/pjVBpiPiPRO5Pg6UrnPOHnX7hf+IGa1U38vY8S8sBdA0Xc4QSH3K7dQZc33N12Nhrbp9hQR5WFPz35CZVnf77XPLSWocG1icb6tFF2ybzE26XiUXzRy6eaVkfcNlAvtUl4Rci7520436bJnNfZiFMD9Lj4Wy/td89guqboH2jETcHbly5h5yqfL+95pCt+0i3zCtC0GfrbU="
 addons:
   coverity_scan:
