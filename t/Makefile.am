@@ -1,4 +1,4 @@
-AM_CPPFLAGS = 
+AM_CPPFLAGS = -I$(top_srcdir)/include
 
 EXTRA_DIST =
 noinst_HEADERS =
