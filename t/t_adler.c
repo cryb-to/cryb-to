@@ -29,12 +29,10 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
-#include <cryb/endian.h>
 #include <cryb/hash.h>
 
 #include <cryb/test.h>

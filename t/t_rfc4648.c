@@ -30,11 +30,10 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <errno.h>
 #include <stdint.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <cryb/rfc4648.h>
 

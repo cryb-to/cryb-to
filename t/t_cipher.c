@@ -29,10 +29,9 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <stddef.h>
 #include <stdint.h>
+#include <unistd.h>
 
 #include <cryb/cipher.h>
 

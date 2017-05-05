@@ -30,8 +30,6 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <inttypes.h>
 #include <string.h>
 

@@ -29,9 +29,8 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <errno.h>
+#include <stddef.h>
 #include <stdint.h>
 
 #include <cryb/rfc4648.h>

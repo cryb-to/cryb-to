@@ -29,10 +29,9 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
-
 #include <stddef.h>
 #include <stdint.h>
+#include <unistd.h>
 
 /* test our own code, not the compiler's */
 #undef HAVE___BUILTIN_BSWAP16

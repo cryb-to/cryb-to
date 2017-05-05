@@ -29,7 +29,6 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
 #include <sys/wait.h>
 
 #if HAVE_SYS_RESOURCE_H
