@@ -139,7 +139,7 @@ AC_SUBST(RT_LIBS)
 
 # Documentation
 AC_ARG_ENABLE([doc],
-    AC_HELP_STRING([--disable-doc],
+    AS_HELP_STRING([--disable-doc],
 	[do not build the documentation]),
     [with_doc=$enableval])
 AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" != x"no"])
@@ -151,13 +151,13 @@ AM_CONDITIONAL([WITH_DOC], [test x"$with_doc" != x"no"])
 
 # OpenSSL versions of the unit tests for comparison
 AC_ARG_ENABLE([openssl-tests],
-    AC_HELP_STRING([--enable-openssl-tests],
+    AS_HELP_STRING([--enable-openssl-tests],
 	[build unit tests with OpenSSL support]))
 AM_CONDITIONAL([OPENSSL_TESTS], [test x"$enable_openssl_tests" = x"yes"])
 
 # RSAREF versions of the unit tests for comparison
 AC_ARG_ENABLE([rsaref-tests],
-    AC_HELP_STRING([--enable-rsaref-tests],
+    AS_HELP_STRING([--enable-rsaref-tests],
 	[build unit tests enable RSAREF support]))
 AM_CONDITIONAL([RSAREF_TESTS], [test x"enable_rsaref_tests" = x"yes"])
 
@@ -182,7 +182,7 @@ AC_ARG_ENABLE([werror],
 
 # Everything
 AC_ARG_ENABLE([all],
-    AC_HELP_STRING([--disable-all],
+    AS_HELP_STRING([--disable-all],
         [disable all libraries and tools]),
     [enable_all=$enableval],
     [enable_all=yes])
@@ -191,7 +191,7 @@ AC_ARG_ENABLE([all],
 elements="$elements cipher"
 requires="$requires cipher:core"
 AC_ARG_ENABLE([cryb-cipher],
-    AC_HELP_STRING([--enable-cryb-cipher],
+    AS_HELP_STRING([--enable-cryb-cipher],
 	[build the cipher library]),
     [enable_cryb_cipher=$enableval],
     [enable_cryb_cipher=$enable_all])
@@ -200,7 +200,7 @@ AM_CONDITIONAL([CRYB_CIPHER], [test x"$enable_cryb_cipher" = x"yes"])
 # Core
 elements="$elements core"
 AC_ARG_ENABLE([cryb-core],
-    AC_HELP_STRING([--enable-cryb-core],
+    AS_HELP_STRING([--enable-cryb-core],
 	[build the core library]),
     [enable_cryb_core=$enableval],
     [enable_cryb_core=$enable_all])
@@ -210,7 +210,7 @@ AM_CONDITIONAL([CRYB_CORE], [test x"$enable_cryb_core" = x"yes"])
 elements="$elements cpe"
 requires="$requires cpe:core"
 AC_ARG_ENABLE([cryb-cpe],
-    AC_HELP_STRING([--enable-cryb-cpe],
+    AS_HELP_STRING([--enable-cryb-cpe],
 	[build the CPE library]),
     [enable_cryb_cpe=$enableval],
     [enable_cryb_cpe=$enable_all])
@@ -220,7 +220,7 @@ AM_CONDITIONAL([CRYB_CPE], [test x"$enable_cryb_cpe" = x"yes"])
 elements="$elements digest"
 requires="$requires digests:core"
 AC_ARG_ENABLE([cryb-digest],
-    AC_HELP_STRING([--enable-cryb-digest],
+    AS_HELP_STRING([--enable-cryb-digest],
 	[build the message digest library]),
     [enable_cryb_digest=$enableval],
     [enable_cryb_digest=$enable_all])
@@ -230,7 +230,7 @@ AM_CONDITIONAL([CRYB_DIGEST], [test x"$enable_cryb_digest" = x"yes"])
 elements="$elements enc"
 requires="$requires enc:core"
 AC_ARG_ENABLE([cryb-enc],
-    AC_HELP_STRING([--enable-cryb-enc],
+    AS_HELP_STRING([--enable-cryb-enc],
 	[build the encoding library]),
     [enable_cryb_enc=$enableval],
     [enable_cryb_enc=$enable_all])
@@ -240,7 +240,7 @@ AM_CONDITIONAL([CRYB_ENC], [test x"$enable_cryb_enc" = x"yes"])
 elements="$elements hash"
 requires="$requires hash:core"
 AC_ARG_ENABLE([cryb-hash],
-    AC_HELP_STRING([--enable-cryb-hash],
+    AS_HELP_STRING([--enable-cryb-hash],
 	[build the non-cryptographic hash library]),
     [enable_cryb_hash=$enableval],
     [enable_cryb_hash=$enable_all])
@@ -250,7 +250,7 @@ AM_CONDITIONAL([CRYB_HASH], [test x"$enable_cryb_hash" = x"yes"])
 elements="$elements mac"
 requires="$requires mac:core mac:digest"
 AC_ARG_ENABLE([cryb-mac],
-    AC_HELP_STRING([--enable-cryb-mac],
+    AS_HELP_STRING([--enable-cryb-mac],
 	[build the message authentication code library]),
     [enable_cryb_mac=$enableval],
     [enable_cryb_mac=$enable_all])
@@ -260,7 +260,7 @@ AM_CONDITIONAL([CRYB_MAC], [test x"$enable_cryb_digest" = x"yes"])
 elements="$elements mpi"
 requires="$requires mpi:core"
 AC_ARG_ENABLE([cryb-mpi],
-    AC_HELP_STRING([--enable-cryb-mpi],
+    AS_HELP_STRING([--enable-cryb-mpi],
 	[build the multiple-precision math library]),
     [enable_cryb_mpi=$enableval],
     [enable_cryb_mpi=$enable_all])
@@ -270,7 +270,7 @@ AM_CONDITIONAL([CRYB_MPI], [test x"$enable_cryb_mpi" = x"yes"])
 elements="$elements oath"
 requires="$requires oath:core oath:digest oath:enc oath:mac oath:rand"
 AC_ARG_ENABLE([cryb-oath],
-    AC_HELP_STRING([--enable-cryb-oath],
+    AS_HELP_STRING([--enable-cryb-oath],
 	[build the OATH library]),
     [enable_cryb_oath=$enableval],
     [enable_cryb_oath=$enable_all])
@@ -280,7 +280,7 @@ AM_CONDITIONAL([CRYB_OATH], [test x"$enable_cryb_oath" = x"yes"])
 elements="$elements rand"
 requires="$requires rand:core"
 AC_ARG_ENABLE([cryb-rand],
-    AC_HELP_STRING([--enable-cryb-rand],
+    AS_HELP_STRING([--enable-cryb-rand],
 	[build the pseudo-randomness library]),
     [enable_cryb_rand=$enableval],
     [enable_cryb_rand=$enable_all])
@@ -290,7 +290,7 @@ AM_CONDITIONAL([CRYB_RAND], [test x"$enable_cryb_rand" = x"yes"])
 elements="$elements test"
 requires="$requires test:core"
 AC_ARG_ENABLE([cryb-test],
-    AC_HELP_STRING([--enable-cryb-test],
+    AS_HELP_STRING([--enable-cryb-test],
 	[build the test framework]),
     [enable_cryb_test=$enableval],
     [enable_cryb_test=$enable_all])
