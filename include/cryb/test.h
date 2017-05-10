@@ -146,6 +146,7 @@ size_t t_malloc_snapshot(void *, size_t);
 #if CRYB_TEST_HAVE_STDIO
 void t_malloc_printstats(FILE *);
 #endif
+unsigned long t_malloc_outstanding(void);
 extern struct t_test t_memory_leak;
 
 /*

@@ -251,6 +251,16 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	size_t nt;
 	int opt;
 
+	/*
+	 * Enable memory leak detection by default if and only if the heap
+	 * is empty at the start of main(), since otherwise we have no
+	 * reason to trust that it will be empty after we've run the tests
+	 * and cleaned up what we could.
+	 */
+	leaktest = t_malloc_outstanding() ?
+	    t_str_is_true(getenv("CRYB_LEAKTEST")) :
+	    !t_str_is_false(getenv("CRYB_LEAKTEST"));
+
 	/* make all unintentional allocation failures fatal */
 	t_malloc_fatal = 1;
 
@@ -265,13 +275,6 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 		t_progname++; /* one past the slash */
 	else
 		t_progname = argv[0];
-
-	/* check for leaks, unless doing coverage analysis */
-#if CRYB_COVERAGE
-	leaktest = t_str_is_true(getenv("CRYB_LEAKTEST"));
-#else
-	leaktest = !t_str_is_false(getenv("CRYB_LEAKTEST"));
-#endif
 
 	/* parse command line options */
 	while ((opt = getopt(argc, argv, "Llv")) != -1)
