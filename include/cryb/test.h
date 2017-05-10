@@ -75,7 +75,7 @@ void t_printv_hex(const uint8_t *, size_t);
 void t_printv(const char *, ...)
 	CRYB_PRINTF(1, 2);
 
-#ifdef _IONBF /* proxy for <stdio.h> */
+#if CRYB_TEST_HAVE_STDIO
 /*
  * Convenience functions for temp files
  */
@@ -164,7 +164,7 @@ void t_assertion_failed(const char *, const char *, unsigned int,
 			t_assertion_failed(__func__, __FILE__,		\
 			    __LINE__, "%s", #exp);			\
 	} while (0)
-			
+
 CRYB_END
 
 #endif

@@ -317,11 +317,15 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	}
 	free(t_plan);
 	setvbuf(stdout, NULL, _IONBF, 0);
+
+	/* check for memory leaks */
 	if (leaktest) {
 		if (t_verbose)
 			t_malloc_printstats(stderr);
 		t_run_test(&t_memory_leak, nt) ? ++pass : ++fail;
 	}
+
+	/* result */
 	t_printv("%d out of %zd tests passed\n", pass, nt);
 	exit(fail > 0 ? 1 : 0);
 }
