@@ -293,7 +293,7 @@ t_malloc_bucket(size_t size)
  * Core malloc() logic: select the correct backend based on the requested
  * allocation size and call it.
  */
-void *
+static void *
 t_malloc(size_t size)
 {
 
@@ -535,21 +535,32 @@ t_malloc_printstats(FILE *f)
 }
 
 /*
+ * Return number of outstanding allocations
+ */
+unsigned long
+t_malloc_outstanding(void)
+{
+	struct bucket *b;
+	unsigned int shift;
+	unsigned long n;
+
+	n = nmapalloc - nmapfree;
+	for (shift = BUCKET_MIN_SHIFT; shift <= BUCKET_MAX_SHIFT; ++shift) {
+		b = &buckets[shift];
+		n += b->nalloc - b->nfree;
+	}
+	return (n);
+}
+
+/*
  * Test that fails if we leaked memory
  */
 static int
 t_malloc_leaked(char **desc, void *arg CRYB_UNUSED)
 {
-	struct bucket *b;
-	unsigned int shift;
 	unsigned long nleaked;
 
-	nleaked = 0;
-	for (shift = BUCKET_MIN_SHIFT; shift <= BUCKET_MAX_SHIFT; ++shift) {
-		b = &buckets[shift];
-		nleaked += b->nalloc - b->nfree;
-	}
-	nleaked += nmapalloc - nmapfree;
+	nleaked = t_malloc_outstanding();
 	if (nleaked > 0)
 		(void)asprintf(desc, "%lu allocation(s) leaked", nleaked);
 	else

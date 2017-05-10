@@ -23,6 +23,7 @@
 /t_hmac_sha512
 /t_hmac_sha512_openssl
 /t_mac
+/t_malloc
 /t_md2
 /t_md4
 /t_md4_openssl
@@ -57,4 +58,5 @@
 /t_strlcat
 /t_strlcmp
 /t_strlcpy
+/t_test
 /t_wstring

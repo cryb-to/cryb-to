@@ -234,6 +234,14 @@ TESTS += t_rand
 t_rand_LDADD = $(libt) $(librand)
 endif CRYB_RAND
 
+# libcryb-test
+if CRYB_TEST
+TESTS += t_test
+t_test_LDADD = $(libt) $(libtest)
+TESTS += t_malloc
+t_malloc_LDADD = $(libt) $(libtest)
+endif CRYB_TEST
+
 check_PROGRAMS = $(TESTS)
 
 endif CRYB_TEST
