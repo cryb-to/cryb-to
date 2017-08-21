@@ -50,4 +50,6 @@
 #define CRYB_END
 #endif
 
+#define CRYB_DEQUAL(p)	((void *)(intptr_t)(p))
+
 #endif
