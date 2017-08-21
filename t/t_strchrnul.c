@@ -41,11 +41,11 @@
 
 typedef char *(*strchrnul_f)(const char *, int);
 
-#define T_MAGIC1_STR	"squeamish"
+#define T_MAGIC1_STR	"Squeamish"
 #define T_MAGIC1_LEN	(sizeof(T_MAGIC1_STR) - 1)
-#define T_MAGIC2_STR	"ossifrage"
+#define T_MAGIC2_STR	"ossifragE"
 #define T_MAGIC2_LEN	(sizeof(T_MAGIC2_STR) - 1)
-#define T_MAGIC_STR	T_MAGIC1_STR " " T_MAGIC2_STR "!"
+#define T_MAGIC_STR	T_MAGIC1_STR " " T_MAGIC2_STR
 #define T_MAGIC_LEN	(sizeof(T_MAGIC_STR) - 1)
 
 const char t_empty_str[] = "";
@@ -89,7 +89,7 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "first in non-empty",
 		.str	= t_magic_str,
-		.chr	= T_MAGIC1_STR[0],
+		.chr	= 'S',
 		.out	= t_magic_str,
 	},
 	{
@@ -101,7 +101,7 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "last in non-empty",
 		.str	= t_magic_str,
-		.chr	= '!',
+		.chr	= 'E',
 		.out	= t_magic_str + T_MAGIC_LEN - 1,
 	},
 };
