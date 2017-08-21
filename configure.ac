@@ -98,8 +98,8 @@ AC_CHECK_FUNCS([ffs ffsl ffsll fls flsl flsll], [], [], [[
 #include <strings.h>
 #endif
 ]])
-AC_CHECK_FUNCS([strlcat strlcmp strlcpy])
-AC_CHECK_FUNCS([wcslcat wcslcmp wcslcpy])
+AC_CHECK_FUNCS([strchrnul strlcat strlcmp strlcpy])
+AC_CHECK_FUNCS([wcschrnul wcslcat wcslcmp wcslcpy])
 
 # For tracing allocations in unit tests
 AC_CHECK_HEADERS([sys/uio.h sys/ktrace.h], [], [], [[
