@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2017 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,29 +27,22 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_DEFS_H_INCLUDED
-#define CRYB_DEFS_H_INCLUDED
+#include "cryb/impl.h"
 
-#if defined(__GNUC__) || defined(__clang__)
-# define CRYB_PRINTF(fmt, arg) __attribute__((format(printf, fmt, arg)))
-# define CRYB_NORETURN __attribute__((noreturn))
-# define CRYB_UNUSED __attribute__((unused))
-# define CRYB_USED __attribute__((used))
-#else
-# define CRYB_PRINTF(fmt, arg)
-# define CRYB_NORETURN
-# define CRYB_UNUSED
-# define CRYB_USED
-#endif
+#include <stddef.h>
+#include <stdint.h>
 
-#ifdef __cplusplus
-#define CRYB_BEGIN	extern "C" {
-#define CRYB_END	}
-#else
-#define CRYB_BEGIN
-#define CRYB_END
-#endif
+#include <cryb/strchrnul.h>
 
-#define CRYB_DEQUAL(p)	((void *)(intptr_t)(p))
+/*
+ * Like strchr(3), but returns the terminating NUL on failure.
+ */
 
-#endif
+char *
+cryb_strchrnul(const char *s, int c)
+{
+
+	while (*s != '\0' && *s != c)
+		s++;
+	return (CRYB_DEQUAL(s));
+}

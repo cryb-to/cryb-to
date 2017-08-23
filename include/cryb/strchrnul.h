@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2017 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,29 +27,22 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_DEFS_H_INCLUDED
-#define CRYB_DEFS_H_INCLUDED
+#ifndef CRYB_STRCHRNUL_H_INCLUDED
+#define CRYB_STRCHRNUL_H_INCLUDED
 
-#if defined(__GNUC__) || defined(__clang__)
-# define CRYB_PRINTF(fmt, arg) __attribute__((format(printf, fmt, arg)))
-# define CRYB_NORETURN __attribute__((noreturn))
-# define CRYB_UNUSED __attribute__((unused))
-# define CRYB_USED __attribute__((used))
-#else
-# define CRYB_PRINTF(fmt, arg)
-# define CRYB_NORETURN
-# define CRYB_UNUSED
-# define CRYB_USED
+#ifndef CRYB_TO
+#include <cryb/to.h>
 #endif
 
-#ifdef __cplusplus
-#define CRYB_BEGIN	extern "C" {
-#define CRYB_END	}
-#else
-#define CRYB_BEGIN
-#define CRYB_END
+CRYB_BEGIN
+
+char *cryb_strchrnul(const char *, int);
+
+#if !HAVE_STRCHRNUL
+#undef strchrnul
+#define strchrnul(arg, ...) cryb_strchrnul(arg, __VA_ARGS__)
 #endif
 
-#define CRYB_DEQUAL(p)	((void *)(intptr_t)(p))
+CRYB_END
 
 #endif

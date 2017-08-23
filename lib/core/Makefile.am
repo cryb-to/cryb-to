@@ -5,10 +5,12 @@ lib_LTLIBRARIES = libcryb-core.la
 libcryb_core_la_SOURCES = \
 	cryb_assert.c \
 	cryb_memset_s.c \
+	cryb_strchrnul.c \
 	cryb_string.c \
 	cryb_strlcat.c \
 	cryb_strlcmp.c \
 	cryb_strlcpy.c \
+	cryb_wcschrnul.c \
 	cryb_wcslcat.c \
 	cryb_wcslcmp.c \
 	cryb_wcslcpy.c \

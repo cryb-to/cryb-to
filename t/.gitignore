@@ -54,6 +54,7 @@
 /t_sha384_openssl
 /t_sha512
 /t_sha512_openssl
+/t_strchrnul
 /t_string
 /t_strlcat
 /t_strlcmp
