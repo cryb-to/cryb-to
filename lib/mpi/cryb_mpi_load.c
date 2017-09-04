@@ -70,6 +70,7 @@ mpi_load(cryb_mpi *X, const uint8_t *a, size_t len)
 		break;
 	case 0:
 		--i;
+		break;
 	CRYB_NO_DEFAULT_CASE;
 	}
 	X->msb = i * 32 + flsl(X->words[i]);
