@@ -45,16 +45,24 @@
 #endif
 
 /*
- * Use at end of switch which has no default case
+ * Some switch constructs may leave you trapped between a static analyzer
+ * that complains about the lack of a default case and a dynamic analyzer
+ * that complains about dead code.  Use this macro at the end of a switch
+ * that does not need a default case.
  */
-#if CRYB_COVERAGE
 #define CRYB_NO_DEFAULT_CASE						\
 	CRYB_DISABLE_COVERAGE						\
-	default:							\
-		(void)0;						\
+	break; default: do { *(volatile int *)0 = 0; } while (0)	\
 	CRYB_RESTORE_COVERAGE
-#else
-#define CRYB_NO_DEFAULT_CASE
-#endif
+
+/*
+ * Use wherever a static analyzer is unable to correctly determine that a
+ * loop will never terminate, an if-else chain will always cover all
+ * possible cases, etc.
+ */
+#define CRYB_UNREACHABLE						\
+	CRYB_DISABLE_COVERAGE						\
+	do { *(volatile int *)0 = 0; } while (0)			\
+	CRYB_RESTORE_COVERAGE
 
 #endif
