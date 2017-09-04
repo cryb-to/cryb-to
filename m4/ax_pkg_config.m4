@@ -34,7 +34,7 @@ dnl
 dnl AX_PROG_PKG_CONFIG([min-version])
 dnl ---------------------------------
 dnl
-dnl Verify that pkg-config or pkgconf are present.
+dnl Verify that pkgconf or pkg-config are present.
 dnl
 AC_DEFUN([AX_PROG_PKG_CONFIG], [
     m4_pattern_forbid([^AX_PKG_CONFIG_[A-Z_]+$])
@@ -42,7 +42,7 @@ AC_DEFUN([AX_PROG_PKG_CONFIG], [
     AC_ARG_VAR([PKG_CONFIG_PATH], [list of directories to prepend to default search path])
     AC_ARG_VAR([PKG_CONFIG_LIBDIR], [list of directories to search instead of default search path])
     if test x"${PKG_CONFIG}" = x"" ; then
-        AC_PATH_PROGS([PKG_CONFIG], [pkg-config pkgconf]) >/dev/null
+        AC_PATH_PROGS([PKG_CONFIG], [pkgconf pkg-config]) >/dev/null
     else
         AC_PATH_PROG([PKG_CONFIG], [${PKG_CONFIG}])
     fi
@@ -50,17 +50,17 @@ AC_DEFUN([AX_PROG_PKG_CONFIG], [
     if test -x "${PKG_CONFIG}" ; then
         AC_MSG_RESULT([${PKG_CONFIG}])
         case "${PKG_CONFIG}" in
-        *pkg-config)
-            _min_version="m4_default([$1], [0.23])"
-            ;;
         *pkgconf)
             _min_version="m4_default([$1], [1.3.0])"
+            ;;
+        *pkg-config)
+            _min_version="m4_default([$1], [0.23])"
             ;;
         *)
             _min_version="9.9.error"
             ;;
         esac
-        AC_MSG_CHECKING([that pkg-config is at least version ${_min_version}])
+        AC_MSG_CHECKING([that ${PKG_CONFIG} is at least version ${_min_version}])
         _act_version=`"${PKG_CONFIG}" --version`
         if ! "${PKG_CONFIG}" --atleast-pkgconfig-version="${_min_version}" ; then
             PKG_CONFIG=""
