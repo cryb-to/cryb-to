@@ -43,6 +43,8 @@ AC_DEFUN([AX_PROG_PKG_CONFIG], [
     AC_ARG_VAR([PKG_CONFIG_LIBDIR], [list of directories to search instead of default search path])
     if test x"${PKG_CONFIG}" = x"" ; then
         AC_PATH_PROGS([PKG_CONFIG], [pkg-config pkgconf]) >/dev/null
+    else
+        AC_PATH_PROG([PKG_CONFIG], [${PKG_CONFIG}])
     fi
     AC_MSG_CHECKING([for pkg-config or pkgconf])
     if test -x "${PKG_CONFIG}" ; then
