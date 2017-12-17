@@ -1,4 +1,5 @@
 AM_CPPFLAGS = -I$(top_srcdir)/include
+AM_LIBS = $(CODE_COVERAGE_LIBS)
 
 EXTRA_DIST =
 noinst_HEADERS =
@@ -244,5 +245,7 @@ t_malloc_LDADD = $(libt) $(libtest)
 endif CRYB_TEST
 
 check_PROGRAMS = $(TESTS)
+
+@CODE_COVERAGE_RULES@
 
 endif CRYB_TEST

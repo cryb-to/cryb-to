@@ -1,4 +1,5 @@
-AM_CPPFLAGS = -include $(top_srcdir)/include/cryb/nocoverage.h
+AM_CPPFLAGS = -I$(top_srcdir)/include $(CODE_COVERAGE_CPPFLAGS)
+AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
 
 noinst_LTLIBRARIES = librsaref.la
 

@@ -14,3 +14,5 @@ EXTRA_DIST = \
 	m4/ax_pkg_config.m4 \
 	tools/coverage.sh.in \
 	tools/setprops.sh
+
+@CODE_COVERAGE_RULES@
