@@ -160,19 +160,25 @@ AC_ARG_ENABLE([rsaref-tests],
 	[build unit tests enable RSAREF support]))
 AM_CONDITIONAL([RSAREF_TESTS], [test x"enable_rsaref_tests" = x"yes"])
 
+XFLAGS=""
+
 # Developer-friendly compiler flags
 AC_ARG_ENABLE([developer-warnings],
     AS_HELP_STRING([--enable-developer-warnings],
 	[enable strict warnings (default is NO)]),
-    [CFLAGS="${CFLAGS} -Wall -Wextra -Wcast-qual -Wshadow"])
+    [XFLAGS="${XFLAGS} -Wall -Wextra -Wcast-qual -Wshadow"])
 AC_ARG_ENABLE([debugging-symbols],
     AS_HELP_STRING([--enable-debugging-symbols],
 	[enable debugging symbols (default is NO)]),
-    [CFLAGS="${CFLAGS} -O0 -g -fno-inline"])
+    [XFLAGS="${XFLAGS} -O0 -fno-inline -g"])
 AC_ARG_ENABLE([werror],
     AS_HELP_STRING([--enable-werror],
 	[use -Werror (default is NO)]),
-    [CFLAGS="${CFLAGS} -Werror"])
+    [XFLAGS="${XFLAGS} -Werror"])
+
+CFLAGS="${CFLAGS} ${XFLAGS}"
+CXXFLAGS="${CXXFLAGS} ${XFLAGS}"
+unset XFLAGS
 
 ############################################################################
 #

@@ -105,7 +105,7 @@ TEST(rand)
 #undef TEST
 
 int
-main(int argc, char *argv[])
+main(void)
 {
 	std::vector<test *> tests;
 	int ret;
@@ -156,7 +156,7 @@ main(int argc, char *argv[])
 		    "ok 1 - dummy" << std::endl;
 	} else {
 		std::cout << "1.." << tests.size() << std::endl;
-		for (int i = 0; i < tests.size(); ++i) {
+		for (unsigned int i = 0; i < tests.size(); ++i) {
 			if (!tests[i]->run()) {
 				std::cout << "not ";
 				ret = 1;
