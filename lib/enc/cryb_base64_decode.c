@@ -90,7 +90,7 @@ base64_decode(const char *cin, size_t ilen, uint8_t *out, size_t *olen)
 {
 	const uint8_t *in = (const uint8_t *)cin;
 	size_t len;
-	int bits, shift, padding;
+	unsigned int bits, shift, padding;
 
 	for (bits = shift = padding = len = 0; ilen && *in; --ilen, ++in) {
 		if (*in == ' ' || *in == '\t' || *in == '\r' || *in == '\n' ||
@@ -119,7 +119,7 @@ base64_decode(const char *cin, size_t ilen, uint8_t *out, size_t *olen)
 		}
 	}
 	/* non-zero bits in last byte before padding */
-	if (shift && (bits & ~(~0 << shift)) != 0) {
+	if (shift && (bits & ~(~0U << shift)) != 0) {
 		errno = EINVAL;
 		return (-1);
 	}
