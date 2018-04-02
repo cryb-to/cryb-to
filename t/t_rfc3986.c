@@ -306,16 +306,15 @@ t_rfc3986(char **desc CRYB_UNUSED, void *arg)
 	struct t_case *t = arg;
 	char buf[256];
 	size_t len;
-	int ret;
+	int fret, ret;
 
 	memset(buf, 0, sizeof buf);
-	errno = 0;
 	len = t->blen > sizeof buf ? sizeof buf : t->blen;
-	ret = t_compare_i(t->ret,
-	    t->func(t->in, t->ilen, t->out ? buf : NULL, &len));
+	fret = t->func(t->in, t->ilen, t->out ? buf : NULL, &len);
+	ret = t_compare_i(t->ret, fret);
+	if (fret != 0)
+		ret &= t_compare_errno(t->err, errno);
 	ret &= t_compare_sz(t->olen, len);
-	if (t->ret != 0 || errno != 0)
-		ret &= t_compare_i(t->err, errno);
 	if (t->out)
 		ret &= t_compare_strn(t->out, buf, t->blen - 1);
 	return (ret);

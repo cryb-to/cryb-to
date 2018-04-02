@@ -170,6 +170,32 @@ t_compare_strn(const char *expected, const char *received, size_t len)
 }
 
 /*
+ * Compare to errno values, and print a verbose message if they differ.
+ */
+int
+t_compare_errno(int expected, int received)
+{
+	char errbuf[256];
+
+	if (expected != received) {
+		if (expected == 0) {
+			t_printv("expected no errno\n");
+		} else {
+			strerror_r(expected, errbuf, sizeof errbuf);
+			t_printv("expected errno: %s\n", strerror(expected));
+		}
+		if (received == 0) {
+			t_printv("received no errno\n");
+		} else {
+			strerror_r(received, errbuf, sizeof errbuf);
+			t_printv("received errno: %s\n", strerror(received));
+		}
+		return (0);
+	}
+	return (1);
+}
+
+/*
  * Compare two numbers, and print a verbose message if they differ.
  */
 #define t_compare_num(n, t, pf)						\
