@@ -36,28 +36,38 @@
 
 CRYB_BEGIN
 
+#define oath_mode		cryb_oath_mode
+#define oath_hash		cryb_oath_hash
+
 /*
  * OATH modes
  */
-enum oath_mode {
+typedef enum {
 	om_undef,		/* not set / default */
 	om_hotp,		/* RFC 4226 HOTP */
 	om_totp,		/* RFC 6238 TOTP */
 	om_ocra,		/* RFC 6287 OCRA */
 	om_max
-};
+} oath_mode;
 
 /*
  * Hash functions
  */
-enum oath_hash {
+typedef enum {
 	oh_undef,		/* not set / default */
 	oh_md5,			/* RFC 1321 MD5 */
 	oh_sha1,		/* FIPS 180 SHA-1 */
 	oh_sha256,		/* FIPS 180 SHA-256 */
 	oh_sha512,		/* FIPS 180 SHA-512 */
 	oh_max
-};
+} oath_hash;
+
+/*
+ * Minimum and default number of digits as per RFC 4226.
+ */
+#define OATH_MIN_DIGITS		6
+#define OATH_DEF_DIGITS		6
+#define OATH_MAX_DIGITS		9
 
 /*
  * Default time step for TOTP: 30 seconds.
@@ -71,9 +81,12 @@ enum oath_hash {
 #define OATH_MAX_TIMESTEP	600
 
 /*
- * Maximum key length in bytes.  HMAC has a 64-byte block size; if the key
- * K is longer than that, HMAC derives a new key K' = H(K).
+ * Minimum, default and maximum key lengths in bytes as per RFC 4226.
+ * HMAC has a 64-byte block size; if the key K is longer than that, HMAC
+ * derives a new key K' = H(K).
  */
+#define OATH_MIN_KEYLEN		16
+#define OATH_DEF_KEYLEN		20
 #define OATH_MAX_KEYLEN		64
 
 /*

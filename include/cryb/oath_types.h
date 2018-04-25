@@ -36,12 +36,15 @@
 
 CRYB_BEGIN
 
+#define oath_key		cryb_oath_key
+
 /*
  * OATH key and associated parameters
  */
-struct oath_key {
+typedef struct {
 	/* mode and parameters */
-	enum oath_mode	 mode;
+	oath_mode	 mode;
+	oath_hash	 hash;
 	unsigned int	 digits;
 	uint64_t	 counter;  /* HOTP only */
 	unsigned int	 timestep; /* TOTP only - in seconds */
@@ -49,11 +52,6 @@ struct oath_key {
 
 	/* housekeeping */
 	unsigned int	 dummy:1;  /* dummy key, always fail */
-	unsigned int	 mapped:1; /* allocated with mmap() */
-	unsigned int	 locked:1; /* locked / wired with madvise() */
-
-	/* hash algorithm */
-	enum oath_hash	 hash;
 
 	/* issuer */
 	size_t		 issuerlen; /* bytes incl. NUL */
@@ -66,7 +64,7 @@ struct oath_key {
 	/* key */
 	size_t		 keylen; /* bytes */
 	uint8_t		 key[OATH_MAX_KEYLEN];
-};
+} oath_key;
 
 CRYB_END
 

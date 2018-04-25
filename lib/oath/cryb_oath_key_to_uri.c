@@ -40,7 +40,7 @@
 #include <cryb/oath.h>
 
 char *
-oath_key_to_uri(const struct oath_key *key)
+oath_key_to_uri(const oath_key *key)
 {
 	const char *hash;
 	char *tmp, *uri;

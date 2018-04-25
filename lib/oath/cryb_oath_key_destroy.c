@@ -1,5 +1,6 @@
 /*-
  * Copyright (c) 2013 The University of Oslo
+ * Copyright (c) 2018 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,38 +36,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <cryb/memset_s.h>
 #include <cryb/oath.h>
 
 /*
- * OATH
- *
- * Wipes and frees an OATH key structure
+ * Wipes an OATH key structure.
  */
-
 void
-oath_key_free(struct oath_key *key)
+oath_key_destroy(oath_key *key)
 {
-	int mapped, locked;
 
-	if (key != NULL) {
-		mapped = key->mapped;
-		locked = key->locked;
-		memset(key, 0, sizeof *key);
-		if (mapped) {
-			if (locked)
-				munlock(key, sizeof *key);
-			munmap(key, sizeof *key);
-		} else {
-			free(key);
-		}
-	}
+	if (key != NULL)
+		memset_s(key, 0, sizeof *key, sizeof *key);
 }
-
-/**
- * The =oath_key_free function wipes and frees an OATH key structure which
- * was previously allocated using the =oath_key_alloc function.
- *
- * >oath_key_alloc
- *
- * AUTHOR UIO
- */

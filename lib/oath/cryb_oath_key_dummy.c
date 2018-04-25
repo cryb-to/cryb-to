@@ -33,43 +33,27 @@
 #include <string.h>
 
 #include <cryb/oath.h>
+#include <cryb/strlcpy.h>
 
 /*
- * OATH
- *
- * Creates a dummy OATH key structure
+ * Initialize an OATH key with dummy parameters.
  */
-
-struct oath_key *
-oath_key_dummy(enum oath_mode mode, enum oath_hash hash, unsigned int digits)
+int
+oath_key_dummy(oath_key *ok, oath_mode mode, oath_hash hash,
+    unsigned int digits)
 {
-	struct oath_key *key;
 
-	if ((key = oath_key_alloc()) == NULL)
-		return (NULL);
-	key->dummy = 1;
-	key->mode = mode;
-	key->digits = digits;
-	key->counter = 0;
-	key->timestep = 30;
-	key->hash = hash;
-	memcpy(key->issuer, OATH_DUMMY_ISSUER, sizeof OATH_DUMMY_ISSUER);
-	key->issuerlen = sizeof OATH_DUMMY_ISSUER - 1;
-	memcpy(key->label, OATH_DUMMY_LABEL, sizeof OATH_DUMMY_LABEL);
-	key->labellen = sizeof OATH_DUMMY_LABEL - 1;
-	key->keylen = sizeof key->key;
-	return (key);
+	memset(ok, 0, sizeof *ok);
+	ok->dummy = 1;
+	ok->mode = mode;
+	ok->hash = hash;
+	ok->digits = digits;
+	ok->timestep = 30;
+	ok->labellen =
+	    strlcpy(ok->issuer, OATH_DUMMY_LABEL, sizeof ok->label);
+	ok->issuerlen =
+	    strlcpy(ok->issuer, OATH_DUMMY_ISSUER, sizeof ok->issuer);
+	ok->keylen = sizeof ok->key;
+	memset(ok->key, 0xff, ok->keylen);
+	return (0);
 }
-
-/**
- * The =oath_key_dummy function allocates and initializes a dummy OATH key
- * structure.
- * Authentication attempts using a dummy key will always fail.
- *
- * Keys allocated with =oath_key_dummy must be freed using =oath_key_free.
- *
- * >oath_key_alloc
- * >oath_key_free
- *
- * AUTHOR UIO
- */

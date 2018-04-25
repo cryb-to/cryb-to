@@ -5,11 +5,11 @@ lib_LTLIBRARIES = libcryb-oath.la
 libcryb_oath_la_SOURCES = \
 	cryb_oath_hotp.c \
 	cryb_oath_totp.c \
-	cryb_oath_key_alloc.c \
+	\
 	cryb_oath_key_create.c \
+	cryb_oath_key_destroy.c \
 	cryb_oath_key_dummy.c \
 	cryb_oath_key_from_uri.c \
-	cryb_oath_key_free.c \
 	cryb_oath_key_to_uri.c \
 	cryb_oath_mode.c \
 	\

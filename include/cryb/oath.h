@@ -44,27 +44,23 @@ CRYB_BEGIN
 
 const char *cryb_oath_version(void);
 
-#define oath_key_alloc		cryb_oath_key_alloc
 #define oath_key_create		cryb_oath_key_create
+#define oath_key_destroy	cryb_oath_key_destroy
 #define oath_key_dummy		cryb_oath_key_dummy
-#define oath_key_free		cryb_oath_key_free
 #define oath_key_from_uri	cryb_oath_key_from_uri
 #define oath_key_to_uri		cryb_oath_key_to_uri
 #define oath_mode_name		cryb_oath_mode_name
 #define oath_mode_value		cryb_oath_mode_value
 
-struct oath_key *oath_key_alloc(void);
-struct oath_key *oath_key_create(const char *, const char *,
-    enum oath_mode, enum oath_hash, const char *, size_t);
-void oath_key_free(struct oath_key *);
-struct oath_key *oath_key_from_uri(const char *);
-struct oath_key *oath_key_from_file(const char *);
-char *oath_key_to_uri(const struct oath_key *);
+int oath_key_create(oath_key *, oath_mode, oath_hash, unsigned int,
+    const char *, const char *, const char *, size_t);
+void oath_key_destroy(oath_key *);
+int oath_key_dummy(oath_key *, oath_mode, oath_hash, unsigned int);
+int oath_key_from_uri(oath_key *, const char *);
+char *oath_key_to_uri(const oath_key *);
 
-struct oath_key *oath_key_dummy(enum oath_mode, enum oath_hash, unsigned int);
-
-const char *oath_mode_name(enum oath_mode);
-enum oath_mode oath_mode_value(const char *);
+const char *oath_mode_name(oath_mode);
+oath_mode oath_mode_value(const char *);
 
 CRYB_END
 
