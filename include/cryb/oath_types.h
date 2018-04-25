@@ -55,6 +55,10 @@ struct oath_key {
 	/* hash algorithm */
 	enum oath_hash	 hash;
 
+	/* issuer */
+	size_t		 issuerlen; /* bytes incl. NUL */
+	char		 issuer[OATH_MAX_ISSUERLEN];
+
 	/* label */
 	size_t		 labellen; /* bytes incl. NUL */
 	char		 label[OATH_MAX_LABELLEN];

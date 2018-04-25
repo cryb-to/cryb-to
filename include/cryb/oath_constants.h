@@ -77,14 +77,20 @@ enum oath_hash {
 #define OATH_MAX_KEYLEN		64
 
 /*
+ * Maximum issuer length in characters, including terminating NUL.
+ */
+#define OATH_MAX_ISSUERLEN	64
+
+/*
  * Maximum label length in characters, including terminating NUL.
  */
 #define OATH_MAX_LABELLEN	64
 
 /*
- * Label to use for dummy keys
+ * Issuer and label to use for dummy keys.
  */
-#define OATH_DUMMY_LABEL	"oath-dummy@cryb.to"
+#define OATH_DUMMY_ISSUER	"cryb-oath"
+#define OATH_DUMMY_LABEL	"dummy@cryb.to"
 
 CRYB_END
 

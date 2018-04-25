@@ -44,13 +44,18 @@
  */
 
 struct oath_key *
-oath_key_create(const char *label,
+oath_key_create(const char *issuer, const char *label,
     enum oath_mode mode, enum oath_hash hash,
     const char *keydata, size_t keylen)
 {
 	char keybuf[OATH_MAX_KEYLEN];
 	struct oath_key *key;
-	int labellen;
+	int issuerlen, labellen;
+
+	/* check issuer */
+	if (issuer == NULL ||
+	    (issuerlen = strlen(issuer)) >= OATH_MAX_ISSUERLEN)
+		return (NULL);
 
 	/* check label */
 	if (label == NULL ||
@@ -97,6 +102,11 @@ oath_key_create(const char *label,
 	/* allocate */
 	if ((key = oath_key_alloc()) == NULL)
 		return (NULL);
+
+	/* issuer */
+	memcpy(key->issuer, issuer, issuerlen);
+	key->issuer[issuerlen] = 0;
+	key->issuerlen = issuerlen;
 
 	/* label */
 	memcpy(key->label, label, labellen);

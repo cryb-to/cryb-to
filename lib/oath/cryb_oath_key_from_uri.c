@@ -36,6 +36,7 @@
 #include <cryb/rfc3986.h>
 #include <cryb/rfc4648.h>
 #include <cryb/strlcmp.h>
+#include <cryb/strlcpy.h>
 #include <cryb/oath.h>
 
 /*
@@ -157,7 +158,10 @@ oath_key_from_uri(const char *uri)
 				goto invalid;
 			key->timestep = n;
 		} else if (strcmp("issuer", name) == 0) {
-			// noop for now
+			key->issuerlen = strlcpy(key->issuer, value,
+			    sizeof key->issuer);
+			if (key->issuerlen > sizeof key->issuer)
+				goto invalid;
 		} else {
 			goto invalid;
 		}

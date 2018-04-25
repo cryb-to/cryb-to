@@ -54,8 +54,8 @@ const char *cryb_oath_version(void);
 #define oath_mode_value		cryb_oath_mode_value
 
 struct oath_key *oath_key_alloc(void);
-struct oath_key *oath_key_create(const char *, enum oath_mode,
-    enum oath_hash, const char *, size_t);
+struct oath_key *oath_key_create(const char *, const char *,
+    enum oath_mode, enum oath_hash, const char *, size_t);
 void oath_key_free(struct oath_key *);
 struct oath_key *oath_key_from_uri(const char *);
 struct oath_key *oath_key_from_file(const char *);

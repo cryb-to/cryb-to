@@ -53,6 +53,8 @@ oath_key_dummy(enum oath_mode mode, enum oath_hash hash, unsigned int digits)
 	key->counter = 0;
 	key->timestep = 30;
 	key->hash = hash;
+	memcpy(key->issuer, OATH_DUMMY_ISSUER, sizeof OATH_DUMMY_ISSUER);
+	key->issuerlen = sizeof OATH_DUMMY_ISSUER - 1;
 	memcpy(key->label, OATH_DUMMY_LABEL, sizeof OATH_DUMMY_LABEL);
 	key->labellen = sizeof OATH_DUMMY_LABEL - 1;
 	key->keylen = sizeof key->key;
