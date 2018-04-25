@@ -39,7 +39,7 @@ CRYB_BEGIN
 const char *cryb_rand_version(void);
 
 #define rand_bytes cryb_rand_bytes
-int rand_bytes(uint8_t *, size_t);
+ssize_t rand_bytes(uint8_t *, size_t);
 
 CRYB_END
 

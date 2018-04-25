@@ -29,6 +29,8 @@
 
 #include "cryb/impl.h"
 
+#include <sys/types.h>
+
 #include <stdint.h>
 #include <string.h>
 
@@ -87,7 +89,7 @@ oath_key_create(const char *label,
 
 	/* generate key data if necessary */
 	if (keydata == NULL) {
-		if (rand_bytes((uint8_t *)keybuf, keylen) != 1)
+		if (rand_bytes((uint8_t *)keybuf, keylen) != (ssize_t)keylen)
 			return (NULL);
 		keydata = keybuf;
 	}
