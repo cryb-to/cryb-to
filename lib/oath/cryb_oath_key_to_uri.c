@@ -29,24 +29,96 @@
 
 #include "cryb/impl.h"
 
-#include <sys/types.h>
+#include <errno.h>
+#include <stddef.h>
+#include <stdint.h>
 
-#include <inttypes.h>
-#include <stdlib.h>
-#include <stdio.h>
-
+#include <cryb/rfc3986.h>
 #include <cryb/rfc4648.h>
-#include <cryb/strlcmp.h>
 #include <cryb/oath.h>
 
-char *
-oath_key_to_uri(const oath_key *key)
+static inline void
+append_char(char *buf, size_t size, size_t *pos, int ch)
 {
-	const char *hash;
-	char *tmp, *uri;
-	size_t kslen, urilen;
 
-	switch (key->hash) {
+	if (*pos + 1 < size)
+		buf[*pos] = ch;
+	(*pos)++;
+	if (*pos < size)
+		buf[*pos] = '\0';
+}
+
+static inline void
+append_str(char *buf, size_t size, size_t *pos, const char *str)
+{
+
+	while (*str != '\0') {
+		if (*pos + 1 < size)
+			buf[*pos] = *str++;
+		(*pos)++;
+	}
+	if (*pos < size)
+		buf[*pos] = '\0';
+}
+
+static inline void
+append_num(char *buf, size_t size, size_t *pos, uintmax_t num)
+{
+	char numbuf[32], *p;
+
+	p = numbuf + sizeof numbuf - 1;
+	*p-- = '\0';
+	do {
+		*p-- = '0' + num % 10;
+		num /= 10;
+	} while (num > 0);
+	append_str(buf, size, pos, p + 1);
+}
+
+static inline void
+append_percent(char *buf, size_t size, size_t *pos, const char *str)
+{
+	size_t res;
+
+	res = *pos < size ? size - *pos : 0;
+	percent_encode(str, SIZE_MAX, buf + *pos, &res);
+	*pos += res - 1;
+}
+
+static inline void
+append_base32(char *buf, size_t size, size_t *pos,
+    const uint8_t *data, size_t len)
+{
+	size_t res;
+
+	res = *pos < size ? size - *pos : 0;
+	base32_encode(data, len, buf + *pos, &res);
+	*pos += res - 1;
+}
+
+int
+oath_key_to_uri(const oath_key *ok, char *buf, size_t *size)
+{
+	const char *mode, *hash;
+	size_t pos;
+
+	pos = 0;
+	append_str(buf, *size, &pos, "otpauth://");
+	switch (ok->mode) {
+	case om_hotp:
+		mode = "hotp";
+		break;
+	case om_totp:
+		mode = "totp";
+		break;
+	default:
+		return (0);
+	}
+	append_str(buf, *size, &pos, mode);
+	append_char(buf, *size, &pos, '/');
+	append_percent(buf, *size, &pos, ok->label);
+	append_str(buf, *size, &pos, "?algorithm=");
+	switch (ok->hash) {
 	case oh_sha1:
 		hash = "SHA1";
 		break;
@@ -60,36 +132,34 @@ oath_key_to_uri(const oath_key *key)
 		hash = "MD5";
 		break;
 	default:
-		return (NULL);
+		return (0);
 	}
-
-	/* XXX the label and secret should be URI-encoded */
-	if (key->mode == om_hotp) {
-		urilen = asprintf(&uri, "otpauth://%s/%s?"
-		    "algorithm=%s&digits=%d&counter=%ju&secret=",
-		    "hotp", key->label, hash, key->digits,
-		    (uintmax_t)key->counter);
-	} else if (key->mode == om_totp) {
-		urilen = asprintf(&uri, "otpauth://%s/%s?"
-		    "algorithm=%s&digits=%d&period=%u&lastused=%ju&secret=",
-		    "totp", key->label, hash, key->digits, key->timestep,
-		    (uintmax_t)key->lastused);
+	append_str(buf, *size, &pos, hash);
+	append_str(buf, *size, &pos, "&digits=");
+	append_num(buf, *size, &pos, ok->digits);
+	if (ok->mode == om_hotp) {
+		append_str(buf, *size, &pos, "&counter=");
+		append_num(buf, *size, &pos, (uintmax_t)ok->counter);
+	} else if (ok->mode == om_totp) {
+		append_str(buf, *size, &pos, "&period=");
+		append_num(buf, *size, &pos, (uintmax_t)ok->timestep);
+		append_str(buf, *size, &pos, "&lastused=");
+		append_num(buf, *size, &pos, (uintmax_t)ok->lastused);
 	} else {
-		/* unreachable */
-		return (NULL);
+		return (0);
 	}
-
-	/* compute length of base32-encoded key and append it */
-	kslen = base32_enclen(key->keylen) + 1;
-	if ((tmp = realloc(uri, urilen + kslen)) == NULL) {
-		free(uri);
-		return (NULL);
+	if (ok->issuerlen > 0) {
+		append_str(buf, *size, &pos, "&issuer=");
+		append_percent(buf, *size, &pos, ok->issuer);
 	}
-	uri = tmp;
-	if (base32_encode(key->key, key->keylen, uri + urilen, &kslen) != 0) {
-		free(uri);
-		return (NULL);
+	append_str(buf, *size, &pos, "&secret=");
+	append_base32(buf, *size, &pos, ok->key, ok->keylen);
+	pos++; // terminating NUL
+	if (pos > *size) {
+		*size = pos;
+		errno = ENOSPC;
+		return (-1);
 	}
-
-	return (uri);
+	*size = pos;
+	return (0);
 }

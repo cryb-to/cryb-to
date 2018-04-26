@@ -57,7 +57,7 @@ int oath_key_create(oath_key *, oath_mode, oath_hash, unsigned int,
 void oath_key_destroy(oath_key *);
 int oath_key_dummy(oath_key *, oath_mode, oath_hash, unsigned int);
 int oath_key_from_uri(oath_key *, const char *);
-char *oath_key_to_uri(const oath_key *);
+int oath_key_to_uri(const oath_key *, char *, size_t *);
 
 const char *oath_mode_name(oath_mode);
 oath_mode oath_mode_value(const char *);
