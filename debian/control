@@ -8,7 +8,7 @@ Homepage: https://github.com/cryb-to/cryb-to
 
 Package: cryb-to
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${misc:Pre-Depends}
 Description: Collection of cryptographic and security-related libraries
  The aim of the Cryb.to project is to provide a collection of correct,
  well-written, well-tested and well-documented implementations of both
