@@ -127,10 +127,11 @@ oath_key_from_uri(oath_key *key, const char *uri)
 			if (key->digits != 0)
 				/* dupe */
 				goto invalid;
-			/* only 6 or 8 */
-			if (valuelen != 1 || (*value != '6' && *value != '8'))
+			n = strtoumax(value, &e, 10);
+			if (e == value || *e != '\0' ||
+			    n < OATH_MIN_DIGITS || n > OATH_MAX_DIGITS)
 				goto invalid;
-			key->digits = *q - '0';
+			key->digits = n;
 		} else if (strcmp("counter", name) == 0) {
 			if (key->counter != UINT64_MAX)
 				/* dupe */
@@ -158,7 +159,7 @@ oath_key_from_uri(oath_key *key, const char *uri)
 		} else if (strcmp("issuer", name) == 0) {
 			key->issuerlen = strlcpy(key->issuer, value,
 			    sizeof key->issuer);
-			if (key->issuerlen > sizeof key->issuer)
+			if (key->issuerlen >= sizeof key->issuer)
 				goto invalid;
 		} else {
 			goto invalid;
