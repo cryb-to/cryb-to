@@ -29,6 +29,8 @@
 
 #include "cryb/impl.h"
 
+#include <sys/types.h>
+
 /* gcc's <cstdint> is broken */
 #include <stdint.h>
 #include <cstring>

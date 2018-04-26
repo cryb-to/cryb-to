@@ -43,10 +43,10 @@ static const char *oath_mode_names[om_max] = {
 /*
  * Returns the enum value that corresponds to an OATH mode name
  */
-enum oath_mode
+oath_mode
 oath_mode_value(const char *str)
 {
-	enum oath_mode om;
+	oath_mode om;
 
 	for (om = 0; om < om_max; ++om) {
 		if (oath_mode_names[om] != NULL &&
@@ -61,7 +61,7 @@ oath_mode_value(const char *str)
  * Returns the name of an OATH mode given its enum value
  */
 const char *
-oath_mode_name(enum oath_mode om)
+oath_mode_name(oath_mode om)
 {
 
 	if (om < om_max)

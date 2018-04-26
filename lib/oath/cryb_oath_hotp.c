@@ -85,7 +85,7 @@ oath_hotp(const uint8_t *K, size_t Klen, uint64_t seq, unsigned int Digit)
  * Computes the current code for the given key and advances the counter.
  */
 unsigned int
-oath_hotp_current(struct oath_key *k)
+oath_hotp_current(oath_key *k)
 {
 	unsigned int code;
 
@@ -106,7 +106,7 @@ oath_hotp_current(struct oath_key *k)
  * error occurred.  Also advances the counter if there was a match.
  */
 int
-oath_hotp_match(struct oath_key *k, unsigned int response, int window)
+oath_hotp_match(oath_key *k, unsigned int response, int window)
 {
 	unsigned int code;
 

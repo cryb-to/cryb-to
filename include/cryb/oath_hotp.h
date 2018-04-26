@@ -45,8 +45,8 @@ CRYB_BEGIN
 #define oath_hotp_match		cryb_oath_hotp_match
 
 unsigned int oath_hotp(const uint8_t *, size_t, uint64_t, unsigned int);
-unsigned int oath_hotp_current(struct oath_key *);
-int oath_hotp_match(struct oath_key *, unsigned int, int);
+unsigned int oath_hotp_current(oath_key *);
+int oath_hotp_match(oath_key *, unsigned int, int);
 
 CRYB_END
 

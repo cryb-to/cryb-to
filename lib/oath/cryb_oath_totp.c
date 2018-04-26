@@ -48,7 +48,7 @@ oath_totp(const uint8_t *K, size_t Klen, unsigned int Digit)
 }
 
 unsigned int
-oath_totp_current(const struct oath_key *k)
+oath_totp_current(const oath_key *k)
 {
 	unsigned int code;
 	uint64_t seq;
@@ -70,7 +70,7 @@ oath_totp_current(const struct oath_key *k)
  * error occurred.
  */
 int
-oath_totp_match(struct oath_key *k, unsigned int response, int window)
+oath_totp_match(oath_key *k, unsigned int response, int window)
 {
 	unsigned int code;
 	uint64_t seq;

@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 2013-2016 The University of Oslo
- * Copyright (c) 2016-2017 Dag-Erling Smørgrav
+ * Copyright (c) 2016-2018 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,29 +33,27 @@
 #include <inttypes.h>
 #include <string.h>
 
+#include <cryb/oath.h>
 #include <cryb/rfc3986.h>
 #include <cryb/rfc4648.h>
 #include <cryb/strlcmp.h>
-#include <cryb/oath.h>
+#include <cryb/strlcpy.h>
 
 /*
- * OATH
+ * Initializes an OATH key with the parameters from a Google otpauth URI.
  *
- * Creates an OATH key from a Google otpauth URI
+ * https://github.com/google/google-authenticator/wiki/Key-Uri-Format
  */
-
-struct oath_key *
-oath_key_from_uri(const char *uri)
+int
+oath_key_from_uri(oath_key *key, const char *uri)
 {
 	char name[64], value[256];
 	size_t namelen, valuelen;
-	struct oath_key *key;
 	const char *p, *q, *r;
 	uintmax_t n;
 	char *e;
 
-	if ((key = oath_key_alloc()) == NULL)
-		return (NULL);
+	memset(key, 0, sizeof *key);
 
 	/* check method */
 	p = uri;
@@ -108,7 +106,8 @@ oath_key_from_uri(const char *uri)
 				/* dupe */
 				goto invalid;
 			key->keylen = sizeof key->key;
-			if (base32_decode(value, valuelen, key->key, &key->keylen) != 0)
+			if (base32_decode(value, valuelen, key->key,
+			    &key->keylen) != 0)
 				goto invalid;
 		} else if (strcmp("algorithm", name) == 0) {
 			if (key->hash != oh_undef)
@@ -128,10 +127,11 @@ oath_key_from_uri(const char *uri)
 			if (key->digits != 0)
 				/* dupe */
 				goto invalid;
-			/* only 6 or 8 */
-			if (valuelen != 1 || (*value != '6' && *value != '8'))
+			n = strtoumax(value, &e, 10);
+			if (e == value || *e != '\0' ||
+			    n < OATH_MIN_DIGITS || n > OATH_MAX_DIGITS)
 				goto invalid;
-			key->digits = *q - '0';
+			key->digits = n;
 		} else if (strcmp("counter", name) == 0) {
 			if (key->counter != UINT64_MAX)
 				/* dupe */
@@ -157,7 +157,10 @@ oath_key_from_uri(const char *uri)
 				goto invalid;
 			key->timestep = n;
 		} else if (strcmp("issuer", name) == 0) {
-			// noop for now
+			key->issuerlen = strlcpy(key->issuer, value,
+			    sizeof key->issuer);
+			if (key->issuerlen >= sizeof key->issuer)
+				goto invalid;
 		} else {
 			goto invalid;
 		}
@@ -185,8 +188,7 @@ oath_key_from_uri(const char *uri)
 			key->lastused = 0;
 	} else {
 		/* unreachable */
-		oath_key_free(key);
-		return (NULL);
+		goto invalid;
 	}
 	if (key->hash == oh_undef)
 		key->hash = oh_sha1;
@@ -194,31 +196,9 @@ oath_key_from_uri(const char *uri)
 		key->digits = 6;
 	if (key->keylen == 0)
 		goto invalid;
-	return (key);
+	return (0);
 
 invalid:
-	// openpam_log(PAM_LOG_NOTICE, "invalid OATH URI: %s", uri);
-	oath_key_free(key);
-	return (NULL);
+	memset(key, 0, sizeof *key);
+	return (-1);
 }
-
-/**
- * The =oath_key_from_uri function parses a Google otpauth URI into a key
- * structure.
- *
- * The =uri parameter points to a NUL-terminated string containing the
- * URI.
- *
- * Keys created with =oath_key_from_uri must be freed using
- * =oath_key_free.
- *
- * >oath_key_alloc
- * >oath_key_free
- * >oath_key_to_uri
- *
- * REFERENCES
- *
- * https://code.google.com/p/google-authenticator/wiki/KeyUriFormat
- *
- * AUTHOR UIO
- */

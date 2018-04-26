@@ -41,24 +41,15 @@
  * Working placeholder until we come up with a proper API and start adding
  * more methods.
  */
-int
+ssize_t
 rand_bytes(uint8_t *buf, size_t len)
 {
 	ssize_t rlen;
-	int fd, serrno;
+	int fd;
 
 	if ((fd = open("/dev/random", O_RDONLY)) < 0)
 		return (-1);
-	if ((rlen = read(fd, buf, len)) < 0) {
-		serrno = errno;
-		close(fd);
-		errno = serrno;
-		return (-1);
-	}
+	rlen = read(fd, buf, len);
 	close(fd);
-	if (rlen != (ssize_t)len) {
-		errno = EIO;
-		return (-1);
-	}
-	return (0);
+	return (rlen);
 }

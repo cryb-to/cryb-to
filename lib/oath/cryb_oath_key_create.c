@@ -29,144 +29,86 @@
 
 #include "cryb/impl.h"
 
+#include <sys/types.h>
+
 #include <stdint.h>
 #include <string.h>
 
 #include <cryb/oath.h>
 #include <cryb/rand.h>
+#include <cryb/strlcpy.h>
 
 /*
- * OATH
- *
- * Creates an OATH key with the specified parameters
+ * Initialize an OATH key with the specified parameters.
  */
-
-struct oath_key *
-oath_key_create(const char *label,
-    enum oath_mode mode, enum oath_hash hash,
+int
+oath_key_create(oath_key *ok,
+    oath_mode mode, oath_hash hash, unsigned int digits,
+    const char *issuer, const char *label,
     const char *keydata, size_t keylen)
 {
-	char keybuf[OATH_MAX_KEYLEN];
-	struct oath_key *key;
-	int labellen;
+
+	memset(ok, 0, sizeof *ok);
+
+	/* check issuer */
+	if (issuer == NULL ||
+	    strlcpy(ok->issuer, issuer, sizeof ok->issuer) >= sizeof ok->issuer)
+		goto fail;
 
 	/* check label */
 	if (label == NULL ||
-	    (labellen = strlen(label)) >= OATH_MAX_LABELLEN)
-		return (NULL);
-
-	/* check key length */
-	if (keylen > OATH_MAX_KEYLEN ||
-	    (keydata != NULL && keylen == 0))
-		return (NULL);
-	if (keylen == 0)
-		keylen = 20;
+	    strlcpy(ok->label, label, sizeof ok->label) >= sizeof ok->label)
+		goto fail;
 
 	/* check mode */
 	switch (mode) {
-	case om_hotp:
 	case om_totp:
+		ok->timestep = 30;
+		/* fall through */
+	case om_hotp:
+		ok->mode = mode;
 		break;
 	default:
-		return (NULL);
+		goto fail;
 	}
 
 	/* check hash */
 	switch (hash) {
 	case oh_undef:
 		hash = oh_sha1;
-		break;
+		/* fall through */
 	case oh_md5:
 	case oh_sha1:
 	case oh_sha256:
 	case oh_sha512:
+		ok->hash = hash;
 		break;
 	default:
-		return (NULL);
+		goto fail;
 	}
 
-	/* generate key data if necessary */
-	if (keydata == NULL) {
-		if (rand_bytes((uint8_t *)keybuf, keylen) != 1)
-			return (NULL);
-		keydata = keybuf;
-	}
+	/* check digits */
+	if (digits == 0)
+		digits = OATH_DEF_DIGITS;
+	if (digits < OATH_MIN_DIGITS || digits > OATH_MAX_DIGITS)
+		goto fail;
+	ok->digits = digits;
 
-	/* allocate */
-	if ((key = oath_key_alloc()) == NULL)
-		return (NULL);
+	/* check key length */
+	if (keydata == NULL && keylen == 0)
+		keylen = OATH_DEF_KEYLEN;
+	if (keylen < OATH_MIN_KEYLEN || keylen > OATH_MAX_KEYLEN)
+		goto fail;
+	ok->keylen = keylen;
 
-	/* label */
-	memcpy(key->label, label, labellen);
-	key->label[labellen] = 0;
-	key->labellen = labellen;
+	/* copy or generate key */
+	if (keydata != NULL)
+		memcpy(ok->key, keydata, ok->keylen);
+	else if (rand_bytes(ok->key, ok->keylen) != (ssize_t)ok->keylen)
+		goto fail;
 
-	/* mode and hash */
-	key->mode = mode;
-	key->hash = hash;
-
-	/* default parameters */
-	key->digits = 6;
-	if (key->mode == om_totp)
-		key->timestep = 30;
-
-	/* key */
-	memcpy(key->key, keydata, keylen);
-	key->keylen = keylen;
-
-	return (key);
+	return (0);
+fail:
+	memset(ok, 0, sizeof *ok);
+	return (-1);
 }
-
-/**
- * The =oath_key_create function allocates and initializes an OATH key
- * structure with the specified parameters.
- *
- * The =label parameter must point to a string describing the key.
- *
- * The =mode parameter indicates the OTP algorithm to use:
- *
- *  ;om_hotp:
- *	RFC 4226 HOTP
- *  ;om_totp:
- *	RFC 6238 TOTP
- *
- * The =hash parameter indicates which hash algorithm to use:
- *
- *  ;oh_md5:
- *	RFC 1321 MD5
- *  ;oh_sha1:
- *	RFC 3174 SHA-1
- *  ;oh_sha256:
- *	RFC 6234 SHA-256
- *  ;oh_sha512:
- *	RFC 6234 SHA-512
- *
- * If =hash is ;oh_undef, the default algorithm (SHA-1) is used.
- *
- * The =keydata parameter should point to a buffer containing the raw key
- * to use.
- * If =keydata is NULL, a key will be randomly generated.
- * Note that the strength of the generated key is dependent on the
- * strength of the operating system's pseudo-random number generator.
- *
- * The =keylen parameter specifies the length of the provided (or
- * generated) key in bytes.
- * Note that some OATH HOTP / TOTP implementations do not support key
- * lengths that are not a multiple of 20 bits (5 bytes).
- * If =keydata is NULL and =keylen is 0, a hardcoded default of 160 bits
- * (20 bytes) is used.
- *
- * The following key parameters are set to hardcoded default values and
- * can be changed after key creation:
- *
- *  - For HOTP keys, the initial counter value is set to 0.
- *  - For TOTP keys, the timestep is set to 30 seconds.
- *  - For both HOTP and TOTP keys, the number of digits is set to 6.
- *
- * Keys created with =oath_key_create must be freed using =oath_key_free.
- *
- * >oath_key_alloc
- * >oath_key_free
- *
- * AUTHOR UIO
- */
