@@ -226,7 +226,7 @@ endif CRYB_MPI
 # libcryb-oath
 if CRYB_OATH
 TESTS += t_oath
-t_oath_LDADD = $(libt) $(liboath) $(librand)
+t_oath_LDADD = $(libt) $(liboath)
 endif CRYB_OATH
 
 # libcryb-rand
