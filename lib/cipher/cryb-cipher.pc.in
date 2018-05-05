@@ -8,4 +8,4 @@ Description: Cryb.to encryption algorithms
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lcryb-cipher
-Requires.private: cryb-core
+Requires: cryb-core

@@ -8,4 +8,4 @@ Description: Cryb.to message authentication codes
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lcryb-mac
-Requires.private: cryb-core cryb-digest
+Requires: cryb-core cryb-digest

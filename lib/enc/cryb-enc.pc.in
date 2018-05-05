@@ -8,4 +8,4 @@ Description: Cryb.to non-cryptographic encoding primitives
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lcryb-enc
-Requires.private: cryb-core
+Requires: cryb-core

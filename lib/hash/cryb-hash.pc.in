@@ -8,4 +8,4 @@ Description: Cryb.to non-cryptographic hash algorithms
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lcryb-hash
-Requires.private: cryb-core
+Requires: cryb-core

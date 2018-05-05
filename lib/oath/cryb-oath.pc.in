@@ -8,4 +8,4 @@ Description: Cryb.to Open Authentication primitives
 Version: @PACKAGE_VERSION@
 Cflags: -I${includedir}
 Libs: -L${libdir} -lcryb-oath
-Requires.private: cryb-core cryb-digest cryb-enc cryb-mac cryb-rand
+Requires: cryb-core cryb-digest cryb-enc cryb-mac cryb-rand
