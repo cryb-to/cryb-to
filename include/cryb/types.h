@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2018 The University of Oslo
+ * Copyright (c) 2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,39 +27,19 @@
  * SUCH DAMAGE.
  */
 
-#if HAVE_CONFIG_H
-#include "config.h"
+#ifndef CRYB_TYPES_H_INCLUDED
+#define CRYB_TYPES_H_INCLUDED
+
+#if !HAVE_ERRNO_T
+typedef int errno_t;
 #endif
 
-#include <errno.h>
-#include <stdint.h>
-#include <string.h>
+#if !HAVE_RSIZE_T
+typedef size_t rsize_t;
+#endif
 
-#include <cryb/coverage.h>
-#include <cryb/memset_s.h>
+#if !HAVE_RSIZE_MAX
+#define RSIZE_MAX (SIZE_MAX >> 1)
+#endif
 
-/*
- * Like memset(), but checks for overflow and guarantees that the buffer
- * is overwritten even if the data will never be read.
- *
- * ISO/IEC 9899:2011 K.3.7.4.1
- */
-errno_t
-cryb_memset_s(void *d, rsize_t dsz, int c, rsize_t n)
-{
-	volatile uint8_t *D;
-	unsigned int i;
-	uint8_t C;
-
-	if (d == NULL)
-		return (EINVAL);
-CRYB_DISABLE_COVERAGE
-	if (dsz > RSIZE_MAX || n > RSIZE_MAX)
-		return (ERANGE);
-CRYB_RESTORE_COVERAGE
-	for (D = d, C = (uint8_t)c, i = 0; i < n && i < dsz; ++i)
-		D[i] = C;
-	if (n > dsz)
-		return (EOVERFLOW);
-	return (0);
-}
+#endif

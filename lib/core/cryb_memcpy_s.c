@@ -36,30 +36,46 @@
 #include <string.h>
 
 #include <cryb/coverage.h>
+#include <cryb/memcpy_s.h>
 #include <cryb/memset_s.h>
 
 /*
- * Like memset(), but checks for overflow and guarantees that the buffer
- * is overwritten even if the data will never be read.
+ * Like memcpy(), but checks for overflow and overwrites the destination
+ * range with zeroes on error.
  *
- * ISO/IEC 9899:2011 K.3.7.4.1
+ * ISO/IEC 9899:2011 K.3.7.1.1
  */
 errno_t
-cryb_memset_s(void *d, rsize_t dsz, int c, rsize_t n)
+cryb_memcpy_s(void * restrict d, rsize_t dsz, const void * restrict s,
+    rsize_t n)
 {
 	volatile uint8_t *D;
+	const uint8_t *S;
 	unsigned int i;
-	uint8_t C;
 
+	/* unrecoverable errors */
 	if (d == NULL)
 		return (EINVAL);
 CRYB_DISABLE_COVERAGE
-	if (dsz > RSIZE_MAX || n > RSIZE_MAX)
+	if (dsz > RSIZE_MAX)
 		return (ERANGE);
 CRYB_RESTORE_COVERAGE
-	for (D = d, C = (uint8_t)c, i = 0; i < n && i < dsz; ++i)
-		D[i] = C;
-	if (n > dsz)
-		return (EOVERFLOW);
+	/* recoverable errors */
+	if (s == NULL || n > dsz ||
+CRYB_DISABLE_COVERAGE
+	    n > RSIZE_MAX ||
+CRYB_RESTORE_COVERAGE
+	    (s >= d && s < d + dsz) || (d >= s && d < s + n)) {
+		memset_s(d, dsz, 0, dsz);
+		if (n > dsz)
+			return (EOVERFLOW);
+CRYB_DISABLE_COVERAGE
+		if (n > RSIZE_MAX)
+			return (ERANGE);
+CRYB_RESTORE_COVERAGE
+		return (EINVAL);
+	}
+	for (D = d, S = s, i = 0; i < dsz && i < n; ++i)
+		D[i] = S[i];
 	return (0);
 }

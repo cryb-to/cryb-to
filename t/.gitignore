@@ -29,6 +29,7 @@
 /t_md4_openssl
 /t_md5
 /t_md5_openssl
+/t_memcpy_s
 /t_memset_s
 /t_mpi
 /t_mpi_addsub

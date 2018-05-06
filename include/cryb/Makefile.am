@@ -22,12 +22,14 @@ cryb_HEADERS += \
 	ctype.h \
 	defs.h \
 	endian.h \
+	memcpy_s.h \
 	memset_s.h \
 	strchrnul.h \
 	string.h \
 	strlcat.h \
 	strlcmp.h \
 	strlcpy.h \
+	types.h \
 	wcschrnul.h \
 	wcslcat.h \
 	wcslcmp.h \

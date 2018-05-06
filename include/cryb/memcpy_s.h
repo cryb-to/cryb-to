@@ -27,39 +27,27 @@
  * SUCH DAMAGE.
  */
 
-#if HAVE_CONFIG_H
-#include "config.h"
+#ifndef CRYB_MEMCPY_S_H_INCLUDED
+#define CRYB_MEMCPY_S_H_INCLUDED
+
+#ifndef CRYB_TO
+#include <cryb/to.h>
 #endif
 
-#include <errno.h>
-#include <stdint.h>
-#include <string.h>
+#ifndef CRYB_TYPES_H_INCLUDED
+#include <cryb/types.h>
+#endif
 
-#include <cryb/coverage.h>
-#include <cryb/memset_s.h>
+CRYB_BEGIN
 
-/*
- * Like memset(), but checks for overflow and guarantees that the buffer
- * is overwritten even if the data will never be read.
- *
- * ISO/IEC 9899:2011 K.3.7.4.1
- */
-errno_t
-cryb_memset_s(void *d, rsize_t dsz, int c, rsize_t n)
-{
-	volatile uint8_t *D;
-	unsigned int i;
-	uint8_t C;
+errno_t cryb_memcpy_s(void * restrict, rsize_t, const void * restrict,
+    rsize_t);
 
-	if (d == NULL)
-		return (EINVAL);
-CRYB_DISABLE_COVERAGE
-	if (dsz > RSIZE_MAX || n > RSIZE_MAX)
-		return (ERANGE);
-CRYB_RESTORE_COVERAGE
-	for (D = d, C = (uint8_t)c, i = 0; i < n && i < dsz; ++i)
-		D[i] = C;
-	if (n > dsz)
-		return (EOVERFLOW);
-	return (0);
-}
+#if !HAVE_MEMCPY_S
+#undef memcpy_s
+#define memcpy_s(arg, ...) cryb_memcpy_s(arg, __VA_ARGS__)
+#endif
+
+CRYB_END
+
+#endif

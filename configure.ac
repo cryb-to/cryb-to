@@ -51,6 +51,10 @@ AC_TYPE_UINT8_T
 AC_TYPE_UINTMAX_T
 AC_TYPE_UINTPTR_T
 
+AC_CHECK_TYPES([errno_t], [], [], [[#include <errno.h>]])
+AC_CHECK_TYPES([rsize_t], [], [], [[#include <stdint.h>]])
+AC_CHECK_DECL([RSIZE_MAX], [], [], [[#include <stdint.h>]])
+
 ############################################################################
 #
 # Headers and functions
@@ -116,9 +120,7 @@ AC_CHECK_HEADERS([sys/resource.h])
 AC_CHECK_FUNCS([setrlimit])
 
 # C11 features
-# XXX our version has an incorrect prototype due to the lack of a test
-# for the existence of rsize_t and RSIZE_MAX.
-AC_CHECK_FUNCS([memset_s])
+AC_CHECK_FUNCS([memcpy_s memset_s])
 
 ############################################################################
 #

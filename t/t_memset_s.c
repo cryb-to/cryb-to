@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 The University of Oslo
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,8 @@
 struct t_case {
 	const char *desc;
 	const char in[T_BUF_LEN];
-	size_t smax;
-	int c;
+	size_t dsz;
+	int ch;
 	size_t len;
 	const char out[T_BUF_LEN];
 	size_t outlen;
@@ -59,8 +59,8 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "zero",
 		.in	= "squeamish ossifrage",
-		.smax	= sizeof "squeamish ossifrage" - 1,
-		.c	= 'x',
+		.dsz	= sizeof "squeamish ossifrage" - 1,
+		.ch	= 'x',
 		.len	= 0,
 		.out	= "squeamish ossifrage",
 		.ret	= 0,
@@ -68,8 +68,8 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "short",
 		.in	= "squeamish ossifrage",
-		.smax	= sizeof "squeamish ossifrage" - 1,
-		.c	= 'x',
+		.dsz	= sizeof "squeamish ossifrage" - 1,
+		.ch	= 'x',
 		.len	= 9,
 		.out	= "xxxxxxxxx ossifrage",
 		.ret	= 0,
@@ -77,8 +77,8 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "exact",
 		.in	= "squeamish ossifrage",
-		.smax	= sizeof "squeamish ossifrage" - 1,
-		.c	= 'x',
+		.dsz	= sizeof "squeamish ossifrage" - 1,
+		.ch	= 'x',
 		.len	= sizeof "squeamish ossifrage" - 1,
 		.out	= "xxxxxxxxxxxxxxxxxxx",
 		.ret	= 0,
@@ -86,8 +86,8 @@ static struct t_case t_cases[] = {
 	{
 		.desc	= "long",
 		.in	= "squeamish ossifrage",
-		.smax	= sizeof "squeamish ossifrage" - 1,
-		.c	= 'x',
+		.dsz	= sizeof "squeamish ossifrage" - 1,
+		.ch	= 'x',
 		.len	= sizeof "squeamish ossifrage" + 1,
 		.out	= "xxxxxxxxxxxxxxxxxxx",
 		.ret	= EOVERFLOW,
@@ -104,8 +104,9 @@ t_memset_s(char **desc CRYB_UNUSED, void *arg)
 	char buf[T_BUF_LEN];
 	int ret;
 
-	memcpy(buf, t->in, T_BUF_LEN);
-	ret = memset_s(buf, t->smax, t->c, t->len);
+	memset(buf, 0, sizeof buf);
+	strncpy(buf, t->in, sizeof buf);
+	ret = memset_s(buf, t->dsz, t->ch, t->len);
 	return (t_compare_i(t->ret, ret) &
 	    t_compare_mem(t->out, buf, T_BUF_LEN));
 }

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 The University of Oslo
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,9 +34,13 @@
 #include <cryb/to.h>
 #endif
 
+#ifndef CRYB_TYPES_H_INCLUDED
+#include <cryb/types.h>
+#endif
+
 CRYB_BEGIN
 
-int cryb_memset_s(void *, size_t, int, size_t);
+errno_t cryb_memset_s(void *, rsize_t, int, rsize_t);
 
 #if !HAVE_MEMSET_S
 #undef memset_s

@@ -1,0 +1,130 @@
+.\"-
+.\" Copyright (c) 2015 Universitetet i Oslo
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. The name of the author may not be used to endorse or promote
+.\"    products derived from this software without specific prior written
+.\"    permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd May 6, 2018
+.Dt cryb_memset_s 3
+.Os
+.Sh NAME
+.Nm cryb_memset_s
+.Nd safely fill a buffer
+.Sh LIBRARY
+.Lb libcryb-core
+.Sh SYNOPSIS
+.In cryb/memset_s.h
+.Ft errno_t
+.Fn cryb_memset_s "void *d" "rsize_t dsz" "int ch" "rsize_t n"
+.Sh DESCRIPTION
+The
+.Nm cryb_memset_s
+function overwrites the first
+.Va n
+bytes of the buffer pointed to by
+.Va d ,
+of size
+.Va dsz ,
+with copies of the least-significant byte of
+.Va ch .
+If
+.Va n
+is greater than
+.Va dsz ,
+only
+.Va dsz
+bytes are overwritten, and an error is returned.
+.Sh RETURN VALUES
+The
+.Nm
+function returns zero if successful and a non-zero error code if an
+error occurred.
+.Sh ERRORS
+.Bl -tag -width Er
+.It Bq Er EINVAL
+The
+.Va d
+argument was
+.Dv NULL .
+.It Bq Er ERANGE
+Either or both of the
+.Va dsz
+and
+.Va n
+arguments were greater than
+.Dv RSIZE_MAX .
+.It Bq Er EOVERFLOW
+The
+.Va n
+argument was greater than the
+.Va dsz
+argument.
+.El
+.Sh IMPLEMENTATION NOTES
+If the
+.Dv HAVE_MEMSET_S
+preprocessor macro is defined to 0 or undefined, the
+.In cryb/memset_s.h
+header provides a
+.Fn memset_s
+macro as an alias to
+.Fn cryb_memset_s .
+.Pp
+Software that includes
+.In cryb/memset_s.h
+should ensure that the
+.Dv HAVE_ERRNO_T ,
+.Dv HAVE_RSIZE_T ,
+.Dv HAVE_RSIZE_MAX
+and
+.Dv HAVE_MEMSET_S
+macros correctly reflect the availability of these features at compile
+time.
+For projects that use the GNU autotools, this can be achieved by
+including the following code in
+.Pa configure.ac :
+.Bd -literal -offset indent
+AC_CHECK_TYPES([errno_t], [], [], [[#include <errno.h>]])
+AC_CHECK_TYPES([rsize_t], [], [], [[#include <stdint.h>]])
+AC_CHECK_DECL([RSIZE_MAX], [], [], [[#include <stdint.h>]])
+AC_CHECK_FUNCS([memset_s])
+.Ed
+.Sh SEE ALSO
+.Xr cryb_memcpy_s 3 ,
+.Xr memset 3
+.Sh STANDARDS
+The
+.Fn cryb_memset_s
+function is equivalent to the
+.Fn memset_s
+function described in ISO/IEC 9899:2011
+.Pq Dq C11
+section K.3.7.4.1.
+.Sh AUTHORS
+The
+.Fn cryb_memset_s
+function and this manual page were written for the University of Oslo
+by
+.An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .

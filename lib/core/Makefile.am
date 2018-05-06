@@ -4,6 +4,7 @@ lib_LTLIBRARIES = libcryb-core.la
 
 libcryb_core_la_SOURCES = \
 	cryb_assert.c \
+	cryb_memcpy_s.c \
 	cryb_memset_s.c \
 	cryb_strchrnul.c \
 	cryb_string.c \
@@ -21,6 +22,8 @@ libcryb_core_la_SOURCES = \
 EXTRA_DIST = cryb_string_impl.c
 
 dist_man3_MANS = \
+	cryb_memcpy_s.3 \
+	cryb_memset_s.3 \
 	cryb_strlcat.3 \
 	cryb_strlcpy.3
 
