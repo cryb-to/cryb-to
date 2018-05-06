@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 The University of Oslo
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +30,19 @@
 #ifndef CRYB_MEMCPY_S_H_INCLUDED
 #define CRYB_MEMCPY_S_H_INCLUDED
 
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
+
+CRYB_BEGIN
+
 int cryb_memcpy_s(void *, size_t, const void *, size_t);
 
 #if !HAVE_MEMCPY_S
 #undef memcpy_s
 #define memcpy_s(arg, ...) cryb_memcpy_s(arg, __VA_ARGS__)
 #endif
+
+CRYB_END
 
 #endif

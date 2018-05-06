@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 The University of Oslo
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ CRYB_DISABLE_COVERAGE
 		return (ERANGE);
 CRYB_RESTORE_COVERAGE
 	for (i = 0; i < n && i < dsz; ++i)
-		((volatile unsigned char *)d)[i] = (unsigned char)ch;
+		((volatile uint8_t *)d)[i] = (uint8_t)ch;
 	if (n > dsz)
 		return (EOVERFLOW);
 	return (0);

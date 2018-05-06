@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,6 +72,6 @@ CRYB_RESTORE_COVERAGE
 		return (EINVAL);
 	}
 	for (i = 0; i < dsz && i < n; ++i)
-		((volatile unsigned char *)d)[i] = ((unsigned char *)s)[i];
+		((volatile uint8_t *)d)[i] = ((const uint8_t *)s)[i];
 	return (0);
 }

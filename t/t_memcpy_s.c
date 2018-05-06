@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015 Dag-Erling Smørgrav
+ * Copyright (c) 2015-2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -289,16 +289,18 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_memcpy_s_null_d, NULL, "null destination");
 	n = sizeof t_plain_cases / sizeof t_plain_cases[0];
 	for (i = 0; i < n; ++i)
-		t_add_test(t_memcpy_s, &t_plain_cases[i],
+		t_add_test(t_memcpy_s, &t_plain_cases[i], "%s",
 		    t_plain_cases[i].desc);
 	n = sizeof t_overlap_cases / sizeof t_overlap_cases[0];
 	for (i = 0; i < n; ++i)
-		t_add_test(t_memcpy_s_overlap, &t_overlap_cases[i],
+		t_add_test(t_memcpy_s_overlap, &t_overlap_cases[i], "%s",
 		    t_overlap_cases[i].desc);
 	return (0);
 }
 
-void
-t_cleanup(void)
+int
+main(int argc, char *argv[])
 {
+
+	t_main(t_prepare, NULL, argc, argv);
 }
