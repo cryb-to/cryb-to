@@ -186,136 +186,21 @@ unset XFLAGS
 # Components
 #
 
-# Everything
-AC_ARG_ENABLE([all],
-    AS_HELP_STRING([--disable-all],
-        [disable all libraries and tools]),
-    [enable_all=$enableval],
-    [enable_all=yes])
+CRYB_INIT
 
-# Ciphers
-elements="$elements cipher"
-requires="$requires cipher:core"
-AC_ARG_ENABLE([cryb-cipher],
-    AS_HELP_STRING([--enable-cryb-cipher],
-	[build the cipher library]),
-    [enable_cryb_cipher=$enableval],
-    [enable_cryb_cipher=$enable_all])
-AM_CONDITIONAL([CRYB_CIPHER], [test x"$enable_cryb_cipher" = x"yes"])
+CRYB_LIB_PROVIDE([cipher],	[core])
+CRYB_LIB_PROVIDE([core],	[])
+CRYB_LIB_PROVIDE([cpe],		[core])
+CRYB_LIB_PROVIDE([digest],	[core])
+CRYB_LIB_PROVIDE([enc],		[core])
+CRYB_LIB_PROVIDE([hash],	[core])
+CRYB_LIB_PROVIDE([mac],		[core digest])
+CRYB_LIB_PROVIDE([mpi],		[core])
+CRYB_LIB_PROVIDE([oath],	[core digest enc mac rand])
+CRYB_LIB_PROVIDE([rand],	[core])
+CRYB_LIB_PROVIDE([test],	[core])
 
-# Core
-elements="$elements core"
-AC_ARG_ENABLE([cryb-core],
-    AS_HELP_STRING([--enable-cryb-core],
-	[build the core library]),
-    [enable_cryb_core=$enableval],
-    [enable_cryb_core=$enable_all])
-AM_CONDITIONAL([CRYB_CORE], [test x"$enable_cryb_core" = x"yes"])
-
-# CPE
-elements="$elements cpe"
-requires="$requires cpe:core"
-AC_ARG_ENABLE([cryb-cpe],
-    AS_HELP_STRING([--enable-cryb-cpe],
-	[build the CPE library]),
-    [enable_cryb_cpe=$enableval],
-    [enable_cryb_cpe=$enable_all])
-AM_CONDITIONAL([CRYB_CPE], [test x"$enable_cryb_cpe" = x"yes"])
-
-# Message digests
-elements="$elements digest"
-requires="$requires digests:core"
-AC_ARG_ENABLE([cryb-digest],
-    AS_HELP_STRING([--enable-cryb-digest],
-	[build the message digest library]),
-    [enable_cryb_digest=$enableval],
-    [enable_cryb_digest=$enable_all])
-AM_CONDITIONAL([CRYB_DIGEST], [test x"$enable_cryb_digest" = x"yes"])
-
-# Encodings
-elements="$elements enc"
-requires="$requires enc:core"
-AC_ARG_ENABLE([cryb-enc],
-    AS_HELP_STRING([--enable-cryb-enc],
-	[build the encoding library]),
-    [enable_cryb_enc=$enableval],
-    [enable_cryb_enc=$enable_all])
-AM_CONDITIONAL([CRYB_ENC], [test x"$enable_cryb_enc" = x"yes"])
-
-# Non-cryptographic hashes
-elements="$elements hash"
-requires="$requires hash:core"
-AC_ARG_ENABLE([cryb-hash],
-    AS_HELP_STRING([--enable-cryb-hash],
-	[build the non-cryptographic hash library]),
-    [enable_cryb_hash=$enableval],
-    [enable_cryb_hash=$enable_all])
-AM_CONDITIONAL([CRYB_HASH], [test x"$enable_cryb_hash" = x"yes"])
-
-# Message authentication codes
-elements="$elements mac"
-requires="$requires mac:core mac:digest"
-AC_ARG_ENABLE([cryb-mac],
-    AS_HELP_STRING([--enable-cryb-mac],
-	[build the message authentication code library]),
-    [enable_cryb_mac=$enableval],
-    [enable_cryb_mac=$enable_all])
-AM_CONDITIONAL([CRYB_MAC], [test x"$enable_cryb_digest" = x"yes"])
-
-# Multiple-precision integers
-elements="$elements mpi"
-requires="$requires mpi:core"
-AC_ARG_ENABLE([cryb-mpi],
-    AS_HELP_STRING([--enable-cryb-mpi],
-	[build the multiple-precision math library]),
-    [enable_cryb_mpi=$enableval],
-    [enable_cryb_mpi=$enable_all])
-AM_CONDITIONAL([CRYB_MPI], [test x"$enable_cryb_mpi" = x"yes"])
-
-# OATH
-elements="$elements oath"
-requires="$requires oath:core oath:digest oath:enc oath:mac oath:rand"
-AC_ARG_ENABLE([cryb-oath],
-    AS_HELP_STRING([--enable-cryb-oath],
-	[build the OATH library]),
-    [enable_cryb_oath=$enableval],
-    [enable_cryb_oath=$enable_all])
-AM_CONDITIONAL([CRYB_OATH], [test x"$enable_cryb_oath" = x"yes"])
-
-# Pseudo-randomness
-elements="$elements rand"
-requires="$requires rand:core"
-AC_ARG_ENABLE([cryb-rand],
-    AS_HELP_STRING([--enable-cryb-rand],
-	[build the pseudo-randomness library]),
-    [enable_cryb_rand=$enableval],
-    [enable_cryb_rand=$enable_all])
-AM_CONDITIONAL([CRYB_RAND], [test x"$enable_cryb_rand" = x"yes"])
-
-# Test framework
-elements="$elements test"
-requires="$requires test:core"
-AC_ARG_ENABLE([cryb-test],
-    AS_HELP_STRING([--enable-cryb-test],
-	[build the test framework]),
-    [enable_cryb_test=$enableval],
-    [enable_cryb_test=$enable_all])
-AM_CONDITIONAL([CRYB_TEST], [test x"$enable_cryb_test" = x"yes"])
-
-# Check dependencies
-AC_MSG_CHECKING([dependencies])
-for req in $requires ; do
-    lhs=${req%:*}
-    lhs_ena=`eval echo \\\$enable_cryb_$lhs`
-    if test x"$lhs_ena" = x"yes" ; then
-        rhs=${req#*:}
-    	rhs_ena=`eval echo \\\$enable_cryb_$rhs`
-	if test x"$rhs_ena" != x"yes" ; then
-	    AC_MSG_ERROR([cryb-$lhs requires cryb-$rhs])
-	fi
-    fi
-done
-AC_MSG_RESULT([ok])
+CRYB_CHECK_DEPENDENCIES
 
 ############################################################################
 #
@@ -356,11 +241,4 @@ AC_CONFIG_FILES([
 AC_CONFIG_FILES([tools/coverage.sh], [chmod +x tools/coverage.sh])
 AC_OUTPUT
 
-echo
-echo The following Cryb components will be built:
-echo
-for elem in $elements ; do
-    enable=`eval echo \\\$enable_cryb_$elem`
-    printf "%16s: %s\n" $elem ${enable:-no}
-done
-echo
+CRYB_SUMMARY
