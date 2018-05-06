@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2015-2018 The University of Oslo
+ * Copyright (c) 2018 The University of Oslo
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,26 +27,15 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_MEMCPY_S_H_INCLUDED
-#define CRYB_MEMCPY_S_H_INCLUDED
-
-#ifndef CRYB_TO
-#include <cryb/to.h>
-#endif
-
 #ifndef CRYB_RSIZE_H_INCLUDED
-#include <cryb/rsize.h>
+#define CRYB_RSIZE_H_INCLUDED
+
+#if !HAVE_RSIZE_T
+typedef size_t rsize_t;
 #endif
 
-CRYB_BEGIN
-
-int cryb_memcpy_s(void *, rsize_t, const void *, rsize_t);
-
-#if !HAVE_MEMCPY_S
-#undef memcpy_s
-#define memcpy_s(arg, ...) cryb_memcpy_s(arg, __VA_ARGS__)
+#if !HAVE_RSIZE_MAX
+#define RSIZE_MAX (SIZE_MAX >> 1)
 #endif
-
-CRYB_END
 
 #endif

@@ -44,14 +44,14 @@
  * is overwritten even if the data will never be read.
  */
 int
-cryb_memset_s(void *d, size_t dsz, int ch, size_t n)
+cryb_memset_s(void *d, rsize_t dsz, int ch, rsize_t n)
 {
 	unsigned int i;
 
 	if (d == NULL)
 		return (EINVAL);
 CRYB_DISABLE_COVERAGE
-	if (dsz > SIZE_MAX || n > SIZE_MAX)
+	if (dsz > RSIZE_MAX || n > RSIZE_MAX)
 		return (ERANGE);
 CRYB_RESTORE_COVERAGE
 	for (i = 0; i < n && i < dsz; ++i)

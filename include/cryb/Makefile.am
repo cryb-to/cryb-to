@@ -24,6 +24,7 @@ cryb_HEADERS += \
 	endian.h \
 	memcpy_s.h \
 	memset_s.h \
+	rsize.h \
 	strchrnul.h \
 	string.h \
 	strlcat.h \

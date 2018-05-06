@@ -44,11 +44,11 @@
 struct t_plain_case {
 	const char *desc;
 	const char in[T_BUF_LEN];
-	size_t dsz;
+	rsize_t dsz;
 	const char s[T_BUF_LEN];
-	size_t len;
+	rsize_t len;
 	const char out[T_BUF_LEN];
-	size_t outlen;
+	rsize_t outlen;
 	int ret;
 };
 
@@ -115,7 +115,8 @@ t_memcpy_s(char **desc CRYB_UNUSED, void *arg)
 struct t_overlap_case {
 	const char *desc;
 	const char *in;
-	size_t s_off, s_len, d_off, d_len;
+	size_t s_off, d_off;
+	rsize_t s_len, d_len;
 	const char out[T_BUF_LEN];
 	int ret;
 };

@@ -45,7 +45,7 @@
  * range with zeroes on error.
  */
 int
-cryb_memcpy_s(void *d, size_t dsz, const void *s, size_t n)
+cryb_memcpy_s(void *d, rsize_t dsz, const void *s, rsize_t n)
 {
 	unsigned int i;
 
@@ -53,20 +53,20 @@ cryb_memcpy_s(void *d, size_t dsz, const void *s, size_t n)
 	if (d == NULL)
 		return (EINVAL);
 CRYB_DISABLE_COVERAGE
-	if (dsz > SIZE_MAX)
+	if (dsz > RSIZE_MAX)
 		return (ERANGE);
 CRYB_RESTORE_COVERAGE
 	/* recoverable errors */
 	if (s == NULL || n > dsz ||
 CRYB_DISABLE_COVERAGE
-	    n > SIZE_MAX ||
+	    n > RSIZE_MAX ||
 CRYB_RESTORE_COVERAGE
 	    (s >= d && s < d + dsz) || (d >= s && d < s + n)) {
 		memset_s(d, dsz, 0, dsz);
 		if (n > dsz)
 			return (EOVERFLOW);
 CRYB_DISABLE_COVERAGE
-		if (n > SIZE_MAX)
+		if (n > RSIZE_MAX)
 			return (ERANGE);
 CRYB_RESTORE_COVERAGE
 		return (EINVAL);

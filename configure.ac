@@ -51,6 +51,9 @@ AC_TYPE_UINT8_T
 AC_TYPE_UINTMAX_T
 AC_TYPE_UINTPTR_T
 
+AC_CHECK_TYPES([rsize_t], [], [], [[#include <stdint.h>]])
+AC_CHECK_DECL([RSIZE_MAX], [], [], [[#include <stdint.h>]])
+
 ############################################################################
 #
 # Headers and functions
