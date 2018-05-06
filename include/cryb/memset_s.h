@@ -34,13 +34,13 @@
 #include <cryb/to.h>
 #endif
 
-#ifndef CRYB_RSIZE_H_INCLUDED
-#include <cryb/rsize.h>
+#ifndef CRYB_TYPES_H_INCLUDED
+#include <cryb/types.h>
 #endif
 
 CRYB_BEGIN
 
-int cryb_memset_s(void *, rsize_t, int, rsize_t);
+errno_t cryb_memset_s(void *, rsize_t, int, rsize_t);
 
 #if !HAVE_MEMSET_S
 #undef memset_s

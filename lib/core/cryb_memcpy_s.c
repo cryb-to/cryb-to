@@ -32,7 +32,6 @@
 #endif
 
 #include <errno.h>
-#include <limits.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -43,10 +42,15 @@
 /*
  * Like memcpy(), but checks for overflow and overwrites the destination
  * range with zeroes on error.
+ *
+ * ISO/IEC 9899:2011 K.3.7.1.1
  */
-int
-cryb_memcpy_s(void *d, rsize_t dsz, const void *s, rsize_t n)
+errno_t
+cryb_memcpy_s(void * restrict d, rsize_t dsz, const void * restrict s,
+    rsize_t n)
 {
+	volatile uint8_t *D;
+	const uint8_t *S;
 	unsigned int i;
 
 	/* unrecoverable errors */
@@ -71,7 +75,7 @@ CRYB_DISABLE_COVERAGE
 CRYB_RESTORE_COVERAGE
 		return (EINVAL);
 	}
-	for (i = 0; i < dsz && i < n; ++i)
-		((volatile uint8_t *)d)[i] = ((const uint8_t *)s)[i];
+	for (D = d, S = s, i = 0; i < dsz && i < n; ++i)
+		D[i] = S[i];
 	return (0);
 }

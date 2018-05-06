@@ -32,7 +32,6 @@
 #endif
 
 #include <errno.h>
-#include <limits.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -42,11 +41,15 @@
 /*
  * Like memset(), but checks for overflow and guarantees that the buffer
  * is overwritten even if the data will never be read.
+ *
+ * ISO/IEC 9899:2011 K.3.7.4.1
  */
-int
-cryb_memset_s(void *d, rsize_t dsz, int ch, rsize_t n)
+errno_t
+cryb_memset_s(void *d, rsize_t dsz, int c, rsize_t n)
 {
+	volatile uint8_t *D;
 	unsigned int i;
+	uint8_t C;
 
 	if (d == NULL)
 		return (EINVAL);
@@ -54,8 +57,8 @@ CRYB_DISABLE_COVERAGE
 	if (dsz > RSIZE_MAX || n > RSIZE_MAX)
 		return (ERANGE);
 CRYB_RESTORE_COVERAGE
-	for (i = 0; i < n && i < dsz; ++i)
-		((volatile uint8_t *)d)[i] = (uint8_t)ch;
+	for (D = d, C = (uint8_t)c, i = 0; i < n && i < dsz; ++i)
+		D[i] = C;
 	if (n > dsz)
 		return (EOVERFLOW);
 	return (0);

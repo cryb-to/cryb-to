@@ -34,13 +34,14 @@
 #include <cryb/to.h>
 #endif
 
-#ifndef CRYB_RSIZE_H_INCLUDED
-#include <cryb/rsize.h>
+#ifndef CRYB_TYPES_H_INCLUDED
+#include <cryb/types.h>
 #endif
 
 CRYB_BEGIN
 
-int cryb_memcpy_s(void *, rsize_t, const void *, rsize_t);
+errno_t cryb_memcpy_s(void * restrict, rsize_t, const void * restrict,
+    rsize_t);
 
 #if !HAVE_MEMCPY_S
 #undef memcpy_s

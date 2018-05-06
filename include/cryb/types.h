@@ -27,8 +27,12 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_RSIZE_H_INCLUDED
-#define CRYB_RSIZE_H_INCLUDED
+#ifndef CRYB_TYPES_H_INCLUDED
+#define CRYB_TYPES_H_INCLUDED
+
+#if !HAVE_ERRNO_T
+typedef int errno_t;
+#endif
 
 #if !HAVE_RSIZE_T
 typedef size_t rsize_t;

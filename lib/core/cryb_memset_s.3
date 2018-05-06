@@ -26,7 +26,7 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd December 15, 2015
+.Dd May 6, 2018
 .Dt cryb_memset_s 3
 .Os
 .Sh NAME
@@ -36,8 +36,8 @@
 .Lb libcryb-core
 .Sh SYNOPSIS
 .In cryb/memset_s.h
-.Ft void *
-.Fn cryb_memset_s "void *d" "size_t dsz" "int ch" "size_t n"
+.Ft errno_t
+.Fn cryb_memset_s "void *d" "rsize_t dsz" "int ch" "rsize_t n"
 .Sh DESCRIPTION
 The
 .Nm cryb_memset_s
@@ -74,7 +74,7 @@ Either or both of the
 and
 .Va n
 arguments were greater than
-.Dv SIZE_MAX .
+.Dv RSIZE_MAX .
 .It Bq Er EOVERFLOW
 The
 .Va n
@@ -92,17 +92,36 @@ header provides a
 macro as an alias to
 .Fn cryb_memset_s .
 .Pp
-The argument and return types for
-.Nm
-differ from those of its C11 equivalent, as it is expected to be used
-in environments in which
-.Vt rsize_t
+Software that includes
+.In cryb/memset_s.h
+should ensure that the
+.Dv HAVE_ERRNO_T ,
+.Dv HAVE_RSIZE_T ,
+.Dv HAVE_RSIZE_MAX
 and
-.Dv RSIZE_MAX
-are not defined.
+.Dv HAVE_MEMSET_S
+macros correctly reflect the availability of these features at compile
+time.
+For projects that use the GNU autotools, this can be achieved by
+including the following code in
+.Pa configure.ac :
+.Bd -literal -offset indent
+AC_CHECK_TYPES([errno_t], [], [], [[#include <errno.h>]])
+AC_CHECK_TYPES([rsize_t], [], [], [[#include <stdint.h>]])
+AC_CHECK_DECL([RSIZE_MAX], [], [], [[#include <stdint.h>]])
+AC_CHECK_FUNCS([memset_s])
+.Ed
 .Sh SEE ALSO
 .Xr cryb_memcpy_s 3 ,
 .Xr memset 3
+.Sh STANDARDS
+The
+.Fn cryb_memset_s
+function is equivalent to the
+.Fn memset_s
+function described in ISO/IEC 9899:2011
+.Pq Dq C11
+section K.3.7.4.1.
 .Sh AUTHORS
 The
 .Fn cryb_memset_s
