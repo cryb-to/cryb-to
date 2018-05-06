@@ -14,3 +14,8 @@ EXTRA_DIST = \
 	m4/ax_pkg_config.m4 \
 	tools/coverage.sh.in \
 	tools/setprops.sh
+
+if CRYB_CORE
+aclocaldir = $(datarootdir)/aclocal
+aclocal_DATA = m4/cryb_to.m4
+endif CRYB_CORE

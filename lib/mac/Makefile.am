@@ -11,8 +11,12 @@ libcryb_mac_la_SOURCES = \
 	\
 	cryb_mac.c
 
+libcryb_mac_la_CFLAGS = \
+	$(CRYB_DIGEST_CFLAGS) \
+	$(CRYB_CORE_CFLAGS)
+
 libcryb_mac_la_LIBADD = \
-	$(top_builddir)/lib/core/libcryb-core.la \
-	$(top_builddir)/lib/digest/libcryb-digest.la
+	$(CRYB_DIGEST_LIBS) \
+	$(CRYB_CORE_LIBS)
 
 pkgconfig_DATA = cryb-mac.pc

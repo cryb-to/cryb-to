@@ -15,7 +15,10 @@ libcryb_cpe_la_SOURCES = \
 	\
 	cryb_cpe.c
 
+libcryb_cpe_la_CFLAGS = \
+	$(CRYB_CORE_CFLAGS)
+
 libcryb_cpe_la_LIBADD = \
-	$(top_builddir)/lib/core/libcryb-core.la
+	$(CRYB_CORE_LIBS)
 
 pkgconfig_DATA = cryb-cpe.pc

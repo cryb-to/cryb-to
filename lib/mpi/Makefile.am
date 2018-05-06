@@ -43,7 +43,10 @@ libcryb_mpi_la_SOURCES = \
 noinst_HEADERS = \
 	cryb_mpi_impl.h
 
+libcryb_mpi_la_CFLAGS = \
+	$(CRYB_CORE_CFLAGS)
+
 libcryb_mpi_la_LIBADD = \
-	$(top_builddir)/lib/core/libcryb-core.la
+	$(CRYB_CORE_LIBS)
 
 pkgconfig_DATA = cryb-mpi.pc

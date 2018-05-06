@@ -15,7 +15,10 @@ libcryb_enc_la_SOURCES = \
 dist_man3_MANS = \
 	cryb_percent.3
 
+libcryb_enc_la_CFLAGS = \
+	$(CRYB_CORE_CFLAGS)
+
 libcryb_enc_la_LIBADD = \
-	$(top_builddir)/lib/core/libcryb-core.la
+	$(CRYB_CORE_LIBS)
 
 pkgconfig_DATA = cryb-enc.pc
