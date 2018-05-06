@@ -85,7 +85,7 @@ AC_CHECK_DECLS([
     htobe16, be16toh, htole16, le16toh,
     htobe32, be32toh, htole32, le32toh,
     htobe64, be64toh, htole64, le64toh,
-    nothing
+    [a thumb war]
 ], [], [], [[
 #if HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
