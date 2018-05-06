@@ -10,7 +10,10 @@ libcryb_test_la_SOURCES = \
 	\
 	cryb_test.c
 
+libcryb_test_la_CFLAGS = \
+	$(CRYB_CORE_CFLAGS)
+
 libcryb_test_la_LIBADD = \
-	$(top_builddir)/lib/core/libcryb-core.la
+	$(CRYB_CORE_LIBS)
 
 pkgconfig_DATA = cryb-test.pc
