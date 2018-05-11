@@ -54,22 +54,23 @@ AC_DEFUN([CRYB_LIB_PROVIDE], [
     m4_define([COMP], m4_toupper([$1]))
     m4_define([comp], m4_tolower([$1]))
     m4_set_add([cryb_provides], comp)
-    m4_foreach_w([req], [$2], [m4_set_add([cryb_requires], req)])
+    m4_foreach_w([dep], [$2], [m4_set_add([cryb_dependencies], dep)])
     AC_ARG_ENABLE([cryb-]comp,
 	AS_HELP_STRING([--enable-cryb-]comp,
 	    [build the ]comp[ library]),
         [enable_cryb_]comp[=$enableval],
         [enable_cryb_]comp[=$enable_all])
     if test [x"$enable_cryb_]comp[" = x"yes"] ; then
+        for dep in $2 ; do eval "cryb_${dep}_needed=yes" ; done
 	AC_DEFINE([HAVE_CRYB_]COMP, [1], [Define to 1 if you have $1])
 	AC_SUBST([CRYB_]COMP[_VERSION], [$PACKAGE_VERSION])
         AC_SUBST([CRYB_]COMP[_CFLAGS], [])
         AC_SUBST([CRYB_]COMP[_LIBS],
 	    ['\$(top_builddir)/lib/]comp[/libcryb-]comp[.la]')
-        AM_CONDITIONAL([HAVE_CRYB_]COMP, [true])
-    else
-        AX_PKG_CONFIG_CHECK([cryb-]comp, [$PACKAGE_VERSION])
     fi
+    AM_CONDITIONAL([HAVE_CRYB_]COMP, [
+        test [x"$enable_cryb_]comp[" = x"yes"] && \
+        test [x"$ax_pc_cv_have_cryb_]comp[" = x"yes"]])
     AM_CONDITIONAL([CRYB_]COMP, [test [x"$enable_cryb_]comp[" = x"yes"]])
 ])
 
@@ -80,7 +81,10 @@ dnl
 dnl Declare a Cryb library that we require.
 dnl
 AC_DEFUN([CRYB_LIB_REQUIRE], [
-    m4_foreach_w([req], [$1], [m4_set_add([cryb_requires], req)])
+    m4_foreach_w([dep], [$1], [
+        m4_set_add([cryb_dependencies], dep)
+	[cryb_]dep[_needed=yes]
+    ])
 ])
 
 dnl
@@ -91,10 +95,11 @@ dnl Verify that all dependencies have been satisfied.
 dnl
 AC_DEFUN([CRYB_CHECK_DEPENDENCIES], [
     AC_MSG_CHECKING([required Cryb elements])
-    m4_set_foreach([cryb_requires], [req], [
-        if test [x"$enable_cryb_]req[" != x"yes"] && \
-	   test [x"$ax_pc_cv_have_cryb_]req[" != x"yes"] ; then
-            AC_MSG_ERROR([missing cryb-]req)
+    m4_set_foreach([cryb_dependencies], [dep], [
+        if test [x"$cryb_]dep[_needed" = x"yes"] && \
+            test [x"$enable_cryb_]dep[" != x"yes"] && \
+	    test [x"$ax_pc_cv_have_cryb_]dep[" = x""] ; then
+	    AX_PKG_CONFIG_REQUIRE([cryb-]dep, [$PACKAGE_VERSION])
 	fi
     ])
     AC_MSG_RESULT([ok])
