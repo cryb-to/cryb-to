@@ -261,6 +261,9 @@ t_main(t_prepare_func t_prepare, t_cleanup_func t_cleanup,
 	    t_str_is_true(getenv("CRYB_LEAKTEST")) :
 	    !t_str_is_false(getenv("CRYB_LEAKTEST"));
 
+	/* enable verbose mode if requested */
+	t_verbose = t_str_is_true(getenv("CRYB_VERBOSE"));
+
 	/* make all unintentional allocation failures fatal */
 	t_malloc_fatal = 1;
 
