@@ -45,6 +45,28 @@ AC_DEFUN([CRYB_INIT], [
 ])
 
 dnl
+dnl CRYB_PROVIDE(component-name, [dependencies])
+dnl --------------------------------------------
+dnl
+dnl Declare a non-library component that we provide, and its library
+dnl dependencies.
+dnl
+AC_DEFUN([CRYB_PROVIDE], [
+    m4_define([COMP], m4_toupper([$1]))
+    m4_define([comp], m4_tolower([$1]))
+    m4_set_add([cryb_provides], comp)
+    m4_foreach_w([dep], [$2], [m4_set_add([cryb_requires], dep)])
+    AC_ARG_ENABLE([cryb-]comp,
+	AS_HELP_STRING([--enable-cryb-]comp,
+	    [build the ]comp[ component]),
+        [enable_cryb_]comp[=$enableval],
+        [enable_cryb_]comp[=$enable_all])
+    if test [x"$enable_cryb_]comp[" = x"yes"] ; then
+        for dep in $2 ; do eval "cryb_${dep}_needed=yes" ; done
+    fi
+])
+
+dnl
 dnl CRYB_LIB_PROVIDE(library-name, [dependencies])
 dnl ----------------------------------------------
 dnl
@@ -54,7 +76,7 @@ AC_DEFUN([CRYB_LIB_PROVIDE], [
     m4_define([COMP], m4_toupper([$1]))
     m4_define([comp], m4_tolower([$1]))
     m4_set_add([cryb_provides], comp)
-    m4_foreach_w([dep], [$2], [m4_set_add([cryb_dependencies], dep)])
+    m4_foreach_w([dep], [$2], [m4_set_add([cryb_requires], dep)])
     AC_ARG_ENABLE([cryb-]comp,
 	AS_HELP_STRING([--enable-cryb-]comp,
 	    [build the ]comp[ library]),
@@ -68,10 +90,6 @@ AC_DEFUN([CRYB_LIB_PROVIDE], [
         AC_SUBST([CRYB_]COMP[_LIBS],
 	    ['\$(top_builddir)/lib/]comp[/libcryb-]comp[.la]')
     fi
-    AM_CONDITIONAL([HAVE_CRYB_]COMP, [
-        test [x"$enable_cryb_]comp[" = x"yes"] && \
-        test [x"$ax_pc_cv_have_cryb_]comp[" = x"yes"]])
-    AM_CONDITIONAL([CRYB_]COMP, [test [x"$enable_cryb_]comp[" = x"yes"]])
 ])
 
 dnl
@@ -82,25 +100,35 @@ dnl Declare a Cryb library that we require.
 dnl
 AC_DEFUN([CRYB_LIB_REQUIRE], [
     m4_foreach_w([dep], [$1], [
-        m4_set_add([cryb_dependencies], dep)
+        m4_set_add([cryb_requires], dep)
 	[cryb_]dep[_needed=yes]
     ])
 ])
 
 dnl
-dnl CRYB_CHECK_DEPENDENCIES
-dnl -----------------------
+dnl CRYB_RESOLVE
+dnl ------------
 dnl
-dnl Verify that all dependencies have been satisfied.
+dnl Verify that all dependencies have been satisfied and set automake
+dnl conditionals to reflect enabled and available components.
 dnl
-AC_DEFUN([CRYB_CHECK_DEPENDENCIES], [
-    AC_MSG_CHECKING([required Cryb elements])
-    m4_set_foreach([cryb_dependencies], [dep], [
-        if test [x"$cryb_]dep[_needed" = x"yes"] && \
-            test [x"$enable_cryb_]dep[" != x"yes"] && \
-	    test [x"$ax_pc_cv_have_cryb_]dep[" = x""] ; then
-	    AX_PKG_CONFIG_REQUIRE([cryb-]dep, [$PACKAGE_VERSION])
+AC_DEFUN([CRYB_RESOLVE], [
+    AC_MSG_CHECKING([required Cryb components])
+    m4_set_foreach([cryb_requires], [comp], [
+        if test [x"$cryb_]comp[_needed" = x"yes"] && \
+            test [x"$enable_cryb_]comp[" != x"yes"] && \
+	    test [x"$ax_pc_cv_have_cryb_]comp[" = x""] ; then
+	    AX_PKG_CONFIG_REQUIRE([cryb-]comp, [$PACKAGE_VERSION])
 	fi
+    ])
+    AC_MSG_RESULT([ok])
+    AC_MSG_CHECKING([provided Cryb components])
+    m4_set_foreach([cryb_provides], [comp], [
+      m4_define([COMP], m4_toupper(comp))
+      AM_CONDITIONAL([HAVE_CRYB_]COMP, [
+          test [x"$enable_cryb_]comp[" = x"yes"] || \
+          test [x"$ax_pc_cv_have_cryb_]comp[" = x"yes"]])
+      AM_CONDITIONAL([CRYB_]COMP, [test [x"$enable_cryb_]comp[" = x"yes"]])
     ])
     AC_MSG_RESULT([ok])
 ])

@@ -202,7 +202,9 @@ CRYB_LIB_PROVIDE([oath],	[core digest enc mac rand])
 CRYB_LIB_PROVIDE([rand],	[core])
 CRYB_LIB_PROVIDE([test],	[core])
 
-CRYB_CHECK_DEPENDENCIES
+CRYB_LIB_REQUIRE([test])
+
+CRYB_RESOLVE
 
 ############################################################################
 #

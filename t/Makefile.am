@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 EXTRA_DIST =
 noinst_HEADERS =
 
-if CRYB_TEST
+if HAVE_CRYB_TEST
 
 # Individual libraries
 libcipher = $(top_builddir)/lib/cipher/libcryb-cipher.la
@@ -248,4 +248,4 @@ endif CRYB_TEST
 
 check_PROGRAMS = $(TESTS)
 
-endif CRYB_TEST
+endif HAVE_CRYB_TEST
