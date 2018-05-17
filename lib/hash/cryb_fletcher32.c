@@ -46,6 +46,7 @@
  * algorithm's word size (half the checksum size).  This implementation
  * will zero-pad the input up to the nearest multiple of the word size.
  */
+#if 0
 uint32_t
 fletcher32_hash(const void *data, size_t len)
 {
@@ -66,3 +67,39 @@ fletcher32_hash(const void *data, size_t len)
 	}
 	return (c1 << 16 | c0);
 }
+#else
+#include <stdio.h>
+uint32_t
+nakassi32(const uint16_t *data, size_t len)
+{
+	uint32_t d0, d1;
+	unsigned int i;
+
+	for (d0 = d1 = 0; len > 360; len -= 360) {
+		for (i = 0; i < 360; ++i) {
+			d0 = d0 + be16toh(*data++);
+			d1 = d1 + d0;
+		}
+		d0 = d0 % 0xffffU;
+		d1 = d1 % 0xffffU;
+	}
+	for (i = 0; i < len; ++i) {
+		d0 = d0 + be16toh(*data++);
+		d1 = d1 + d0;
+	}
+	d0 = d0 % 0xffffU;
+	d1 = d1 % 0xffffU;
+	return (d1 << 16 | d0);
+}
+
+uint32_t
+fletcher32_hash(const void *data, size_t len)
+{
+	uint32_t c;
+
+	fprintf(stderr, "%s(%p, %zu) ", __func__, data, len);
+	c = nakassi32(data, len / 2);
+	fprintf(stderr, "= %08x\n", c);
+	return (c);
+}
+#endif

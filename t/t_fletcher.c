@@ -299,11 +299,13 @@ t_prepare(int argc, char *argv[])
 			t_add_test(t_fletcher16, &t_cases[i], "%s",
 			    t_cases[i].desc);
 	for (i = 0; i < n; ++i)
-		if (t_cases[i].sum32 != 0xffffffffLU)
+		if (t_cases[i].len % 2 == 0 &&
+		    t_cases[i].sum32 != 0xffffffffLU)
 			t_add_test(t_fletcher32, &t_cases[i], "%s",
 			    t_cases[i].desc);
 	for (i = 0; i < n; ++i)
-		if (t_cases[i].sum64 != 0xffffffffffffffffLLU)
+		if (t_cases[i].len % 4 == 0 &&
+		    t_cases[i].sum64 != 0xffffffffffffffffLLU)
 			t_add_test(t_fletcher64, &t_cases[i], "%s",
 			    t_cases[i].desc);
 	return (0);
