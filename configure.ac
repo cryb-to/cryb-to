@@ -188,7 +188,7 @@ unset XFLAGS
 # Components
 #
 
-CRYB_INIT
+CRYB_I_AM
 
 CRYB_LIB_PROVIDE([cipher],	[core])
 CRYB_LIB_PROVIDE([core],	[])

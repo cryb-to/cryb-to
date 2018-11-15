@@ -1,6 +1,7 @@
 dnl -*- autoconf -*-
 dnl
 dnl Copyright (c) 2018 The University of Oslo
+dnl Copyright (c) 2018 Dag-Erling Smørgrav
 dnl All rights reserved.
 dnl
 dnl Redistribution and use in source and binary forms, with or without
@@ -28,15 +29,28 @@ dnl OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 dnl SUCH DAMAGE.
 dnl
 
-m4_define([CRYB_MACROS_VERSION], [0.20180513])
+m4_define([CRYB_MACROS_VERSION], [0.20181115])
 
 dnl
-dnl CRYB_INIT
-dnl ---------
+dnl CRYB_INIT([version])
+dnl --------------------
 dnl
-dnl Initialize.
+dnl Initialize (for consumers).
 dnl
 AC_DEFUN([CRYB_INIT], [
+    CRYB_VERSION=m4_default([$1], [CRYB_MACROS_VERSION])
+    AC_SUBST([CRYB_VERSION], [$CRYB_VERSION])
+])
+
+dnl
+dnl
+dnl CRYB_I_AM([version])
+dnl --------------------
+dnl
+dnl Initialize (for providers).
+dnl
+AC_DEFUN([CRYB_I_AM], [
+    CRYB_INIT([m4_default([$1], [$PACKAGE_VERSION])])
     AC_ARG_ENABLE([all],
         AS_HELP_STRING([--disable-all],
             [disable all components]),
@@ -118,7 +132,7 @@ AC_DEFUN([CRYB_RESOLVE], [
         if test [x"$cryb_]comp[_needed" = x"yes"] && \
             test [x"$enable_cryb_]comp[" != x"yes"] && \
 	    test [x"$ax_pc_cv_have_cryb_]comp[" = x""] ; then
-	    AX_PKG_CONFIG_REQUIRE([cryb-]comp, [$PACKAGE_VERSION])
+	    AX_PKG_CONFIG_REQUIRE([cryb-]comp, [$CRYB_VERSION])
 	fi
     ])
     AC_MSG_RESULT([ok])
