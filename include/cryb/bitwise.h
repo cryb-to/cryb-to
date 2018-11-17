@@ -79,9 +79,12 @@ static inline int cryb_ffs(int n) {
 #elif HAVE___BUILTIN_CTZ
 	return (n ? __builtin_ctz(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = m = 1; i <= sizeof n * 8; ++i, m <<= 1)
+		if ((unsigned int)n & m)
 			break;
 	return (i);
 #endif
@@ -93,9 +96,12 @@ static inline int cryb_ffsl(long int n) {
 #elif HAVE___BUILTIN_CLZ
 	return (n ? __builtin_ctz(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned long int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = m = 1; i <= sizeof n * 8; ++i, m <<= 1)
+		if ((unsigned long int)n & m)
 			break;
 	return (i);
 #endif
@@ -107,9 +113,12 @@ static inline int cryb_ffsll(long long int n) {
 #elif HAVE___BUILTIN_CLZ
 	return (n ? __builtin_ctz(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned long long int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = m = 1; i <= sizeof n * 8; ++i, m <<= 1)
+		if ((unsigned long long int)n & m)
 			break;
 	return (i);
 #endif
@@ -121,9 +130,12 @@ static inline int cryb_fls(int n) {
 #elif HAVE___BUILTIN_CLZ
 	return (n ? (8 * sizeof n) - __builtin_clz(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = sizeof n * 8, m = 1U << (i - 1); i > 0; --i, m >>= 1)
+		if ((unsigned int)n & m)
 			break;
 	return (i);
 #endif
@@ -135,9 +147,12 @@ static inline int cryb_flsl(long int n) {
 #elif HAVE___BUILTIN_CLZ
 	return (n ? (8 * sizeof n) - __builtin_clzl(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned long int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = sizeof n * 8, m = 1UL << (i - 1); i > 0; --i, m >>= 1)
+		if ((unsigned long int)n & m)
 			break;
 	return (i);
 #endif
@@ -149,9 +164,12 @@ static inline int cryb_flsll(long long int n) {
 #elif HAVE___BUILTIN_CLZ
 	return (n ? (8 * sizeof n) - __builtin_clzll(n) : 0);
 #else
-	int i = 8 * sizeof n - 1;
-	for (i > 0)
-		if (n & (1 << --i))
+	unsigned long long int m;
+	unsigned int i;
+	if (n == 0)
+		return (0);
+	for (i = sizeof n * 8, m = 1ULL << (i - 1); i > 0; --i, m >>= 1)
+		if ((unsigned long long int)n & m)
 			break;
 	return (i);
 #endif

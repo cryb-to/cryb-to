@@ -19,7 +19,7 @@ libt = $(top_builddir)/lib/test/libcryb-test.la
 
 # Additional headers, flags and libraries for OpenSSL
 if OPENSSL_TESTS
-OPENSSL_INCLUDES = 
+OPENSSL_INCLUDES =
 OPENSSL_CFLAGS = -DWITH_OPENSSL=1
 OPENSSL_LDADD = -lcrypto
 endif OPENSSL_TESTS
@@ -94,19 +94,20 @@ TESTS += t_core
 t_core_LDADD = $(libt) $(libcore)
 TESTS += t_assert
 t_assert_LDADD = $(libt) $(libcore)
-TESTS += t_ctype t_endian t_memcpy_s t_memset_s t_strchrnul t_strlcat t_strlcmp t_strlcpy
-TESTS += t_string t_wstring
-EXTRA_DIST += t__string.c
+TESTS += t_ctype t_endian
 t_ctype_LDADD = $(libt) $(libcore)
 t_endian_LDADD = $(libt) $(libcore)
+TESTS += t_memcpy_s t_memset_s
 t_memcpy_s_LDADD = $(libt) $(libcore)
 t_memset_s_LDADD = $(libt) $(libcore)
+TESTS +=  t_strchrnul t_strlcat t_strlcmp t_strlcpy
 t_strchrnul_LDADD = $(libt) $(libcore)
 t_strlcat_LDADD = $(libt) $(libcore)
 t_strlcmp_LDADD = $(libt) $(libcore)
 t_strlcpy_LDADD = $(libt) $(libcore)
-TESTS += t_rolror
-t_rolror_LDADD = $(libt) $(libcore)
+TESTS += t_ffs_fls t_rol_ror
+t_ffs_fls_LDADD = $(libt) $(libcore)
+t_rol_ror_LDADD = $(libt) $(libcore)
 TESTS += t_string t_wstring
 EXTRA_DIST += t__string.c
 t_string_LDADD = $(libt) $(libcore)
@@ -217,12 +218,12 @@ endif CRYB_MAC
 
 # libcryb-mpi
 if CRYB_MPI
-TESTS += t_mpi t_mpi_addsub t_mpi_compar t_mpi_gcd t_mpi_muldiv
+TESTS += t_mpi t_mpi_add_sub t_mpi_compar t_mpi_gcd t_mpi_mul_div
 t_mpi_LDADD = $(libt) $(libmpi)
-t_mpi_addsub_LDADD = $(libt) $(libmpi)
+t_mpi_add_sub_LDADD = $(libt) $(libmpi)
 t_mpi_compar_LDADD = $(libt) $(libmpi)
 t_mpi_gcd_LDADD = $(libt) $(libmpi)
-t_mpi_muldiv_LDADD = $(libt) $(libmpi)
+t_mpi_mul_div_LDADD = $(libt) $(libmpi)
 noinst_HEADERS += t_mpi.h
 endif CRYB_MPI
 
