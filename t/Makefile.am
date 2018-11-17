@@ -19,7 +19,7 @@ libt = $(top_builddir)/lib/test/libcryb-test.la
 
 # Additional headers, flags and libraries for OpenSSL
 if OPENSSL_TESTS
-OPENSSL_INCLUDES = 
+OPENSSL_INCLUDES =
 OPENSSL_CFLAGS = -DWITH_OPENSSL=1
 OPENSSL_LDADD = -lcrypto
 endif OPENSSL_TESTS
@@ -94,13 +94,13 @@ TESTS += t_core
 t_core_LDADD = $(libt) $(libcore)
 TESTS += t_assert
 t_assert_LDADD = $(libt) $(libcore)
-TESTS += t_ctype t_endian t_memcpy_s t_memset_s t_strchrnul t_strlcat t_strlcmp t_strlcpy
-TESTS += t_string t_wstring
-EXTRA_DIST += t__string.c
+TESTS += t_ctype t_endian
 t_ctype_LDADD = $(libt) $(libcore)
 t_endian_LDADD = $(libt) $(libcore)
+TESTS += t_memcpy_s t_memset_s
 t_memcpy_s_LDADD = $(libt) $(libcore)
 t_memset_s_LDADD = $(libt) $(libcore)
+TESTS +=  t_strchrnul t_strlcat t_strlcmp t_strlcpy
 t_strchrnul_LDADD = $(libt) $(libcore)
 t_strlcat_LDADD = $(libt) $(libcore)
 t_strlcmp_LDADD = $(libt) $(libcore)
