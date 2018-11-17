@@ -32,10 +32,10 @@
 /t_memcpy_s
 /t_memset_s
 /t_mpi
-/t_mpi_addsub
+/t_mpi_add_sub
 /t_mpi_compar
 /t_mpi_gcd
-/t_mpi_muldiv
+/t_mpi_mul_div
 /t_murmur3_32
 /t_oath
 /t_pearson
@@ -43,7 +43,7 @@
 /t_rc4
 /t_rfc3986
 /t_rfc4648
-/t_rolror
+/t_rol_ror
 /t_salsa
 /t_sha1
 /t_sha1_openssl
