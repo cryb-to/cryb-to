@@ -110,7 +110,8 @@ t_compare_mem(const void *expected, const void *received, size_t len)
 		t_printv("\n");
 		t_printv("received null pointer\n");
 		return (0);
-	} else if (memcmp(expected, received, len) != 0) {
+	} else if (expected != NULL && received != NULL &&
+	    memcmp(expected, received, len) != 0) {
 		t_printv("expected ");
 		t_printv_hex(expected, len);
 		t_printv("\n");
@@ -137,7 +138,8 @@ t_compare_str(const char *expected, const char *received)
 		t_printv("expected \"%s\"\n", expected);
 		t_printv("received null pointer\n");
 		return (0);
-	} else if (strcmp(expected, received) != 0) {
+	} else if (expected != NULL && received != NULL &&
+	    strcmp(expected, received) != 0) {
 		t_printv("expected %s\n", expected);
 		t_printv("received %s\n", received);
 		return (0);
