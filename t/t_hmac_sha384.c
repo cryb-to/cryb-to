@@ -48,13 +48,13 @@ static void
 t_hmac_sha384_complete(const void *key, size_t keylen,
     const void *msg, size_t msglen, uint8_t *mac)
 {
-	HMAC_CTX ctx;
+	HMAC_CTX *ctx;
 
-	HMAC_CTX_init(&ctx);
-	HMAC_Init_ex(&ctx, key, keylen, EVP_sha384(), NULL);
-	HMAC_Update(&ctx, msg, msglen);
-	HMAC_Final(&ctx, mac, NULL);
-	HMAC_CTX_cleanup(&ctx);
+	ctx = HMAC_CTX_new();
+	HMAC_Init_ex(ctx, key, keylen, EVP_sha384(), NULL);
+	HMAC_Update(ctx, msg, msglen);
+	HMAC_Final(ctx, mac, NULL);
+	HMAC_CTX_free(ctx);
 }
 
 #else
