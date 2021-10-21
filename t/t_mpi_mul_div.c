@@ -122,7 +122,7 @@ t_mpi_mul_tc(char **desc CRYB_UNUSED, void *arg)
 	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
 	e.neg = tc->eneg;
-	ret &= t_compare_i(0, mpi_mul_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_mul_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);

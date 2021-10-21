@@ -53,7 +53,7 @@ t_ffs(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_ffs(0));
+	ret = t_is_zero_i(cryb_ffs(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++) {
 		t_printv("ffs(0x%08x) == %d\n", u, cryb_ffs(u));
 		ret &= t_compare_i(n, cryb_ffs(u));
@@ -67,7 +67,7 @@ t_ffsl(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	long int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_ffs(0));
+	ret = t_is_zero_i(cryb_ffs(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++)
 		ret &= t_compare_i(n, cryb_ffsl(u));
 	return (ret);
@@ -79,7 +79,7 @@ t_ffsll(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	long long int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_ffs(0));
+	ret = t_is_zero_i(cryb_ffs(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++)
 		ret &= t_compare_i(n, cryb_ffsll(u));
 	return (ret);
@@ -91,7 +91,7 @@ t_fls(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	unsigned int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_fls(0));
+	ret = t_is_zero_i(cryb_fls(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++) {
 		t_printv("fls(0x%08x) == %d\n", u, cryb_fls(u));
 		ret &= t_compare_i(n, cryb_fls(u));
@@ -105,7 +105,7 @@ t_flsl(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	unsigned long int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_flsl(0));
+	ret = t_is_zero_i(cryb_flsl(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++) {
 		t_printv("flsl(0x%08lx) == %d\n", u, cryb_flsl(u));
 		ret &= t_compare_i(n, cryb_flsl(u));
@@ -119,7 +119,7 @@ t_flsll(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	unsigned long long int u;
 	int n, ret;
 
-	ret = t_compare_i(0, cryb_flsll(0));
+	ret = t_is_zero_i(cryb_flsll(0));
 	for (u = 1, n = 1; u != 0; u <<= 1, n++) {
 		t_printv("flsll(0x%016llx) == %d\n", u, cryb_flsll(u));
 		ret &= t_compare_i(n, cryb_flsll(u));

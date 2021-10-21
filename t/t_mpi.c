@@ -102,7 +102,7 @@ t_mpi_grow_ok(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&x, 1);
 	t_assert(x.words[0] == 1 && x.msb == 1);
-	ret &= t_compare_i(0, mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1));
+	ret &= t_is_zero_i(mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1));
 	t_assert(x.words[0] == 1 && x.msb == 1);
 	ret &= t_mpi_grown(&x);
 	mpi_destroy(&x);
@@ -136,10 +136,10 @@ t_mpi_grow_twice(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	uint32_t *p;
 	int ret = 1;
 
-	ret &= t_compare_i(0, mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1));
+	ret &= t_is_zero_i(mpi_grow(&x, CRYB_MPI_SWORDS * 32 + 1));
 	ret &= t_mpi_grown(&x);
 	p = x.words;
-	ret &= t_compare_i(0, mpi_grow(&x, CRYB_MPI_SWORDS * 32 * 2 + 1));
+	ret &= t_is_zero_i(mpi_grow(&x, CRYB_MPI_SWORDS * 32 * 2 + 1));
 	/* XXX we need inequality predicates */
 	if (x.words == p) {
 		t_printv("pointer was expected to change\n");
@@ -360,7 +360,7 @@ t_mpi_set_positive(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
-	ret &= t_compare_i(0, x.neg);
+	ret &= t_is_zero_i(x.neg);
 	mpi_destroy(&x);
 	return (ret);
 }
@@ -416,7 +416,7 @@ t_mpi_negate_nonzero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
 	ret &= t_compare_u(29, x.msb);
-	ret &= t_compare_u(0, x.neg);
+	ret &= t_is_zero_u(x.neg);
 	mpi_negate(&x);
 	ret &= t_mpi_not_grown(&x);
 	ret &= t_compare_x32(0x19700101, x.words[0]);
@@ -475,7 +475,7 @@ t_mpi_copy_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	t_assert(x.words == NULL && y.words == NULL);
-	ret &= t_compare_i(0, mpi_copy(&y, &x));
+	ret &= t_is_zero_i(mpi_copy(&y, &x));
 	ret &= t_compare_mem(&z, &x, sizeof x);
 	ret &= t_mpi_not_grown(&y);
 	ret &= t_mpi_is_zero(&y);
@@ -675,7 +675,7 @@ t_mpi_lsh(char **desc CRYB_UNUSED, void *arg)
 
 	mpi_load(&x, tc->v, tc->vlen);
 	mpi_load(&e, tc->e, tc->elen);
-	ret &= t_compare_i(0, mpi_lshift(&x, tc->n));
+	ret &= t_is_zero_i(mpi_lshift(&x, tc->n));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&x);
 	mpi_destroy(&e);
@@ -694,7 +694,7 @@ t_mpi_large_lsh(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_load(&x, small_v, sizeof small_v);
 	t_assert(t_mpi_not_grown(&x));
-	ret &= t_compare_i(0, mpi_lshift(&x, 32));
+	ret &= t_is_zero_i(mpi_lshift(&x, 32));
 	/* XXX we need inequality predicates */
 	if (x.words == x.swords) {
 		t_printv("reallocation failed to occur\n");
