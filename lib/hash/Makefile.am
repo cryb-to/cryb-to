@@ -7,6 +7,7 @@ libcryb_hash_la_SOURCES = \
 	cryb_fletcher16.c \
 	cryb_fletcher32.c \
 	cryb_fletcher64.c \
+	cryb_fnv.c \
 	cryb_murmur3_32.c \
 	cryb_pearson.c \
 	\
@@ -15,9 +16,13 @@ libcryb_hash_la_SOURCES = \
 dist_man3_MANS = \
 	cryb_adler32.3 \
 	cryb_fletcher.3 \
+	cryb_fnv.3 \
 	cryb_pearson.3 \
 	\
 	cryb_hash.3
+
+noinst_HEADERS = \
+	cryb_fnv_impl.h
 
 libcryb_hash_la_CFLAGS = \
 	$(CRYB_CORE_CFLAGS)

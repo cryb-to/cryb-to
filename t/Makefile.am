@@ -179,9 +179,11 @@ endif CRYB_ENC
 if CRYB_HASH
 TESTS += t_hash
 t_hash_LDADD = $(libt) $(libhash)
-TESTS += t_adler t_fletcher t_murmur3_32 t_pearson
+TESTS += t_adler t_fletcher t_fnv t_murmur3_32 t_pearson
 t_adler_LDADD = $(libt) $(libhash)
 t_fletcher_LDADD = $(libt) $(libhash)
+t_fnv_CFLAGS = -I$(top_srcdir)/lib/hash
+t_fnv_LDADD = $(libt) $(libhash)
 t_murmur3_32_LDADD = $(libt) $(libhash)
 t_pearson_LDADD = $(libt) $(libhash)
 endif CRYB_HASH
