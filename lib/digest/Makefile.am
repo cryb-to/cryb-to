@@ -15,11 +15,16 @@ libcryb_digest_la_SOURCES = \
 	cryb_digest.c
 
 dist_man3_MANS = \
+	cryb_md2.3 \
+	cryb_md4.3 \
+	cryb_md5.3 \
 	cryb_sha1.3 \
 	cryb_sha224.3 \
 	cryb_sha256.3 \
 	cryb_sha384.3 \
-	cryb_sha512.3
+	cryb_sha512.3 \
+	\
+	cryb_digest.3
 
 libcryb_digest_la_CFLAGS = \
 	$(CRYB_CORE_CFLAGS)

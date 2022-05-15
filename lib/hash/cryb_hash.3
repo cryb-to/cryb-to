@@ -1,5 +1,5 @@
 .\"-
-.\" Copyright (c) 2016 Dag-Erling Smørgrav
+.\" Copyright (c) 2022 Dag-Erling Smørgrav
 .\" All rights reserved.
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,12 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd September 17, 2016
+.Dd May 15, 2022
 .Dt CRYB_HASH 3
 .Os
 .Sh NAME
-.Nm cryb_hash_version ,
-.Nm cryb_adler32_hash ,
-.Nm cryb_fletcher16_hash ,
-.Nm cryb_fletcher32_hash ,
-.Nm cryb_fletcher64_hash ,
-.Nm cryb_pearson_hash ,
-.Nm cryb_pearson_hash_str
-.Nd hash and checksum functions
+.Nm cryb_hash_version
+.Nd non-cryptographic hash function library
 .Sh LIBRARY
 .Lb libcryb-hash
 .Sh SYNOPSIS
@@ -46,18 +40,6 @@
 .In cryb/hash.h
 .Ft const char *
 .Fn cryb_hash_version "void"
-.Ft uint32_t
-.Fn cryb_adler32_hash "const void *data" "size_t len"
-.Ft uint16_t
-.Fn fletcher16_hash "const void *data" "size_t len"
-.Ft uint32_t
-.Fn fletcher32_hash "const void *data" "size_t len"
-.Ft uint64_t
-.Fn fletcher64_hash "const void *data" "size_t len"
-.Ft uint8_t
-.Fn cryb_pearson_hash "const void *data" "size_t len"
-.Ft uint8_t
-.Fn cryb_pearson_hash_str "const char *str"
 .Sh DESCRIPTION
 The
 .Fn cryb_hash_version
@@ -71,22 +53,10 @@ respective manual pages.
 .Sh SEE ALSO
 .Xr cryb_adler32 3 ,
 .Xr cryb_fletcher 3 ,
+.Xr cryb_fnv 3 ,
+.Xr cryb_murmur3 ,
 .Xr cryb_pearson 3
 .Sh AUTHORS
-The
-.Fn cryb_hash_version ,
-.Fn cryb_adler32_hash ,
-.Fn cryb_fletcher16 ,
-.Fn cryb_fletcher32
-and
-.Fn cryb_fletcher64
-functions and corresponding manual pages were written by
+.An -nosplit
+This manual page was written by
 .An Dag-Erling Sm\(/orgrav Aq Mt des@des.no .
-.Pp
-The
-.Fn cryb_pearson_hash
-and
-.Fn cryb_pearson_hash_str
-functions and corresponding manual pages were written for the
-University of Oslo by
-.An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .

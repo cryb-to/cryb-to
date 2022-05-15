@@ -1,6 +1,5 @@
 .\"-
-.\" Copyright (c) 2015 The University of Oslo
-.\" Copyright (c) 2016-2022 Dag-Erling Smørgrav
+.\" Copyright (c) 2022 Dag-Erling Smørgrav
 .\" All rights reserved.
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -28,42 +27,42 @@
 .\" SUCH DAMAGE.
 .\"
 .Dd May 15, 2022
-.Dt CRYB_SHA256 3
+.Dt CRYB_MD2 3
 .Os
 .Sh NAME
-.Nm cryb_sha256_init ,
-.Nm cryb_sha256_update ,
-.Nm cryb_sha256_final ,
-.Nm cryb_sha256_complete
-.Nd Secure Hash Algorithm 2
+.Nm cryb_md2_init ,
+.Nm cryb_md2_update ,
+.Nm cryb_md2_final ,
+.Nm cryb_md2_complete
+.Nd Message-Digest Algorithm 2
 .Sh LIBRARY
 .Lb libcryb-digest
 .Sh SYNOPSIS
 .In stddef.h
 .In stdint.h
-.In cryb/sha256.h
+.In cryb/md2.h
 .Ft void
-.Fn cryb_sha256_init "cryb_sha256_ctx *context"
+.Fn cryb_md2_init "cryb_md2_ctx *context"
 .Ft void
-.Fn cryb_sha256_update "cryb_sha256_ctx *context" "const void *data" "size_t len"
+.Fn cryb_md2_update "cryb_md2_ctx *context" "const void *data" "size_t len"
 .Ft void
-.Fn cryb_sha256_final "cryb_sha256_ctx *context" "uint8_t *digest"
+.Fn cryb_md2_final "cryb_md2_ctx *context" "uint8_t *digest"
 .Ft void
-.Fn cryb_sha256_complete "const void *data" "size_t len" "uint8_t *digest"
+.Fn cryb_md2_complete "const void *data" "size_t len" "uint8_t *digest"
 .Sh DESCRIPTION
 The
-.Nm cryb_sha256
-family of functions implements the NIST SHA-256 message digest
-algorithm as described in FIPS 180-4.
+.Nm cryb_md2
+family of functions implements the MD2 message digest algorithm as
+described in RFC 1319.
 .Pp
 The
-.Fn cryb_sha256_init
+.Fn cryb_md2_init
 function initializes the context structure pointed to by
 .Va context .
 It is the caller's responsibility to allocate this structure.
 .Pp
 The
-.Fn cryb_sha256_update
+.Fn cryb_md2_update
 function hashes the next
 .Va len
 bytes of data pointed to by the
@@ -71,47 +70,56 @@ bytes of data pointed to by the
 pointer into the given hash context.
 .Pp
 The
-.Fn cryb_sha256_final
+.Fn cryb_md2_final
 function finalizes the computation and writes the resulting message
 digest to the caller-provided buffer pointed to by
 .Va digest ,
 which must be at least
-.Dv SHA256_DIGEST_LEN
+.Dv MD2_DIGEST_LEN
 bytes long.
 It is the caller's responsibility to dispose of the context structure
 after calling
-.Fn cryb_sha256_final .
+.Fn cryb_md2_final .
 .Pp
 The
-.Fn cryb_sha256_complete
+.Fn cryb_md2_complete
 function is a shortcut to calling
-.Fn cryb_sha256_init ,
-.Fn cryb_sha256_update ,
+.Fn cryb_md2_init ,
+.Fn cryb_md2_update ,
 and
-.Fn cryb_sha256_final
+.Fn cryb_md2_final
 when the entire message is available up front in a single contiguous
 buffer.
 .Sh IMPLEMENTATION NOTES
 The
-.In cryb/sha256.h
+.In cryb/md2.h
 header provides macros which allows these functions and the context
 type to be referred to without their
 .Dq Li cryb_
 prefix.
+.Pp
+The MD2 message digest algorithm has been proven to be vulnerable to
+collision attacks and should not be used for cryptographic purposes.
 .Sh SEE ALSO
 .Xr cryb_digest 3 ,
-.Xr cryb_sha1 3 ,
-.Xr cryb_sha224 3 ,
-.Xr cryb_sha384 3 ,
-.Xr cryb_sha512 3
+.Xr cryb_md4 3 ,
+.Xr cryb_md5 3
 .Sh REFERENCES
 .Rs
-.%Q National Institute of Standards and Technology
-.%R Secure Hash Standard (SHS) (FIPS PUB 180-4)
-.%D March 2012
+.%A Kaliski, Burton S.
+.%T The MD2 Message-Digest Algorithm
+.%D April 1992
+.%O RFC 1319
+.%U https://datatracker.ietf.org/doc/html/rfc1319
+.Re
+.Rs
+.%A Turner, Sean
+.%A Chen, Lily
+.%T MD2 to Historic Status
+.%D March 2011
+.%O RFC 6149
+.%U https://datatracker.ietf.org/doc/html/rfc6149
 .Re
 .Sh AUTHORS
-.An -nosplit
-These functions and this manual page were written for the University
-of Oslo by
-.An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .
+These functions and this manual page were written by
+.An Dag-Erling Sm\(/orgrav Aq Mt des@des.no .

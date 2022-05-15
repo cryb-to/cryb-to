@@ -33,7 +33,7 @@
 .Nm cryb_fletcher16_hash ,
 .Nm cryb_fletcher32_hash ,
 .Nm cryb_fletcher64_hash
-.Nd hash functions
+.Nd non-cryptographic hash functions
 .Sh LIBRARY
 .Lb libcryb-hash
 .Sh SYNOPSIS
@@ -41,11 +41,11 @@
 .In stdint.h
 .In cryb/hash.h
 .Ft uint16_t
-.Fn fletcher16_hash "const void *data" "size_t len"
+.Fn cryb_fletcher16_hash "const void *data" "size_t len"
 .Ft uint32_t
-.Fn fletcher32_hash "const void *data" "size_t len"
+.Fn cryb_fletcher32_hash "const void *data" "size_t len"
 .Ft uint64_t
-.Fn fletcher64_hash "const void *data" "size_t len"
+.Fn cryb_fletcher64_hash "const void *data" "size_t len"
 .Sh DESCRIPTION
 The
 .Fn cryb_fletcher16_hash ,
@@ -75,16 +75,17 @@ argument before calling the checksum function.
 .Xr cryb_hash 3
 .Sh STANDARDS
 .Rs
-.%A "Fletcher, John G."
-.%D "January 1982"
-.%T "An Arithmetic Checksum for Serial Transmissions"
-.%J "IEEE Transactions on Communications"
-.%V "30"
-.%N "1"
-.%P "247-252"
-.%O "doi:10.1109/tcom.1982.1095369"
+.%A Fletcher, John G.
+.%T An Arithmetic Checksum for Serial Transmissions
+.%J IEEE Transactions on Communications
+.%V 30
+.%N 1
+.%P 247-252
+.%D January 1982
+.%O doi:10.1109/tcom.1982.1095369
 .Re
 .Sh AUTHORS
+.An -nosplit
 The
 .Fn cryb_fletcher16 ,
 .Fn cryb_fletcher32

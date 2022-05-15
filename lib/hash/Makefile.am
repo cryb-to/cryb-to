@@ -17,6 +17,7 @@ dist_man3_MANS = \
 	cryb_adler32.3 \
 	cryb_fletcher.3 \
 	cryb_fnv.3 \
+	cryb_murmur3.3 \
 	cryb_pearson.3 \
 	\
 	cryb_hash.3
