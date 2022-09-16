@@ -75,12 +75,16 @@ base32_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
 		switch (ilen) {
 		case 4:
 			bits |= (uint64_t)in[3] << 8;
+			/* fall through */
 		case 3:
 			bits |= (uint64_t)in[2] << 16;
+			/* fall through */
 		case 2:
 			bits |= (uint64_t)in[1] << 24;
+			/* fall through */
 		case 1:
 			bits |= (uint64_t)in[0] << 32;
+			break;
 		CRYB_NO_DEFAULT_CASE;
 		}
 		*out++ = b32enc[bits >> 35 & 0x1f];

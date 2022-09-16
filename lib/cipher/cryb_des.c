@@ -440,10 +440,10 @@ cipher_algorithm des56_cipher = {
 	.contextlen		 = sizeof(des_ctx),
 	.blocklen		 = DES_BLOCK_LEN,
 	.keylen			 = DES_BLOCK_LEN,
-	.init			 = (cipher_init_func)des_init,
-	.encrypt		 = (cipher_encrypt_func)des_encrypt,
-	.decrypt		 = (cipher_decrypt_func)des_decrypt,
-	.finish			 = (cipher_finish_func)des_finish,
+	.init			 = (cipher_init_func)(void *)des_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)des_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)des_decrypt,
+	.finish			 = (cipher_finish_func)(void *)des_finish,
 };
 
 cipher_algorithm des112_cipher = {
@@ -451,10 +451,10 @@ cipher_algorithm des112_cipher = {
 	.contextlen		 = sizeof(des_ctx),
 	.blocklen		 = DES_BLOCK_LEN,
 	.keylen			 = DES_BLOCK_LEN * 2,
-	.init			 = (cipher_init_func)des_init,
-	.encrypt		 = (cipher_encrypt_func)des_encrypt,
-	.decrypt		 = (cipher_decrypt_func)des_decrypt,
-	.finish			 = (cipher_finish_func)des_finish,
+	.init			 = (cipher_init_func)(void *)des_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)des_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)des_decrypt,
+	.finish			 = (cipher_finish_func)(void *)des_finish,
 };
 
 cipher_algorithm des168_cipher = {
@@ -462,8 +462,8 @@ cipher_algorithm des168_cipher = {
 	.contextlen		 = sizeof(des_ctx),
 	.blocklen		 = DES_BLOCK_LEN,
 	.keylen			 = DES_BLOCK_LEN * 3,
-	.init			 = (cipher_init_func)des_init,
-	.encrypt		 = (cipher_encrypt_func)des_encrypt,
-	.decrypt		 = (cipher_decrypt_func)des_decrypt,
-	.finish			 = (cipher_finish_func)des_finish,
+	.init			 = (cipher_init_func)(void *)des_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)des_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)des_decrypt,
+	.finish			 = (cipher_finish_func)(void *)des_finish,
 };

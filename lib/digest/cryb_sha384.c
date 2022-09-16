@@ -291,8 +291,8 @@ digest_algorithm sha384_digest = {
 	.contextlen		 = sizeof(sha384_ctx),
 	.blocklen		 = SHA384_BLOCK_LEN,
 	.digestlen		 = SHA384_DIGEST_LEN,
-	.init			 = (digest_init_func)sha384_init,
-	.update			 = (digest_update_func)sha384_update,
-	.final			 = (digest_final_func)sha384_final,
-	.complete		 = (digest_complete_func)sha384_complete,
+	.init			 = (digest_init_func)(void *)sha384_init,
+	.update			 = (digest_update_func)(void *)sha384_update,
+	.final			 = (digest_final_func)(void *)sha384_final,
+	.complete		 = (digest_complete_func)(void *)sha384_complete,
 };

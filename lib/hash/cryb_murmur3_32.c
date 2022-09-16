@@ -78,8 +78,10 @@ murmur3_32_hash(const void *data, size_t len, uint32_t seed)
 		switch (res) {
 		case 3:
 			k |= bytes[2] << 16;
+			/* fall through */
 		case 2:
 			k |= bytes[1] << 8;
+			/* fall through */
 		case 1:
 			k |= bytes[0];
 			k *= 0xcc9e2d51;

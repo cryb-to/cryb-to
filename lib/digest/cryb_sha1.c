@@ -235,8 +235,8 @@ digest_algorithm sha1_digest = {
 	.contextlen		 = sizeof(sha1_ctx),
 	.blocklen		 = SHA1_BLOCK_LEN,
 	.digestlen		 = SHA1_DIGEST_LEN,
-	.init			 = (digest_init_func)sha1_init,
-	.update			 = (digest_update_func)sha1_update,
-	.final			 = (digest_final_func)sha1_final,
-	.complete		 = (digest_complete_func)sha1_complete,
+	.init			 = (digest_init_func)(void *)sha1_init,
+	.update			 = (digest_update_func)(void *)sha1_update,
+	.final			 = (digest_final_func)(void *)sha1_final,
+	.complete		 = (digest_complete_func)(void *)sha1_complete,
 };

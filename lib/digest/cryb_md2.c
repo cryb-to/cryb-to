@@ -174,8 +174,8 @@ digest_algorithm md2_digest = {
 	.contextlen		 = sizeof(md2_ctx),
 	.blocklen		 = MD2_BLOCK_LEN,
 	.digestlen		 = MD2_DIGEST_LEN,
-	.init			 = (digest_init_func)md2_init,
-	.update			 = (digest_update_func)md2_update,
-	.final			 = (digest_final_func)md2_final,
-	.complete		 = (digest_complete_func)md2_complete,
+	.init			 = (digest_init_func)(void *)md2_init,
+	.update			 = (digest_update_func)(void *)md2_update,
+	.final			 = (digest_final_func)(void *)md2_final,
+	.complete		 = (digest_complete_func)(void *)md2_complete,
 };

@@ -63,8 +63,10 @@ mpi_load(cryb_mpi *X, const uint8_t *a, size_t len)
 	switch (len) {
 	case 3:
 		X->words[i] |= a[len - 3] << 16;
+		/* fall through */
 	case 2:
 		X->words[i] |= a[len - 2] << 8;
+		/* fall through */
 	case 1:
 		X->words[i] |= a[len - 1];
 		break;

@@ -243,8 +243,8 @@ digest_algorithm md5_digest = {
 	.contextlen		 = sizeof(md5_ctx),
 	.blocklen		 = MD5_BLOCK_LEN,
 	.digestlen		 = MD5_DIGEST_LEN,
-	.init			 = (digest_init_func)md5_init,
-	.update			 = (digest_update_func)md5_update,
-	.final			 = (digest_final_func)md5_final,
-	.complete		 = (digest_complete_func)md5_complete,
+	.init			 = (digest_init_func)(void *)md5_init,
+	.update			 = (digest_update_func)(void *)md5_update,
+	.final			 = (digest_final_func)(void *)md5_final,
+	.complete		 = (digest_complete_func)(void *)md5_complete,
 };

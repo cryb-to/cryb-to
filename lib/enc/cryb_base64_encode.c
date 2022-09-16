@@ -71,8 +71,10 @@ base64_encode(const uint8_t *in, size_t ilen, char *out, size_t *olen)
 		switch (ilen) {
 		case 2:
 			bits |= (uint32_t)in[1] << 8;
+			/* fall through */
 		case 1:
 			bits |= (uint32_t)in[0] << 16;
+			break;
 		CRYB_NO_DEFAULT_CASE;
 		}
 		*out++ = b64enc[bits >> 18 & 0x3f];

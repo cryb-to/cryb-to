@@ -290,8 +290,8 @@ digest_algorithm sha224_digest = {
 	.contextlen		 = sizeof(sha224_ctx),
 	.blocklen		 = SHA224_BLOCK_LEN,
 	.digestlen		 = SHA224_DIGEST_LEN,
-	.init			 = (digest_init_func)sha224_init,
-	.update			 = (digest_update_func)sha224_update,
-	.final			 = (digest_final_func)sha224_final,
-	.complete		 = (digest_complete_func)sha224_complete,
+	.init			 = (digest_init_func)(void *)sha224_init,
+	.update			 = (digest_update_func)(void *)sha224_update,
+	.final			 = (digest_final_func)(void *)sha224_final,
+	.complete		 = (digest_complete_func)(void *)sha224_complete,
 };

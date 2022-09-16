@@ -623,10 +623,10 @@ cipher_algorithm aes128_cipher = {
 	.contextlen		 = sizeof(aes_ctx),
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 128 / 8,
-	.init			 = (cipher_init_func)aes_init,
-	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
-	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
-	.finish			 = (cipher_finish_func)aes_finish,
+	.init			 = (cipher_init_func)(void *)aes_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)aes_decrypt,
+	.finish			 = (cipher_finish_func)(void *)aes_finish,
 };
 
 cipher_algorithm aes192_cipher = {
@@ -634,10 +634,10 @@ cipher_algorithm aes192_cipher = {
 	.contextlen		 = sizeof(aes_ctx),
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 192 / 8,
-	.init			 = (cipher_init_func)aes_init,
-	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
-	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
-	.finish			 = (cipher_finish_func)aes_finish,
+	.init			 = (cipher_init_func)(void *)aes_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)aes_decrypt,
+	.finish			 = (cipher_finish_func)(void *)aes_finish,
 };
 
 cipher_algorithm aes256_cipher = {
@@ -645,8 +645,8 @@ cipher_algorithm aes256_cipher = {
 	.contextlen		 = sizeof(aes_ctx),
 	.blocklen		 = AES_BLOCK_LEN,
 	.keylen			 = 256 / 8,
-	.init			 = (cipher_init_func)aes_init,
-	.encrypt		 = (cipher_encrypt_func)aes_encrypt,
-	.decrypt		 = (cipher_decrypt_func)aes_decrypt,
-	.finish			 = (cipher_finish_func)aes_finish,
+	.init			 = (cipher_init_func)(void *)aes_init,
+	.encrypt		 = (cipher_encrypt_func)(void *)aes_encrypt,
+	.decrypt		 = (cipher_decrypt_func)(void *)aes_decrypt,
+	.finish			 = (cipher_finish_func)(void *)aes_finish,
 };

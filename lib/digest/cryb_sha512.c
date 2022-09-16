@@ -291,8 +291,8 @@ digest_algorithm sha512_digest = {
 	.contextlen		 = sizeof(sha512_ctx),
 	.blocklen		 = SHA512_BLOCK_LEN,
 	.digestlen		 = SHA512_DIGEST_LEN,
-	.init			 = (digest_init_func)sha512_init,
-	.update			 = (digest_update_func)sha512_update,
-	.final			 = (digest_final_func)sha512_final,
-	.complete		 = (digest_complete_func)sha512_complete,
+	.init			 = (digest_init_func)(void *)sha512_init,
+	.update			 = (digest_update_func)(void *)sha512_update,
+	.final			 = (digest_final_func)(void *)sha512_final,
+	.complete		 = (digest_complete_func)(void *)sha512_complete,
 };

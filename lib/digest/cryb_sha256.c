@@ -289,8 +289,8 @@ digest_algorithm sha256_digest = {
 	.contextlen		 = sizeof(sha256_ctx),
 	.blocklen		 = SHA256_BLOCK_LEN,
 	.digestlen		 = SHA256_DIGEST_LEN,
-	.init			 = (digest_init_func)sha256_init,
-	.update			 = (digest_update_func)sha256_update,
-	.final			 = (digest_final_func)sha256_final,
-	.complete		 = (digest_complete_func)sha256_complete,
+	.init			 = (digest_init_func)(void *)sha256_init,
+	.update			 = (digest_update_func)(void *)sha256_update,
+	.final			 = (digest_final_func)(void *)sha256_final,
+	.complete		 = (digest_complete_func)(void *)sha256_complete,
 };
