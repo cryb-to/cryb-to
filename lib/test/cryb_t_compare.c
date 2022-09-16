@@ -207,6 +207,7 @@ t_is_not_zero_##n(t received)						\
 	return (1);							\
 }
 
+t_compare_num(ch,	char,			"%c");
 t_compare_num(i,	int,			"%d");
 t_compare_num(u,	unsigned int,		"%u");
 t_compare_num(il,	long,			"%ld");
