@@ -1,6 +1,6 @@
 .\"-
 .\" Copyright (c) 2015 The University of Oslo
-.\" Copyright (c) 2016 Dag-Erling Smørgrav
+.\" Copyright (c) 2016-2022 Dag-Erling Smørgrav
 .\" All rights reserved.
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 .\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 .\" SUCH DAMAGE.
 .\"
-.Dd September 17, 2016
+.Dd May 15, 2022
 .Dt CRYB_SHA384 3
 .Os
 .Sh NAME
@@ -86,7 +86,7 @@ The
 .Fn cryb_sha384_complete
 function is a shortcut to calling
 .Fn cryb_sha384_init ,
-.Fn cryb_sha384_update
+.Fn cryb_sha384_update ,
 and
 .Fn cryb_sha384_final
 when the entire message is available up front in a single contiguous
@@ -111,6 +111,7 @@ prefix.
 .%D March 2012
 .Re
 .Sh AUTHORS
+.An -nosplit
 These functions and this manual page were written for the University
 of Oslo by
 .An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .

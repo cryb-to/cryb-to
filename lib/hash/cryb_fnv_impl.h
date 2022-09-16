@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2022 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,45 +27,10 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_HASH_H_INCLUDED
-#define CRYB_HASH_H_INCLUDED
+#define FNV_32_PRIME 0x01000193UL
+#define FNV_32_OFFSET_BASIS 0x811c9dc5UL
 
-#ifndef CRYB_TO
-#include <cryb/to.h>
-#endif
+#define FNV_64_PRIME 0x00000100000001B3ULL
+#define FNV_64_OFFSET_BASIS 0xcbf29ce484222325ULL
 
-CRYB_BEGIN
-
-const char *cryb_hash_version(void);
-
-#define adler32_hash		cryb_adler32_hash
-#define fletcher16_hash		cryb_fletcher16_hash
-#define fletcher32_hash		cryb_fletcher32_hash
-#define fletcher64_hash		cryb_fletcher64_hash
-#define fnv0_32_hash		cryb_fnv0_32_hash
-#define fnv0_64_hash		cryb_fnv0_64_hash
-#define fnv1_32_hash		cryb_fnv1_32_hash
-#define fnv1_64_hash		cryb_fnv1_64_hash
-#define fnv1a_32_hash		cryb_fnv1a_32_hash
-#define fnv1a_64_hash		cryb_fnv1a_64_hash
-#define murmur3_32_hash		cryb_murmur3_32_hash
-#define pearson_hash		cryb_pearson_hash
-#define pearson_hash_str	cryb_pearson_hash_str
-
-uint32_t adler32_hash(const void *, size_t);
-uint16_t fletcher16_hash(const void *, size_t);
-uint32_t fletcher32_hash(const void *, size_t);
-uint64_t fletcher64_hash(const void *, size_t);
-uint32_t fnv0_32_hash(const void *, size_t);
-uint64_t fnv0_64_hash(const void *, size_t);
-uint32_t fnv1_32_hash(const void *, size_t);
-uint64_t fnv1_64_hash(const void *, size_t);
-uint32_t fnv1a_32_hash(const void *, size_t);
-uint64_t fnv1a_64_hash(const void *, size_t);
-uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
-uint8_t pearson_hash(const void *, size_t);
-uint8_t pearson_hash_str(const char *);
-
-CRYB_END
-
-#endif
+#define FNV_SIGNATURE "chongo <Landon Curt Noll> /\\../\\"

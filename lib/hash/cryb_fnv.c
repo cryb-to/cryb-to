@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2016 Dag-Erling Smørgrav
+ * Copyright (c) 2022 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,45 +27,87 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_HASH_H_INCLUDED
-#define CRYB_HASH_H_INCLUDED
+#include "cryb/impl.h"
 
-#ifndef CRYB_TO
-#include <cryb/to.h>
-#endif
+#include <stddef.h>
+#include <stdint.h>
 
-CRYB_BEGIN
+#include <cryb/hash.h>
 
-const char *cryb_hash_version(void);
+#include "cryb_fnv_impl.h"
 
-#define adler32_hash		cryb_adler32_hash
-#define fletcher16_hash		cryb_fletcher16_hash
-#define fletcher32_hash		cryb_fletcher32_hash
-#define fletcher64_hash		cryb_fletcher64_hash
-#define fnv0_32_hash		cryb_fnv0_32_hash
-#define fnv0_64_hash		cryb_fnv0_64_hash
-#define fnv1_32_hash		cryb_fnv1_32_hash
-#define fnv1_64_hash		cryb_fnv1_64_hash
-#define fnv1a_32_hash		cryb_fnv1a_32_hash
-#define fnv1a_64_hash		cryb_fnv1a_64_hash
-#define murmur3_32_hash		cryb_murmur3_32_hash
-#define pearson_hash		cryb_pearson_hash
-#define pearson_hash_str	cryb_pearson_hash_str
+/*
+ * Implementations of the 32- and 64-bit Fowler-Noll-Vo (FNV) 0, 1, and 1a hashes.
+ */
 
-uint32_t adler32_hash(const void *, size_t);
-uint16_t fletcher16_hash(const void *, size_t);
-uint32_t fletcher32_hash(const void *, size_t);
-uint64_t fletcher64_hash(const void *, size_t);
-uint32_t fnv0_32_hash(const void *, size_t);
-uint64_t fnv0_64_hash(const void *, size_t);
-uint32_t fnv1_32_hash(const void *, size_t);
-uint64_t fnv1_64_hash(const void *, size_t);
-uint32_t fnv1a_32_hash(const void *, size_t);
-uint64_t fnv1a_64_hash(const void *, size_t);
-uint32_t murmur3_32_hash(const void *, size_t, uint32_t);
-uint8_t pearson_hash(const void *, size_t);
-uint8_t pearson_hash_str(const char *);
+uint32_t fnv0_32_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint32_t h;
 
-CRYB_END
+	for (p = data, h = 0; len > 0; ++p, --len) {
+		h *= FNV_32_PRIME;
+		h ^= *p;
+	}
+	return (h);
+}
 
-#endif
+uint64_t fnv0_64_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint64_t h;
+
+	for (p = data, h = 0; len > 0; ++p, --len) {
+		h *= FNV_64_PRIME;
+		h ^= *p;
+	}
+	return (h);
+}
+
+uint32_t fnv1_32_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint32_t h;
+
+	for (p = data, h = FNV_32_OFFSET_BASIS; len > 0; ++p, --len) {
+		h *= FNV_32_PRIME;
+		h ^= *p;
+	}
+	return (h);
+}
+
+uint64_t fnv1_64_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint64_t h;
+
+	for (p = data, h = FNV_64_OFFSET_BASIS; len > 0; ++p, --len) {
+		h *= FNV_64_PRIME;
+		h ^= *p;
+	}
+	return (h);
+}
+
+uint32_t fnv1a_32_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint32_t h;
+
+	for (p = data, h = FNV_32_OFFSET_BASIS; len > 0; ++p, --len) {
+		h ^= *p;
+		h *= FNV_32_PRIME;
+	}
+	return (h);
+}
+
+uint64_t fnv1a_64_hash(const void *data, size_t len)
+{
+	const uint8_t *p;
+	uint64_t h;
+
+	for (p = data, h = FNV_64_OFFSET_BASIS; len > 0; ++p, --len) {
+		h ^= *p;
+		h *= FNV_64_PRIME;
+	}
+	return (h);
+}

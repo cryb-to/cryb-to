@@ -12,6 +12,7 @@
 /t_endian
 /t_ffs_fls
 /t_fletcher
+/t_fnv
 /t_hash
 /t_hmac_sha1
 /t_hmac_sha1_openssl

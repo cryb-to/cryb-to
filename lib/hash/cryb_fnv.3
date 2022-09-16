@@ -1,6 +1,5 @@
 .\"-
-.\" Copyright (c) 2015-2016 The University of Oslo
-.\" Copyright (c) 2016-2022 Dag-Erling Smørgrav
+.\" Copyright (c) 2022 Dag-Erling Smørgrav
 .\" All rights reserved.
 .\"
 .\" Redistribution and use in source and binary forms, with or without
@@ -28,11 +27,15 @@
 .\" SUCH DAMAGE.
 .\"
 .Dd May 15, 2022
-.Dt CRYB_PEARSON 3
+.Dt CRYB_FNV 3
 .Os
 .Sh NAME
-.Nm cryb_pearson_hash ,
-.Nm cryb_pearson_hash_str
+.Nm cryb_fnv0_32_hash ,
+.Nm cryb_fnv0_64_hash ,
+.Nm cryb_fnv1_32_hash ,
+.Nm cryb_fnv1_64_hash ,
+.Nm cryb_fnv1a_32_hash ,
+.Nm cryb_fnv1a_64_hash
 .Nd non-cryptographic hash functions
 .Sh LIBRARY
 .Lb libcryb-hash
@@ -40,26 +43,40 @@
 .In stddef.h
 .In stdint.h
 .In cryb/hash.h
-.Ft uint8_t
-.Fn cryb_pearson_hash "const void *data" "size_t len"
-.Ft uint8_t
-.Fn cryb_pearson_hash_str "const char *str"
+.Ft uint32_t
+.Fn cryb_fnv0_32_hash "const void *data" "size_t len"
+.Ft uint64_t
+.Fn cryb_fnv0_64_hash "const void *data" "size_t len"
+.Ft uint32_t
+.Fn cryb_fnv1_32_hash "const void *data" "size_t len"
+.Ft uint64_t
+.Fn cryb_fnv1_64_hash "const void *data" "size_t len"
+.Ft uint32_t
+.Fn cryb_fnv1a_32_hash "const void *data" "size_t len"
+.Ft uint64_t
+.Fn cryb_fnv1a_64_hash "const void *data" "size_t len"
 .Sh DESCRIPTION
 The
-.Fn cryb_pearson_hash
-function returns an 8-bit hash of the
+.Fn cryb_fnv0_32_hash ,
+.Fn cryb_fnv1_32_hash ,
+and
+.Fn cryb_fnv1a_32_hash ,
+functions return a 32-bit hash of the
 .Va len
 first bytes of the object pointed to by
-.Va data .
+.Va data
+using the Fowler-Noll-Vo (FNV) 0, 1, and 1a algorithms respectively.
 .Pp
 The
-.Fn cryb_pearson_hash_str
-function returns an 8-bit hash of the NUL-terminated string pointed to
-by
-.Va str ,
-not including the terminating NUL.
-It is equivalent to calling
-.Li cryb_pearson_hash(str, strlen(str)) .
+.Fn cryb_fnv0_64_hash ,
+.Fn cryb_fnv1_64_hash ,
+and
+.Fn cryb_fnv1a_64_hash ,
+functions return a 64-bit hash of the
+.Va len
+first bytes of the object pointed to by
+.Va data
+using the FNV 0, 1, and 1a algorithms respectively.
 .Sh IMPLEMENTATION NOTES
 The
 .In cryb/hash.h
@@ -71,20 +88,20 @@ prefix.
 .Xr cryb_hash 3
 .Sh STANDARDS
 .Rs
-.%A Pearson, Peter K.
-.%T Fast Hashing of Variable-Length Text Strings
-.%J Communications of the ACM
-.%V 33
-.%N 6
-.%P 677
-.%D June 1990
-.%O doi:10.1145/78973.78978
+.%A Fowler, Glenn
+.%A Noll, Landon Curt
+.%A Vo, Kiem-Phong
+.%A Eastlake, Donald
+.%A Hansen, Tony
+.%T The FNV Non-Cryptographic Hash Algorithm
+.%D May 29, 2019
+.%O draft-eastlake-fnv-17
+.%U https://datatracker.ietf.org/doc/html/draft-eastlake-fnv-17
 .Re
 .Sh AUTHORS
-.An -nosplit
 The
 .Fn cryb_pearson_hash
 and
 .Fn cryb_pearson_hash_str
-functions and this manual page were written for the University of Oslo by
-.An Dag-Erling Sm\(/orgrav Aq Mt d.e.smorgrav@usit.uio.no .
+functions and this manual page were written by
+.An Dag-Erling Sm\(/orgrav Aq Mt des@des.no .
