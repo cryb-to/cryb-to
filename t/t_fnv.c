@@ -133,12 +133,12 @@ t_prepare(int argc, char *argv[])
 	t_add_test(t_fnv0_64, &t_offset_basis, "FNV-64 offset basis");
 	n = sizeof t_cases / sizeof t_cases[0];
 	for (i = 0; i < n; ++i) {
-		t_add_test(t_fnv0_32, &t_cases[i], "");
-		t_add_test(t_fnv0_64, &t_cases[i], "");
-		t_add_test(t_fnv1_32, &t_cases[i], "");
-		t_add_test(t_fnv1_64, &t_cases[i], "");
-		t_add_test(t_fnv1a_32, &t_cases[i], "");
-		t_add_test(t_fnv1a_64, &t_cases[i], "");
+		t_add_test(t_fnv0_32, &t_cases[i], "FNV-0-32");
+		t_add_test(t_fnv0_64, &t_cases[i], "FNV-0-64");
+		t_add_test(t_fnv1_32, &t_cases[i], "FNV-1-32");
+		t_add_test(t_fnv1_64, &t_cases[i], "FNV-1-64");
+		t_add_test(t_fnv1a_32, &t_cases[i], "FNV-1a-32");
+		t_add_test(t_fnv1a_64, &t_cases[i], "FNV-1a-64");
 	}
 	return (0);
 }
