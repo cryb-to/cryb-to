@@ -35,7 +35,6 @@
 #endif
 
 #if HAVE_ENDIAN_H
-#define _BSD_SOURCE
 #include <endian.h>
 #endif
 
