@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2014-2019 Dag-Erling Smørgrav
+ * Copyright (c) 2014-2022 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 #ifndef CRYB_TO_H_INCLUDED
 #define CRYB_TO_H_INCLUDED
 
-#define CRYB_TO	20190326
+#define CRYB_TO	20221002
 
 #include <cryb/defs.h>
 
