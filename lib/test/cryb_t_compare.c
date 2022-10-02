@@ -185,8 +185,29 @@ t_compare_##n(t expected, t received)					\
 		return (0);						\
 	}								\
 	return (1);							\
+}									\
+int									\
+t_is_zero_##n(t received)						\
+{									\
+									\
+	if (received != 0) {						\
+		t_printv("expected zero, received " pf "\n", received);	\
+		return (0);						\
+	}								\
+	return (1);							\
+}									\
+int									\
+t_is_not_zero_##n(t received)						\
+{									\
+									\
+	if (received == 0) {						\
+		t_printv("expected non-zero, received zero\n");		\
+		return (0);						\
+	}								\
+	return (1);							\
 }
 
+t_compare_num(ch,	char,			"%c");
 t_compare_num(i,	int,			"%d");
 t_compare_num(u,	unsigned int,		"%u");
 t_compare_num(il,	long,			"%ld");

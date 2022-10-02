@@ -103,7 +103,10 @@ int t_is_not_null(const void *);
 int t_compare_mem(const void *, const void *, size_t);
 int t_compare_str(const char *, const char *);
 int t_compare_strn(const char *, const char *, size_t);
-#define t_compare_num(n, t) int t_compare_##n(t, t);
+#define t_compare_num(n, t)	 \
+	int t_compare_##n(t, t); \
+	int t_is_zero_##n(t);	 \
+	int t_is_not_zero_##n(t);
 t_compare_num(i, int);
 t_compare_num(u, unsigned int);
 t_compare_num(il, long);

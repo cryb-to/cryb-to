@@ -121,8 +121,8 @@ t_mpi_is_zero(const cryb_mpi *x)
 
 	ret &= t_mpi_not_grown(x);
 	ret &= t_compare_mem(t_zero, x->words, CRYB_MPI_SWORDS);
-	ret &= t_compare_u(0, x->msb);
-	ret &= t_compare_i(0, x->neg);
+	ret &= t_is_zero_u(x->msb);
+	ret &= t_is_zero_i(x->neg);
 	return (ret);
 }
 

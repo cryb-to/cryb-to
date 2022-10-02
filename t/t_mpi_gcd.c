@@ -161,7 +161,7 @@ t_mpi_gcd_tc(char **desc CRYB_UNUSED, void *arg)
 	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
 	e.neg = tc->eneg;
-	ret &= t_compare_i(0, mpi_gcd_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_gcd_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -177,7 +177,7 @@ t_mpi_gcd_ident_ab(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_set(&a, 0x20140901);
-	ret &= t_compare_i(0, mpi_gcd_abs(&x, &a, &a));
+	ret &= t_is_zero_i(mpi_gcd_abs(&x, &a, &a));
 	ret &= t_compare_mpi_u32(0x20140901, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&x);
@@ -192,7 +192,7 @@ t_mpi_gcd_ident_xa(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x20140901);
 	mpi_set(&b, 0x20140901);
-	ret &= t_compare_i(0, mpi_gcd_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_gcd_abs(&a, &a, &b));
 	ret &= t_compare_mpi_u32(0x20140901, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -207,7 +207,7 @@ t_mpi_gcd_ident_xb(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x20140901);
 	mpi_set(&b, 0x20140901);
-	ret &= t_compare_i(0, mpi_gcd_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_gcd_abs(&b, &a, &b));
 	ret &= t_compare_mpi_u32(0x20140901, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);

@@ -62,7 +62,7 @@ t_malloc_fill(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 		head = *next;
 		free(next);
 	}
-	ret &= t_compare_u(0, i);
+	ret &= t_is_zero_u(i);
 	t_malloc_fatal = stmf;
 	return (ret);
 }

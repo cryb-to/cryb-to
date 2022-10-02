@@ -154,7 +154,7 @@ t_mpi_cmp_ident(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	int ret = 1;
 
 	mpi_set(&a, CRYB_TO);
-	ret &= t_compare_i(0, mpi_cmp(&a, &a));
+	ret &= t_is_zero_i(mpi_cmp(&a, &a));
 	mpi_destroy(&a);
 	return (ret);
 }

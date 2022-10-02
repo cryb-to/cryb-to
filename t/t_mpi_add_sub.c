@@ -153,7 +153,7 @@ t_mpi_add_tc(char **desc CRYB_UNUSED, void *arg)
 	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
 	e.neg = tc->eneg;
-	ret &= t_compare_i(0, mpi_add_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -175,7 +175,7 @@ t_mpi_add(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x19700101 + 0x20140901);
-	ret &= t_compare_i(0, mpi_add_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -246,7 +246,7 @@ t_mpi_add_b_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x19700101 + 0x20140901);
-	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -288,7 +288,7 @@ t_mpi_add_b_to_a_equal(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x19700101);
 	mpi_set(&e, 0x19700101 + 0x19700101);
-	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -308,7 +308,7 @@ t_mpi_add_a_to_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x19700101 + 0x20140901);
-	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -350,7 +350,7 @@ t_mpi_add_a_to_b_equal(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x19700101);
 	mpi_set(&e, 0x19700101 + 0x19700101);
-	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -369,7 +369,7 @@ t_mpi_add_a_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x19700101);
 	mpi_set(&e, 0x19700101 + 0x19700101);
-	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &a));
+	ret &= t_is_zero_i(mpi_add_abs(&a, &a, &a));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&e);
@@ -407,7 +407,7 @@ t_mpi_add_a_and_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x19700101);
 	mpi_set(&e, 0x19700101 + 0x19700101);
-	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &a));
+	ret &= t_is_zero_i(mpi_add_abs(&b, &a, &a));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -448,7 +448,7 @@ t_mpi_add_zero_to_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_zero(&b);
 	mpi_copy(&e, &a);
-	ret &= t_compare_i(0, mpi_add_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -468,7 +468,7 @@ t_mpi_add_zero_to_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_zero(&a);
 	mpi_set(&b, 0x20140901);
 	mpi_copy(&e, &b);
-	ret &= t_compare_i(0, mpi_add_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_add_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -627,7 +627,7 @@ t_mpi_sub_tc(char **desc CRYB_UNUSED, void *arg)
 	b.neg = tc->bneg;
 	mpi_load(&e, tc->e, (tc->emsb + 7) / 8);
 	e.neg = tc->eneg;
-	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -649,7 +649,7 @@ t_mpi_sub(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x20140901 - 0x19700101);
-	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -696,7 +696,7 @@ t_mpi_sub_b_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x20140901);
 	mpi_set(&b, 0x19700101);
 	mpi_set(&e, 0x20140901 - 0x19700101);
-	ret &= t_compare_i(0, mpi_sub_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -738,7 +738,7 @@ t_mpi_sub_a_from_b(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&a, 0x19700101);
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x20140901 - 0x19700101);
-	ret &= t_compare_i(0, mpi_sub_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
@@ -779,7 +779,7 @@ t_mpi_sub_a_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x19700101);
 	mpi_set(&e, 0);
-	ret &= t_compare_i(0, mpi_sub_abs(&a, &a, &a));
+	ret &= t_is_zero_i(mpi_sub_abs(&a, &a, &a));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&e);
@@ -797,7 +797,7 @@ t_mpi_sub_zero_from_a(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&a, 0x20140901);
 	mpi_set(&e, 0x20140901);
-	ret &= t_compare_i(0, mpi_sub_abs(&a, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&a, &a, &b));
 	ret &= t_compare_mpi(&e, &a);
 	mpi_destroy(&a);
 	mpi_destroy(&e);
@@ -815,7 +815,7 @@ t_mpi_sub_b_from_zero(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 
 	mpi_set(&b, 0x20140901);
 	mpi_set(&e, 0x20140901);
-	ret &= t_compare_i(0, mpi_sub_abs(&b, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&b, &a, &b));
 	ret &= t_compare_mpi(&e, &b);
 	mpi_destroy(&b);
 	mpi_destroy(&e);
@@ -836,7 +836,7 @@ t_mpi_sub_neg_target(char **desc CRYB_UNUSED, void *arg CRYB_UNUSED)
 	mpi_set(&b, 0x19700101);
 	mpi_set(&e, 0x20140901 - 0x19700101);
 	mpi_set(&x, -1);
-	ret &= t_compare_i(0, mpi_sub_abs(&x, &a, &b));
+	ret &= t_is_zero_i(mpi_sub_abs(&x, &a, &b));
 	ret &= t_compare_mpi(&e, &x);
 	mpi_destroy(&a);
 	mpi_destroy(&b);
