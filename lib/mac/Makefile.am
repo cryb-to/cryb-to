@@ -3,6 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
 lib_LTLIBRARIES = libcryb-mac.la
 
 libcryb_mac_la_SOURCES = \
+	cryb_hmac_md5.c \
 	cryb_hmac_sha1.c \
 	cryb_hmac_sha224.c \
 	cryb_hmac_sha256.c \

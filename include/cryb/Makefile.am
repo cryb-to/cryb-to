@@ -78,6 +78,7 @@ endif CRYB_HASH
 if CRYB_MAC
 cryb_HEADERS += \
 	hmac.h \
+	hmac_md5.h \
 	hmac_sha1.h \
 	hmac_sha224.h \
 	hmac_sha256.h \

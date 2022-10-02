@@ -34,6 +34,7 @@
 #include <cryb/to.h>
 #endif
 
+#include <cryb/hmac_md5.h>
 #include <cryb/hmac_sha1.h>
 #include <cryb/hmac_sha224.h>
 #include <cryb/hmac_sha256.h>

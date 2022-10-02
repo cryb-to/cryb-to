@@ -14,6 +14,8 @@
 /t_fletcher
 /t_fnv
 /t_hash
+/t_hmac_md5
+/t_hmac_md5_openssl
 /t_hmac_sha1
 /t_hmac_sha1_openssl
 /t_hmac_sha224

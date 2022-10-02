@@ -192,14 +192,18 @@ endif CRYB_HASH
 if CRYB_MAC
 TESTS += t_mac
 t_mac_LDADD = $(libt) $(libmac)
-TESTS += t_hmac_sha1 t_hmac_sha224 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
+TESTS += t_hmac_md5 t_hmac_sha1 t_hmac_sha224 t_hmac_sha256 t_hmac_sha384 t_hmac_sha512
+t_hmac_md5_LDADD = $(libt) $(libmac)
 t_hmac_sha1_LDADD = $(libt) $(libmac)
 t_hmac_sha224_LDADD = $(libt) $(libmac)
 t_hmac_sha256_LDADD = $(libt) $(libmac)
 t_hmac_sha384_LDADD = $(libt) $(libmac)
 t_hmac_sha512_LDADD = $(libt) $(libmac)
 if OPENSSL_TESTS
-TESTS += t_hmac_sha1_openssl t_hmac_sha224_openssl t_hmac_sha256_openssl t_hmac_sha384_openssl t_hmac_sha512_openssl
+TESTS += t_hmac_md5_openssl t_hmac_sha1_openssl t_hmac_sha224_openssl t_hmac_sha256_openssl t_hmac_sha384_openssl t_hmac_sha512_openssl
+t_hmac_md5_openssl_SOURCES = t_hmac_md5.c
+t_hmac_md5_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
+t_hmac_md5_openssl_LDADD = $(libt) $(OPENSSL_LDADD)
 t_hmac_sha1_openssl_SOURCES = t_hmac_sha1.c
 t_hmac_sha1_openssl_CFLAGS = $(OPENSSL_INCLUDES) $(OPENSSL_CFLAGS)
 t_hmac_sha1_openssl_LDADD = $(libt) $(OPENSSL_LDADD)
