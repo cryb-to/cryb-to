@@ -47,11 +47,9 @@ typedef struct {
 	oath_mode	 mode;
 	oath_hash	 hash;
 	unsigned int	 digits;
-	union {
-		uint64_t	 counter;  /* HOTP */
-		uint64_t	 lastused; /* TOTP */
-	};
+	uint64_t	 counter;  /* HOTP only */
 	unsigned int	 timestep; /* TOTP only - in seconds */
+	uint64_t	 lastused; /* TOTP only */
 
 	/* housekeeping */
 	unsigned int	 dummy:1;  /* dummy key, always fail */
