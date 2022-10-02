@@ -3,7 +3,7 @@ AC_INIT([cryb.to], [0.20221002], [des@des.no], [cryb-to], [http://cryb.to/])
 AC_CONFIG_SRCDIR([include/cryb/core.h])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign no-dist-gzip dist-xz])
-AM_CONFIG_HEADER([include/config.h])
+AC_CONFIG_HEADERS([include/config.h])
 AM_MAINTAINER_MODE([enable])
 
 ############################################################################
