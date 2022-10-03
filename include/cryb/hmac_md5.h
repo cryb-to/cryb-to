@@ -1,5 +1,6 @@
 /*-
- * Copyright (c) 2014-2022 Dag-Erling Smørgrav
+ * Copyright (c) 2012-2014 The University of Oslo
+ * Copyright (c) 2022 Dag-Erling Smørgrav
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,11 +28,35 @@
  * SUCH DAMAGE.
  */
 
-#ifndef CRYB_TO_H_INCLUDED
-#define CRYB_TO_H_INCLUDED
+#ifndef CRYB_HMAC_MD5_H_INCLUDED
+#define CRYB_HMAC_MD5_H_INCLUDED
 
-#define CRYB_TO	20221003
+#ifndef CRYB_TO
+#include <cryb/to.h>
+#endif
 
-#include <cryb/defs.h>
+#include <cryb/md5.h>
+
+CRYB_BEGIN
+
+#define HMAC_MD5_MAC_LEN		16
+
+#define hmac_md5_ctx			cryb_hmac_md5_ctx
+#define hmac_md5_init			cryb_hmac_md5_init
+#define hmac_md5_update			cryb_hmac_md5_update
+#define hmac_md5_final			cryb_hmac_md5_final
+#define hmac_md5_complete		cryb_hmac_md5_complete
+
+typedef struct {
+	md5_ctx ictx;
+	md5_ctx octx;
+} hmac_md5_ctx;
+
+void hmac_md5_init(hmac_md5_ctx *, const void *, size_t);
+void hmac_md5_update(hmac_md5_ctx *, const void *, size_t);
+void hmac_md5_final(hmac_md5_ctx *, uint8_t *);
+void hmac_md5_complete(const void *, size_t, const void *, size_t, uint8_t *);
+
+CRYB_END
 
 #endif
